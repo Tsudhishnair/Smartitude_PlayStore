@@ -6,8 +6,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 class Log extends Component {
     render() {
         return (
-            <div>
-                <GridContainer>
+            <div style={{background:"linear-gradient(60deg, #ffa726, #fb8c00)",height:'auto'}}>
+                <GridContainer fullHeight>
                     <GridItem md={6}
                         justify="center"
                         alignItems="center"
@@ -19,7 +19,6 @@ class Log extends Component {
                     </GridItem>
                 </GridContainer>
             </div>
-
         )
     }
 }
