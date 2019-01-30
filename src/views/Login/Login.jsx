@@ -86,7 +86,7 @@ function Login(props) {
   );
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 

@@ -1,25 +1,27 @@
 import React, { Component } from "react";
 import Login from '../../views/Login/Login';
-import logo from "../../assets/img/faces"
-class Login extends Component {
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+
+class Log extends Component {
     render() {
         return (
             <div>
-                <GridConatiner>
+                <GridContainer>
                     <GridItem md={6}
-                    justify="center"
-                    alignItems="center"
+                        justify="center"
+                        alignItems="center"
                     >
-                        {new_logo}
+                       {/* <img src={new_logo} alt="logo"/>; */}
                     </GridItem>
                     <GridItem xs={12} sm={12} md={6}>
                         <Login />
                     </GridItem>
-                </GridConatiner>
+                </GridContainer>
             </div>
 
         )
     }
 }
 
-export default Login;
+export default Log;
