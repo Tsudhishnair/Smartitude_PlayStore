@@ -6,7 +6,7 @@ import ChartistGraph from "react-chartist";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
+import Store from "@material-ui/icons/People";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
@@ -61,7 +61,7 @@ class Dashboard extends React.Component {
             <Card>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
-                  <Icon>content_copy</Icon>
+                  <Icon>grade</Icon>
                 </CardIcon>
                 <p className={classes.cardCategory}>Current Score</p>
                 <h3 className={classes.cardTitle}>
@@ -144,7 +144,19 @@ class Dashboard extends React.Component {
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Button color="success">Custom Quiz</Button>
+                    <Card success>
+                      <CardHeader color="success">
+                        <h4 className={classes.cardTitleWhite}>Custom Test</h4>
+                      </CardHeader>
+                      <CardBody>
+                        <p className={classes.cardCategory}>
+                          Create a customised quiz from a set of catagories
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                      <Button color="">Take Quiz</Button>
+                      </CardFooter>
+                    </Card>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
                     <Button color="danger">Random Quiz</Button>

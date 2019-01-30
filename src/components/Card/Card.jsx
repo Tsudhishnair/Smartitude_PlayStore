@@ -15,6 +15,7 @@ function Card({ ...props }) {
     classes,
     className,
     children,
+    color,
     plain,
     profile,
     chart,
@@ -23,6 +24,7 @@ function Card({ ...props }) {
   const cardClasses = classNames({
     [classes.card]: true,
     [classes.cardPlain]: plain,
+    [classes[color + "Card"]]: color,
     [classes.cardProfile]: profile,
     [classes.cardChart]: chart,
     [className]: className !== undefined
@@ -38,6 +40,14 @@ Card.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   plain: PropTypes.bool,
+  color: PropTypes.oneOf([
+    "warning",
+    "success",
+    "danger",
+    "info",
+    "primary",
+    "rose"
+  ]),
   profile: PropTypes.bool,
   chart: PropTypes.bool
 };

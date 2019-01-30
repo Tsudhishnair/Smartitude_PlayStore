@@ -19,28 +19,29 @@ import Icons from "views/Icons/Icons.jsx";
 import Maps from "views/Maps/Maps.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.jsx";
+import Results from "../views/Results/Results";
 
 const dashboardRoutes = [
   {
     path: "/dashboard",
     sidebarName: "Dashboard",
-    navbarName: "Material Dashboard",
+    navbarName: "Student Dashboard",
     icon: Dashboard,
     component: DashboardPage
   },
   {
-    path: "/user",
+    path: "/results",
     sidebarName: "Results",
     navbarName: "Results",
     icon: BarChart,
-    component: UserProfile
+    component: Results
   },
   {
     path: "/notifications",
     sidebarName: "Notifications",
     navbarName: "Notifications",
     icon: NotificationIcon,
-    component: TableList
+    component: NotificationsPage
   },
   // {
   //   path: "/typography",
@@ -73,7 +74,7 @@ const dashboardRoutes = [
   {
     path: "/upgrade-to-pro",
     sidebarName: "Log Out",
-    navbarName: "Upgrade To PRO",
+    navbarName: "Log Out",
     icon: LogOutIcon,
     component: UpgradeToPro
   },
