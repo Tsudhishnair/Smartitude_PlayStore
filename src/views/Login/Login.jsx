@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import Icon from "@material-ui/core/Icon";
 
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
@@ -20,6 +21,8 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+
+import lock from "assets/img/drawable/lock.jpg";
 
 const styles = theme => ({
   main: {
@@ -60,41 +63,39 @@ function Login(props) {
 
     <main className={classes.main}>
       <CssBaseline />
-      <Card styles={{display: 'flex', alignItems: 'center'}}>
-        <CardHeader>
-        <CardAvatar className={classes.avatar}>
-          <LockOutlinedIcon />
+      <Card styles={{ display: 'flex', alignItems: 'center' }}>
+        <CardAvatar profile>
+            <img src={lock} alt="..." />
         </CardAvatar>
-        </CardHeader>
         <CardBody>
-        <Typography component="h1" variant="h5">
-          Sign in
+          <Typography component="h1" variant="h5">
+            Sign in
         </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <CustomInput
-              labelText="User ID"
-              id="uid"
-              formControlProps={{
-                fullWidth: true
-              }}
+          <form className={classes.form}>
+            <FormControl margin="normal" required fullWidth>
+              <CustomInput
+                labelText="User ID"
+                id="uid"
+                formControlProps={{
+                  fullWidth: true
+                }}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <CustomInput
+                labelText="Password"
+                id="password"
+                type="password"
+                formControlProps={{
+                  fullWidth: true
+                }}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
             />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <CustomInput
-              labelText="Password"
-              id="password"
-              type="password"
-              formControlProps={{
-                fullWidth: true
-              }}
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-        </form>
+          </form>
         </CardBody>
         <CardFooter>
           <Button color="primary" round>Log In</Button>

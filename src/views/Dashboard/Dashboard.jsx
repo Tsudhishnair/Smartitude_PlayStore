@@ -135,35 +135,62 @@ class Dashboard extends React.Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              <CardHeader color="primary">
+              {/* <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Take a Test</h4>
                 <p className={classes.cardCategoryWhite}>
                   Choose your desired test type below
             </p>
-              </CardHeader>
+              </CardHeader> */}
               <CardBody>
+                <h4 className={classes.cardTitle}>Take a Test</h4>
+                <p className={classes.cardCategory}>
+                  Choose your desired test type below
+            </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card success style={{background:"green"}}>  
-                                                                    {/* change the card body color here */}
-                      <CardHeader color="success">
-                        <h4 className={classes.cardTitleWhite}>Custom Test</h4>
-                      </CardHeader>
+                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
+  
                       <CardBody >
-                        <p className={classes.cardCategory}>
+                        <h4 className={classes.cardTitleWhite}>Custom Test</h4>
+                        <p className={classes.cardCategoryWhite}>
                           Create a customised quiz from a set of catagories
                 </p>
                       </CardBody>
                       <CardFooter >
-                      <Button color="">Take Quiz</Button>
+                        <Icon style={{ color: "white" }}>build</Icon>
+                        <Button round color="success" style={{ marginLeft: 'auto', }}>Take Quiz</Button>
+                      </CardFooter>
+               
+                    </Card>
+                  </GridItem>
+   
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
+                      <CardBody >
+                        <h4 className={classes.cardTitleWhite}>Random Quiz</h4>
+                        <p className={classes.cardCategoryWhite}>
+                          Create a quick random quiz of 10 questions
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                        <Icon style={{ color: "white" }}>cached</Icon>
+                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
                       </CardFooter>
                     </Card>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Button color="danger">Random Quiz</Button>
-                  </GridItem>
-                  <GridItem xs={12} sm={6} md={4}>
-                    <Button color="warning">Assigned Quiz</Button>
+                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
+                      <CardBody >
+                        <h4 className={classes.cardTitleWhite}>Assigned Quiz</h4>
+                        <p className={classes.cardCategoryWhite}>
+                          Attempt assigned quizzes
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                        <Icon style={{ color: "white" }}>done_all</Icon>
+                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                      </CardFooter>
+                    </Card>
                   </GridItem>
                 </GridContainer>
               </CardBody>
@@ -295,18 +322,18 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
                 <p className={classes.cardCategoryWhite}>
-                  New employees on 15th September, 2016
+                  Top rankers on 15th January, 2019
                 </p>
               </CardHeader>
               <CardBody>
                 <Table
                   tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Salary", "Country"]}
+                  tableHead={["ID", "Name", "Score", "Class"]}
                   tableData={[
-                    ["1", "Dakota Rice", "$36,738", "Niger"],
-                    ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                    ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                    ["4", "Philip Chaney", "$38,735", "Korea, South"]
+                    ["1", "Dakota Rice", "8.7", "S7 EC A"],
+                    ["2", "Minerva Hooper", "8.65", "S7 CS A"],
+                    ["3", "Sage Rodriguez", "7.4", "S7 IT"],
+                    ["4", "Philip Chaney", "7.33", "S7 IT"]
                   ]}
                 />
               </CardBody>
