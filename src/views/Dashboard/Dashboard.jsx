@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
                   4.9/10 <small>points</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats>
+              <CardFooter stats >
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
@@ -144,11 +144,12 @@ class Dashboard extends React.Component {
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card success>
+                    <Card success style={{background:"green"}}>  
+                                                                    {/* change the card body color here */}
                       <CardHeader color="success">
                         <h4 className={classes.cardTitleWhite}>Custom Test</h4>
                       </CardHeader>
-                      <CardBody>
+                      <CardBody >
                         <p className={classes.cardCategory}>
                           Create a customised quiz from a set of catagories
                 </p>
