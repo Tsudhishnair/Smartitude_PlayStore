@@ -15,6 +15,7 @@ import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
+import Button from "components/CustomButtons/Button.jsx";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 // core components
@@ -56,7 +57,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={5}>
             <Card>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
@@ -64,7 +65,7 @@ class Dashboard extends React.Component {
                 </CardIcon>
                 <p className={classes.cardCategory}>Current Score</p>
                 <h3 className={classes.cardTitle}>
-                  4.9/10 <small>pts</small>
+                  4.9/10 <small>points</small>
                 </h3>
               </CardHeader>
               <CardFooter stats>
@@ -79,14 +80,14 @@ class Dashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={5}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
                   <Store />
                 </CardIcon>
                 <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Post.</small></h3>
+                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -132,6 +133,31 @@ class Dashboard extends React.Component {
           </GridItem> */}
         </GridContainer>
         <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="primary">
+                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
+                <p className={classes.cardCategoryWhite}>
+                  Choose your desired test type below
+            </p>
+              </CardHeader>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Button color="success">Custom Quiz</Button>
+                  </GridItem>
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Button color="danger">Random Quiz</Button>
+                  </GridItem>
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Button color="warning">Assigned Quiz</Button>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        {/* <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
             <Card chart>
               <CardHeader color="success">
@@ -208,7 +234,7 @@ class Dashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
+        </GridContainer> */}
         <GridContainer>
           {/* <GridItem xs={12} sm={12} md={6}>
             <CustomTabs
@@ -271,6 +297,31 @@ class Dashboard extends React.Component {
                   ]}
                 />
               </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Card chart>
+              <CardHeader color="success">
+                <ChartistGraph
+                  className="ct-chart"
+                  data={emailsSubscriptionChart.data}
+                  type="Bar"
+                  options={emailsSubscriptionChart.options}
+                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
+                  listener={emailsSubscriptionChart.animation}
+                />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
+                <p className={classes.cardCategory}>
+                  Last Campaign Performance
+                </p>
+              </CardBody>
+              <CardFooter chart>
+                <div className={classes.stats}>
+                  <AccessTime /> campaign sent 2 days ago
+                </div>
+              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
