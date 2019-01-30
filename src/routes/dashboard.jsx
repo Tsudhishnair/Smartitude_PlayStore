@@ -11,7 +11,6 @@ import BarChart from "@material-ui/icons/BarChart"
 import NotificationIcon from "@material-ui/icons/QuestionAnswer"
 // core components/views
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
-import UserProfile from "views/UserProfile/UserProfile.jsx";
 import TableList from "views/TableList/TableList.jsx";
 
 import Typography from "views/Typography/Typography.jsx";
