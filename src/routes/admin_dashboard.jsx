@@ -20,7 +20,7 @@ import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 
 const dashboardRoutes = [
   {
-    path: "/admin",
+    path: "/admin_dashboard",
     sidebarName: "Dashboard",
     navbarName: "Admin Dashboard",
     icon: Dashboard,
@@ -75,6 +75,7 @@ const dashboardRoutes = [
     icon: LogOutIcon,
     component: LogOut
   },
+  { redirect: true, path: "/admin", to: "/admin_dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;
