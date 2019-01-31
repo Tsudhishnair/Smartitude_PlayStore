@@ -4,7 +4,9 @@ import LogOutIcon from "@material-ui/icons/ExitToApp";
 import BarChart from "@material-ui/icons/BarChart"
 import NotificationIcon from "@material-ui/icons/QuestionAnswer"
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
-// import ContentPaste from "@material-ui/icons/ContentPaste";
+import BubbleChart from "@material-ui/icons/BubbleChart";
+import Person from "@material-ui/icons/Person";
+import School from "@material-ui/icons/School";
 
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
@@ -27,7 +29,7 @@ const dashboardRoutes = [
     path: "/student_management",
     sidebarName: "Student Management",
     navbarName: "Student Management",
-    icon: BarChart,
+    icon: School,
     component: StudentManage
   },
   {
@@ -37,12 +39,27 @@ const dashboardRoutes = [
     icon: NotificationIcon,
     component: QuestionManage
   },
+
+  {
+    path: "/category_management",
+    sidebarName: "Category Management",
+    navbarName: "Category Management",
+    icon: BubbleChart,
+    component: QuestionManage
+  },
   {
     path: "/faculty_management",
     sidebarName: "Faculty Management",
     navbarName: "Faculty Management",
-    icon: LibraryBooks,
+    icon: Person,
     component: FacultyManage
+  },
+  {
+    path: "/notification_management",
+    sidebarName: "Notification",
+    navbarName: "Notitfication",
+    icon: NotificationIcon,
+    component: QuestionManage
   },
   // {
   //   path: "/icons",
@@ -72,7 +89,7 @@ const dashboardRoutes = [
     icon: LogOutIcon,
     component: LogOut
   },
-  { redirect: true, path: "/admin", to: "/admin_dashboard", navbarName: "Redirect" }
+  { redirect: true, path: "/", to: "/admin_dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;
