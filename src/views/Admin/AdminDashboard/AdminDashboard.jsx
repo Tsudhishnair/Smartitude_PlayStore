@@ -57,202 +57,74 @@ class Dashboard extends React.Component {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card Green>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>grade</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Current Score</p>
-                <h3 className={classes.cardTitle}>
-                  4.9/10 <small>points</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats >
-                <div className={classes.stats}>
-                  <Danger>
-                    <Warning />
-                  </Danger>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Prepare More
-                  </a>
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <Store />
-                </CardIcon>
-                <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="danger" stats icon>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="info" stats icon>
-                <CardIcon color="info">
-                  <Accessibility />
-                </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
         </GridContainer>
-        {/* <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={dailySalesChart.data}
-                  type="Line"
-                  options={dailySalesChart.options}
-                  listener={dailySalesChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Daily Sales</h4>
-                <p className={classes.cardCategory}>
-                  <span className={classes.successText}>
-                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                  </span>{" "}
-                  increase in today sales.
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> updated 4 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="warning">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="danger">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={completedTasksChart.data}
-                  type="Line"
-                  options={completedTasksChart.options}
-                  listener={completedTasksChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Completed Tasks</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer> */}
         <GridContainer>
-          {/* <GridItem xs={12} sm={12} md={6}>
-            <CustomTabs
-              title="Tasks:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Bugs",
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0, 3]}
-                      tasksIndexes={[0, 1, 2, 3]}
-                      tasks={bugs}
-                    />
-                  )
-                },
-                {
-                  tabName: "Website",
-                  tabIcon: Code,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0]}
-                      tasksIndexes={[0, 1]}
-                      tasks={website}
-                    />
-                  )
-                },
-                {
-                  tabName: "Server",
-                  tabIcon: Cloud,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[1]}
-                      tasksIndexes={[0, 1, 2]}
-                      tasks={server}
-                    />
-                  )
-                }
-              ]}
-            />
-          </GridItem> */}
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              {/* <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
+                <p className={classes.cardCategoryWhite}>
+                  Choose your desired test type below
+            </p>
+              </CardHeader> */}
+              <CardBody>
+                <h3 className={classes.cardTitle}>Dashboard</h3>
+                <p className={classes.cardCategory}>
+                  Choose your desired settings from below
+            </p>
+                <GridContainer>
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
+
+                      <CardBody >
+                        <h4 className={classes.cardTitleWhite}>Student Management</h4>
+                        <p className={classes.cardCategoryWhite}>
+                          Add, Remove and Manage Students 
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                        <Icon style={{ color: "white" }}>school</Icon>
+                        <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
+                      </CardFooter>
+
+                    </Card>
+                  </GridItem>
+
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
+                      <CardBody >
+                        <h4 className={classes.cardTitleWhite}>Notification</h4>
+                        <p className={classes.cardCategoryWhite}>
+                          Send Notifications for students and faculty and Manage them
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                        <Icon style={{ color: "white" }}>notifications</Icon>
+                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
+                      </CardFooter>
+                    </Card>
+                  </GridItem>
+                  <GridItem xs={12} sm={6} md={4}>
+                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
+                      <CardBody >
+                        <h4 className={classes.cardTitleWhite}>Quiz Management</h4>
+                        <p className={classes.cardCategoryWhite}>
+                          Assign quizes to students and manage them
+                </p>
+                      </CardBody>
+                      <CardFooter >
+                        <Icon style={{ color: "white" }}>done_all</Icon>
+                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
+                      </CardFooter>
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
@@ -272,31 +144,6 @@ class Dashboard extends React.Component {
                   ]}
                 />
               </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
