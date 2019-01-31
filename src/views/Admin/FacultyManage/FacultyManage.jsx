@@ -1,377 +1,325 @@
-import React from "react";
-import PropTypes from "prop-types";
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
-// @material-ui/core
-import withStyles from "@material-ui/core/styles/withStyles";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
-import Store from "@material-ui/icons/People";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Button from "components/CustomButtons/Button.jsx";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
-// core components
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import Table from "components/Table/Table.jsx";
-import Tasks from "components/Tasks/Tasks.jsx";
-import CustomTabs from "components/CustomTabs/CustomTabs.jsx";
-import Danger from "components/Typography/Danger.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
-
-import { bugs, website, server } from "variables/general.jsx";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.jsx";
-
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-class Dashboard extends React.Component {
-  state = {
-    value: 0
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+let counter = 0;
+function createData(name, calories, fat, carbs, protein) {
+  counter += 1;
+return { id: counter, name, calories, fat, carbs, protein };
+}
+function desc(a, b, orderBy) {
+if (b[orderBy] < a[orderBy]) {
+return -1;
+  }
+if (b[orderBy] > a[orderBy]) {
+return 1;
+  }
+return 0;
+}
+function stableSort(array, cmp) {
+const stabilizedThis = array.map((el, index) => [el, index]);
+stabilizedThis.sort((a, b) => {
+const order = cmp(a[0], b[0]);
+if (order !== 0) return order;
+return a[1] - b[1];
+  });
+return stabilizedThis.map(el => el[0]);
+}
+function getSorting(order, orderBy) {
+return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+}
+const rows = [
+  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+];
+class EnhancedTableHead extends React.Component {
+createSortHandler = property => event => {
+this.props.onRequestSort(event, property);
   };
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = index => {
-    this.setState({ value: index });
-  };
-  render() {
-    const { classes } = this.props;
-    return (
-      <div>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card Green>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>grade</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Current Score</p>
-                <h3 className={classes.cardTitle}>
-                  4.9/10 <small>points</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats >
-                <div className={classes.stats}>
-                  <Danger>
-                    <Warning />
-                  </Danger>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Prepare More
-                  </a>
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <Store />
-                </CardIcon>
-                <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="danger" stats icon>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="info" stats icon>
-                <CardIcon color="info">
-                  <Accessibility />
-                </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              {/* <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Choose your desired test type below
-            </p>
-              </CardHeader> */}
-              <CardBody>
-                <h4 className={classes.cardTitle}>Take a Test</h4>
-                <p className={classes.cardCategory}>
-                  Choose your desired test type below
-            </p>
-                <GridContainer>
-                  <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
-  
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Custom Test</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Create a customised quiz from a set of catagories
-                </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>build</Icon>
-                        <Button round color="success" style={{ marginLeft: 'auto', }}>Take Quiz</Button>
-                      </CardFooter>
-               
-                    </Card>
-                  </GridItem>
-   
-                  <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Random Quiz</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Create a quick random quiz of 10 questions
-                </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>cached</Icon>
-                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
-                      </CardFooter>
-                    </Card>
-                  </GridItem>
-                  <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Assigned Quiz</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Attempt assigned quizzes
-                </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>done_all</Icon>
-                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
-                      </CardFooter>
-                    </Card>
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-        {/* <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={dailySalesChart.data}
-                  type="Line"
-                  options={dailySalesChart.options}
-                  listener={dailySalesChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Daily Sales</h4>
-                <p className={classes.cardCategory}>
-                  <span className={classes.successText}>
-                    <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                  </span>{" "}
-                  increase in today sales.
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> updated 4 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="warning">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="danger">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={completedTasksChart.data}
-                  type="Line"
-                  options={completedTasksChart.options}
-                  listener={completedTasksChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Completed Tasks</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer> */}
-        <GridContainer>
-          {/* <GridItem xs={12} sm={12} md={6}>
-            <CustomTabs
-              title="Tasks:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Bugs",
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0, 3]}
-                      tasksIndexes={[0, 1, 2, 3]}
-                      tasks={bugs}
-                    />
-                  )
-                },
-                {
-                  tabName: "Website",
-                  tabIcon: Code,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0]}
-                      tasksIndexes={[0, 1]}
-                      tasks={website}
-                    />
-                  )
-                },
-                {
-                  tabName: "Server",
-                  tabIcon: Cloud,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[1]}
-                      tasksIndexes={[0, 1, 2]}
-                      tasks={server}
-                    />
-                  )
-                }
-              ]}
-            />
-          </GridItem> */}
-          <GridItem xs={12} sm={12} md={6}>
-            <Card>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Top rankers on 15th January, 2019
-                </p>
-              </CardHeader>
-              <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Score", "Class"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "8.7", "S7 EC A"],
-                    ["2", "Minerva Hooper", "8.65", "S7 CS A"],
-                    ["3", "Sage Rodriguez", "7.4", "S7 IT"],
-                    ["4", "Philip Chaney", "7.33", "S7 IT"]
-                  ]}
-                />
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card chart>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>Email Subscriptions</h4>
-                <p className={classes.cardCategory}>
-                  Last Campaign Performance
-                </p>
-              </CardBody>
-              <CardFooter chart>
-                <div className={classes.stats}>
-                  <AccessTime /> campaign sent 2 days ago
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
+render() {
+const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+return (
+<TableHead>
+<TableRow>
+<TableCell padding="checkbox">
+<Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+/>
+</TableCell>
+          {rows.map(
+row => (
+<TableCell
+                key={row.id}
+                align={row.numeric ? 'right' : 'left'}
+                padding={row.disablePadding ? 'none' : 'default'}
+                sortDirection={orderBy === row.id ? order : false}
+>
+<Tooltip
+                  title="Sort"
+                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                  enterDelay={300}
+>
+<TableSortLabel
+                    active={orderBy === row.id}
+                    direction={order}
+                    onClick={this.createSortHandler(row.id)}
+>
+                    {row.label}
+</TableSortLabel>
+</Tooltip>
+</TableCell>
+            ),
+this,
+          )}
+</TableRow>
+</TableHead>
     );
   }
 }
-
-Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.string.isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
 };
-
-export default withStyles(dashboardStyle)(Dashboard);
+const toolbarStyles = theme => ({
+  root: {
+    paddingRight: theme.spacing.unit,
+  },
+  highlight:
+theme.palette.type === 'light'
+? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+: {
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  spacer: {
+    flex: '1 1 100%',
+  },
+  actions: {
+    color: theme.palette.text.secondary,
+  },
+  title: {
+    flex: '0 0 auto',
+  },
+});
+let EnhancedTableToolbar = props => {
+const { numSelected, classes } = props;
+return (
+<Toolbar
+      className={classNames(classes.root, {
+        [classes.highlight]: numSelected > 0,
+      })}
+>
+<div className={classes.title}>
+        {numSelected > 0 ? (
+<Typography color="inherit" variant="subtitle1">
+            {numSelected} selected
+</Typography>
+        ) : (
+<Typography variant="h6" id="tableTitle">
+            Nutrition
+</Typography>
+        )}
+</div>
+<div className={classes.spacer} />
+<div className={classes.actions}>
+        {numSelected > 0 ? (
+<Tooltip title="Delete">
+<IconButton aria-label="Delete">
+<DeleteIcon />
+</IconButton>
+</Tooltip>
+        ) : (
+<Tooltip title="Filter list">
+<IconButton aria-label="Filter list">
+<FilterListIcon />
+</IconButton>
+</Tooltip>
+        )}
+</div>
+</Toolbar>
+  );
+};
+EnhancedTableToolbar.propTypes = {
+  classes: PropTypes.object.isRequired,
+  numSelected: PropTypes.number.isRequired,
+};
+EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+  },
+  table: {
+    minWidth: 1020,
+  },
+  tableWrapper: {
+    overflowX: 'auto',
+  },
+});
+class EnhancedTable extends React.Component {
+  state = {
+    order: 'asc',
+    orderBy: 'calories',
+    selected: [],
+    data: [
+createData('Cupcake', 305, 3.7, 67, 4.3),
+createData('Donut', 452, 25.0, 51, 4.9),
+createData('Eclair', 262, 16.0, 24, 6.0),
+createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+createData('Gingerbread', 356, 16.0, 49, 3.9),
+createData('Honeycomb', 408, 3.2, 87, 6.5),
+createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+createData('Jelly Bean', 375, 0.0, 94, 0.0),
+createData('KitKat', 518, 26.0, 65, 7.0),
+createData('Lollipop', 392, 0.2, 98, 0.0),
+createData('Marshmallow', 318, 0, 81, 2.0),
+createData('Nougat', 360, 19.0, 9, 37.0),
+createData('Oreo', 437, 18.0, 63, 4.0),
+    ],
+    page: 0,
+    rowsPerPage: 5,
+  };
+handleRequestSort = (event, property) => {
+const orderBy = property;
+let order = 'desc';
+if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+this.setState({ order, orderBy });
+  };
+handleSelectAllClick = event => {
+if (event.target.checked) {
+this.setState(state => ({ selected: state.data.map(n => n.id) }));
+return;
+    }
+this.setState({ selected: [] });
+  };
+handleClick = (event, id) => {
+const { selected } = this.state;
+const selectedIndex = selected.indexOf(id);
+let newSelected = [];
+if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+selected.slice(0, selectedIndex),
+selected.slice(selectedIndex + 1),
+      );
+    }
+this.setState({ selected: newSelected });
+  };
+handleChangePage = (event, page) => {
+this.setState({ page });
+  };
+handleChangeRowsPerPage = event => {
+this.setState({ rowsPerPage: event.target.value });
+  };
+isSelected = id => this.state.selected.indexOf(id) !== -1;
+render() {
+const { classes } = this.props;
+const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+return (
+<Paper className={classes.root}>
+<EnhancedTableToolbar numSelected={selected.length} />
+<div className={classes.tableWrapper}>
+<Table className={classes.table} aria-labelledby="tableTitle">
+<EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={this.handleSelectAllClick}
+              onRequestSort={this.handleRequestSort}
+              rowCount={data.length}
+/>
+<TableBody>
+              {stableSort(data, getSorting(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map(n => {
+const isSelected = this.isSelected(n.id);
+return (
+<TableRow
+                      hover
+                      onClick={event => this.handleClick(event, n.id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}
+>
+<TableCell padding="checkbox">
+<Checkbox checked={isSelected} />
+</TableCell>
+<TableCell component="th" scope="row" padding="none">
+                        {n.name}
+</TableCell>
+<TableCell align="right">{n.calories}</TableCell>
+<TableCell align="right">{n.fat}</TableCell>
+<TableCell align="right">{n.carbs}</TableCell>
+<TableCell align="right">{n.protein}</TableCell>
+</TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+<TableRow style={{ height: 49 * emptyRows }}>
+<TableCell colSpan={6} />
+</TableRow>
+              )}
+</TableBody>
+</Table>
+</div>
+<TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          backIconButtonProps={{
+'aria-label': 'Previous Page',
+          }}
+          nextIconButtonProps={{
+'aria-label': 'Next Page',
+          }}
+          onChangePage={this.handleChangePage}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+/>
+</Paper>
+    );
+  }
+}
+EnhancedTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+export default withStyles(styles)(EnhancedTable);

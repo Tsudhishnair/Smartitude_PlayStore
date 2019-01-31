@@ -7,6 +7,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import Person from "@material-ui/icons/Person";
 import School from "@material-ui/icons/School";
+import Report from "@material-ui/icons/Assignment";
 
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
@@ -34,8 +35,8 @@ const dashboardRoutes = [
   },
   {
     path: "/question_management",
-    sidebarName: "Question Management",
-    navbarName: "Question Management",
+    sidebarName: "Quiz Management",
+    navbarName: "Quiz Management",
     icon: NotificationIcon,
     component: QuestionManage
   },
@@ -59,6 +60,13 @@ const dashboardRoutes = [
     sidebarName: "Notification",
     navbarName: "Notitfication",
     icon: NotificationIcon,
+    component: QuestionManage
+  },
+  {
+    path: "/report_generation",
+    sidebarName: "Report",
+    navbarName: "Report",
+    icon: Report,
     component: QuestionManage
   },
   // {
