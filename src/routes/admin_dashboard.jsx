@@ -9,9 +9,6 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
 import LogOut from "views/Login/Login.jsx";
-import NotificationsPage from "views/Notifications/Notifications.jsx";
-import Results from "../views/Results/Results";
-import Typography from "views/Typography/Typography.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
