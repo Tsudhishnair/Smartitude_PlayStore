@@ -48,12 +48,20 @@ const dashboardRoutes = [
     icon: BubbleChart,
     component: QuestionManage
   },
+ 
   {
     path: "/faculty_management",
     sidebarName: "Faculty Management",
     navbarName: "Faculty Management",
     icon: Person,
     component: FacultyManage
+  },
+  {
+    path: "/icons",
+    sidebarName: "Dept Management",
+    navbarName: "Icons",
+    icon: Person,
+    component: QuestionManage
   },
   {
     path: "/notification_management",
@@ -69,13 +77,7 @@ const dashboardRoutes = [
     icon: Report,
     component: QuestionManage
   },
-  // {
-  //   path: "/icons",
-  //   sidebarName: "Icons",
-  //   navbarName: "Icons",
-  //   icon: BubbleChart,
-  //   component: Icons
-  // },
+  
   // {
   //   path: "/maps",
   //   sidebarName: "Maps",
