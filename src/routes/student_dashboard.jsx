@@ -11,6 +11,7 @@ import BarChart from "@material-ui/icons/BarChart"
 import NotificationIcon from "@material-ui/icons/QuestionAnswer"
 // core components/views
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
+import LogOut from "views/Login/Login.jsx";
 import TableList from "views/TableList/TableList.jsx";
 
 import Typography from "views/Typography/Typography.jsx";
@@ -24,7 +25,7 @@ import Results from "../views/Results/Results";
 
 const dashboardRoutes = [
   {
-    path: "/dashboard",
+    path: "/student_dashboard",
     sidebarName: "Dashboard",
     navbarName: "Student Dashboard",
     icon: Dashboard,
@@ -77,9 +78,9 @@ const dashboardRoutes = [
     sidebarName: "Log Out",
     navbarName: "Log Out",
     icon: LogOutIcon,
-    component: UpgradeToPro
+    component: LogOut
   },
-  { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
+  // { redirect: true, path: "/", to: "/student_dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;

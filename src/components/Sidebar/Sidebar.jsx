@@ -31,7 +31,7 @@ const Sidebar = ({ ...props }) => {
         if (prop.path === "/upgrade-to-pro") {
           activePro = classes.activePro + " ";
           listItemClasses = classNames({
-            [" " + classes[color]]: true
+            [" " + classes[color]]: false
           });
         } else {
           listItemClasses = classNames({
