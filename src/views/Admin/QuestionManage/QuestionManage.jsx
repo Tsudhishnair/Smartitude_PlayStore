@@ -58,6 +58,22 @@ class Dashboard extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
+            <Card Green>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                  <Icon>grade</Icon>
+                </CardIcon>
+                <h3 className={classes.cardTitle}>Create quiz and allot it to the corresponding batch </h3>
+              </CardHeader>
+              <CardFooter stats >
+                <div className={classes.cardTitle}>
+                  Create Quiz
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+
+          <GridItem xs={12} sm={12} md={12}>
             <CustomTabs
               title="Filter:"
               headerColor="primary"
@@ -100,6 +116,7 @@ class Dashboard extends React.Component {
           </GridItem>
 
         </GridContainer>
+
       </div>
     );
   }
