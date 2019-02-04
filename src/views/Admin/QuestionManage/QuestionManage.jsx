@@ -40,6 +40,7 @@ import {
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import CreateQuiz from "../../../components/QuizAdmin/CreateQuiz";
 
 class Dashboard extends React.Component {
   state = {
@@ -58,7 +59,7 @@ class Dashboard extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <Card Green>
+            {/* <Card Green>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
                   <Icon>grade</Icon>
@@ -70,7 +71,8 @@ class Dashboard extends React.Component {
                   Create Quiz
                 </div>
               </CardFooter>
-            </Card>
+            </Card> */}
+            <CreateQuiz/>
           </GridItem>
 
           <GridItem xs={12} sm={12} md={12}>
