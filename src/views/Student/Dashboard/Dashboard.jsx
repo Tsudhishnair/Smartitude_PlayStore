@@ -151,7 +151,7 @@ class Dashboard extends React.Component {
                     <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
   
                       <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Custom Test</h4>
+                        <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
                           Create a customised quiz from a set of catagories
                 </p>
