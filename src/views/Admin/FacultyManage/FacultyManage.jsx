@@ -10,18 +10,27 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from "components/CustomButtons/Button.jsx";
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import EditIcon from '@material-ui/icons/Edit'
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+
+import Edit from "@material-ui/icons/Edit";
+import View from "@material-ui/icons/Pageview";
+import Delete from "@material-ui/icons/Delete";
+
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(name, role, category, carbs, protein) {
   counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
+  return { id: counter, name, role, category, carbs, protein };
 }
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -46,10 +55,11 @@ function getSorting(order, orderBy) {
 }
 const rows = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Name' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Role' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Category Assigned' },
+  { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+  { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
   { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+  { disablePadding: true, label: '' }
 ];
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
@@ -112,6 +122,7 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
+        // Selected color table header 
         color: theme.palette.secondary.main,
         backgroundColor: lighten(theme.palette.secondary.light, 0.85),
       }
@@ -144,8 +155,8 @@ let EnhancedTableToolbar = props => {
 </Typography>
         ) : (
             <Typography variant="h6" id="tableTitle">
-              Faculty
-</Typography>
+
+            </Typography>
           )}
       </div>
       <div className={classes.spacer} />
@@ -186,23 +197,23 @@ const styles = theme => ({
 });
 class EnhancedTable extends React.Component {
   state = {
-    order: 'asc',
-    orderBy: 'calories',
+    order: 'desc',
+    orderBy: 'role',
     selected: [],
     data: [
-      createData('Cupcake', 'Faculty', 3.7, 67, 4.3),
-      createData('Donut', 'Incharge', 25.0, 51, 4.9),
-      createData('Eclair', 'Faculty', 16.0, 24, 6.0),
-      createData('Frozen yoghurt', 'Incharge', 6.0, 24, 4.0),
-      createData('Gingerbread', 'Incharge', 16.0, 49, 3.9),
-      createData('Honeycomb', 'Faculty', 3.2, 87, 6.5),
-      createData('Ice cream sandwich', 'Incharge', 9.0, 37, 4.3),
-      createData('Jelly Bean', 'Faculty', 0.0, 94, 0.0),
-      createData('KitKat', 'Faculty', 26.0, 65, 7.0),
-      createData('Lollipop', 'Faculty', 0.2, 98, 0.0),
-      createData('Marshmallow', 'Incharge', 0, 81, 2.0),
-      createData('Nougat', 'Faculty', 19.0, 9, 37.0),
-      createData('Oreo', 'Incharge', 18.0, 63, 4.0),
+      createData('Cupcake', 'Faculty', 'Quantitative', 67, 'uxxxxx'),
+      createData('Donut', 'Faculty', 'Quantitative', 51, 'uxxxxx'),
+      createData('Eclair', 'Faculty', 'Quantitative', 24, 'uxxxxx'),
+      createData('Frozen yoghurt', 'Incharge', 'NA', 24, 'uxxxxx'),
+      createData('Gingerbread', 'Faculty', 'Quantitative', 49, 'uxxxxx'),
+      createData('Honeycomb', 'Faculty', 'Algebra', 87, 'uxxxxx'),
+      createData('Ice cream sandwich', 'Faculty', 9.0, 37, 'uxxxxx'),
+      createData('Jelly Bean', 'Faculty', 'Quantitative', 94, 'uxxxxx'),
+      createData('KitKat', 'Faculty', 'Motion', 65, 'uxxxxx'),
+      createData('Lollipop', 'Faculty', 0.2, 98, 'uxxxxx'),
+      createData('Marshmallow', 'Incharge', 'NA', 81, 'uxxxxx'),
+      createData('Nougat', 'Faculty', 19.0, 9, 'uxxxxx'),
+      createData('Oreo', 'Incharge', 'NA', 63, 'uxxxxx'),
     ],
     page: 0,
     rowsPerPage: 10,
@@ -252,70 +263,129 @@ class EnhancedTable extends React.Component {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.name}
-                      </TableCell>
-                      <TableCell align="right">{n.calories}</TableCell>
-                      <TableCell align="right">{n.fat}</TableCell>
-                      <TableCell align="right">{n.carbs}</TableCell>
-                      <TableCell align="right">{n.protein}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </Paper>
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary"
+            >
+              Add New Faculty
+                </Button>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary"
+            >
+              Add a group of faculties
+                </Button>
+          </GridItem>
+        </GridContainer>
+        <Paper className={classes.root}>
+
+          <EnhancedTableToolbar numSelected={selected.length} />
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {stableSort(data, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(n => {
+                    const isSelected = this.isSelected(n.id);
+                    return (
+                      <TableRow
+                        hover
+                        onClick={event => this.handleClick(event, n.id)}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isSelected} />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {n.name}
+                        </TableCell>
+                        <TableCell align="right">{n.role}</TableCell>
+                        <TableCell align="right">{n.category}</TableCell>
+                        <TableCell align="right">{n.carbs}</TableCell>
+                        <TableCell align="right">{n.protein}</TableCell>
+                        <TableCell className={classes.tableActions}>
+                          <Tooltip
+                            id="tooltip-top"
+                            title="Edit"
+                            placement="top"
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <IconButton
+                              aria-label="Edit"
+                              className={classes.tableActionButton}
+                              onClick={this}
+                            >
+                              <Edit
+                                className={
+                                  classes.tableActionButtonIcon + " " + classes.edit
+                                }
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip
+                            id="tooltip-top"
+                            title="Delete"
+                            placement="top"
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <IconButton
+                              aria-label="Delete"
+                              className={classes.tableActionButton}
+                              onClick={this}
+                            >
+                              <Delete
+                                className={
+                                  classes.tableActionButtonIcon + " " + classes.delete
+                                }
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 49 * emptyRows }}>
+                    <TableCell colSpan={7} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <TablePagination
+            rowsPerPageOptions={[10, 30, 50]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </Paper>
+      </div>
     );
   }
 }
