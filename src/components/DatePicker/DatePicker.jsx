@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as startOfDay from "date-fns";
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -52,3 +53,5 @@ MaterialUIPickers.propTypes = {
 };
 
 export default withStyles(styles)(MaterialUIPickers);
+=======
+>>>>>>> f8ad5bf7b00a31b0ead749f3708f95ff2b34455d
