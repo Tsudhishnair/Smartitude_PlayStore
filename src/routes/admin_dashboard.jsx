@@ -15,6 +15,7 @@ import LogOut from "views/Login/Login.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
+import DialogTest from "../views/Admin/FacultyManage/Dialog.jsx";
 
 
 
@@ -46,7 +47,7 @@ const dashboardRoutes = [
     sidebarName: "Category Management",
     navbarName: "Category Management",
     icon: BubbleChart,
-    component: QuestionManage
+    component: DialogTest
   },
  
   {
