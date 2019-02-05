@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
-import DatePicker from '../DatePicker/DatePicker';
+
 const styles = theme =>
   ({
     container: {
@@ -44,7 +44,6 @@ function QuizForm(props) {
           />
         </Grid>
         <Grid item xs>
-          <DatePicker/>
         </Grid>
       </Grid>
     </div>
