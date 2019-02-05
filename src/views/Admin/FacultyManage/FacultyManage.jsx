@@ -23,11 +23,19 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+
 import Edit from "@material-ui/icons/Edit";
 import View from "@material-ui/icons/Pageview";
 import Delete from "@material-ui/icons/Delete";
 
 let counter = 0;
+
 function createData(name, role, category, carbs, protein) {
   counter += 1;
   return { id: counter, name, role, category, carbs, protein };
@@ -61,7 +69,17 @@ const rows = [
   { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
   { disablePadding: true, label: '' }
 ];
-class EnhancedTableHead extends React.Component {
+class FacultyManage extends React.Component {
+  state = {
+    open: true,
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+  };
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
@@ -107,7 +125,7 @@ class EnhancedTableHead extends React.Component {
     );
   }
 }
-EnhancedTableHead.propTypes = {
+FacultyManage.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -163,7 +181,8 @@ let EnhancedTableToolbar = props => {
       <div className={classes.actions}>
         {numSelected > 0 ? (
           <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="Delete"
+              onClick={this.handleClickOpen}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -259,6 +278,7 @@ class EnhancedTable extends React.Component {
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+    const { fullScreen } = this.props;
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -287,7 +307,7 @@ class EnhancedTable extends React.Component {
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
-              <EnhancedTableHead
+              <FacultyManage
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
@@ -348,7 +368,7 @@ class EnhancedTable extends React.Component {
                             <IconButton
                               aria-label="Delete"
                               className={classes.tableActionButton}
-                              onClick={this}
+                              onClick={this.handleClickOpen}
                             >
                               <Delete
                                 className={
@@ -357,6 +377,7 @@ class EnhancedTable extends React.Component {
                               />
                             </IconButton>
                           </Tooltip>
+
                         </TableCell>
                       </TableRow>
                     );
@@ -385,11 +406,36 @@ class EnhancedTable extends React.Component {
             onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </Paper>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Let Google help apps determine location. This means sending anonymous location data to
+              Google, even when no apps are running.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Disagree
+            </Button>
+            <Button onClick={this.handleClose} color="primary" autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
 }
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
+};
+FacultyManage.propTypes = {
+  fullScreen: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(EnhancedTable);
