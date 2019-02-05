@@ -32,6 +32,15 @@ const styles = theme => ({
   column: {
     flexBasis: '33.33%',
   },
+  details:
+  {
+    alignItems:'center',
+   },
+   formSpacing:
+   {
+     flexGrow:1,
+
+   }
 });
 
 function CreateQuiz(props) {
@@ -48,10 +57,8 @@ function CreateQuiz(props) {
 
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div>
+        <ExpansionPanelDetails className={classes.formSpacing}>
             <QuizForm />
-          </div>
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
