@@ -61,7 +61,7 @@ function stableSort(array, cmp) {
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-class FacultyManage extends React.Component {
+class Management extends React.Component {
   state = {
     open: true,
   };
@@ -77,7 +77,8 @@ class FacultyManage extends React.Component {
   };
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-
+    console.log(this.props);
+    
     const rows = [
       { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Management' },
       { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
@@ -87,7 +88,7 @@ class FacultyManage extends React.Component {
       { disablePadding: true, label: '' }
     ];
     return (
-      <TableHead>
+      <TableHead> 
         <TableRow>
           <TableCell padding="checkbox">
             <Checkbox
@@ -126,7 +127,7 @@ class FacultyManage extends React.Component {
     );
   }
 }
-FacultyManage.propTypes = {
+Management.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -290,7 +291,7 @@ class EnhancedTable extends React.Component {
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
-              <FacultyManage
+              <Management
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
@@ -395,7 +396,7 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-FacultyManage.propTypes = {
+Management.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(EnhancedTable);

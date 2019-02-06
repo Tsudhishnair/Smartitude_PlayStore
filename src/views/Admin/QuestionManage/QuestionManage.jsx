@@ -32,7 +32,15 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     const header1='Quiz';
     const header2='Create & Assign Quiz';
- 
+    
+    const cols = [
+      { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Management' },
+      { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+      { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
+      { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
+      { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+      { disablePadding: true, label: '' }
+    ];
     return (
       <div>
         <GridContainer>
@@ -40,7 +48,8 @@ class Dashboard extends React.Component {
             <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"1"}/>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-            <Management />
+       
+            <Management colNs={cols}/>
           </GridItem>
         </GridContainer>
       </div>
