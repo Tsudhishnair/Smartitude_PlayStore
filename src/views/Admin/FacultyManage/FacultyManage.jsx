@@ -21,20 +21,48 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import ChipInput from 'material-ui-chip-input';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import CardBody from "components/Card/CardBody.jsx";
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 import Edit from "@material-ui/icons/Edit";
-import View from "@material-ui/icons/Pageview";
 import Delete from "@material-ui/icons/Delete";
 
+import Chip from '@material-ui/core/Chip';
+
+
+import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
 let counter = 0;
+
+const containerStyle = {
+  padding: 40,
+  paddingBottom: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  flex: 1,
+};
+const menuItemStyle = {
+  whiteSpace: 'normal',
+  display: 'flex',
+  justifyContent: 'space-between',
+  lineHeight: 'normal',
+};
 
 function createData(name, role, category, carbs, protein) {
   counter += 1;
@@ -203,9 +231,23 @@ EnhancedTableToolbar.propTypes = {
 };
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
+  elementPadding: { padding: '15px' },
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 'auto',
+    width: 'fit-content',
+  },
+  formControl: {
+    marginTop: theme.spacing.unit * 2,
+    minWidth: 120,
+  },
+  formControlLabel: {
+    marginTop: theme.spacing.unit,
   },
   table: {
     minWidth: 900,
@@ -216,6 +258,9 @@ const styles = theme => ({
 });
 class EnhancedTable extends React.Component {
   state = {
+    open: false,
+    fullWidth: true,
+    maxWidth: 'sm',
     order: 'desc',
     orderBy: 'role',
     selected: [],
@@ -234,8 +279,37 @@ class EnhancedTable extends React.Component {
       createData('Nougat', 'Faculty', 19.0, 9, 'uxxxxx'),
       createData('Oreo', 'Incharge', 'NA', 63, 'uxxxxx'),
     ],
+    state4: [
+      {
+        label: 'France',
+        value: {
+          'English short name': 'France',
+          'French short name': 'France (la)',
+          'Alpha-2 code': 'FR',
+          'Alpha-3 code': 'FRA',
+          Numeric: 250,
+          Capital: 'Paris',
+          Continent: 4,
+        },
+      },
+    ],
     page: 0,
     rowsPerPage: 10,
+  };
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  handleMaxWidthChange = event => {
+    this.setState({ maxWidth: event.target.value });
+  };
+
+  handleFullWidthChange = event => {
+    this.setState({ fullWidth: event.target.checked });
   };
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -277,32 +351,147 @@ class EnhancedTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
+  handleSelection = (values, name) => this.setState({ [name]: values });
+
+  handleCustomDisplaySelections = (name) => (values) =>
+    values.length ? (
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {values.map(({ label, value: country }, index) => (
+          <Chip key={index} style={{ margin: 5 }} onRequestDelete={this.onRequestDelete(index, name)}>
+            {label}
+          </Chip>
+        ))}
+      </div>
+    ) : (
+      <div style={{ minHeight: 42, lineHeight: '42px' }}>Select some values</div>
+    ); // advice: use one of <option>s' default height as min-height
+
+  onRequestDelete = (key, name) => (event) => {
+    this.setState({ [name]: this.state[name].filter((v, i) => i !== key) });
+  };
+
+
   render() {
     const { fullScreen } = this.props;
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const { state4 } = this.state;
+    console.debug('state4', state4); // eslint-disable-line no-console
     return (
-      <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
+      <React.Fragment>
+        <Dialog
+          fullWidth={this.state.fullWidth}
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Add New Faculty Staff</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Fill in the details to add a new faculty member to the database.
+            </DialogContentText>
+            <GridContainer>
+              <GridItem xs={12} sm={6} md={6}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  className={classes.elementPadding}
+                  id="name"
+                  label="Name"
+                  type="name"
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={6} md={6}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="email"
+                  className={classes.elementPadding}
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                />
+              </GridItem>
+            </GridContainer>
+            <GridContainer>
+              <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+                <InputLabel htmlFor="max-width">Department</InputLabel>
+                <Select
+                  value={this.state.maxWidth}
+                  fullWidth
+                  label='Department'
+                  inputProps={{
+                    name: 'dept',
+                    id: 'dept',
+                  }}
+                >
+                  <MenuItem value="xs">Information Technology</MenuItem>
+                  <MenuItem value="sm">Computer Science</MenuItem>
+                  <MenuItem value="md">Mechanical</MenuItem>
+                  <MenuItem value="lg">Civil</MenuItem>
+                  <MenuItem value="xl">Electrical</MenuItem>
+                </Select>
+              </GridItem>
+              <GridItem xs={12} sm={6} md={6}>
+                <TextField
+                  autoFocus
+                  className={classes.elementPadding}
+                  margin="dense"
+                  id="phone"
+                  label="Phone Number"
+                  type="phone"
+                  fullWidth
+                />
+              </GridItem>
+            </GridContainer>
+            <ChipInput
+              defaultValue={['Algebra', 'Motion', 'Quantitative']}
               fullWidth
-              color="primary"
-            >
-              Add New Faculty
+              className={classes.elementPadding}
+              label='Sub-Categories'
+              placeholder='Type and press enter to add chips'
+            />
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="transparent">
+              Cancel
+            </Button>
+            <Button onClick={this.handleClose} color="transparent">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Card>
+
+          <CardBody >
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={4}>
+                <Button
+                  onClick={this.handleClickOpen}
+                  fullWidth
+                  color="primary"
+                >
+                  Add New Faculty
                 </Button>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
-              fullWidth
-              color="primary"
-            >
-              Add a group of faculties
+              </GridItem>
+              <GridItem xs={12} sm={12} md={4}>
+                <Button
+                  fullWidth
+                  color="primary"
+                >
+                  Add a group of faculties
                 </Button>
-          </GridItem>
-        </GridContainer>
-        <Paper className={classes.root}>
+              </GridItem>
+            </GridContainer>
+          </CardBody>
+        </Card>
+        <Card className={classes.root}>
+        <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>All Faculty</h4>
+              </CardHeader>
 
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
@@ -404,8 +593,8 @@ class EnhancedTable extends React.Component {
             onChangePage={this.handleChangePage}
             onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
-        </Paper>
-      </div>
+        </Card>
+      </React.Fragment>
     );
   }
 }
