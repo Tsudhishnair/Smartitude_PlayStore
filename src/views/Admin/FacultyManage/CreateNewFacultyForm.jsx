@@ -16,15 +16,18 @@ const styles = theme =>
   ({
     formControl: {
       margin: 0,
-      paddingTop: 5,
-      padding: '15px',
+      padding: theme.spacing.unit * 10,
       fullWidth: true,
       backgroundColor: '#9ee',
       wrap: 'nowrap'
-  },
-    elementPadding: { padding: '15px' },
+    },
+    elementPadding: {
+      padding: '15px',
+      marginTop: theme.spacing.unit * 10,
+    },
     container: {
       display: 'flex',
+
       flexGrow: 1,
     },
     root:
@@ -97,13 +100,16 @@ function CreateNewFacultyForm(props) {
           />
         </GridItem>
       </GridContainer>
-      <ChipInput
-        defaultValue={['Algebra', 'Motion', 'Quantitative']}
-        fullWidth
-        className={classes.elementPadding}
-        label='Sub-Categories'
-        placeholder='Type and press enter to add chips'
-      />
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12} className={classes.elementPadding}>
+          <ChipInput
+            defaultValue={['Algebra', 'Motion', 'Quantitative']}
+            fullWidth
+            label='Sub-Categories'
+            placeholder='Type and press enter to add chips'
+          />
+        </GridItem>
+      </GridContainer>
     </div>
   )
 

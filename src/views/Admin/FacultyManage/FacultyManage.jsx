@@ -33,7 +33,7 @@ import Delete from "@material-ui/icons/Delete";
 
 import Chip from '@material-ui/core/Chip';
 
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import Expansionpanel from "../../../components/ExpansionPanel/DoubleExpansionPanel";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -225,7 +225,7 @@ const styles = theme => ({
   elementPadding: { padding: '15px' },
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 7,
   },
   form: {
     display: 'flex',
@@ -374,7 +374,7 @@ class EnhancedTable extends React.Component {
     return (
       <React.Fragment>
         <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
-
+        
         <Card className={classes.root}>
           <CardHeader color="warning">
             <h4 className={classes.cardTitleWhite}>All Faculty</h4>

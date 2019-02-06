@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import QuizForm from '../QuizAdmin/QuizForm';
 import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
+import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
 
 const styles = theme => ({
   root: {
@@ -47,14 +48,7 @@ const styles = theme => ({
 function Expansionpanel(props) {
   const { classes } = props;
   let layout;
-  if(props.directingValue=="1")
-  {
-     layout = <QuizForm/>;
-  }
-  if(props.directingValue=="2")
-  {
-     layout = <CreateFacultyForm/>;
-  }
+  layout = <CreateFacultyForm/>;
   return (
     <div className={classes.root}>
       <ExpansionPanel >
@@ -69,6 +63,27 @@ function Expansionpanel(props) {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.formSpacing}>
             {layout}
+        </ExpansionPanelDetails>
+        <Divider/>
+        <ExpansionPanelActions>
+          <Button size="small">{props.Footer1}</Button>
+          <Button size="small" color="primary">
+            {props.Footer2}
+          </Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
+      <ExpansionPanel >
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <div className={classes.column}>
+            <Typography className={classes.heading}>Multiple Faculty</Typography>
+          </div>
+          <div className={classes.column}>
+            <Typography className={classes.secondaryHeading}>Add groups of faculty</Typography>
+
+          </div>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails className={classes.formSpacing}>
+            <GroupFaculty/>
         </ExpansionPanelDetails>
         <Divider/>
         <ExpansionPanelActions>
