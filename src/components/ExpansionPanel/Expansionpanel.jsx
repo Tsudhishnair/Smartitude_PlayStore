@@ -45,6 +45,11 @@ const styles = theme => ({
 
 function Expansionpanel(props) {
   const { classes } = props;
+  let layout;
+  if(props.directingValue=="1")
+  {
+     layout = <QuizForm/>;
+  }
   return (
     <div className={classes.root}>
       <ExpansionPanel >
@@ -58,7 +63,7 @@ function Expansionpanel(props) {
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.formSpacing}>
-            <QuizForm />
+            {layout}
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
