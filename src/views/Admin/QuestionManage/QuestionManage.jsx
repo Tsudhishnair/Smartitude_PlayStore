@@ -21,29 +21,22 @@ import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Table from "components/Table/Table.jsx";
-import Tasks from "components/QuizAdmin/QuizAdmin.jsx";
-import CustomTabs from "components/CustomTabs/CustomTabs.jsx";
-import Danger from "components/Typography/Danger.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import CreateQuiz from "../../../components/QuizAdmin/CreateQuiz";
 import Management from "../../Components/Management";
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
+    const header1='Quiz';
+    const header2='Create & Assign Quiz';
     return (
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <CreateQuiz />
+            <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"}/>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
             <Management />
