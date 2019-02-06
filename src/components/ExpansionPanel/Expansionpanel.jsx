@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import QuizForm from './QuizForm';
+import QuizForm from '../QuizAdmin/QuizForm';
 
 const styles = theme => ({
   root: {
@@ -43,17 +43,17 @@ const styles = theme => ({
    }
 });
 
-function CreateQuiz(props) {
+function Expansionpanel(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
       <ExpansionPanel >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={classes.column}>
-            <Typography className={classes.heading}>{}</Typography>
+            <Typography className={classes.heading}>{props.headers}</Typography>
           </div>
           <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>{}</Typography>
+            <Typography className={classes.secondaryHeading}>{props.header}</Typography>
 
           </div>
         </ExpansionPanelSummary>
@@ -62,9 +62,9 @@ function CreateQuiz(props) {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
-          <Button size="small">Cancel</Button>
+          <Button size="small">{props.Footer1}</Button>
           <Button size="small" color="primary">
-            Assign
+            {props.Footer2}
           </Button>
         </ExpansionPanelActions>
       </ExpansionPanel>
@@ -72,8 +72,8 @@ function CreateQuiz(props) {
   );
 }
 
-CreateQuiz.propTypes = {
+ExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CreateQuiz);
+export default withStyles(styles)(Expansionpanel);
