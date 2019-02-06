@@ -1,6 +1,6 @@
 {
   "name": "smartitude",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Smartitude",
   "private": false,
   "main": "dist/index.js",
