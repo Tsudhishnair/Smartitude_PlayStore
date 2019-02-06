@@ -41,7 +41,7 @@ import {
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-class Dashboard extends React.Component {
+class AdminDashboard extends React.Component {
   state = {
     value: 0
   };
@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
             </p>
               </CardHeader> */}
               <CardBody>
-                <h3 className={classes.cardTitle}>Dashboard</h3>
+                {/* <h3 className={classes.cardTitle}>Dashboard</h3> */}
                 <p className={classes.cardCategory}>
                   Choose your desired settings from below
             </p>
@@ -152,8 +152,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+AdminDashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(dashboardStyle)(AdminDashboard);
