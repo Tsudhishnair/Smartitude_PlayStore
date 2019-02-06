@@ -14,6 +14,7 @@ import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
 import LogOut from "views/Login/Login.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
+import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DialogTest from "../views/Admin/FacultyManage/Dialog.jsx";
 
@@ -35,7 +36,7 @@ const dashboardRoutes = [
     component: StudentManage
   },
   {
-    path: "/question_management",
+    path: "/quiz_management",
     sidebarName: "Quiz Management",
     navbarName: "Quiz Management",
     icon: NotificationIcon,
@@ -58,9 +59,9 @@ const dashboardRoutes = [
     component: FacultyManage
   },
   {
-    path: "/icons",
+    path: "/dept_management",
     sidebarName: "Dept Management",
-    navbarName: "Icons",
+    navbarName: "Dept Management",
     icon: Person,
     component: QuestionManage
   },
@@ -69,7 +70,7 @@ const dashboardRoutes = [
     sidebarName: "Notification",
     navbarName: "Notitfication",
     icon: NotificationIcon,
-    component: QuestionManage
+    component: NotificationManage
   },
   {
     path: "/report_generation",

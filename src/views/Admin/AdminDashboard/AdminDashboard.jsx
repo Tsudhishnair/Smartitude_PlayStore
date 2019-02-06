@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -30,6 +32,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import LinkButton from 'components/LinkButton.jsx'
 
 import { bugs, website, server } from "variables/general.jsx";
 
@@ -74,17 +77,20 @@ class AdminDashboard extends React.Component {
             </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
+
                     <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
 
                       <CardBody >
                         <h4 className={classes.cardTitleWhite}>Student Management</h4>
                         <p className={classes.cardCategoryWhite}>
-                          Add, Remove and Manage Students 
+                          Add, Remove and Manage Students
                 </p>
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>school</Icon>
-                        <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
+                        <Link to="/student_management">
+                          <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
+                        </Link>
                       </CardFooter>
 
                     </Card>
@@ -100,7 +106,9 @@ class AdminDashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>notifications</Icon>
-                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
+                        <Link to="/notification_management">
+                          <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
+                        </Link>
                       </CardFooter>
                     </Card>
                   </GridItem>
@@ -114,12 +122,57 @@ class AdminDashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>done_all</Icon>
-                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
+                        <Link to="/quiz_management">
+                          <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
+                        </Link>
                       </CardFooter>
+
                     </Card>
                   </GridItem>
                 </GridContainer>
               </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={5}>
+            <Card Green>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                  <Icon>grade</Icon>
+                </CardIcon>
+                <p className={classes.cardCategory}>Current Score</p>
+                <h3 className={classes.cardTitle}>
+                  4.9/10 <small>points</small>
+                </h3>
+              </CardHeader>
+              <CardFooter stats >
+                <div className={classes.stats}>
+                  <Danger>
+                    <Warning />
+                  </Danger>
+                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                    Prepare More
+                  </a>
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={5}>
+            <Card>
+              <CardHeader color="success" stats icon>
+                <CardIcon color="success">
+                  <Store />
+                </CardIcon>
+                <p className={classes.cardCategory}>Ranking</p>
+                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <DateRange />
+                  Last 24 Hours
+                </div>
+              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
