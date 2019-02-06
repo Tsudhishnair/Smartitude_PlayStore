@@ -5,6 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -15,21 +19,23 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme =>
   ({
+    formControl: {
+      padding: '15px',
+      fullWidth: true,
+      margin: theme.spacing.unit * 5,
+      wrap: 'nowrap'
+    },
     container: {
       display: 'flex',
       flexGrow: 1,
     },
     root:
-      {
-        flexGrow: 1,
-        marginLeft: 10
-      },
-    formControl: {
-      margin: theme.spacing.unit * 2,
-      minWidth: 120,
+    {
+      flexGrow: 1,
+      marginLeft: 10
     },
     button: {
-      margin: theme.spacing.unit*4,
+      margin: theme.spacing.unit * 4,
     },
   });
 function QuizForm(props) {
@@ -37,40 +43,43 @@ function QuizForm(props) {
   return (
     <div className={classes.root}>
       <Typography> <strong>Basic Info</strong></Typography>
-      <Grid container spacing={40}>
-        <Grid item xs className={classes.container}>
+      <GridContainer spacing={40}>
+        <GridItem xs className={classes.container}>
           <TextField
             id="standard-search"
             label="Quiz Name"
             type="input"
             margin="normal"
+            fullWidth
           />
-        </Grid>
-        <Grid item xs>
+        </GridItem>
+        <GridItem xs={12} sm={3} md={3} className={classes.container}>
           <TextField
             id="standard-number"
             label="Number Of Questions"
             type="number"
             margin="normal"
+            fullWidth
           />
-        </Grid>
-        <Grid item xs>
+        </GridItem>
+        <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
           <TextField
             id="standard-number"
             label="Expiry Date"
             type="number"
             margin="normal"
+            fullWidth
           />
-        </Grid>
-        <Grid item xs>
-          <form className={classes.root}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple">Batch</InputLabel>
+        </GridItem>
+        <GridItem xs={12} sm={3} md={3} className={classes.formControl}>
+            <FormControl fullWidth >
+              <InputLabel htmlFor="age-simple" fullWidth>Batch</InputLabel>
               <Select
                 inputProps={{
                   name: 'age',
                   id: 'age-simple',
                 }}
+                fullWidth
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -80,78 +89,73 @@ function QuizForm(props) {
                 <MenuItem value={30}>2nd</MenuItem>
               </Select>
             </FormControl>
-          </form>
-        </Grid>
-      </Grid>
+        </GridItem>
+      </GridContainer>
       <Typography> <strong>Other Info</strong></Typography>
-      <Grid container spacing={40}>
-        <Grid item xs>
-
-          <form className={classes.root}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple" >Category</InputLabel>
-              <Select
-                inputProps={{
-                  name: 'age',
-                  id: 'age-simple',
-                }}
-              >
-                <MenuItem value="">
-                  <em>All Category</em>
-                </MenuItem>
-                <MenuItem value={10}>Category 1</MenuItem>
-                <MenuItem value={20}>Category 2</MenuItem>
-                <MenuItem value={30}>Category 3</MenuItem>
-              </Select>
-            </FormControl>
-          </form>
-
-        </Grid>
-        <Grid item xs>
-
-          <form className={classes.root}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple" >Sub Category</InputLabel>
-              <Select
-                inputProps={{
-                  name: 'age',
-                  id: 'age-simple',
-                }}
-              >
-                <MenuItem value="">
-                  <em>All Category</em>
-                </MenuItem>
-                <MenuItem value={10}>Category 1</MenuItem>
-                <MenuItem value={20}>Category 2</MenuItem>
-                <MenuItem value={30}>Category 3</MenuItem>
-              </Select>
-            </FormControl>
-          </form>
-
-        </Grid>
-        <Grid item xs>
+      <GridContainer container spacing={40}>
+        <GridItem xs={12} sm={3} md={3}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-simple" fullWidth >Category</InputLabel>
+            <Select
+              inputProps={{
+                name: 'age',
+                id: 'age-simple',
+              }}
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>All Category</em>
+              </MenuItem>
+              <MenuItem value={10}>Category 1</MenuItem>
+              <MenuItem value={20}>Category 2</MenuItem>
+              <MenuItem value={30}>Category 3</MenuItem>
+            </Select>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={3} md={3}>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-simple" fullWidth >Sub Category</InputLabel>
+            <Select
+              inputProps={{
+                name: 'age',
+                id: 'age-simple',
+              }}
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>All Category</em>
+              </MenuItem>
+              <MenuItem value={10}>Category 1</MenuItem>
+              <MenuItem value={20}>Category 2</MenuItem>
+              <MenuItem value={30}>Category 3</MenuItem>
+            </Select>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={2} md={2}>
           <TextField
             id="standard-number"
-            label="Number Of Questions"
+            label="No. Of Quest."
             type="number"
+            fullWidth
             margin="normal"
           />
-        </Grid>
-        <Grid item xs>
+        </GridItem>
+        <GridItem xs={12} sm={2} md={2}>
           <TextField
             id="standard-number"
             label="Time Limit (min)"
             type="number"
+            fullWidth
             margin="normal"
           />
-        </Grid>
-        <Grid item xs>
+        </GridItem>
+        <GridItem xs={12} sm={2} md={2}>
           <Button color="primary" className={classes.button}>
             Add More
           </Button>
-        </Grid>
-      </Grid>
-    </div>
+        </GridItem>
+      </GridContainer>
+    </div >
   )
 
 }
