@@ -17,6 +17,7 @@ import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
 import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DialogTest from "../views/Admin/FacultyManage/Dialog.jsx";
+import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManagement.jsx";
 
 
 
@@ -48,7 +49,7 @@ const dashboardRoutes = [
     sidebarName: "Category Management",
     navbarName: "Category Management",
     icon: BubbleChart,
-    component: DialogTest
+    component: CategoryManagement
   },
  
   {

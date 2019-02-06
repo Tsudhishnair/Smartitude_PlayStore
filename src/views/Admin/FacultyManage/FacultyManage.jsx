@@ -21,7 +21,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import ChipInput from 'material-ui-chip-input';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 import Card from "components/Card/Card.jsx";
@@ -29,21 +28,12 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 
 import Chip from '@material-ui/core/Chip';
 
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -114,6 +104,7 @@ class FacultyManage extends React.Component {
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (
+
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
@@ -363,8 +354,8 @@ class EnhancedTable extends React.Component {
         ))}
       </div>
     ) : (
-      <div style={{ minHeight: 42, lineHeight: '42px' }}>Select some values</div>
-    ); // advice: use one of <option>s' default height as min-height
+        <div style={{ minHeight: 42, lineHeight: '42px' }}>Select some values</div>
+      ); // advice: use one of <option>s' default height as min-height
 
   onRequestDelete = (key, name) => (event) => {
     this.setState({ [name]: this.state[name].filter((v, i) => i !== key) });
@@ -377,121 +368,17 @@ class EnhancedTable extends React.Component {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     const { state4 } = this.state;
+    const header1 = 'Faculty';
+    const header2 = 'Add a new faculty member';
     console.debug('state4', state4); // eslint-disable-line no-console
     return (
       <React.Fragment>
-        <Dialog
-          fullWidth={this.state.fullWidth}
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Add New Faculty Staff</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Fill in the details to add a new faculty member to the database.
-            </DialogContentText>
-            <GridContainer>
-              <GridItem xs={12} sm={6} md={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  className={classes.elementPadding}
-                  id="name"
-                  label="Name"
-                  type="name"
-                  fullWidth
-                />
-              </GridItem>
-              <GridItem xs={12} sm={6} md={6}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="email"
-                  className={classes.elementPadding}
-                  label="Email Address"
-                  type="email"
-                  fullWidth
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
-                <InputLabel htmlFor="max-width">Department</InputLabel>
-                <Select
-                  value={this.state.maxWidth}
-                  fullWidth
-                  label='Department'
-                  inputProps={{
-                    name: 'dept',
-                    id: 'dept',
-                  }}
-                >
-                  <MenuItem value="xs">Information Technology</MenuItem>
-                  <MenuItem value="sm">Computer Science</MenuItem>
-                  <MenuItem value="md">Mechanical</MenuItem>
-                  <MenuItem value="lg">Civil</MenuItem>
-                  <MenuItem value="xl">Electrical</MenuItem>
-                </Select>
-              </GridItem>
-              <GridItem xs={12} sm={6} md={6}>
-                <TextField
-                  autoFocus
-                  className={classes.elementPadding}
-                  margin="dense"
-                  id="phone"
-                  label="Phone Number"
-                  type="phone"
-                  fullWidth
-                />
-              </GridItem>
-            </GridContainer>
-            <ChipInput
-              defaultValue={['Algebra', 'Motion', 'Quantitative']}
-              fullWidth
-              className={classes.elementPadding}
-              label='Sub-Categories'
-              placeholder='Type and press enter to add chips'
-            />
+        <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="transparent">
-              Cancel
-            </Button>
-            <Button onClick={this.handleClose} color="transparent">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Card>
-
-          <CardBody >
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={4}>
-                <Button
-                  onClick={this.handleClickOpen}
-                  fullWidth
-                  color="primary"
-                >
-                  Add New Faculty
-                </Button>
-              </GridItem>
-              <GridItem xs={12} sm={12} md={4}>
-                <Button
-                  fullWidth
-                  color="primary"
-                >
-                  Add a group of faculties
-                </Button>
-              </GridItem>
-            </GridContainer>
-          </CardBody>
-        </Card>
         <Card className={classes.root}>
-        <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>All Faculty</h4>
-              </CardHeader>
+          <CardHeader color="warning">
+            <h4 className={classes.cardTitleWhite}>All Faculty</h4>
+          </CardHeader>
 
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>

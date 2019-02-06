@@ -12,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import QuizForm from '../QuizAdmin/QuizForm';
+import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
 
 const styles = theme => ({
   root: {
@@ -49,6 +50,10 @@ function Expansionpanel(props) {
   if(props.directingValue=="1")
   {
      layout = <QuizForm/>;
+  }
+  if(props.directingValue=="2")
+  {
+     layout = <CreateFacultyForm/>;
   }
   return (
     <div className={classes.root}>
