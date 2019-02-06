@@ -47,13 +47,13 @@ function CreateQuiz(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <ExpansionPanel defaultExpanded>
+      <ExpansionPanel >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={classes.column}>
-            <Typography className={classes.heading}>Quiz</Typography>
+            <Typography className={classes.heading}>{}</Typography>
           </div>
           <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>Create & Assign Quiz</Typography>
+            <Typography className={classes.secondaryHeading}>{}</Typography>
 
           </div>
         </ExpansionPanelSummary>

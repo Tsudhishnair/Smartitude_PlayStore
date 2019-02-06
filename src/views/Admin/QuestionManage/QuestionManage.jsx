@@ -31,94 +31,24 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
-import { bugs, website, server } from "variables/general.jsx";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import CreateQuiz from "../../../components/QuizAdmin/CreateQuiz";
+import Management from "../../Components/Management";
 
 class Dashboard extends React.Component {
-  state = {
-    value: 0
-  };
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = index => {
-    this.setState({ value: index });
-  };
   render() {
     const { classes } = this.props;
     return (
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            {/* <Card Green>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>grade</Icon>
-                </CardIcon>
-                <h3 className={classes.cardTitle}>Create quiz and allot it to the corresponding batch </h3>
-              </CardHeader>
-              <CardFooter stats >
-                <div className={classes.cardTitle}>
-                  Create Quiz
-                </div>
-              </CardFooter>
-            </Card> */}
-            <CreateQuiz/>
+            <CreateQuiz />
           </GridItem>
-
           <GridItem xs={12} sm={12} md={12}>
-            <CustomTabs
-              title="Filter:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Cateogory",
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0, 3]}
-                      tasksIndexes={[0, 1, 2, 3]}
-                      tasks={bugs}
-                    />
-                  )
-                },
-                {
-                  tabName: "Subcategory",
-                  tabIcon: Code,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0]}
-                      tasksIndexes={[0, 1]}
-                      tasks={website}
-                    />
-                  )
-                },
-                {
-                  tabName: "Server",
-                  tabIcon: Cloud,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[1]}
-                      tasksIndexes={[0, 1, 2]}
-                      tasks={server}
-                    />
-                  )
-                }
-              ]}
-            />
+            <Management />
           </GridItem>
-
         </GridContainer>
-
       </div>
     );
   }
