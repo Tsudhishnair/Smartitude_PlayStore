@@ -24,7 +24,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import Management from "../../Components/Management";
+import { Management }  from "../../Components/Management";
+import Table from "../../Components/Management";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 class Dashboard extends React.Component {
@@ -33,14 +34,7 @@ class Dashboard extends React.Component {
     const header1='Quiz';
     const header2='Create & Assign Quiz';
     
-    const cols = [
-      { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Management' },
-      { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
-      { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
-      { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
-      { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
-      { disablePadding: true, label: '' }
-    ];
+
     return (
       <div>
         <GridContainer>
@@ -48,8 +42,10 @@ class Dashboard extends React.Component {
             <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"1"}/>
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-       
-            <Management colNs={cols}/>
+            <Management  Rowid={"QM"}/>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <Table />
           </GridItem>
         </GridContainer>
       </div>

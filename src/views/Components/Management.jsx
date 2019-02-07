@@ -61,7 +61,14 @@ function stableSort(array, cmp) {
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-class Management extends React.Component {
+
+export class Management extends React.Component {
+
+  constructor(props) {
+    super();
+    this.rows = [];
+  }
+
   state = {
     open: true,
   };
@@ -77,18 +84,19 @@ class Management extends React.Component {
   };
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-    console.log(this.props);
-    
-    const rows = [
-      { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Management' },
-      { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
-      { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
-      { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
-      { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
-      { disablePadding: true, label: '' }
-    ];
+
+    if (this.props.Rowid === "QM") {
+      this.rows = [
+        { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Name' },
+        { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+        { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
+        { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
+        { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+        { disablePadding: true, label: '' }
+      ];
+    }
     return (
-      <TableHead> 
+      <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
             <Checkbox
@@ -97,7 +105,7 @@ class Management extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {rows.map(
+          {this.rows.map(
             row => (
               <TableCell
                 key={row.id}
@@ -216,6 +224,7 @@ const styles = theme => ({
     overflowX: 'auto',
   },
 });
+
 class EnhancedTable extends React.Component {
   state = {
     order: 'desc',
@@ -286,8 +295,26 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <div>
-
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary"
+            >
+              Add New Faculty
+                </Button>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Button
+              fullWidth
+              color="primary"
+            >
+              Add a group of faculties
+                </Button>
+          </GridItem>
+        </GridContainer>
         <Paper className={classes.root}>
+
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
@@ -396,7 +423,7 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-Management.propTypes = {
+ Management.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(EnhancedTable);
