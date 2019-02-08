@@ -61,15 +61,8 @@ function stableSort(array, cmp) {
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Name' },
-  { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
-  { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
-  { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
-  { disablePadding: true, label: '' }
-];
-class FacultyManage extends React.Component {
+let rows;
+class Management extends React.Component {
   state = {
     open: true,
   };
@@ -85,6 +78,26 @@ class FacultyManage extends React.Component {
   };
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    if (this.props.tester == "QM") {
+      rows = [
+        { id: 'name', numeric: false, disablePadding: true, label: ' Name' },
+        { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+        { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
+        { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
+        { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+        { disablePadding: true, label: '' }
+      ];
+    } else {
+
+      rows = [
+        { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Name' },
+        { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+        { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
+        { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
+        { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+        { disablePadding: true, label: '' }
+      ];
+    }
     return (
       <TableHead>
         <TableRow>
@@ -125,7 +138,7 @@ class FacultyManage extends React.Component {
     );
   }
 }
-FacultyManage.propTypes = {
+Management.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -284,36 +297,19 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
-              fullWidth
-              color="primary"
-            >
-              Add New Faculty
-                </Button>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
-              fullWidth
-              color="primary"
-            >
-              Add a group of faculties
-                </Button>
-          </GridItem>
-        </GridContainer>
         <Paper className={classes.root}>
 
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
-              <FacultyManage
+              <Management
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onSelectAllClick={this.handleSelectAllClick}
                 onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
+                tester={this.props.test}
               />
               <TableBody>
                 {stableSort(data, getSorting(order, orderBy))
@@ -412,7 +408,7 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-FacultyManage.propTypes = {
+Management.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(EnhancedTable);

@@ -8,7 +8,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import EnhancedTable from "../../Components/Management";
+import EnhancedTable from "../../Components/Management/Management";
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
