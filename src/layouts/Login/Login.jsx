@@ -7,16 +7,32 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
+// import Input from '../../components';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import lock from "assets/img/drawable/smart_logo.png";
+import { createMuiTheme } from '@material-ui/core';
+import { orange } from '@material-ui/core/colors';
+import { MuiThemeProvider } from 'material-ui/styles';
+import { orange100 } from 'material-ui/styles/colors';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: orange100 }, // Purple and green play nicely together.
+    secondary: { main: '#11cb5f' }, // This is just green.A700 as hex.
+  },
+})
+
 const styles = theme => ({
   root: {
     background: "linear-gradient(80deg,#ffa726,#fb8c00)",
     height: "100vh",
+    primary: 'orange',
+    secondary: 'orange',
     backgroundSize: 'cover',
     padding: theme.spacing.unit * 8,
     margin: '0'
@@ -32,7 +48,7 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  paper: { 
+  paper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -55,47 +71,50 @@ function SignIn(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              /> 
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+    <MuiThemeProvider>
+      <div className={classes.root}>
+        <main className={classes.main}>
+          <CssBaseline />
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               Sign in
+          </Typography>
+            <form className={classes.form}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input id="email" name="email" autoComplete="email" autoFocus />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
           </Button>
-          </form>
-        </Paper>
-      </main>
-    </div>
+            </form>
+          </Paper>
+          <img width="400dp" src={lock} alt="..." />
+        </main>
+      </div>
+    </MuiThemeProvider>
   );
 }
 
