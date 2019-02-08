@@ -33,8 +33,7 @@ import Delete from "@material-ui/icons/Delete";
 
 import Chip from '@material-ui/core/Chip';
 
-import Expansionpanel from "../../../components/ExpansionPanel/DoubleExpansionPanel";
-
+import Exp from "../../../components/ExpansionPanel/Expansionpanel";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 let counter = 0;
@@ -373,8 +372,10 @@ class EnhancedTable extends React.Component {
     console.debug('state4', state4); // eslint-disable-line no-console
     return (
       <React.Fragment>
-        <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
-        
+        {/* <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
+         */}
+         <Exp headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"}/>
+         <Exp headers={"Multiple Faculty"} header={"Add groups of faculty"} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"3"}/>
         <Card className={classes.root}>
           <CardHeader color="warning">
             <h4 className={classes.cardTitleWhite}>All Faculty</h4>

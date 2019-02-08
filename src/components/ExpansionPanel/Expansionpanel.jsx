@@ -13,10 +13,12 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import QuizForm from '../QuizAdmin/QuizForm';
 import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
+import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
 
 const styles = theme => ({
   root: {
     width: '100%',
+    padding:"1px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -55,8 +57,15 @@ function Expansionpanel(props) {
   {
      layout = <CreateFacultyForm/>;
   }
+  if(props.directingValue=="3")
+  {
+     layout = <GroupFaculty/>;
+  }
   return (
     <div className={classes.root}>
+    
+    <ExpansionPanel >
+      </ExpansionPanel>
       <ExpansionPanel >
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={classes.column}>
@@ -77,6 +86,8 @@ function Expansionpanel(props) {
             {props.Footer2}
           </Button>
         </ExpansionPanelActions>
+      </ExpansionPanel>
+      <ExpansionPanel >
       </ExpansionPanel>
     </div>
   );
