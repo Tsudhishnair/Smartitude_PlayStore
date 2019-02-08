@@ -10,28 +10,15 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from "components/CustomButtons/Button.jsx";
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import EditIcon from '@material-ui/icons/Edit'
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-
 import Edit from "@material-ui/icons/Edit";
-import View from "@material-ui/icons/Pageview";
 import Delete from "@material-ui/icons/Delete";
 
 let counter = 0;
@@ -295,26 +282,8 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
-              fullWidth
-              color="primary"
-            >
-              Add New Faculty
-                </Button>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Button
-              fullWidth
-              color="primary"
-            >
-              Add a group of faculties
-                </Button>
-          </GridItem>
-        </GridContainer>
-        <Paper className={classes.root}>
 
+        <Paper className={classes.root}>
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
@@ -423,7 +392,7 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
- Management.propTypes = {
+Management.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
 };
 export default withStyles(styles)(EnhancedTable);

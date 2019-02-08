@@ -16,7 +16,8 @@ import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
 import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
-import DialogTest from "../views/Admin/FacultyManage/Dialog.jsx";
+import DeptManage from "../views/Admin/DeptManage/DeptManage"
+import ReportGen from "../views/Admin/ReportGen/ReportGen"
 import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManagement.jsx";
 
 
@@ -51,7 +52,7 @@ const dashboardRoutes = [
     icon: BubbleChart,
     component: CategoryManagement
   },
- 
+
   {
     path: "/faculty_management",
     sidebarName: "Faculty Management",
@@ -64,7 +65,7 @@ const dashboardRoutes = [
     sidebarName: "Dept Management",
     navbarName: "Dept Management",
     icon: Person,
-    component: QuestionManage
+    component: DeptManage
   },
   {
     path: "/notification_management",
@@ -78,23 +79,8 @@ const dashboardRoutes = [
     sidebarName: "Report",
     navbarName: "Report",
     icon: Report,
-    component: QuestionManage
+    component: ReportGen
   },
-  
-  // {
-  //   path: "/maps",
-  //   sidebarName: "Maps",
-  //   navbarName: "Map",
-  //   icon: LocationOn,
-  //   component: Maps
-  // },
-  // {
-  //   path: "/notifications",
-  //   sidebarName: "Notifications",
-  //   navbarName: "Notifications",
-  //   icon: Notifications,
-  //   component: NotificationsPage
-  // },
   {
     path: "/upgrade-to-pro",
     sidebarName: "Log Out",

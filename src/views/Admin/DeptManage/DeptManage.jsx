@@ -34,19 +34,18 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-class StudentManage extends React.Component {
-
+class DeptManage extends React.Component {
+  
   render() {
     const { classes } = this.props;
     return (
-      <div>
-      </div>
+      null
     );
   }
 }
 
-StudentManage.propTypes = {
+DeptManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(StudentManage);
+export default withStyles(dashboardStyle)(DeptManage);
