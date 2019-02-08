@@ -1,28 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '../../components/CustomButtons/Button';
+import Button from "components/CustomButtons/Button.jsx";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
+import Icon from "@material-ui/core/Icon";
+
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardAvatar from "components/Card/CardAvatar.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import lock from "assets/img/drawable/lock.jpg";
+
 const styles = theme => ({
-  root: {
-    background: "linear-gradient(80deg,#ffa726,#fb8c00)",
-    height: "100vh",
-    backgroundSize: 'cover',
-    padding: theme.spacing.unit * 8,
-    margin: '0'
-  },
   main: {
     width: 'auto',
+    height: '100%',
     display: 'block', // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
@@ -32,75 +37,77 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  paper: { 
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
   },
   avatar: {
     margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing.unit,
   },
   submit: {
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing.unit * 3,
   },
 });
-
-function SignIn(props) {
+function Login(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
-      <main className={classes.main}>
-        <CssBaseline />
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
+
+    <main className={classes.main}>
+      <CssBaseline />
+      <Card styles={{ display: 'flex', alignItems: 'center' }}>
+        <CardAvatar profile>
+            <img src={lock} alt="..." />
+        </CardAvatar>
+        <CardBody>
           <Typography component="h1" variant="h5">
             Sign in
-          </Typography>
+        </Typography>
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
+              <CustomInput
+                labelText="User ID"
+                id="uid"
+                formControlProps={{
+                  fullWidth: true
+                }}
+              />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
+              <CustomInput
+                labelText="Password"
                 id="password"
-                autoComplete="current-password"
-              /> 
+                type="password"
+                formControlProps={{
+                  fullWidth: true
+                }}
+              />
             </FormControl>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign in
-          </Button>
           </form>
-        </Paper>
-      </main>
-    </div>
+        </CardBody>
+        <CardFooter>
+          <Button color="primary" round>Log In</Button>
+        </CardFooter>
+
+      </Card>
+    </main>
   );
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(Login);
