@@ -61,6 +61,12 @@ function Expansionpanel(props) {
   {
      layout = <GroupFaculty/>;
   }
+  if(props.directingValue=="3")
+  {
+    // layout = <DeptManagement/>;
+    
+    layout = <GroupFaculty/>;     
+  }
   return (
     <div className={classes.root}>
     

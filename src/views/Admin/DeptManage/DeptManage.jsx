@@ -33,14 +33,19 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
+import EnhancedTable from "../../Components/Management/Management";
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 class DeptManage extends React.Component {
-  
+
   render() {
     const { classes } = this.props;
+    let header1="Dept";
+    let header2="Add new department";
     return (
-    
-      null
+      <div>
+        <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
+        <EnhancedTable  />
+      </div>
     );
   }
 }
