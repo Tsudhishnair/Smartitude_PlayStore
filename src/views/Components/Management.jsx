@@ -10,15 +10,28 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
+import Button from "components/CustomButtons/Button.jsx";
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import EditIcon from '@material-ui/icons/Edit'
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
+
 import Edit from "@material-ui/icons/Edit";
+import View from "@material-ui/icons/Pageview";
 import Delete from "@material-ui/icons/Delete";
 
 let counter = 0;
@@ -48,14 +61,8 @@ function stableSort(array, cmp) {
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
-
-export class Management extends React.Component {
-
-  constructor(props) {
-    super();
-    this.rows = [];
-  }
-
+let rows;
+class Management extends React.Component {
   state = {
     open: true,
   };
@@ -71,9 +78,18 @@ export class Management extends React.Component {
   };
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    if (this.props.tester == "QM") {
+      rows = [
+        { id: 'name', numeric: false, disablePadding: true, label: 'slsldkan Name' },
+        { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
+        { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
+        { id: 'carbs', numeric: true, disablePadding: false, label: 'Questions Submitted' },
+        { id: 'protein', numeric: false, disablePadding: false, label: 'User-ID' },
+        { disablePadding: true, label: '' }
+      ];
+    } else {
 
-    if (this.props.Rowid === "QM") {
-      this.rows = [
+      rows = [
         { id: 'name', numeric: false, disablePadding: true, label: 'Faculty Name' },
         { id: 'role', numeric: true, disablePadding: false, label: 'Role' },
         { id: 'category', numeric: false, disablePadding: false, label: 'Category Assigned' },
@@ -92,7 +108,7 @@ export class Management extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {this.rows.map(
+          {rows.map(
             row => (
               <TableCell
                 key={row.id}
@@ -211,7 +227,6 @@ const styles = theme => ({
     overflowX: 'auto',
   },
 });
-
 class EnhancedTable extends React.Component {
   state = {
     order: 'desc',
@@ -282,8 +297,8 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <div>
-
         <Paper className={classes.root}>
+
           <EnhancedTableToolbar numSelected={selected.length} />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
@@ -294,6 +309,7 @@ class EnhancedTable extends React.Component {
                 onSelectAllClick={this.handleSelectAllClick}
                 onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
+                tester={this.props.test}
               />
               <TableBody>
                 {stableSort(data, getSorting(order, orderBy))

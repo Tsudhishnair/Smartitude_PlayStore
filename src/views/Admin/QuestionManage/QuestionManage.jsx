@@ -6,10 +6,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import { Management } from "../../Components/Management";
-import Table from "../../Components/Management";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import EnhancedTable from "../../Components/Management";
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
@@ -24,8 +23,8 @@ class Dashboard extends React.Component {
             <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"1"} />
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-            <Management Rowid={"QM"} />
-            <Table />
+
+            <EnhancedTable test={"Q"} />
           </GridItem>
         </GridContainer>
       </div>
