@@ -14,6 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import QuizForm from '../QuizAdmin/QuizForm';
 import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
 import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
+import CreateStudentForm from '../../views/Admin/StudentManage/CNStudForm.jsx';
 
 const styles = theme => ({
   root: {
@@ -63,9 +64,12 @@ function Expansionpanel(props) {
   }
   if(props.directingValue=="3")
   {
-    // layout = <DeptManagement/>;
     
     layout = <GroupFaculty/>;     
+  }
+  if(props.directingValue=="4")
+  {
+    layout = <CreateStudentForm/>;     
   }
   return (
     <div className={classes.root}>

@@ -18,7 +18,7 @@ const styles = theme =>
       margin: 0,
       padding: theme.spacing.unit * 10,
       fullWidth: true,
-            marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 2,
       marginBottom: theme.spacing.unit * 2,
       backgroundColor: '#9ee',
       wrap: 'nowrap'
@@ -101,16 +101,6 @@ function CreateNewFacultyForm(props) {
             label="Phone Number"
             type="phone"
             fullWidth
-          />
-        </GridItem>
-      </GridContainer>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12} className={classes.elementPadding}>
-          <ChipInput
-            defaultValue={['Algebra', 'Motion', 'Quantitative']}
-            fullWidth
-            label='Sub-Categories'
-            placeholder='Type and press enter to add chips'
           />
         </GridItem>
       </GridContainer>

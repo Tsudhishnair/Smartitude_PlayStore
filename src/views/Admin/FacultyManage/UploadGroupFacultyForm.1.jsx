@@ -53,7 +53,7 @@ function CreateNewFacultyForm(props) {
       <Typography> <strong>Basic Info</strong></Typography>
       <GridContainer>
         <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
-        <DropzoneArea dropzoneText='Click here or drag and drop the file here to upload file' showFileNamesInPreview='true' filesLimit='1'/>
+        <DropzoneArea autoWidth={true} dropzoneText='Click here or drag and drop the file here to upload file' showFileNamesInPreview='true' filesLimit='1'/>
         </GridItem>
        </GridContainer>
     </div>
