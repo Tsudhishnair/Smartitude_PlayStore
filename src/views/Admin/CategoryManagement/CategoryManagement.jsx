@@ -43,7 +43,7 @@ const styles = theme => ({
 
 class MaxWidthDialog extends React.Component {
   state = {
-    open: true,
+    open: false,
   };
 
   handleClick = () => {
