@@ -15,6 +15,7 @@ import QuizForm from '../QuizAdmin/QuizForm';
 import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
 import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
 import CreateStudentForm from '../../views/Admin/StudentManage/CNStudForm.jsx';
+import AddDeptForm from '../../views/Admin/DeptManage/AddDeptForm.jsx';
 
 const styles = theme => ({
   root: {
@@ -70,6 +71,10 @@ function Expansionpanel(props) {
   if(props.directingValue=="4")
   {
     layout = <CreateStudentForm/>;     
+  }
+  if(props.directingValue=="5")
+  {
+    layout = <AddDeptForm/>;     
   }
   return (
     <div className={classes.root}>

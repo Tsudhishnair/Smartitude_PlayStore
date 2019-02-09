@@ -43,7 +43,7 @@ class DeptManage extends React.Component {
     let header2="Add new department";
     return (
       <div>
-        <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
+        <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"5"} />
         <EnhancedTable  />
       </div>
     );
