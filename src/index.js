@@ -9,6 +9,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { orange700 } from "material-ui/styles/colors";
 
 import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
 
 const client = new ApolloClient({
   uri: "https://localhost:4000/graphql"
@@ -26,13 +27,16 @@ const theme = createMuiTheme({
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <Router history={hist}>
-      <Switch>
-        {indexRoutes.map((prop, key) => {
-          return <Route path={prop.path} component={prop.component} key={key} />;
-        })}
-      </Switch>
-    </Router> </MuiThemeProvider>,
+  <ApolloProvider client={client}>
+    <MuiThemeProvider theme={theme}>
+      <Router history={hist}>
+        <Switch>
+          {indexRoutes.map((prop, key) => {
+            return <Route path={prop.path} component={prop.component} key={key} />;
+          })}
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
+  </ApolloProvider>,
   document.getElementById("root")
 );

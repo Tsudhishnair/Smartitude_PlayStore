@@ -19,6 +19,19 @@ import { createMuiTheme } from '@material-ui/core';
 import { orange } from '@material-ui/core/colors';
 import { MuiThemeProvider } from 'material-ui/styles';
 import { orange100 } from 'material-ui/styles/colors';
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+
+
+const AdminLogin = gql
+  `
+mutation {
+  adminLogin(
+    username:"Tony Stark"
+    password:"jarvis"
+  )
+}
+`
 
 const theme = createMuiTheme({
   palette: {
@@ -71,6 +84,9 @@ function SignIn(props) {
   const { classes } = props;
 
   return (
+
+    <Mutation mutation={AdminLogin}>
+    {(adminLogin,{data}) => (
     <MuiThemeProvider>
       <div className={classes.root}>
         <main className={classes.main}>
@@ -114,7 +130,10 @@ function SignIn(props) {
           <img width="400dp" src={lock} alt="..." />
         </main>
       </div>
+      console.log(data);
     </MuiThemeProvider>
+    )}
+    </Mutation>
   );
 }
 
