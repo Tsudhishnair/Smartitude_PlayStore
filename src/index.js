@@ -8,6 +8,12 @@ import indexRoutes from "routes/index.jsx";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { orange700 } from "material-ui/styles/colors";
 
+import ApolloClient from "apollo-boost";
+
+const client = new ApolloClient({
+  uri: "https://localhost:4000/graphql"
+});
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: orange700 }, // Purple and green play nicely together.
