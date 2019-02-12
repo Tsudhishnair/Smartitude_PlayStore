@@ -33,6 +33,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import LinkButton from 'components/LinkButton.jsx'
+import Grow from '@material-ui/core/Grow';
 
 import { bugs, website, server } from "variables/general.jsx";
 
@@ -77,57 +78,64 @@ class AdminDashboard extends React.Component {
             </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
+                    <Grow in={true}>
+                      <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
 
-                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
-
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Student Management</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Add, Remove and Manage Students
+                        <CardBody >
+                          <h4 className={classes.cardTitleWhite}>Student Management</h4>
+                          <p className={classes.cardCategoryWhite}>
+                            Add, Remove and Manage Students
                 </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>school</Icon>
-                        <Link to="/student_management">
-                          <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
-                        </Link>
-                      </CardFooter>
+                        </CardBody>
+                        <CardFooter >
+                          <Icon style={{ color: "white" }}>school</Icon>
+                          <Link to="/student_management">
+                            <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
+                          </Link>
+                        </CardFooter>
 
-                    </Card>
+                      </Card>
+                    </Grow>
                   </GridItem>
 
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Notification</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Send Notifications for students and faculty and Manage them
+                    <Grow in={true} style={{ transformOrigin: '0 0 0' }}
+                      {...(true ? { timeout: 1000 } : {})}>
+                      <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
+                        <CardBody >
+                          <h4 className={classes.cardTitleWhite}>Notification</h4>
+                          <p className={classes.cardCategoryWhite}>
+                            Send Notifications for students and faculty and Manage them
                 </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>notifications</Icon>
-                        <Link to="/notification_management">
-                          <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
-                        </Link>
-                      </CardFooter>
-                    </Card>
+                        </CardBody>
+                        <CardFooter >
+                          <Icon style={{ color: "white" }}>notifications</Icon>
+                          <Link to="/notification_management">
+                            <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
+                          </Link>
+                        </CardFooter>
+                      </Card>
+                    </Grow>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Quiz Management</h4>
-                        <p className={classes.cardCategoryWhite}>
-                          Assign quizes to students and manage them
+                    <Grow in={true} style={{ transformOrigin: '0 0 0' }}
+                      {...(true ? { timeout: 2000 } : {})}>
+                      <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
+                        <CardBody >
+                          <h4 className={classes.cardTitleWhite}>Quiz Management</h4>
+                          <p className={classes.cardCategoryWhite}>
+                            Assign quizes to students and manage them
                 </p>
-                      </CardBody>
-                      <CardFooter >
-                        <Icon style={{ color: "white" }}>done_all</Icon>
-                        <Link to="/quiz_management">
-                          <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
-                        </Link>
-                      </CardFooter>
+                        </CardBody>
+                        <CardFooter >
+                          <Icon style={{ color: "white" }}>done_all</Icon>
+                          <Link to="/quiz_management">
+                            <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
+                          </Link>
+                        </CardFooter>
 
-                    </Card>
+                      </Card>
+                    </Grow>
                   </GridItem>
                 </GridContainer>
               </CardBody>
