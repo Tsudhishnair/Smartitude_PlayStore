@@ -100,7 +100,7 @@ class AdminDashboard extends React.Component {
 
                   <GridItem xs={12} sm={6} md={4}>
                     <Grow in={true} style={{ transformOrigin: '0 0 0' }}
-                      {...(true ? { timeout: 1000 } : {})}>
+                      {...(true ? { timeout: 500 } : {})}>
                       <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
                         <CardBody >
                           <h4 className={classes.cardTitleWhite}>Notification</h4>
@@ -119,7 +119,7 @@ class AdminDashboard extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
                     <Grow in={true} style={{ transformOrigin: '0 0 0' }}
-                      {...(true ? { timeout: 2000 } : {})}>
+                      {...(true ? { timeout: 1500 } : {})}>
                       <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
                         <CardBody >
                           <h4 className={classes.cardTitleWhite}>Quiz Management</h4>

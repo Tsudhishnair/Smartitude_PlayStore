@@ -18,7 +18,7 @@ const styles = theme =>
       margin: 0,
       padding: theme.spacing.unit * 10,
       fullWidth: true,
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 3,
       marginBottom: theme.spacing.unit * 2,
       backgroundColor: '#9ee',
       wrap: 'nowrap'
@@ -40,7 +40,7 @@ const styles = theme =>
       marginLeft: 10
     },
     formControl: {
-      margin: theme.spacing.unit * 2,
+      margin: theme.spacing.unit * 3,
       minWidth: 120,
     },
     button: {
@@ -53,7 +53,7 @@ function CreateNewFacultyForm(props) {
     <div className={classes.root}>
       <Typography> <strong>Basic Info</strong></Typography>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
@@ -63,7 +63,17 @@ function CreateNewFacultyForm(props) {
             fullWidth
           />
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="username"
+            label="Username"
+            type="name"
+            fullWidth
+          />
+        </GridItem>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
@@ -74,8 +84,19 @@ function CreateNewFacultyForm(props) {
           />
         </GridItem>
       </GridContainer>
+      <Typography> <strong>College Info</strong></Typography>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="phone"
+            label="Phone Number"
+            type="phone"
+            fullWidth
+          />
+        </GridItem>
+        <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
           <FormControl fullWidth>
             <InputLabel htmlFor="age-simple">Department</InputLabel>
             <Select
@@ -93,13 +114,13 @@ function CreateNewFacultyForm(props) {
             </Select>
           </FormControl>
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
-            id="phone"
-            label="Phone Number"
-            type="phone"
+            id="batch"
+            label="Batch"
+            type="number"
             fullWidth
           />
         </GridItem>

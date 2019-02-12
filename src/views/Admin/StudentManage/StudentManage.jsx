@@ -13,6 +13,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 
 import Exp from "../../../components/ExpansionPanel/Expansionpanel";
 import EnhancedTable from "../../Components/Management/Management";
+import FullScreenDialog from "../../../components/FullScreenDialog/FullScreenDialog"
 
 import FlatButton from '@material-ui/core/Button/Button'
 
@@ -24,10 +25,6 @@ const styles = theme => ({
 });
 
 class Dashboard extends React.Component {
-
-  state = {
-    open: false,
-  };
 
   render() {
     const { classes } = this.props;
@@ -107,13 +104,14 @@ class Dashboard extends React.Component {
 
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
+        this.child.handleClickOpen(rowData)
       },
     };
 
 
     return (
       <div>
-
+        <FullScreenDialog onRef={ref => (this.child = ref)}/>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Exp headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"4"} />
