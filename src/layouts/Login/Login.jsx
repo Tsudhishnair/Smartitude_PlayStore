@@ -22,14 +22,14 @@ import { MuiThemeProvider } from 'material-ui/styles';
 import { orange100 } from 'material-ui/styles/colors';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-
-
-const Admin_Login = gql
+import {withApollo} from "react";
+r
+const ADMIN_LOGIN = gql
   `
-mutation {
+mutation adminLogin($username: String!, $password: String!) {
   adminLogin(
-    username:"admin",
-    password:"jarvis"
+    username: $username,
+    password: $password
   )
 }
 `
@@ -109,10 +109,21 @@ class AdminLogin extends Component {
       }
     });
   }
+  handleClick = async (adminLogin, e) => {
+    let response = await adminLogin({
+      variables: {
+        username: this.state.form.username,
+        password: this.state.form.password
+      }
+    });
+    if(response) console.log(response);
+    
+
+  }
   render() {
     const { classes } = this.props;
     return (
-      < Mutation mutation={Admin_Login} >
+      < Mutation mutation={ADMIN_LOGIN} >
         {(adminLogin, { loading, error, data }) => (
           <MuiThemeProvider>
             <div className={classes.root}>
@@ -148,20 +159,25 @@ class AdminLogin extends Component {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      onClick={adminLogin}
+                      onClick={(e) => this.handleClick(adminLogin, e)}
 
                     >
                       Sign in
           </Button>
+
                   </form>
                 </Paper>
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
+
+            {console.log({ data })}
+            {console.log({ error })}
+            {console.log({ loading })}
+
           </MuiThemeProvider>
         )
-        }
-      </Mutation>
+        }  </Mutation>
     );
   }
 }
@@ -171,4 +187,4 @@ AdminLogin.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AdminLogin);
+export default withStyles(styles)(withApollo(AdminLogin));
