@@ -132,9 +132,6 @@ function SignIn(props) {
           <img width="400dp" src={lock} alt="..." />
         </main>
       </div>
-      {console.log({loading})}
-      {console.log({error})}
-      {console.log({data})}
     </MuiThemeProvider>
     )}
     </Mutation>
