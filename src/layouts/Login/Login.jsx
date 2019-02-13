@@ -98,7 +98,7 @@ function SignIn(props) {
             <Typography component="h1" variant="h5">
               Sign in
           </Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={ e => e.preventDefault()} >
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input id="email" name="email" autoComplete="email" autoFocus />
@@ -122,6 +122,8 @@ function SignIn(props) {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={adminLogin}
+                
               >
                 Sign in
           </Button>
@@ -130,7 +132,7 @@ function SignIn(props) {
           <img width="400dp" src={lock} alt="..." />
         </main>
       </div>
-      console.log(data);
+      {console.log({data})}
     </MuiThemeProvider>
     )}
     </Mutation>
