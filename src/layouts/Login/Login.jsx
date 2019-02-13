@@ -117,7 +117,7 @@ class AdminLogin extends Component {
     const { classes } = this.props;
     return (
       <Mutation mutation={ADMIN_LOGIN}>
-        {adminLogin => (
+        {(adminLogin,{data,err,loading}) => (
           <MuiThemeProvider>
             <div className={classes.root}>
               <main className={classes.main}>
@@ -129,6 +129,7 @@ class AdminLogin extends Component {
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
+                  {console.log(data)}
                   <form
                     className={classes.form}
                     onSubmit={e => e.preventDefault()}
