@@ -86,7 +86,7 @@ function SignIn(props) {
   return (
 
     <Mutation mutation={AdminLogin}>
-    {(adminLogin,{data}) => (
+    {(adminLogin,{loading,error,data}) => (
     <MuiThemeProvider>
       <div className={classes.root}>
         <main className={classes.main}>
@@ -132,6 +132,8 @@ function SignIn(props) {
           <img width="400dp" src={lock} alt="..." />
         </main>
       </div>
+      {console.log({loading})}
+      {console.log({error})}
       {console.log({data})}
     </MuiThemeProvider>
     )}
