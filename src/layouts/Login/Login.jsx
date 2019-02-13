@@ -27,7 +27,7 @@ const AdminLogin = gql
   `
 mutation {
   adminLogin(
-    username:"Tony Stark"
+    username:"admin",
     password:"jarvis"
   )
 }
