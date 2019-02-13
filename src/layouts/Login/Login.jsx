@@ -1,72 +1,67 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '../../components/CustomButtons/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
+import Avatar from "@material-ui/core/Avatar";
+import Button from "../../components/CustomButtons/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Input from "@material-ui/core/Input";
 // import Input from '../../components';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
+import InputLabel from "@material-ui/core/InputLabel";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 import lock from "assets/img/drawable/smart_logo.png";
-import { createMuiTheme } from '@material-ui/core';
-import { orange } from '@material-ui/core/colors';
-import { MuiThemeProvider } from 'material-ui/styles';
-import { orange100 } from 'material-ui/styles/colors';
+import { createMuiTheme } from "@material-ui/core";
+import { MuiThemeProvider } from "material-ui/styles";
+import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-import {withApollo} from "react";
-r
-const ADMIN_LOGIN = gql
-  `
-mutation adminLogin($username: String!, $password: String!) {
-  adminLogin(
-    username: $username,
-    password: $password
-  )
-}
-`
+
+const ADMIN_LOGIN = gql`
+  mutation adminLogin($username: String!, $password: String!) {
+    adminLogin(username: $username, password: $password)
+  }
+`;
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: orange100 }, // Purple and green play nicely together.
-    secondary: { main: '#11cb5f' }, // This is just green.A700 as hex.
-  },
-})
+    secondary: { main: "#11cb5f" } // This is just green.A700 as hex.
+  }
+});
 
 const styles = theme => ({
   root: {
     background: "linear-gradient(80deg,#ffa726,#fb8c00)",
     height: "100vh",
-    primary: 'orange',
-    secondary: 'orange',
-    backgroundSize: 'cover',
+    primary: "orange",
+    secondary: "orange",
+    backgroundSize: "cover",
     padding: theme.spacing.unit * 8,
-    margin: '0'
+    margin: "0"
   },
   main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
   },
   paper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
   },
   avatar: {
     margin: theme.spacing.unit,
@@ -78,53 +73,51 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3
-  },
+  }
 });
 
 class AdminLogin extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       form: {
         username: "",
         password: ""
       }
-    }
+    };
   }
 
-  handleUserName = (event) => {
+  handleUserName = event => {
     this.setState({
       form: {
         ...this.state.form,
-        username: event.target.value,
+        username: event.target.value
       }
     });
-  }
-  handlePassword = (event) => {
+  };
+  handlePassword = event => {
     this.setState({
       form: {
         ...this.state.form,
-        password: event.target.value,
+        password: event.target.value
       }
     });
-  }
-  handleClick = async (adminLogin, e) => {
-    let response = await adminLogin({
+  };
+  handleClick = (adminLogin, e) => {
+    adminLogin({
       variables: {
         username: this.state.form.username,
         password: this.state.form.password
       }
-    });
-    if(response) console.log(response);
-    
-
-  }
+    })
+      .then(response => localStorage.setItem("token", response.data.adminLogin))
+      .catch(err => console.log(err));
+  };
   render() {
     const { classes } = this.props;
     return (
-      < Mutation mutation={ADMIN_LOGIN} >
-        {(adminLogin, { loading, error, data }) => (
+      <Mutation mutation={ADMIN_LOGIN}>
+        {adminLogin => (
           <MuiThemeProvider>
             <div className={classes.root}>
               <main className={classes.main}>
@@ -133,11 +126,23 @@ class AdminLogin extends Component {
                   <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                   </Avatar>
-                  <Typography component="h1" variant="h5"> Sign in </Typography>
-                  <form className={classes.form} onSubmit={e => e.preventDefault()} >
+                  <Typography component="h1" variant="h5">
+                    Sign in
+                  </Typography>
+                  <form
+                    className={classes.form}
+                    onSubmit={e => e.preventDefault()}
+                  >
                     <FormControl margin="normal" required fullWidth>
                       <InputLabel htmlFor="email">Email Address</InputLabel>
-                      <Input id="email" name="email" autoComplete="email" onChange={this.handleUserName} value={this.state.form.username} autoFocus />
+                      <Input
+                        id="email"
+                        name="email"
+                        autoComplete="email"
+                        onChange={this.handleUserName}
+                        value={this.state.form.username}
+                        autoFocus
+                      />
                     </FormControl>
                     <FormControl margin="normal" required fullWidth>
                       <InputLabel htmlFor="password">Password</InputLabel>
@@ -146,7 +151,8 @@ class AdminLogin extends Component {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        onChange={this.handlePassword} value={this.state.form.password}
+                        onChange={this.handlePassword}
+                        value={this.state.form.password}
                       />
                     </FormControl>
                     <FormControlLabel
@@ -159,32 +165,24 @@ class AdminLogin extends Component {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      onClick={(e) => this.handleClick(adminLogin, e)}
-
+                      onClick={e => this.handleClick(adminLogin, e)}
                     >
                       Sign in
-          </Button>
-
+                    </Button>
                   </form>
                 </Paper>
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
-
-            {console.log({ data })}
-            {console.log({ error })}
-            {console.log({ loading })}
-
           </MuiThemeProvider>
-        )
-        }  </Mutation>
+        )}
+      </Mutation>
     );
   }
 }
 
-
 AdminLogin.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(withApollo(AdminLogin));
+export default withStyles(styles)(AdminLogin);
