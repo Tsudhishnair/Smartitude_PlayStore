@@ -12,7 +12,7 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
-import FullScreenDialog from "../../../components/Dialog/DialogStudentTable"
+import TableDialog from "../../../components/Dialog/DialogFacultyTable"
 
 import FlatButton from '@material-ui/core/Button/Button'
 
@@ -120,7 +120,7 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <FullScreenDialog onRef={ref => (this.child = ref)} />
+        <TableDialog onRef={ref => (this.child = ref)} />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <ExpansionPanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"2"} />
@@ -154,4 +154,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(dashboardStyle)(Dashboard);

@@ -11,6 +11,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from '@material-ui/core/FormControl';
 
 import ChipInput from 'material-ui-chip-input';
+import Spacing from '../../../components/Spacing/Spacing'
 
 const styles = theme =>
   ({
@@ -53,7 +54,7 @@ function CreateNewFacultyForm(props) {
     <div className={classes.root}>
       <Typography> <strong>Basic Info</strong></Typography>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
@@ -63,13 +64,23 @@ function CreateNewFacultyForm(props) {
             fullWidth
           />
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
             id="email"
             label="Email Address"
             type="email"
+            fullWidth
+          />
+        </GridItem>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="phone"
+            label="Phone Number"
+            type="phone"
             fullWidth
           />
         </GridItem>
@@ -93,19 +104,40 @@ function CreateNewFacultyForm(props) {
             </Select>
           </FormControl>
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="phone"
-            label="Phone Number"
-            type="phone"
-            fullWidth
-          />
+        <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="age-simple">Role</InputLabel>
+            <Select
+              inputProps={{
+                name: 'dept',
+                id: 'dept',
+              }}
+              fullWidth
+            >
+              <MenuItem value="xs">Incharge</MenuItem>
+              <MenuItem value="sm">Faculty</MenuItem>
+            </Select>
+          </FormControl>
         </GridItem>
       </GridContainer>
+      <Spacing/>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12} className={classes.elementPadding}>
+      <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="age-simple">Category</InputLabel>
+            <Select
+              inputProps={{
+                name: 'dept',
+                id: 'dept',
+              }}
+              fullWidth
+            >
+              <MenuItem value="xs">Verbal</MenuItem>
+              <MenuItem value="sm">Ling</MenuItem>
+            </Select>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
           <ChipInput
             defaultValue={['Algebra', 'Motion', 'Quantitative']}
             fullWidth
