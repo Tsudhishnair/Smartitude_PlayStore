@@ -27,8 +27,8 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const header1 = 'Student';
-    const header2 = 'Add a new student';
+    const header1 = 'Faculty';
+    const header2 = 'Add a new faculty member';
     const columns = [{
       name: "Name",
       options: {
@@ -105,8 +105,12 @@ class Dashboard extends React.Component {
     const options = {
       filterType: 'checkbox',
       rowsPerPage: 20,
+      elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
 
+      onRowsSelect: (rowsSelected, allRows) => {
+        console.log(rowsSelected, allRows);
+      },
       onRowClick: (rowData, rowState) => {
         console.log(rowData, rowState);
         this.child.handleClickOpen(rowData)

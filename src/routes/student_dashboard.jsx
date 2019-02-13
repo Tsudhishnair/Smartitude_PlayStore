@@ -11,7 +11,6 @@ import BarChart from "@material-ui/icons/BarChart"
 import NotificationIcon from "@material-ui/icons/QuestionAnswer"
 // core components/views
 import DashboardPage from "../views/Student/Dashboard/Dashboard.jsx";
-import LogOut from "views/Login/Login.jsx";
 import TableList from "views/TableList/TableList.jsx";
 
 import Typography from "views/Typography/Typography.jsx";
@@ -25,62 +24,34 @@ import Results from "../views/Student/Results/Results.jsx";
 
 const dashboardRoutes = [
   {
-    path: "/student_dashboard",
+    path: "/student/dashboard",
     sidebarName: "Dashboard",
     navbarName: "Student Dashboard",
     icon: Dashboard,
     component: DashboardPage
   },
   {
-    path: "/results",
+    path: "/student/results",
     sidebarName: "Results",
     navbarName: "Results",
     icon: BarChart,
     component: Results
   },
   {
-    path: "/notifications",
+    path: "/student/notifications",
     sidebarName: "Notifications",
     navbarName: "Notifications",
     icon: NotificationIcon,
     component: NotificationsPage
   },
-  // {
-  //   path: "/typography",
-  //   sidebarName: "Typography",
-  //   navbarName: "Typography",
-  //   icon: LibraryBooks,
-  //   component: Typography
-  // },
-  // {
-  //   path: "/icons",
-  //   sidebarName: "Icons",
-  //   navbarName: "Icons",
-  //   icon: BubbleChart,
-  //   component: Icons
-  // },
-  // {
-  //   path: "/maps",
-  //   sidebarName: "Maps",
-  //   navbarName: "Map",
-  //   icon: LocationOn,
-  //   component: Maps
-  // },
-  // {
-  //   path: "/notifications",
-  //   sidebarName: "Notifications",
-  //   navbarName: "Notifications",
-  //   icon: Notifications,
-  //   component: NotificationsPage
-  // },
   {
-    path: "/upgrade-to-pro",
+    path: "/student/upgrade-to-pro",
     sidebarName: "Log Out",
     navbarName: "Log Out",
     icon: LogOutIcon,
-    component: LogOut
+    component: NotificationsPage
   },
-  { redirect: true, path: "/", to: "/student_dashboard", navbarName: "Redirect" }
+  { redirect: true, path: "/student", to: "/student/dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;

@@ -11,7 +11,6 @@ import Report from "@material-ui/icons/Assignment";
 
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
-import LogOut from "views/Login/Login.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
 import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
@@ -24,71 +23,70 @@ import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManage
 
 const dashboardRoutes = [
   {
-    path: "/admin_dashboard",
+    path: "/admin/dashboard",
     sidebarName: "Dashboard",
     navbarName: "Admin Dashboard",
     icon: Dashboard,
     component: DashboardPage
   },
   {
-    path: "/student_management",
-    sidebarName: "Student Management",
-    navbarName: "Student Management",
+    path: "/admin/student_management",
+    sidebarName: "Student",
+    navbarName: "Student",
     icon: School,
     component: StudentManage
   },
   {
-    path: "/quiz_management",
-    sidebarName: "Quiz Management",
-    navbarName: "Quiz Management",
+    path: "/admin/faculty_management",
+    sidebarName: "Faculty",
+    navbarName: "Faculty",
+    icon: Person,
+    component: FacultyManage
+  },
+  {
+    path: "/admin/quiz_management",
+    sidebarName: "Quiz",
+    navbarName: "Quiz",
     icon: NotificationIcon,
     component: QuestionManage
   },
-
   {
-    path: "/category_management",
-    sidebarName: "Category Management",
-    navbarName: "Category Management",
+    path: "/admin/category_management",
+    sidebarName: "Category",
+    navbarName: "Category",
     icon: BubbleChart,
     component: CategoryManagement
   },
 
   {
-    path: "/faculty_management",
-    sidebarName: "Faculty Management",
-    navbarName: "Faculty Management",
-    icon: Person,
-    component: FacultyManage
-  },
-  {
-    path: "/dept_management",
-    sidebarName: "Dept Management",
-    navbarName: "Dept Management",
+    path: "/admin/dept_management",
+    sidebarName: "Department",
+    navbarName: "Department",
     icon: Person,
     component: DeptManage
   },
   {
-    path: "/notification_management",
+    path: "/admin/notification_management",
     sidebarName: "Notification",
     navbarName: "Notitfication",
     icon: NotificationIcon,
     component: NotificationManage
   },
   {
-    path: "/report_generation",
+    path: "/admin/report_generation",
     sidebarName: "Report",
     navbarName: "Report",
     icon: Report,
     component: ReportGen
   },
   {
-    path: "/upgrade-to-pro",
+    path: "/admin/upgrade-to-pro",
     sidebarName: "Log Out",
     navbarName: "Log Out",
     icon: LogOutIcon,
-    component: LogOut
+    component: ReportGen
   },
-  { redirect: true, path: "/", to: "/admin_dashboard", navbarName: "Redirect" }
+  { redirect: true, path: "/admin", to: "/admin/dashboard", navbarName: "Redirect" }
 ];
 
 export default dashboardRoutes;

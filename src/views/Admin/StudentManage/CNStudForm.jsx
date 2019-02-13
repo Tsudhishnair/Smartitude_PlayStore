@@ -10,6 +10,8 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from '@material-ui/core/FormControl';
 
+import Spacing from '../../../components/Spacing/Spacing'
+
 import ChipInput from 'material-ui-chip-input';
 
 const styles = theme =>
@@ -84,6 +86,7 @@ function CreateNewFacultyForm(props) {
           />
         </GridItem>
       </GridContainer>
+      <Spacing/>
       <Typography> <strong>College Info</strong></Typography>
       <GridContainer>
         <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>

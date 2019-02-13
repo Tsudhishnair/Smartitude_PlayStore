@@ -100,6 +100,7 @@ class Dashboard extends React.Component {
     const options = {
       filterType: 'checkbox',
       rowsPerPage: 20,
+      elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
 
       onRowClick: (rowData, rowState) => {
@@ -129,6 +130,7 @@ class Dashboard extends React.Component {
                 title={""}
                 data={data}
                 columns={columns}
+                
                 options={options}
               />
             </Card>
