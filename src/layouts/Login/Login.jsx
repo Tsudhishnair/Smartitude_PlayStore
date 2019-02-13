@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '../../components/CustomButtons/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,7 +24,7 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
 
-const AdminLogin = gql
+const Admin_Login = gql
   `
 mutation {
   adminLogin(
@@ -80,66 +81,94 @@ const styles = theme => ({
   },
 });
 
-function SignIn(props) {
-  const { classes } = props;
+class AdminLogin extends Component {
 
-  return (
+  constructor(props) {
+    super(props)
+    this.state = {
+      form: {
+        username: "",
+        password: ""
+      }
+    }
+  }
 
-    <Mutation mutation={AdminLogin}>
-    {(adminLogin,{loading,error,data}) => (
-    <MuiThemeProvider>
-      <div className={classes.root}>
-        <main className={classes.main}>
-          <CssBaseline />
-          <Paper className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-          </Typography>
-            <form className={classes.form} onSubmit={ e => e.preventDefault()} >
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-              </FormControl>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={adminLogin}
-                
-              >
-                Sign in
+  handleUserName = (event) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        username: event.target.value,
+      }
+    });
+  }
+  handlePassword = (event) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        password: event.target.value,
+      }
+    });
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      < Mutation mutation={Admin_Login} >
+        {(adminLogin, { loading, error, data }) => (
+          <MuiThemeProvider>
+            <div className={classes.root}>
+              <main className={classes.main}>
+                <CssBaseline />
+                <Paper className={classes.paper}>
+                  <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                  </Avatar>
+                  <Typography component="h1" variant="h5"> Sign in </Typography>
+                  <form className={classes.form} onSubmit={e => e.preventDefault()} >
+                    <FormControl margin="normal" required fullWidth>
+                      <InputLabel htmlFor="email">Email Address</InputLabel>
+                      <Input id="email" name="email" autoComplete="email" onChange={this.handleUserName} value={this.state.form.username} autoFocus />
+                    </FormControl>
+                    <FormControl margin="normal" required fullWidth>
+                      <InputLabel htmlFor="password">Password</InputLabel>
+                      <Input
+                        name="password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={this.handlePassword} value={this.state.form.password}
+                      />
+                    </FormControl>
+                    <FormControlLabel
+                      control={<Checkbox value="remember" color="primary" />}
+                      label="Remember me"
+                    />
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      onClick={adminLogin}
+
+                    >
+                      Sign in
           </Button>
-            </form>
-          </Paper>
-          <img width="400dp" src={lock} alt="..." />
-        </main>
-      </div>
-    </MuiThemeProvider>
-    )}
-    </Mutation>
-  );
+                  </form>
+                </Paper>
+                <img width="400dp" src={lock} alt="..." />
+              </main>
+            </div>
+          </MuiThemeProvider>
+        )
+        }
+      </Mutation>
+    );
+  }
 }
 
-SignIn.propTypes = {
+
+AdminLogin.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(AdminLogin);
