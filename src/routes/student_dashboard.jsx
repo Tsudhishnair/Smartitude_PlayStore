@@ -7,8 +7,8 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
-import BarChart from "@material-ui/icons/BarChart"
-import NotificationIcon from "@material-ui/icons/QuestionAnswer"
+import BarChart from "@material-ui/icons/BarChart";
+import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 // core components/views
 import DashboardPage from "../views/Student/Dashboard/Dashboard.jsx";
 import TableList from "views/TableList/TableList.jsx";
@@ -19,8 +19,6 @@ import Maps from "views/Maps/Maps.jsx";
 import NotificationsPage from "../views/Student/Notifications/Notifications.jsx";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.jsx";
 import Results from "../views/Student/Results/Results.jsx";
-
-
 
 const dashboardRoutes = [
   {
@@ -51,7 +49,12 @@ const dashboardRoutes = [
     icon: LogOutIcon,
     component: NotificationsPage
   },
-  { redirect: true, path: "/student", to: "/student/dashboard", navbarName: "Redirect" }
+  {
+    redirect: true,
+    path: "/student",
+    to: "/student/dashboard",
+    navbarName: "Redirect"
+  }
 ];
 
 export default dashboardRoutes;
