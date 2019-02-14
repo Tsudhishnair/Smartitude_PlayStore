@@ -5,12 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import ReactSelect from 'react-select'
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from '@material-ui/core/FormControl';
 
-import ChipInput from 'material-ui-chip-input';
+import ReactChipInput from '../../../components/AutoChip/ReactChipSelect';
+import Spacing from '../../../components/Spacing/Spacing'
+
+
+
 
 const styles = theme =>
   ({
@@ -18,7 +23,7 @@ const styles = theme =>
       margin: 0,
       padding: theme.spacing.unit * 10,
       fullWidth: true,
-            marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 2,
       marginBottom: theme.spacing.unit * 2,
       backgroundColor: '#9ee',
       wrap: 'nowrap'
@@ -49,11 +54,48 @@ const styles = theme =>
   });
 function CreateNewFacultyForm(props) {
   const { classes } = props;
+  const options = [
+    { label: 'Afghanistan' },
+    { label: 'Aland Islands' },
+    { label: 'Albania' },
+    { label: 'Algeria' },
+    { label: 'American Samoa' },
+    { label: 'Andorra' },
+    { label: 'Angola' },
+    { label: 'Anguilla' },
+    { label: 'Antarctica' },
+    { label: 'Antigua and Barbuda' },
+    { label: 'Argentina' },
+    { label: 'Armenia' },
+    { label: 'Aruba' },
+    { label: 'Australia' },
+    { label: 'Austria' },
+    { label: 'Azerbaijan' },
+    { label: 'Bahamas' },
+    { label: 'Bahrain' },
+    { label: 'Bangladesh' },
+    { label: 'Barbados' },
+    { label: 'Belarus' },
+    { label: 'Belgium' },
+    { label: 'Belize' },
+    { label: 'Benin' },
+    { label: 'Bermuda' },
+    { label: 'Bhutan' },
+    { label: 'Bolivia, Plurinational State of' },
+    { label: 'Bonaire, Sint Eustatius and Saba' },
+    { label: 'Bosnia and Herzegovina' },
+    { label: 'Botswana' },
+    { label: 'Bouvet Island' },
+    { label: 'Brazil' },
+    { label: 'British Indian Ocean Territory' },
+    { label: 'Brunei Darussalam' },
+  ]
+  
   return (
     <div className={classes.root}>
       <Typography> <strong>Basic Info</strong></Typography>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
@@ -63,13 +105,23 @@ function CreateNewFacultyForm(props) {
             fullWidth
           />
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
             autoFocus
             margin="dense"
             id="email"
             label="Email Address"
             type="email"
+            fullWidth
+          />
+        </GridItem>
+        <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="phone"
+            label="Phone Number"
+            type="phone"
             fullWidth
           />
         </GridItem>
@@ -93,25 +145,50 @@ function CreateNewFacultyForm(props) {
             </Select>
           </FormControl>
         </GridItem>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="phone"
-            label="Phone Number"
-            type="phone"
-            fullWidth
-          />
+        <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="age-simple">Role</InputLabel>
+            <Select
+              inputProps={{
+                name: 'dept',
+                id: 'dept',
+              }}
+              fullWidth
+            >
+              <MenuItem value="xs">Incharge</MenuItem>
+              <MenuItem value="sm">Faculty</MenuItem>
+            </Select>
+          </FormControl>
         </GridItem>
       </GridContainer>
+      <Spacing />
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12} className={classes.elementPadding}>
-          <ChipInput
-            defaultValue={['Algebra', 'Motion', 'Quantitative']}
+        <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="age-simple">Category</InputLabel>
+            <Select
+              inputProps={{
+                name: 'dept',
+                id: 'dept',
+              }}
+              fullWidth
+            >
+              <MenuItem value="xs">Verbal</MenuItem>
+              <MenuItem value="sm">Ling</MenuItem>
+            </Select>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
+          {/* <ReactSelect
+            defaultValue={[options[2], options[3]]}
+            isMulti
+            name="colors"
             fullWidth
-            label='Sub-Categories'
-            placeholder='Type and press enter to add chips'
-          />
+            options={options}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          /> */}
+          <ReactChipInput data={options}/>
         </GridItem>
       </GridContainer>
     </div>
