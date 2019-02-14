@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Redirect } from "react-router-dom";
 
 import lock from "assets/img/drawable/smart_logo.png";
 import { createMuiTheme } from "@material-ui/core";
@@ -113,12 +114,23 @@ class AdminLogin extends Component {
       .then(response => localStorage.setItem("token", response.data.adminLogin))
       .catch(err => console.log(err));
   };
+
+  routing(data) {
+    if (data.data !== undefined && data.data.adminLogin) {
+      return (
+        <Redirect to="/admin" />
+      )
+    }
+  }
   render() {
+
+    let a;
     const { classes } = this.props;
     return (
       <Mutation mutation={ADMIN_LOGIN}>
-        {(adminLogin, { data, err, loading }) => (
-          <MuiThemeProvider>
+        {(adminLogin, data) => (
+          < MuiThemeProvider >
+          
             <div className={classes.root}>
               <main className={classes.main}>
                 <CssBaseline />
@@ -129,6 +141,8 @@ class AdminLogin extends Component {
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
+
+
                   <form
                     className={classes.form}
                     onSubmit={e => e.preventDefault()}
@@ -167,14 +181,16 @@ class AdminLogin extends Component {
                       className={classes.submit}
                       onClick={e => this.handleClick(adminLogin, e)}
                     >
-                      Sign in
+                      Login
                     </Button>
                   </form>
                 </Paper>
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
+            {this.routing(data)}
           </MuiThemeProvider>
+          
         )}
       </Mutation>
     );

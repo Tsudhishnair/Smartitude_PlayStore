@@ -1,7 +1,7 @@
 import StudentDash from "../layouts/StudentPanel/StudentPanel.jsx";
 import AdminLogin from "../layouts/Login/AdminLogin.jsx";
 import StudentLogin from "../layouts/Login/StudentLogin.jsx";
-import FacultyLogin from "../layouts/Login/FacultyLogin.jsx";
+import FacultyLogin from "../layouts/Login/FacultyLogin";
 import Landing from "../layouts/Landing/Landing";
 import AdminDash from "../layouts/AdminPanel/AdminPanel.jsx";
 

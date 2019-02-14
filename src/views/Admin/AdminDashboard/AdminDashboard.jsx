@@ -86,10 +86,10 @@ class AdminDashboard extends React.Component {
                           <p className={classes.cardCategoryWhite}>
                             Add, Remove and Manage Students
                 </p>
-                        </CardBody>
+                        </CardBody> 
                         <CardFooter >
                           <Icon style={{ color: "white" }}>school</Icon>
-                          <Link to="/student_management">
+                          <Link to="/admin/student_management">
                             <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
                           </Link>
                         </CardFooter>
@@ -110,7 +110,7 @@ class AdminDashboard extends React.Component {
                         </CardBody>
                         <CardFooter >
                           <Icon style={{ color: "white" }}>notifications</Icon>
-                          <Link to="/notification_management">
+                          <Link to="/admin/notification_management">
                             <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
                           </Link>
                         </CardFooter>
@@ -129,7 +129,7 @@ class AdminDashboard extends React.Component {
                         </CardBody>
                         <CardFooter >
                           <Icon style={{ color: "white" }}>done_all</Icon>
-                          <Link to="/quiz_management">
+                          <Link to="/admin/quiz_management">
                             <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
                           </Link>
                         </CardFooter>
