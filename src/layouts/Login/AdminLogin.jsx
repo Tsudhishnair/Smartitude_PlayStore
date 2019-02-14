@@ -14,7 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 import lock from "assets/img/drawable/smart_logo.png";
 import { createMuiTheme } from "@material-ui/core";
@@ -117,20 +117,22 @@ class AdminLogin extends Component {
 
   routing(data) {
     if (data.data !== undefined && data.data.adminLogin) {
-      return (
-        <Redirect to="/admin" />
-      )
+      return <Redirect to="/admin" />;
     }
   }
-  render() {
 
-    let a;
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      this.props.history.push("/admin/dashboard");
+    }
+  }
+
+  render() {
     const { classes } = this.props;
     return (
       <Mutation mutation={ADMIN_LOGIN}>
         {(adminLogin, data) => (
-          < MuiThemeProvider >
-          
+          <MuiThemeProvider>
             <div className={classes.root}>
               <main className={classes.main}>
                 <CssBaseline />
@@ -141,7 +143,6 @@ class AdminLogin extends Component {
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
-
 
                   <form
                     className={classes.form}
@@ -190,7 +191,6 @@ class AdminLogin extends Component {
             </div>
             {this.routing(data)}
           </MuiThemeProvider>
-          
         )}
       </Mutation>
     );
@@ -198,7 +198,8 @@ class AdminLogin extends Component {
 }
 
 AdminLogin.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AdminLogin);
+export default withRouter(withStyles(styles)(AdminLogin));
