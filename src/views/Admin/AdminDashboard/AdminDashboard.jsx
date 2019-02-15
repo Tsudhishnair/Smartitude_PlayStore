@@ -32,10 +32,12 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import LinkButton from 'components/LinkButton.jsx'
-import Grow from '@material-ui/core/Grow';
+import LinkButton from "components/LinkButton.jsx";
+import Grow from "@material-ui/core/Grow";
 
 import { bugs, website, server } from "variables/general.jsx";
+
+import { Redirect } from "react-router-dom";
 
 import {
   dailySalesChart,
@@ -44,6 +46,7 @@ import {
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+// import { isLoggedIn } from "../../../Utils";
 
 class AdminDashboard extends React.Component {
   state = {
@@ -53,6 +56,12 @@ class AdminDashboard extends React.Component {
     this.setState({ value });
   };
 
+  componentDidMount() {
+    // if (!isLoggedIn()) {      
+    //   return <Redirect to="/admin/login" />;
+    // }
+  }
+
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
@@ -60,8 +69,6 @@ class AdminDashboard extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        <GridContainer>
-        </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -75,65 +82,117 @@ class AdminDashboard extends React.Component {
                 {/* <h3 className={classes.cardTitle}>Dashboard</h3> */}
                 <p className={classes.cardCategory}>
                   Choose your desired settings from below
-            </p>
+                </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
                     <Grow in={true}>
-                      <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
-
-                        <CardBody >
-                          <h4 className={classes.cardTitleWhite}>Student Management</h4>
+                      <Card
+                        style={{
+                          background:
+                            "linear-gradient(60deg, #66bb6a, #43a047)",
+                          height: "180px"
+                        }}
+                      >
+                        <CardBody>
+                          <h4 className={classes.cardTitleWhite}>
+                            Student Management
+                          </h4>
                           <p className={classes.cardCategoryWhite}>
                             Add, Remove and Manage Students
-                </p>
-                        </CardBody> 
-                        <CardFooter >
+                          </p>
+                        </CardBody>
+                        <CardFooter>
                           <Icon style={{ color: "white" }}>school</Icon>
                           <Link to="/admin/student_management">
-                            <Button round color="success" style={{ marginLeft: 'auto', }}>Manage</Button>
+                            <Button
+                              round
+                              color="success"
+                              style={{ marginLeft: "auto" }}
+                            >
+                              Manage
+                            </Button>
                           </Link>
                         </CardFooter>
-
                       </Card>
                     </Grow>
                   </GridItem>
 
                   <GridItem xs={12} sm={6} md={4}>
-                    <Grow in={true} style={{ transformOrigin: '0 0 0' }}
-                      {...(true ? { timeout: 500 } : {})}>
-                      <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
-                        <CardBody >
-                          <h4 className={classes.cardTitleWhite}>Notification</h4>
+                    <Grow
+                      in={true}
+                      style={{ transformOrigin: "0 0 0" }}
+                      {...(true ? { timeout: 500 } : {})}
+                    >
+                      <Card
+                        style={{
+                          background:
+                            "linear-gradient(60deg, #26c6da, #00acc1)",
+                          height: "180px"
+                        }}
+                      >
+                        <CardBody>
+                          <h4 className={classes.cardTitleWhite}>
+                            Notification
+                          </h4>
                           <p className={classes.cardCategoryWhite}>
-                            Send Notifications for students and faculty and Manage them
-                </p>
+                            Send Notifications for students and faculty and
+                            Manage them
+                          </p>
                         </CardBody>
-                        <CardFooter >
+                        <CardFooter>
                           <Icon style={{ color: "white" }}>notifications</Icon>
                           <Link to="/admin/notification_management">
-                            <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Message</Button>
+                            <Button
+                              round
+                              color="info"
+                              style={{
+                                background: "transparent",
+                                marginLeft: "auto"
+                              }}
+                            >
+                              Message
+                            </Button>
                           </Link>
                         </CardFooter>
                       </Card>
                     </Grow>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Grow in={true} style={{ transformOrigin: '0 0 0' }}
-                      {...(true ? { timeout: 1500 } : {})}>
-                      <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
-                        <CardBody >
-                          <h4 className={classes.cardTitleWhite}>Quiz Management</h4>
+                    <Grow
+                      in={true}
+                      style={{ transformOrigin: "0 0 0" }}
+                      {...(true ? { timeout: 1500 } : {})}
+                    >
+                      <Card
+                        style={{
+                          background:
+                            "linear-gradient(60deg, #ef5350, #e53935)",
+                          height: "180px"
+                        }}
+                      >
+                        <CardBody>
+                          <h4 className={classes.cardTitleWhite}>
+                            Quiz Management
+                          </h4>
                           <p className={classes.cardCategoryWhite}>
                             Assign quizes to students and manage them
-                </p>
+                          </p>
                         </CardBody>
-                        <CardFooter >
+                        <CardFooter>
                           <Icon style={{ color: "white" }}>done_all</Icon>
                           <Link to="/admin/quiz_management">
-                            <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Assign</Button>
+                            <Button
+                              round
+                              color="danger"
+                              style={{
+                                background: "transparent",
+                                marginLeft: "auto"
+                              }}
+                            >
+                              Assign
+                            </Button>
                           </Link>
                         </CardFooter>
-
                       </Card>
                     </Grow>
                   </GridItem>
@@ -154,7 +213,7 @@ class AdminDashboard extends React.Component {
                   4.9/10 <small>points</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats >
+              <CardFooter stats>
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
@@ -173,7 +232,9 @@ class AdminDashboard extends React.Component {
                   <Store />
                 </CardIcon>
                 <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
+                <h3 className={classes.cardTitle}>
+                  420th<small> Postion</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>

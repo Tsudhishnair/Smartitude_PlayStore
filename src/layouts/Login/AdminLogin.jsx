@@ -22,6 +22,7 @@ import { MuiThemeProvider } from "material-ui/styles";
 import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import { loginHandler } from "../../Utils";
 
 const ADMIN_LOGIN = gql`
   mutation adminLogin($username: String!, $password: String!) {
@@ -84,7 +85,8 @@ class AdminLogin extends Component {
       form: {
         username: "",
         password: ""
-      }
+      },
+      redirecter: false
     };
   }
 
@@ -111,24 +113,35 @@ class AdminLogin extends Component {
         password: this.state.form.password
       }
     })
-      .then(response => localStorage.setItem("token", response.data.adminLogin))
+      .then(response => {
+
+        localStorage.setItem("token", response.data.adminLogin);
+
+        if (loginHandler.authenticated()) {
+          this.setState(() => ({
+            redirecter: true
+          }));
+        }
+      })
       .catch(err => console.log(err));
   };
 
-  routing(data) {
-    if (data.data !== undefined && data.data.adminLogin) {
-      return <Redirect to="/admin" />;
-    }
-  }
-
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      this.props.history.push("/admin/dashboard");
+    if (loginHandler.authenticated()) {
+      this.setState(() => ({
+        redirecter: true
+      }));
     }
   }
 
   render() {
     const { classes } = this.props;
+    const { redirecter } = this.state;
+
+    if (redirecter === true) {
+      return <Redirect to="/admin/dashboard" />;
+    }
+
     return (
       <Mutation mutation={ADMIN_LOGIN}>
         {(adminLogin, data) => (
@@ -189,7 +202,7 @@ class AdminLogin extends Component {
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
-            {this.routing(data)}
+            {/* {this.routing(data)} */}
           </MuiThemeProvider>
         )}
       </Mutation>
