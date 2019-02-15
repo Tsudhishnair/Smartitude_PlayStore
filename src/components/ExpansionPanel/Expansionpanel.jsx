@@ -63,11 +63,7 @@ function Expansionpanel(props) {
   {
      layout = <GroupFaculty/>;
   }
-  if(props.directingValue=="3")
-  {
-    
-    layout = <GroupFaculty/>;     
-  }
+  
   if(props.directingValue=="4")
   {
     layout = <CreateStudentForm/>;     
