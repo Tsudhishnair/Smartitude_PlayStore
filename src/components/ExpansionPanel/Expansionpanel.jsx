@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import QuizForm from '../../views/Admin/QuestionManage/QuizForm';
+import QuizForm from '../../views/Admin/QuizManage/QuizForm';
 import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
 import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
 import CreateStudentForm from '../../views/Admin/StudentManage/CNStudForm.jsx';
