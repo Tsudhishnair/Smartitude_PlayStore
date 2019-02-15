@@ -14,6 +14,14 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
 
+import AdminLogin from "./layouts/Login/AdminLogin";
+import FacultyLogin from "./layouts/Login/FacultyLogin";
+import StudentLogin from "./layouts/Login/StudentLogin";
+import AdminPanel from "./layouts/AdminPanel/AdminPanel";
+import StudentPanel from "./layouts/StudentPanel/StudentPanel";
+import Landing from "./layouts/Landing/Landing";
+import { PrivateRoute } from "./routes/PrivateRoute";
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: orange700 }, // Purple and green play nicely together.
@@ -49,9 +57,15 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme}>
       <Router history={hist}>
         <Switch>
-          {indexRoutes.map((prop, key) => {
+          <Route path="/admin/login" component={AdminLogin} />
+          <Route path="/fac/login" component={FacultyLogin} />
+          <Route path="/stud/login" component={StudentLogin} />
+          <PrivateRoute path="/admin/" component={AdminPanel} />
+          <Route path="/student/" component={StudentPanel} />
+          <Route path="/" component={Landing} />
+          {/* {indexRoutes.map((prop, key) => {
             return <Route path={prop.path} component={prop.component} key={key} />;
-          })}
+          })} */}
         </Switch>
       </Router>
     </MuiThemeProvider>
