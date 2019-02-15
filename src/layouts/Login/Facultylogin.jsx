@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Redirect, withRouter } from "react-router-dom";
 
 import lock from "assets/img/drawable/smart_logo.png";
 import { createMuiTheme } from "@material-ui/core";
@@ -22,9 +23,9 @@ import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
-const ADMIN_LOGIN = gql`
-  mutation adminLogin($username: String!, $password: String!) {
-    adminLogin(username: $username, password: $password)
+const FACULTY_LOGIN = gql`
+  mutation facultyLogin($username: String!, $password: String!) {
+    facultyLogin(username: $username, password: $password)
   }
 `;
 
@@ -76,7 +77,7 @@ const styles = theme => ({
   }
 });
 
-class AdminLogin extends Component {
+class FacultyLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -103,21 +104,37 @@ class AdminLogin extends Component {
       }
     });
   };
-  handleClick = (adminLogin, e) => {
-    adminLogin({
+  handleClick = (facultyLogin, e) => {
+    facultyLogin({
       variables: {
         username: this.state.form.username,
         password: this.state.form.password
       }
     })
-      .then(response => localStorage.setItem("token", response.data.adminLogin))
+      .then(response =>
+        localStorage.setItem("token", response.data.facultyLogin)
+      )
       .catch(err => console.log(err));
   };
+
+  routing(data) {
+    if (data.data !== undefined && data.data.facultyLogin) {
+      return <Redirect to="/faculty" />;
+    }
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      this.props.history.push("/faculty/dashboard");
+    }
+  }
+
+
   render() {
     const { classes } = this.props;
     return (
-      <Mutation mutation={ADMIN_LOGIN}>
-        {(adminLogin,{data,err,loading}) => (
+      <Mutation mutation={FACULTY_LOGIN}>
+        {(facultyLogin, data) => (
           <MuiThemeProvider>
             <div className={classes.root}>
               <main className={classes.main}>
@@ -129,7 +146,6 @@ class AdminLogin extends Component {
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
-                  {console.log(data)}
                   <form
                     className={classes.form}
                     onSubmit={e => e.preventDefault()}
@@ -166,15 +182,16 @@ class AdminLogin extends Component {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
-                      onClick={e => this.handleClick(adminLogin, e)}
+                      onClick={e => this.handleClick(facultyLogin, e)}
                     >
-                      Sign in
+                      Login
                     </Button>
                   </form>
                 </Paper>
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
+            {this.routing(data)}
           </MuiThemeProvider>
         )}
       </Mutation>
@@ -182,8 +199,9 @@ class AdminLogin extends Component {
   }
 }
 
-AdminLogin.propTypes = {
-  classes: PropTypes.object.isRequired
+FacultyLogin.propTypes = {
+  classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AdminLogin);
+export default withRouter(withStyles(styles)(FacultyLogin));
