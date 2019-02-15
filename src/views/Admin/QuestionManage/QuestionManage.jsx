@@ -8,7 +8,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import EnhancedTable from "../../Components/Management/Management";
+
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
@@ -23,8 +23,6 @@ class Dashboard extends React.Component {
             <Expansionpanel headers={header1} header={header2} Footer1={"Cancel"} Footer2={"Assign"} directingValue={"1"} />
           </GridItem>
           <GridItem xs={12} sm={12} md={12}>
-
-            <EnhancedTable test={"Q"} />
           </GridItem>
         </GridContainer>
       </div>
