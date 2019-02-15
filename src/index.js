@@ -4,7 +4,6 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 
 import "assets/css/material-dashboard-react.css?v=1.5.0";
-import indexRoutes from "routes/index.jsx";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { orange700 } from "material-ui/styles/colors";
 
@@ -32,6 +31,7 @@ const theme = createMuiTheme({
 
 const hist = createBrowserHistory();
 
+// add authorization header to all requests
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
 
@@ -63,9 +63,6 @@ ReactDOM.render(
           <PrivateRoute path="/admin/" component={AdminPanel} />
           <Route path="/student/" component={StudentPanel} />
           <Route path="/" component={Landing} />
-          {/* {indexRoutes.map((prop, key) => {
-            return <Route path={prop.path} component={prop.component} key={key} />;
-          })} */}
         </Switch>
       </Router>
     </MuiThemeProvider>

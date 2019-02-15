@@ -24,6 +24,7 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
 
+// login mutation query
 const ADMIN_LOGIN = gql`
   mutation adminLogin($username: String!, $password: String!) {
     adminLogin(username: $username, password: $password)
@@ -90,6 +91,7 @@ class AdminLogin extends Component {
     };
   }
 
+  // handle username field
   handleUserName = event => {
     this.setState({
       form: {
@@ -98,6 +100,7 @@ class AdminLogin extends Component {
       }
     });
   };
+  // handle password field
   handlePassword = event => {
     this.setState({
       form: {
@@ -106,6 +109,7 @@ class AdminLogin extends Component {
       }
     });
   };
+  // handle submit button click
   handleClick = (adminLogin, e) => {
     adminLogin({
       variables: {
@@ -114,9 +118,10 @@ class AdminLogin extends Component {
       }
     })
       .then(response => {
-
+        // set token to the auth token received
         localStorage.setItem("token", response.data.adminLogin);
 
+        // check for the value in local storage & update local state accordingly
         if (loginHandler.authenticated()) {
           this.setState(() => ({
             redirecter: true
@@ -126,6 +131,7 @@ class AdminLogin extends Component {
       .catch(err => console.log(err));
   };
 
+  // when component mounts, check for authentication state for redirection
   componentDidMount() {
     if (loginHandler.authenticated()) {
       this.setState(() => ({
@@ -138,6 +144,7 @@ class AdminLogin extends Component {
     const { classes } = this.props;
     const { redirecter } = this.state;
 
+    // if auth token is present in storage, redirect to dashboard
     if (redirecter === true) {
       return <Redirect to="/admin/dashboard" />;
     }
@@ -202,7 +209,6 @@ class AdminLogin extends Component {
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
-            {/* {this.routing(data)} */}
           </MuiThemeProvider>
         )}
       </Mutation>
