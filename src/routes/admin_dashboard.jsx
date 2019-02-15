@@ -10,7 +10,7 @@ import Report from "@material-ui/icons/Assignment";
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
-import QuestionManage from "../views/Admin/QuestionManage/QuestionManage.jsx";
+import QuizManage from "../views/Admin/QuizManage/QuizManage";
 import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DeptManage from "../views/Admin/DeptManage/DeptManage";
@@ -44,7 +44,7 @@ const dashboardRoutes = [
     sidebarName: "Quiz",
     navbarName: "Quiz",
     icon: NotificationIcon,
-    component: QuestionManage
+    component: QuizManage
   },
   {
     path: "/admin/category_management",

@@ -12,7 +12,6 @@ import FormControl from '@material-ui/core/FormControl';
 
 import Spacing from '../../../components/Spacing/Spacing'
 
-import ChipInput from 'material-ui-chip-input';
 
 const styles = theme =>
   ({

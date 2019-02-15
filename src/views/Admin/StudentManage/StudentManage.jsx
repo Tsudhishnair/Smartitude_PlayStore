@@ -5,17 +5,17 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 
 import Exp from "../../../components/ExpansionPanel/Expansionpanel";
-import EnhancedTable from "../../Components/Management/Management";
-import TableDialog from "../../../components/Dialog/DialogStudentTable"
+import TableDialog from "../../../components/Dialog/DialogStudentTable";
 
-import FlatButton from '@material-ui/core/Button/Button'
+import {Query} from "react-apollo";
+import gql from "graphql-tag"; 
+
 
 const styles = theme => ({
   root: {
@@ -23,7 +23,19 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 6,
   },
 });
-
+const dataList = gql`
+{
+  Student{
+      name,
+      username,
+      email,
+      phoneNumber,
+      department,
+      batch,
+      score,
+  }
+}
+`
 class Dashboard extends React.Component {
 
   render() {
@@ -81,20 +93,22 @@ class Dashboard extends React.Component {
     },];
 
     const data = [
-      ["Joe James", "uxxxxx", "CS", "2015", "12345678", "2", "1.0"],
-      ["John Walsh", "uxxxxx", "CS", "2015", "12345678", "7", "5.0"],
-      ["Bob Herm", "uxxxxx", "CS", "2015", "12345678", "5", "5.0"],
-      ["Mebin John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Mahesh Raja", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Muhsin Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["John Hong", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Prejith Prem", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Prabha Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["James John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Sudhish Nair", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["James Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["George Hoj", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-      ["Ashiq Hassan", "uxxxxx", "IT", "2015", "12345678", "1", "8.0"],
+      // ["Joe James", "uxxxxx", "CS", "2015", "12345678", "2", "1.0"],
+      // ["John Walsh", "uxxxxx", "CS", "2015", "12345678", "7", "5.0"],
+      // ["Bob Herm", "uxxxxx", "CS", "2015", "12345678", "5", "5.0"],
+      // ["Mebin John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Mahesh Raja", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Muhsin Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["John Hong", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Prejith Prem", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Prabha Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["James John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Sudhish Nair", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["James Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["George Hoj", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
+      // ["Ashiq Hassan", "uxxxxx", "IT", "2015", "12345678", "1", "8.0"],
+      
+          
     ];
 
     const options = {
