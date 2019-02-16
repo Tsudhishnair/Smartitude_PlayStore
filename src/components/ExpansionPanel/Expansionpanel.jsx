@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import QuizForm from "../../views/Admin/QuizManage/QuizForm";
 import CreateFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
 import CreateStudentForm from "../../views/Admin/StudentManage/CNStudForm.jsx";
-import AddDeptForm from "../../views/Admin/DeptManage/AddDeptForm.jsx";
+import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/StudentBatchAddition";
 
 const styles = theme => ({

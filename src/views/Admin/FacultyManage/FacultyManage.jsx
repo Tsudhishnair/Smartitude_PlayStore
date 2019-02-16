@@ -17,7 +17,7 @@ import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 6
+    marginTop: theme.spacing.unit * 6,
   }
 });
 
