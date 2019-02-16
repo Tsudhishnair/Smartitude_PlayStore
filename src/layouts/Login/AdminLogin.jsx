@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "../../components/CustomButtons/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Input from "@material-ui/core/Input";
-// import Input from '../../components';
-import InputLabel from "@material-ui/core/InputLabel";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+  Input,
+  InputLabel,
+  Typography,
+  Paper
+} from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
 
