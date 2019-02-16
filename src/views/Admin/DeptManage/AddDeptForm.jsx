@@ -102,6 +102,18 @@ class AddDeptForm extends React.Component {
             <img src={this.state.preview} alt="Preview" />
           </GridItem>
         </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12} >
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Desc."
+              type="name"
+              fullWidth
+            />
+          </GridItem>
+        </GridContainer>
       </div >
     )
   }
