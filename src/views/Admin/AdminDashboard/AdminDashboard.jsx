@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-// react plugin for creating charts
-import ChartistGraph from "react-chartist";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
@@ -11,42 +9,20 @@ import Icon from "@material-ui/core/Icon";
 import Store from "@material-ui/icons/People";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
 import Button from "components/CustomButtons/Button.jsx";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Table from "components/Table/Table.jsx";
-import Tasks from "components/Tasks/Tasks.jsx";
-import CustomTabs from "components/CustomTabs/CustomTabs.jsx";
 import Danger from "components/Typography/Danger.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import LinkButton from "components/LinkButton.jsx";
 import Grow from "@material-ui/core/Grow";
 
-import { bugs, website, server } from "variables/general.jsx";
-
-import { Redirect } from "react-router-dom";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.jsx";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-// import { isLoggedIn } from "../../../Utils";
 
 class AdminDashboard extends React.Component {
   state = {
@@ -55,12 +31,6 @@ class AdminDashboard extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value });
   };
-
-  componentDidMount() {
-    // if (!isLoggedIn()) {      
-    //   return <Redirect to="/admin/login" />;
-    // }
-  }
 
   handleChangeIndex = index => {
     this.setState({ value: index });
