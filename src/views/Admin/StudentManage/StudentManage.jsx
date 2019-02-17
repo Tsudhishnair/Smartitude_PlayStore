@@ -83,7 +83,7 @@ class Dashboard extends React.Component {
 
     const dataList = gql`
       {
-        student {
+        students  {
           _id
           username
           name
