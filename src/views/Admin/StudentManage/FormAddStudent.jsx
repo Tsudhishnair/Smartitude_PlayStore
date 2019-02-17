@@ -1,58 +1,53 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from '@material-ui/core/FormControl';
+import FormControl from "@material-ui/core/FormControl";
+import Spacing from "../../../components/Spacing/Spacing";
 
-import Spacing from '../../../components/Spacing/Spacing'
+const styles = theme => ({
+  formControl: {
+    margin: 0,
+    padding: theme.spacing.unit * 10,
+    fullWidth: true,
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 2,
+    backgroundColor: "#9ee",
+    wrap: "nowrap",
+    minWidth: 120
+  },
+  elementPadding: {
+    padding: "15px",
+    marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 10
+  },
+  container: {
+    display: "flex",
 
+    flexGrow: 1
+  },
+  root: {
+    flexGrow: 1,
+    marginLeft: 10
+  },
+  button: {
+    margin: theme.spacing.unit * 4
+  }
+});
 
-const styles = theme =>
-  ({
-    formControl: {
-      margin: 0,
-      padding: theme.spacing.unit * 10,
-      fullWidth: true,
-      marginTop: theme.spacing.unit * 3,
-      marginBottom: theme.spacing.unit * 2,
-      backgroundColor: '#9ee',
-      wrap: 'nowrap'
-    },
-    elementPadding: {
-      padding: '15px',
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
-      marginTop: theme.spacing.unit * 10,
-    },
-    container: {
-      display: 'flex',
-
-      flexGrow: 1,
-    },
-    root:
-    {
-      flexGrow: 1,
-      marginLeft: 10
-    },
-    formControl: {
-      margin: theme.spacing.unit * 3,
-      minWidth: 120,
-    },
-    button: {
-      margin: theme.spacing.unit * 4,
-    },
-  });
 function CreateNewFacultyForm(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <Typography> <strong>Basic Info</strong></Typography>
+      <Typography>
+        {" "}
+        <strong>Basic Info</strong>
+      </Typography>
       <GridContainer>
         <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
@@ -85,8 +80,11 @@ function CreateNewFacultyForm(props) {
           />
         </GridItem>
       </GridContainer>
-      <Spacing/>
-      <Typography> <strong>College Info</strong></Typography>
+      <Spacing />
+      <Typography>
+        {" "}
+        <strong>College Info</strong>
+      </Typography>
       <GridContainer>
         <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
@@ -103,8 +101,8 @@ function CreateNewFacultyForm(props) {
             <InputLabel htmlFor="age-simple">Department</InputLabel>
             <Select
               inputProps={{
-                name: 'dept',
-                id: 'dept',
+                name: "dept",
+                id: "dept"
               }}
               fullWidth
             >
@@ -128,7 +126,7 @@ function CreateNewFacultyForm(props) {
         </GridItem>
       </GridContainer>
     </div>
-  )
-
+  );
 }
+
 export default withStyles(styles)(CreateNewFacultyForm);

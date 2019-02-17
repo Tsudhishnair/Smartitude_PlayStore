@@ -1,99 +1,91 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import ReactSelect from 'react-select'
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from '@material-ui/core/FormControl';
+import FormControl from "@material-ui/core/FormControl";
 
-import ReactChipInput from '../../../components/AutoChip/ReactChipSelect';
-import Spacing from '../../../components/Spacing/Spacing'
+import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
+import Spacing from "../../../components/Spacing/Spacing";
 
+const styles = theme => ({
+  formControl: {
+    margin: 0,
+    padding: theme.spacing.unit * 10,
+    fullWidth: true,
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    backgroundColor: "#9ee",
+    wrap: "nowrap"
+  },
+  elementPadding: {
+    padding: "15px",
+    marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 10
+  },
+  container: {
+    display: "flex",
 
-
-
-const styles = theme =>
-  ({
-    formControl: {
-      margin: 0,
-      padding: theme.spacing.unit * 10,
-      fullWidth: true,
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
-      backgroundColor: '#9ee',
-      wrap: 'nowrap'
-    },
-    elementPadding: {
-      padding: '15px',
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
-      marginTop: theme.spacing.unit * 10,
-    },
-    container: {
-      display: 'flex',
-
-      flexGrow: 1,
-    },
-    root:
-    {
-      flexGrow: 1,
-      marginLeft: 10
-    },
-    formControl: {
-      margin: theme.spacing.unit * 2,
-      minWidth: 120,
-    },
-    button: {
-      margin: theme.spacing.unit * 4,
-    },
-  });
+    flexGrow: 1
+  },
+  root: {
+    flexGrow: 1,
+    marginLeft: 10
+  },
+  button: {
+    margin: theme.spacing.unit * 4
+  }
+});
 function CreateNewFacultyForm(props) {
   const { classes } = props;
   const options = [
-    { label: 'Afghanistan' },
-    { label: 'Aland Islands' },
-    { label: 'Albania' },
-    { label: 'Algeria' },
-    { label: 'American Samoa' },
-    { label: 'Andorra' },
-    { label: 'Angola' },
-    { label: 'Anguilla' },
-    { label: 'Antarctica' },
-    { label: 'Antigua and Barbuda' },
-    { label: 'Argentina' },
-    { label: 'Armenia' },
-    { label: 'Aruba' },
-    { label: 'Australia' },
-    { label: 'Austria' },
-    { label: 'Azerbaijan' },
-    { label: 'Bahamas' },
-    { label: 'Bahrain' },
-    { label: 'Bangladesh' },
-    { label: 'Barbados' },
-    { label: 'Belarus' },
-    { label: 'Belgium' },
-    { label: 'Belize' },
-    { label: 'Benin' },
-    { label: 'Bermuda' },
-    { label: 'Bhutan' },
-    { label: 'Bolivia, Plurinational State of' },
-    { label: 'Bonaire, Sint Eustatius and Saba' },
-    { label: 'Bosnia and Herzegovina' },
-    { label: 'Botswana' },
-    { label: 'Bouvet Island' },
-    { label: 'Brazil' },
-    { label: 'British Indian Ocean Territory' },
-    { label: 'Brunei Darussalam' },
-  ]
-  
+    { label: "Afghanistan" },
+    { label: "Aland Islands" },
+    { label: "Albania" },
+    { label: "Algeria" },
+    { label: "American Samoa" },
+    { label: "Andorra" },
+    { label: "Angola" },
+    { label: "Anguilla" },
+    { label: "Antarctica" },
+    { label: "Antigua and Barbuda" },
+    { label: "Argentina" },
+    { label: "Armenia" },
+    { label: "Aruba" },
+    { label: "Australia" },
+    { label: "Austria" },
+    { label: "Azerbaijan" },
+    { label: "Bahamas" },
+    { label: "Bahrain" },
+    { label: "Bangladesh" },
+    { label: "Barbados" },
+    { label: "Belarus" },
+    { label: "Belgium" },
+    { label: "Belize" },
+    { label: "Benin" },
+    { label: "Bermuda" },
+    { label: "Bhutan" },
+    { label: "Bolivia, Plurinational State of" },
+    { label: "Bonaire, Sint Eustatius and Saba" },
+    { label: "Bosnia and Herzegovina" },
+    { label: "Botswana" },
+    { label: "Bouvet Island" },
+    { label: "Brazil" },
+    { label: "British Indian Ocean Territory" },
+    { label: "Brunei Darussalam" }
+  ];
+
   return (
     <div className={classes.root}>
-      <Typography> <strong>Basic Info</strong></Typography>
+      <Typography>
+        {" "}
+        <strong>Basic Info</strong>
+      </Typography>
       <GridContainer>
         <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
           <TextField
@@ -132,8 +124,8 @@ function CreateNewFacultyForm(props) {
             <InputLabel htmlFor="age-simple">Department</InputLabel>
             <Select
               inputProps={{
-                name: 'dept',
-                id: 'dept',
+                name: "dept",
+                id: "dept"
               }}
               fullWidth
             >
@@ -150,8 +142,8 @@ function CreateNewFacultyForm(props) {
             <InputLabel htmlFor="age-simple">Role</InputLabel>
             <Select
               inputProps={{
-                name: 'dept',
-                id: 'dept',
+                name: "dept",
+                id: "dept"
               }}
               fullWidth
             >
@@ -168,8 +160,8 @@ function CreateNewFacultyForm(props) {
             <InputLabel htmlFor="age-simple">Category</InputLabel>
             <Select
               inputProps={{
-                name: 'dept',
-                id: 'dept',
+                name: "dept",
+                id: "dept"
               }}
               fullWidth
             >
@@ -179,20 +171,10 @@ function CreateNewFacultyForm(props) {
           </FormControl>
         </GridItem>
         <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
-          {/* <ReactSelect
-            defaultValue={[options[2], options[3]]}
-            isMulti
-            name="colors"
-            fullWidth
-            options={options}
-            className="basic-multi-select"
-            classNamePrefix="select"
-          /> */}
-          <ReactChipInput data={options}/>
+          <ReactChipInput style={{ zIndex: 0 }} data={options} />
         </GridItem>
       </GridContainer>
     </div>
-  )
-
+  );
 }
 export default withStyles(styles)(CreateNewFacultyForm);

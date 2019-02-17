@@ -37,8 +37,13 @@ const theme = createMuiTheme({
 });
 
 const styles = theme => ({
+  "@global": {
+    body: {
+      // backgroundColor: theme.palette.common.white,
+      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+    }
+  },
   root: {
-    background: "linear-gradient(80deg,#ffa726,#fb8c00)",
     height: "100vh",
     primary: "orange",
     secondary: "orange",

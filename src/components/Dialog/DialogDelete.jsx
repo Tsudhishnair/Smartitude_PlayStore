@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 
-import Spacing from '../Spacing/Spacing'
+import Spacing from "../Spacing/Spacing";
 const styles = theme => ({
   appBar: {
-    position: 'relative',
+    position: "relative"
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   formControl: {
     margin: 0,
@@ -24,34 +24,27 @@ const styles = theme => ({
     fullWidth: true,
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 2,
-    backgroundColor: '#9ee',
-    wrap: 'nowrap'
+    backgroundColor: "#9ee",
+    wrap: "nowrap"
   },
   elementPadding: {
-    padding: '15px',
-    marginTop: theme.spacing.unit * 2,
+    padding: "15px",
     marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10,
+    marginTop: theme.spacing.unit * 10
   },
   container: {
-    display: 'flex',
+    display: "flex",
 
-    flexGrow: 1,
+    flexGrow: 1
   },
-  root:
-  {
+  root: {
     flexGrow: 1,
     marginLeft: 10
   },
-  formControl: {
-    margin: theme.spacing.unit * 3,
-    minWidth: 120,
-  },
   button: {
-    margin: theme.spacing.unit * 4,
-  },
-}
-);
+    margin: theme.spacing.unit * 4
+  }
+});
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -59,13 +52,13 @@ function Transition(props) {
 class DialogDelete extends React.Component {
   state = {
     open: false,
-    delopen: false,
+    delopen: false
   };
   componentDidMount() {
-    this.props.onRef(this)
+    this.props.onRef(this);
   }
   componentWillUnmount() {
-    this.props.onRef(undefined)
+    this.props.onRef(undefined);
   }
   handleDeleteClickOpen = () => {
     this.setState({ open: true });
@@ -79,34 +72,37 @@ class DialogDelete extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleDeleteClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            This action once done cannot be undone. Please continue with caution.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleDeleteClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={this.handleDeleteClose} color="primary" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleDeleteClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Are you sure you want to delete?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              This action once done cannot be undone. Please continue with
+              caution.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleDeleteClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleDeleteClose} color="primary" autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     );
   }
 }
 
 DialogDelete.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(DialogDelete);

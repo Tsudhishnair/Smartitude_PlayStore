@@ -1,59 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
 
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { DatePicker } from 'material-ui-pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import { DatePicker } from "material-ui-pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputLabel from '@material-ui/core/InputLabel';
-import Divider from '@material-ui/core/Divider';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import Button from "@material-ui/core/Button";
 
-import moment from 'moment';
+import moment from "moment";
 
-const styles = theme =>
-  ({
-    formroot: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    container: {
-      display: 'flex',
-      flexGrow: 1,
-    },
-    root: {
-      display: 'flex',
-      flexWrap: 'nowrap',
-      autoWidth: true,
-    },
-    dateroot: {
-      marginTop: theme.spacing.unit * 2,
-      display: 'flex',
-      flexWrap: 'nowrap',
-      autoWidth: true,
-    },
-    formControl: {
-      marginTop: theme.spacing.unit * 2,
-      marginBottom: theme.spacing.unit * 2,
-      minWidth: 120,
-      display: 'flex',
-      flexGrow: 1,
-    },
-    button: {
-      margin: theme.spacing.unit * 4,
-    },
-  });
+const styles = theme => ({
+  formroot: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  container: {
+    display: "flex",
+    flexGrow: 1
+  },
+  root: {
+    display: "flex",
+    flexWrap: "nowrap",
+    autoWidth: true
+  },
+  date_root: {
+    marginTop: theme.spacing.unit * 2,
+    display: "flex",
+    flexWrap: "nowrap",
+    autoWidth: true
+  },
+  formControl: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    minWidth: 120,
+    display: "flex",
+    flexGrow: 1
+  },
+  button: {
+    margin: theme.spacing.unit * 4
+  }
+});
 class QuizForm extends React.Component {
   state = {
     selectedDate: new Date()
@@ -65,9 +59,12 @@ class QuizForm extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root} >
+      <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
-          <Typography> <strong>Basic Info</strong></Typography>
+          <Typography>
+            {" "}
+            <strong>Basic Info</strong>
+          </Typography>
           <GridContainer>
             <GridItem xs={12} sm={3} md={3} className={classes.container}>
               <TextField
@@ -87,17 +84,18 @@ class QuizForm extends React.Component {
                 fullWidth
               />
             </GridItem>
-            <GridItem xs={12} sm={3} md={3} >
+            <GridItem xs={12} sm={3} md={3}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
-                  className={classes.dateroot}
+                  className={classes.date_root}
                   minDate={this.state.selectedDate}
                   label="Quiz Expiry"
                   clearable
-                  formatDate={(date) => moment(date).format('YYYY-MM-DD')}
+                  formatDate={date => moment(date).format("YYYY-MM-DD")}
                   value={this.state.selectedDate}
                   format="dd/MMM/yyyy"
-                  onChange={this.handleDateChange} />
+                  onChange={this.handleDateChange}
+                />
               </MuiPickersUtilsProvider>
             </GridItem>
             <GridItem xs={12} sm={3} md={3} className={classes.formroot}>
@@ -105,8 +103,8 @@ class QuizForm extends React.Component {
                 <InputLabel htmlFor="age-simple">Batch</InputLabel>
                 <Select
                   inputProps={{
-                    name: 'age',
-                    id: 'age-simple',
+                    name: "age",
+                    id: "age-simple"
                   }}
                   fullWidth
                   autoWidth={true}
@@ -118,15 +116,20 @@ class QuizForm extends React.Component {
               </FormControl>
             </GridItem>
           </GridContainer>
-          <Typography> <strong>Other Info</strong></Typography>
+          <Typography>
+            {" "}
+            <strong>Other Info</strong>
+          </Typography>
           <GridContainer>
             <GridItem xs={12} sm={3} md={3}>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth >Category</InputLabel>
+                <InputLabel htmlFor="age-simple" fullWidth>
+                  Category
+                </InputLabel>
                 <Select
                   inputProps={{
-                    name: 'age',
-                    id: 'age-simple',
+                    name: "age",
+                    id: "age-simple"
                   }}
                   fullWidth
                 >
@@ -141,11 +144,13 @@ class QuizForm extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={3} md={3}>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth >Sub Category</InputLabel>
+                <InputLabel htmlFor="age-simple" fullWidth>
+                  Sub Category
+                </InputLabel>
                 <Select
                   inputProps={{
-                    name: 'age',
-                    id: 'age-simple',
+                    name: "age",
+                    id: "age-simple"
                   }}
                   fullWidth
                 >
@@ -179,12 +184,12 @@ class QuizForm extends React.Component {
             <GridItem xs={12} sm={2} md={2}>
               <Button fullWidth color="primary" className={classes.button}>
                 Add More
-          </Button>
+              </Button>
             </GridItem>
           </GridContainer>
         </form>
-      </div >
-    )
+      </div>
+    );
   }
 }
 export default withStyles(styles)(QuizForm);
