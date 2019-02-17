@@ -1,111 +1,105 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import QuizForm from '../../views/Admin/QuizManage/QuizForm';
-import CreateFacultyForm from '../../views/Admin/FacultyManage/CreateNewFacultyForm';
-import GroupFaculty from '../../views/Admin/FacultyManage/UploadGroupFacultyForm.1.jsx';
-import CreateStudentForm from '../../views/Admin/StudentManage/CNStudForm.jsx';
-import AddDeptForm from '../../views/Admin/DeptManage/AddDeptForm.jsx';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ExpansionPanelActions,
+  Typography,
+  Button,
+  Divider
+} from "@material-ui/core";
+
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import QuizForm from "../../views/Admin/QuizManage/QuizForm";
+import CreateFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
+import CreateStudentForm from "../../views/Admin/StudentManage/CNStudForm.jsx";
+import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
+import StudentGroupManagement from "../../views/Admin/StudentManage/StudentBatchAddition";
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    padding:"1px",
+    width: "100%",
+    padding: "1px"
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
+    fontSize: theme.typography.pxToRem(15)
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   icon: {
-    verticalAlign: 'bottom',
+    verticalAlign: "bottom",
     height: 20,
-    width: 20,
+    width: 20
   },
   column: {
-    flexBasis: '33.33%',
+    flexBasis: "33.33%"
   },
-  details:
-  {
-    alignItems:'center',
-   },
-   formSpacing:
-   {
-     flexGrow:1,
-
-   }
+  details: {
+    alignItems: "center"
+  },
+  formSpacing: {
+    flexGrow: 1
+  }
 });
 
+// TODO: REFACTOR THIS WHOLE THING
+
 function Expansionpanel(props) {
-  const { classes } = props;
+  const { classes, directingValue, header, headers, Footer1, Footer2 } = props;
   let layout;
-  if(props.directingValue=="1")
-  {
-     layout = <QuizForm/>;
+
+  if (directingValue == "1") {
+    layout = <QuizForm />;
+  } else if (directingValue == "2") {
+    layout = <CreateFacultyForm />;
+  } else if (directingValue == "3") {
+    layout = <StudentGroupManagement />;
+  } else if (directingValue == "4") {
+    layout = <CreateStudentForm />;
+  } else if (directingValue == "5") {
+    layout = <AddDeptForm />;
   }
-  if(props.directingValue=="2")
-  {
-     layout = <CreateFacultyForm/>;
-  }
-  if(props.directingValue=="3")
-  {
-     layout = <GroupFaculty/>;
-  }
-  
-  if(props.directingValue=="4")
-  {
-    layout = <CreateStudentForm/>;     
-  }
-  if(props.directingValue=="5")
-  {
-    layout = <AddDeptForm/>;     
-  }
+
   return (
     <div className={classes.root}>
-    
-    <ExpansionPanel >
-      </ExpansionPanel>
-      <ExpansionPanel >
+      <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <div className={classes.column}>
-            <Typography className={classes.heading}>{props.headers}</Typography>
+            <Typography className={classes.heading}>{headers}</Typography>
           </div>
           <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>{props.header}</Typography>
-
+            <Typography className={classes.secondaryHeading}>
+              {header}
+            </Typography>
           </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.formSpacing}>
-            {layout}
+          {layout}
         </ExpansionPanelDetails>
-        <Divider/>
+        <Divider />
         <ExpansionPanelActions>
-          <Button size="small">{props.Footer1}</Button>
+          <Button size="small">{Footer1}</Button>
           <Button size="small" color="primary">
-            {props.Footer2}
+            {Footer2}
           </Button>
         </ExpansionPanelActions>
-      </ExpansionPanel>
-      <ExpansionPanel >
       </ExpansionPanel>
     </div>
   );
 }
 
-ExpansionPanel.propTypes = {
+Expansionpanel.PropTypes = {
   classes: PropTypes.object.isRequired,
+  directingValue: PropTypes.object.isRequired,
+  header: PropTypes.object.isRequired,
+  headers: PropTypes.object.isRequired,
+  Footer1: PropTypes.object.isRequired,
+  Footer2: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Expansionpanel);
