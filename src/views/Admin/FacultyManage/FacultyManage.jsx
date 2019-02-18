@@ -14,6 +14,8 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const styles = theme => ({
   root: {
@@ -72,21 +74,32 @@ class Dashboard extends React.Component {
       }
     ];
 
-    const data = [
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"]
-    ];
+  
+    const dataList = gql`
+    {
+      faculties {
+        _id
+        username
+        name
+        email
+        password
+        phoneNumber
+        department {
+          name
+        }
+        subcategory{
+          name
+        }
+        category{
+          name
+        }
+        isInCharge
+        inChargeSubcategories{
+          name
+        }
+      }
+    }
+  `;
 
     const options = {
       filterType: "checkbox",
@@ -131,12 +144,29 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Faculty List</h4>
               </CardHeader>
-              <MUIDataTable
-                title={""}
-                data={data}
-                columns={columns}
-                options={options}
-              />
+              <Query query={dataList}>
+                {({ data, loading, error }) => {
+                  console.log({ data });
+                  return (
+                    <MUIDataTable
+                      title={""}
+                      data={ !loading ? data.faculties.map(faculty => {
+                        let facultyData = [];
+                        facultyData.push(faculty.name);
+                        facultyData.push(faculty.username);
+                        facultyData.push(faculty.department.name);
+                        facultyData.push(faculty.email);
+                        facultyData.push(faculty.phoneNumber);
+                        facultyData.push(faculty.category.name);
+                        return facultyData;
+                        
+                      }) : "" }
+                      columns={columns}
+                      options={options}
+                    />
+                  );
+                }}
+              </Query>
             </Card>
           </GridItem>
         </GridContainer>
