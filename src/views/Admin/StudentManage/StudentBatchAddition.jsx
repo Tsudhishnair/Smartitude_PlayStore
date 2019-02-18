@@ -1,18 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from "@material-ui/core/FormControl";
-import { DropzoneArea } from "material-ui-dropzone";
 
-import ChipInput from "material-ui-chip-input";
+import ReactDataSheet from "react-datasheet";
+import "react-datasheet/lib/react-datasheet.css";
+import { Button } from "../../../../node_modules/@material-ui/core";
+
+// TODO: SHOW VALID DEPARTMENTS
 
 const styles = theme => ({
   formControl: {
@@ -45,29 +42,975 @@ const styles = theme => ({
   }
 });
 
-function CreateNewFacultyForm(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <Typography>
-        <strong>Basic Info</strong>
-      </Typography>
-      <GridContainer>
-        <GridItem xs={12} sm={6} md={6} className={classes.elementPadding}>
-          <DropzoneArea
-            autoWidth={true}
-            dropzoneText="Click here or drag and drop the file here to upload file"
-            showFileNamesInPreview="true"
-            filesLimit="1"
-          />
-        </GridItem>
-      </GridContainer>
-    </div>
-  );
+class StudentBatchAddition extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.props = props;
+
+    this.state = {
+      grid: [
+        [
+          { value: "username" },
+          { value: "email" },
+          { value: "name" },
+          { value: "password" },
+          { value: "phoneNumber" },
+          { value: "department" },
+          { value: "batch" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ],
+        [
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" },
+          { value: "" }
+        ]
+      ]
+    };
+  }
+
+  handleClick = () => {
+    let rows = this.state.grid;
+    const rowsLength = rows.length;
+
+    for (let i = 1; i < rowsLength; i++) {
+      console.log(rows[i]);
+    }
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <GridContainer>
+          <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
+            <ReactDataSheet
+              data={this.state.grid}
+              valueRenderer={cell => cell.value}
+              overflow="wrap"
+              onCellsChanged={changes => {
+                const grid = this.state.grid.map(row => [...row]);
+                changes.forEach(({ cell, row, col, value }) => {
+                  grid[row][col] = { ...grid[row][col], value };
+                });
+                this.setState({ grid });
+              }}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={this.handleClick}
+            >
+              Validate & Upload
+            </Button>
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
+  }
 }
 
-CreateNewFacultyForm.propTypes = {
+StudentBatchAddition.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CreateNewFacultyForm);
+export default withStyles(styles)(StudentBatchAddition);
