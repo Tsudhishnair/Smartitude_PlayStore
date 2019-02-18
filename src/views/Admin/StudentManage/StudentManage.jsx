@@ -99,23 +99,7 @@ class Dashboard extends React.Component {
         }
       }
     `;
-    // const data = [
-    //   // ["Joe James", "uxxxxx", "CS", "2015", "12345678", "2", "1.0"],
-    //   // ["John Walsh", "uxxxxx", "CS", "2015", "12345678", "7", "5.0"],
-    //   // ["Bob Herm", "uxxxxx", "CS", "2015", "12345678", "5", "5.0"],
-    //   // ["Mebin John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Mahesh Raja", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Muhsin Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["John Hong", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Prejith Prem", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Prabha Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["James John", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Sudhish Nair", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["James Houston", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["George Hoj", "uxxxxx", "CS", "2015", "12345678", "3", "6.1"],
-    //   // ["Ashiq Hassan", "uxxxxx", "IT", "2015", "12345678", "1", "8.0"],
-
-    // ];
+ 
 
     const options = {
       filterType: "checkbox",

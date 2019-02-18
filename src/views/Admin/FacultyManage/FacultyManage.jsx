@@ -73,19 +73,19 @@ class Dashboard extends React.Component {
     ];
 
     const data = [
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"]
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
+    //   ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"]
     ];
 
     const options = {
