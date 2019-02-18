@@ -13,11 +13,12 @@ import CardHeader from "components/Card/CardHeader.jsx";
 
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
+import Spacing from "../../../components/Spacing/Spacing.jsx";
 
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 6,
+    marginTop: theme.spacing.unit * 6
   }
 });
 
@@ -102,7 +103,6 @@ class Dashboard extends React.Component {
       }
     };
 
-
     return (
       <div>
         <TableDialog onRef={ref => (this.child = ref)} />
@@ -124,6 +124,7 @@ class Dashboard extends React.Component {
             />
           </GridItem>
         </GridContainer>
+        <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card className={classes.root}>

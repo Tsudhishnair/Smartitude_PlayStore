@@ -12,7 +12,7 @@ const cardHeaderStyle = {
     marginBottom: "0",
     borderBottom: "none",
     background: "transparent",
-    zIndex: "3 !important",
+    zIndex: "0 !important",
     "&$cardHeaderPlain,&$cardHeaderIcon,&$cardHeaderStats,&$warningCardHeader,&$successCardHeader,&$dangerCardHeader,&$infoCardHeader,&$primaryCardHeader,&$roseCardHeader": {
       margin: "0 15px",
       padding: "0",
