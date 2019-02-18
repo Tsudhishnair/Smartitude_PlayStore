@@ -83,14 +83,16 @@ class Dashboard extends React.Component {
 
     const dataList = gql`
       {
-        students  {
+        students {
           _id
           username
           name
           email
           password
           phoneNumber
-          department
+          department {
+            name
+          }
           batch
           attemptedAdminQuizzes
           attemptedCustomQuizzes
@@ -129,14 +131,6 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <Query query={dataList}>
-          {({ data, loading, error }) => {
-            // return console.log({ loading });
-            // if (!loading) return console.log({ data });
-            console.log("data", data, "loading", loading, "error", error);
-            return <div />;
-          }}
-        </Query>
         <TableDialog onRef={ref => (this.child = ref)} />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -162,12 +156,29 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Student List</h4>
               </CardHeader>
-              <MUIDataTable
-                title={""}
-                // data={data}
-                columns={columns}
-                options={options}
-              />
+              <Query query={dataList}>
+                {({ data, loading, error }) => {
+                  console.log({ data });
+                  return (
+                    <MUIDataTable
+                      title={""}
+                      data={ !loading ? data.students.map(student => {
+                        let studentData = [];
+                        studentData.push(student.name);
+                        studentData.push(student.username);
+                        studentData.push(student.department.name);
+                        studentData.push(student.email);
+                        studentData.push(student.phoneNumber);
+                        studentData.push(student.batch.toString());
+                        return studentData;
+                        
+                      }) : "" }
+                      columns={columns}
+                      options={options}
+                    />
+                  );
+                }}
+              </Query>
             </Card>
           </GridItem>
         </GridContainer>
