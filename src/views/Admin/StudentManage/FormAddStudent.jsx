@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -113,16 +113,25 @@ class CreateNewFacultyForm extends Component {
                 }}
                 fullWidth
               >
+                {/* <MenuItem value="xs">Information Technology</MenuItem>
+                      <MenuItem value="sm">Computer Science</MenuItem>
+                      <MenuItem value="md">Mechanical</MenuItem>
+                      <MenuItem value="lg">Civil</MenuItem>
+                      <MenuItem value="xl">Electrical</MenuItem> */}
                 <Query query={deptquery}>
                   {({ data, loading, error }) => {
-                    console.log(data)
-                    return (<MenuItem value="xs">
-                      {!loading ? data.departments.map(department => {
-                        console.log(department);
-                        { department.name }
-                      }) : " "}
-                    </MenuItem>
-                    );
+                    if (!loading) {
+                      return (<Fragment>
+                        {data.departments.map(department => {
+                          console.log(department);
+                          return <MenuItem value="sm">{department.name}</MenuItem>;
+                        })}
+                      </Fragment>);
+                    }
+
+                    else {
+                      return <Fragment />;
+                    }
                   }}
                 </Query>
               </Select>
