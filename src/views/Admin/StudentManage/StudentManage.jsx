@@ -142,7 +142,7 @@ class Dashboard extends React.Component {
               </CardHeader>
               <Query query={dataList}>
                 {({ data, loading, error }) => {
-                  console.log({ data });
+                
                   return (
                     <MUIDataTable
                       title={""}

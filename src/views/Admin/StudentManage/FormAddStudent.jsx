@@ -9,7 +9,8 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
-
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 const styles = theme => ({
   formControl: {
     margin: 0,
@@ -43,7 +44,7 @@ const styles = theme => ({
 class CreateNewFacultyForm extends Component {
   render() {
     const { classes } = this.props;
-    const deptquery =gql`{
+    const deptquery = gql`{
       departments{
         name
       }
@@ -112,11 +113,18 @@ class CreateNewFacultyForm extends Component {
                 }}
                 fullWidth
               >
-                <MenuItem value="xs">Information Technology</MenuItem>
-                <MenuItem value="sm">Computer Science</MenuItem>
-                <MenuItem value="md">Mechanical</MenuItem>
-                <MenuItem value="lg">Civil</MenuItem>
-                <MenuItem value="xl">Electrical</MenuItem>
+                <Query query={deptquery}>
+                  {({ data, loading, error }) => {
+                    console.log(data)
+                    return (<MenuItem value="xs">
+                      {!loading ? data.departments.map(department => {
+                        console.log(department);
+                        { department.name }
+                      }) : " "}
+                    </MenuItem>
+                    );
+                  }}
+                </Query>
               </Select>
             </FormControl>
           </GridItem>
