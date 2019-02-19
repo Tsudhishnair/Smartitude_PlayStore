@@ -13,8 +13,6 @@ import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import dashboardRoutes from "routes/admin_dashboard.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-
-import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 
 
@@ -44,9 +42,6 @@ class App extends React.Component {
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
-  getRoute() {
-    return this.props.location.pathname !== "/maps";
-  }
   resizeFunction() {
     if (window.innerWidth >= 960) {
       this.setState({ mobileOpen: false });
