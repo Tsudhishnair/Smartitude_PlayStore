@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Component} from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -49,8 +49,9 @@ const styles = theme => ({
 
 // TODO: REFACTOR THIS WHOLE THING
 
-function Expansionpanel(props) {
-  const { classes, directingValue, header, headers, Footer1, Footer2 } = props;
+class Expansionpanel extends Component {
+  render(){
+  const { classes, directingValue, header, headers, Footer1, Footer2 } = this.props;
   let layout;
 
   if (directingValue == "1") {
@@ -91,6 +92,7 @@ function Expansionpanel(props) {
       </ExpansionPanel>
     </div>
   );
+}
 }
 
 Expansionpanel.PropTypes = {
