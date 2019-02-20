@@ -13,7 +13,7 @@ import { Button, Typography } from "../../../../node_modules/@material-ui/core";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-// TODO: SHOW VALID DEPARTMENTS
+// TODO: SHOW VALID DEPART  TS
 
 const styles = theme => ({
   formControl: {
@@ -55,13 +55,13 @@ class StudentBatchAddition extends React.Component {
     this.state = {
       grid: [
         [
-          { value: "username" },
-          { value: "email" },
-          { value: "name" },
-          { value: "password" },
-          { value: "phoneNumber" },
-          { value: "department" },
-          { value: "batch" }
+          { value: "username", readOnly: true },
+          { value: "email", readOnly: true },
+          { value: "name", readOnly: true },
+          { value: "password", readOnly: true },
+          { value: "phoneNumber", readOnly: true },
+          { value: "department", readOnly: true },
+          { value: "batch", readOnly: true }
         ],
         [
           { value: "" },
@@ -1030,6 +1030,7 @@ class StudentBatchAddition extends React.Component {
               data={this.state.grid}
               valueRenderer={cell => cell.value}
               overflow="wrap"
+              fullwidth
               onCellsChanged={changes => {
                 const grid = this.state.grid.map(row => [...row]);
                 changes.forEach(({ cell, row, col, value }) => {

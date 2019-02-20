@@ -45,6 +45,13 @@ class Dashboard extends React.Component {
         }
       },
       {
+        name: "Email",
+        options: {
+          filter: false,
+          sort: true
+        }
+      },
+      {
         name: "Department",
         options: {
           filter: true,
@@ -104,6 +111,7 @@ class Dashboard extends React.Component {
       filterType: "checkbox",
       rowsPerPage: 20,
       elevation: 0,
+      serverSide: "true",
       rowsPerPageOptions: [20, 30, 100, 200],
 
       onRowClick: (rowData, rowState) => {
@@ -141,7 +149,6 @@ class Dashboard extends React.Component {
               </CardHeader>
               <Query query={dataList}>
                 {({ data, loading, error }) => {
-                  console.log({ data });
                   return (
                     <MUIDataTable
                       title={""}
@@ -151,10 +158,12 @@ class Dashboard extends React.Component {
                               let studentData = [];
                               studentData.push(student.name);
                               studentData.push(student.username);
-                              studentData.push(student.department.name);
                               studentData.push(student.email);
-                              studentData.push(student.phoneNumber);
+                              studentData.push(student.department.name);
                               studentData.push(student.batch.toString());
+                              studentData.push(student.phoneNumber);
+                              studentData.push(student.phoneNumber);
+
                               return studentData;
                             })
                           : ""

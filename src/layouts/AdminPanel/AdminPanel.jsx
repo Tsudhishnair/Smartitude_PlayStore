@@ -11,19 +11,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-
 import dashboardRoutes from "routes/admin_dashboard.jsx";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-
-import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
+
 
 const switchRoutes = (
   <Switch>
     {dashboardRoutes.map((prop, key) => {
       if (prop.redirect)
         return <Redirect from={prop.path} to={prop.to} key={key} />;
+      else if (prop.logout)
+        return null;
       return <Route path={prop.path} component={prop.component} key={key} />;
     })}
   </Switch>
@@ -36,13 +35,13 @@ class App extends React.Component {
       mobileOpen: false
     };
     this.resizeFunction = this.resizeFunction.bind(this);
+    if (this.props.logout){
+      this.child.handleClickOpen();
+    }
   }
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
-  getRoute() {
-    return this.props.location.pathname !== "/maps";
-  }
   resizeFunction() {
     if (window.innerWidth >= 960) {
       this.setState({ mobileOpen: false });
@@ -85,7 +84,6 @@ class App extends React.Component {
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
-          {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>
