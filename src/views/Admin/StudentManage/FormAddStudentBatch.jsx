@@ -968,6 +968,8 @@ class StudentBatchAddition extends React.Component {
     };
 
     this.departments = [];
+
+    this.uploadData = [];
   }
 
   handleClick = () => {
@@ -975,14 +977,27 @@ class StudentBatchAddition extends React.Component {
     const rowsLength = rows.length;
 
     for (let i = 1; i < rowsLength; i++) {
-      console.log(rows[i][5].value);
-
-      let found = this.departments.some(element => {
-        return rows[i][5].value === element.username;
+      // console.log("Searcing: ", rows[i]);
+      let found = this.departments.findIndex(element => {
+        return rows[i][5].value === element.name;
       });
+      // console.log("FOund: ", found);
 
-      console.log(found);
+      // handle error
+      if (found != -1) {
+        this.uploadData.push({
+          username: rows[i][0].value,
+          email: rows[i][1].value,
+          name: rows[i][2].value,
+          password: rows[i][3].value,
+          phoneNumber: rows[i][4].value,
+          department: this.departments[found]._id,
+          batch: rows[i][6].value
+        });
+      }
     }
+
+    console.log(this.uploadData);
   };
 
   render() {
@@ -1012,6 +1027,7 @@ class StudentBatchAddition extends React.Component {
                     {!loading
                       ? data.departments.map((department, i, array) => {
                           this.departments.push(department);
+                          // console.log(this.departments);
 
                           if (array.length - 1 == i) {
                             return department.name;
