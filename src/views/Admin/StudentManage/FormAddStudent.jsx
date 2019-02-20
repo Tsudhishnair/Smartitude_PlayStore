@@ -51,8 +51,8 @@ class CreateNewFacultyForm extends Component {
        option:"",
     };
   }
-  OnOptionchange(){
-
+  OnOptionchange = event => {
+      this.setState({option:event.target.value});
   }
     render() {
       const { classes } = this.props;
@@ -120,6 +120,7 @@ class CreateNewFacultyForm extends Component {
                 <InputLabel htmlFor="age-simple">Department</InputLabel>
                 <Select
                   value={this.state.option}
+                  onChange={this.OnOptionchange}
                   inputProps={{
                     name: "dept",
                     id: "dept"
@@ -131,7 +132,7 @@ class CreateNewFacultyForm extends Component {
                       if (!loading) {
                         return (<Fragment>
                           {data.departments.map(department => {
-                            return <MenuItem value="sm" onClick={}>{department.name}</MenuItem>;
+                            return <MenuItem value={department.name} >{department.name}</MenuItem>;
                           })}
                         </Fragment>);
                       }
