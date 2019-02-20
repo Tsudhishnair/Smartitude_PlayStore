@@ -136,6 +136,7 @@ class FormAddStudent extends Component {
                 onOpen={this.handleOpen}
                 onChange={this.handleChange}
                 value={this.state.department}
+                renderValue={value => { return value}}
                 inputProps={{
                   name: "department",
                   id: "dept"
