@@ -19,7 +19,6 @@ const styles = theme => ({
     fullWidth: true,
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
     wrap: "nowrap",
     minWidth: 120
   },
@@ -34,6 +33,7 @@ const styles = theme => ({
     flexGrow: 1
   },
   root: {
+
     flexGrow: 1,
     marginLeft: 10
   },
@@ -52,22 +52,17 @@ class CreateNewStudentForm extends Component {
       open: false,
     }
   }
-  
-  handleOpen = () =>{
-    console.log("open njekki");
-    
-    this.setState({open: true})
+
+  handleOpen = () => {
+    this.setState({ open: true })
   }
-  handleClose = () =>{
-    console.log("close njekki");
-    this.setState({open: false})
+  handleClose = () => {
+    this.setState({ open: false })
   }
   handleChange = value => {
-    if(this.state.open){
-      this.setState({open: false})
+    if (this.state.open) {
+      this.setState({ open: false })
     }
-    console.log('ggdgrd')
-        // console.log(event.target.value);
     this.setState({ department: value });
   }
   render() {
@@ -136,10 +131,10 @@ class CreateNewStudentForm extends Component {
             <FormControl fullWidth>
               <InputLabel htmlFor="dept">Department</InputLabel>
               <Select
-              open = {this.state.open}
-              onClose = {this.handleClose}
-              onOpen = {this.handleOpen}
-              onChange = {this.handleChange}
+                open={this.state.open}
+                onClose={this.handleClose}
+                onOpen={this.handleOpen}
+                onChange={this.handleChange}
                 value={this.state.department}
                 inputProps={{
                   name: "department",
@@ -147,18 +142,19 @@ class CreateNewStudentForm extends Component {
                 }}
                 fullWidth
               >
+                {console.log("state", this.state.department)
+                }
                 <Query query={deptquery}>
                   {({ data, loading, error }) => {
                     if (!loading) {
-                      console.log(data);
-                      
-                        return (<Fragment>
-                          {
-                            data.departments.map(department => {
-                              return <MenuItem onClick={() => this.handleChange(department.name)} value={department.name}>{department.name}</MenuItem>;
-                            })
-                          }
-                        </Fragment>);
+                    
+                      return (<Fragment>
+                        {
+                          data.departments.map(department => {
+                            return <MenuItem onClick={() => this.handleChange(department.name)} value={department.name}>{department.name}</MenuItem>;
+                          })
+                        }
+                      </Fragment>);
                     }
                   }}
                 </Query>
