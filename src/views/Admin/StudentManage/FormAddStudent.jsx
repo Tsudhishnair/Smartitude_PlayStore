@@ -42,7 +42,7 @@ const styles = theme => ({
   }
 });
 
-class CreateNewStudentForm extends Component {
+class FormAddStudent extends Component {
 
   constructor(props) {
     super(props)
@@ -178,4 +178,4 @@ class CreateNewStudentForm extends Component {
 }
 
 
-export default withStyles(styles)(CreateNewStudentForm);
+export default withStyles(styles)(FormAddStudent);
