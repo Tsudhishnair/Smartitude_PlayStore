@@ -11,7 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { th } from "date-fns/esm/locale";
+
 const styles = theme => ({
   formControl: {
     margin: 0,
@@ -42,124 +42,144 @@ const styles = theme => ({
   }
 });
 
-class CreateNewFacultyForm extends Component {
+class CreateNewStudentForm extends Component {
+
   constructor(props) {
-    super(props);
+    super(props)
     this.props = props;
-    this.state=
-    {
-       option:"",
-    };
+    this.state = {
+      department: "",
+      open: false,
+    }
   }
-  OnOptionchange = event => {
-      this.setState({option:event.target.value});
+  
+  handleOpen = () =>{
+    console.log("open njekki");
+    
+    this.setState({open: true})
   }
-    render() {
-      const { classes } = this.props;
-      const deptquery = gql`{
+  handleClose = () =>{
+    console.log("close njekki");
+    this.setState({open: false})
+  }
+  handleChange = value => {
+    if(this.state.open){
+      this.setState({open: false})
+    }
+    console.log('ggdgrd')
+        // console.log(event.target.value);
+    this.setState({ department: value });
+  }
+  render() {
+    const { classes } = this.props;
+    const deptquery = gql`{
       departments{
         name
       }
     }   `;
-      return (
-        <div className={classes.root}>
-          <Typography>
-            {" "}
-            <strong>Basic Info</strong>
-          </Typography>
-          <GridContainer>
-            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                type="name"
+    return (
+      <div className={classes.root}>
+        <Typography>
+          {" "}
+          <strong>Basic Info</strong>
+        </Typography>
+        <GridContainer>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Name"
+              type="name"
+              fullWidth
+            />
+
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="username"
+              label="Username"
+              type="name"
+              fullWidth
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="email"
+              label="Email Address"
+              type="email"
+              fullWidth
+            />
+          </GridItem>
+        </GridContainer>
+        <Spacing />
+        <Typography>
+          {" "}
+          <strong>College Info</strong>
+        </Typography>
+        <GridContainer>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="phone"
+              label="Phone Number"
+              type="phone"
+              fullWidth
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="dept">Department</InputLabel>
+              <Select
+              open = {this.state.open}
+              onClose = {this.handleClose}
+              onOpen = {this.handleOpen}
+              onChange = {this.handleChange}
+                value={this.state.department}
+                inputProps={{
+                  name: "department",
+                  id: "dept"
+                }}
                 fullWidth
-              />
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="username"
-                label="Username"
-                type="name"
-                fullWidth
-              />
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="email"
-                label="Email Address"
-                type="email"
-                fullWidth
-              />
-            </GridItem>
-          </GridContainer>
-          <Spacing />
-          <Typography>
-            {" "}
-            <strong>College Info</strong>
-          </Typography>
-          <GridContainer>
-            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="phone"
-                label="Phone Number"
-                type="phone"
-                fullWidth
-              />
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="age-simple">Department</InputLabel>
-                <Select
-                  value={this.state.option}
-                  onChange={this.OnOptionchange}
-                  inputProps={{
-                    name: "dept",
-                    id: "dept"
-                  }}
-                  fullWidth
-                >
-                  <Query query={deptquery}>
-                    {({ data, loading, error }) => {
-                      if (!loading) {
+              >
+                <Query query={deptquery}>
+                  {({ data, loading, error }) => {
+                    if (!loading) {
+                      console.log(data);
+                      
                         return (<Fragment>
-                          {data.departments.map(department => {
-                            return <MenuItem value={department.name} >{department.name}</MenuItem>;
-                          })}
+                          {
+                            data.departments.map(department => {
+                              return <MenuItem onClick={() => this.handleChange(department.name)} value={department.name}>{department.name}</MenuItem>;
+                            })
+                          }
                         </Fragment>);
-                      }
-
-                      else {
-                        return <Fragment />;
-                      }
-                    }}
-                  </Query>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="batch"
-                label="Batch"
-                type="number"
-                fullWidth
-              />
-            </GridItem>
-          </GridContainer>
-        </div>
-      );
-    }
+                    }
+                  }}
+                </Query>
+              </Select>
+            </FormControl>
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="batch"
+              label="Batch"
+              type="number"
+              fullWidth
+            />
+          </GridItem>
+        </GridContainer>
+      </div>
+    );
   }
+}
 
 
-export default withStyles(styles)(CreateNewFacultyForm);
+export default withStyles(styles)(CreateNewStudentForm);
