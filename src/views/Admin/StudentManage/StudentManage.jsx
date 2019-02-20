@@ -99,7 +99,6 @@ class Dashboard extends React.Component {
         }
       }
     `;
- 
 
     const options = {
       filterType: "checkbox",
@@ -146,17 +145,20 @@ class Dashboard extends React.Component {
                   return (
                     <MUIDataTable
                       title={""}
-                      data={ !loading ? data.students.map(student => {
-                        let studentData = [];
-                        studentData.push(student.name);
-                        studentData.push(student.username);
-                        studentData.push(student.department.name);
-                        studentData.push(student.email);
-                        studentData.push(student.phoneNumber);
-                        studentData.push(student.batch.toString());
-                        return studentData;
-                        
-                      }) : "" }
+                      data={
+                        !loading
+                          ? data.students.map(student => {
+                              let studentData = [];
+                              studentData.push(student.name);
+                              studentData.push(student.username);
+                              studentData.push(student.department.name);
+                              studentData.push(student.email);
+                              studentData.push(student.phoneNumber);
+                              studentData.push(student.batch.toString());
+                              return studentData;
+                            })
+                          : ""
+                      }
                       columns={columns}
                       options={options}
                     />

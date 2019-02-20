@@ -7,7 +7,11 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 
 import ReactDataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
-import { Button } from "../../../../node_modules/@material-ui/core";
+
+import { Button, Typography } from "../../../../node_modules/@material-ui/core";
+
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 // TODO: SHOW VALID DEPARTMENTS
 
@@ -962,6 +966,8 @@ class StudentBatchAddition extends React.Component {
         ]
       ]
     };
+
+    this.departments = [];
   }
 
   handleClick = () => {
@@ -969,17 +975,57 @@ class StudentBatchAddition extends React.Component {
     const rowsLength = rows.length;
 
     for (let i = 1; i < rowsLength; i++) {
-      console.log(rows[i]);
+      console.log(rows[i][5].value);
+
+      let found = this.departments.some(element => {
+        return rows[i][5].value === element.username;
+      });
+
+      console.log(found);
     }
   };
 
   render() {
     const { classes } = this.props;
 
+    const deptList = gql`
+      {
+        departments {
+          _id
+          name
+          description
+        }
+      }
+    `;
+
     return (
       <div className={classes.root}>
         <GridContainer>
-          <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
+          <GridItem xs={12} sm={12} md={12}>
+            <Typography variant="subtitles" gutterBottom>
+              List of valid departments:
+            </Typography>
+            <Query query={deptList}>
+              {({ data, loading, error }) => {
+                return (
+                  <Typography variant="body1">
+                    {!loading
+                      ? data.departments.map((department, i, array) => {
+                          this.departments.push(department);
+
+                          if (array.length - 1 == i) {
+                            return department.name;
+                          } else {
+                            return department.name + ", ";
+                          }
+                        })
+                      : ""}
+                  </Typography>
+                );
+              }}
+            </Query>
+          </GridItem>
+          <GridItem xs={12} sm={9} md={9} className={classes.elementPadding}>
             <ReactDataSheet
               data={this.state.grid}
               valueRenderer={cell => cell.value}
@@ -993,7 +1039,7 @@ class StudentBatchAddition extends React.Component {
               }}
             />
           </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+          <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
             <Button
               variant="contained"
               color="primary"
