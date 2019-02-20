@@ -11,6 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { th } from "date-fns/esm/locale";
 const styles = theme => ({
   formControl: {
     margin: 0,
@@ -42,115 +43,122 @@ const styles = theme => ({
 });
 
 class CreateNewFacultyForm extends Component {
-  render() {
-    const { classes } = this.props;
-    const deptquery = gql`{
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state=
+    {
+       option:"",
+    };
+  }
+  OnOptionchange(){
+
+  }
+    render() {
+      const { classes } = this.props;
+      const deptquery = gql`{
       departments{
         name
       }
     }   `;
-    return (
-      <div className={classes.root}>
-        <Typography>
-          {" "}
-          <strong>Basic Info</strong>
-        </Typography>
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              type="name"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="username"
-              label="Username"
-              type="name"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <Typography>
-          {" "}
-          <strong>College Info</strong>
-        </Typography>
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="phone"
-              label="Phone Number"
-              type="phone"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="age-simple">Department</InputLabel>
-              <Select
-                inputProps={{
-                  name: "dept",
-                  id: "dept"
-                }}
+      return (
+        <div className={classes.root}>
+          <Typography>
+            {" "}
+            <strong>Basic Info</strong>
+          </Typography>
+          <GridContainer>
+            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                type="name"
                 fullWidth
-              >
-                {/* <MenuItem value="xs">Information Technology</MenuItem>
-                      <MenuItem value="sm">Computer Science</MenuItem>
-                      <MenuItem value="md">Mechanical</MenuItem>
-                      <MenuItem value="lg">Civil</MenuItem>
-                      <MenuItem value="xl">Electrical</MenuItem> */}
-                <Query query={deptquery}>
-                  {({ data, loading, error }) => {
-                    if (!loading) {
-                      return (<Fragment>
-                        {data.departments.map(department => {
-                          console.log(department);
-                          return <MenuItem value="sm">{department.name}</MenuItem>;
-                        })}
-                      </Fragment>);
-                    }
-
-                    else {
-                      return <Fragment />;
-                    }
+              />
+            </GridItem>
+            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="username"
+                label="Username"
+                type="name"
+                fullWidth
+              />
+            </GridItem>
+            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="email"
+                label="Email Address"
+                type="email"
+                fullWidth
+              />
+            </GridItem>
+          </GridContainer>
+          <Spacing />
+          <Typography>
+            {" "}
+            <strong>College Info</strong>
+          </Typography>
+          <GridContainer>
+            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="phone"
+                label="Phone Number"
+                type="phone"
+                fullWidth
+              />
+            </GridItem>
+            <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="age-simple">Department</InputLabel>
+                <Select
+                  value={this.state.option}
+                  inputProps={{
+                    name: "dept",
+                    id: "dept"
                   }}
-                </Query>
-              </Select>
-            </FormControl>
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="batch"
-              label="Batch"
-              type="number"
-              fullWidth
-            />
-          </GridItem>
-        </GridContainer>
-      </div>
-    );
+                  fullWidth
+                >
+                  <Query query={deptquery}>
+                    {({ data, loading, error }) => {
+                      if (!loading) {
+                        return (<Fragment>
+                          {data.departments.map(department => {
+                            return <MenuItem value="sm" onClick={}>{department.name}</MenuItem>;
+                          })}
+                        </Fragment>);
+                      }
+
+                      else {
+                        return <Fragment />;
+                      }
+                    }}
+                  </Query>
+                </Select>
+              </FormControl>
+            </GridItem>
+            <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="batch"
+                label="Batch"
+                type="number"
+                fullWidth
+              />
+            </GridItem>
+          </GridContainer>
+        </div>
+      );
+    }
   }
-}
+
 
 export default withStyles(styles)(CreateNewFacultyForm);

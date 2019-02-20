@@ -9,7 +9,7 @@ import ReactDataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 import { Button } from "../../../../node_modules/@material-ui/core";
 
-// TODO: SHOW VALID DEPARTMENTS
+// TODO: SHOW VALID DEPART  TS
 
 const styles = theme => ({
   formControl: {
