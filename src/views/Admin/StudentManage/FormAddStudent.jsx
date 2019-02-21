@@ -143,8 +143,6 @@ class FormAddStudent extends Component {
                 }}
                 fullWidth
               >
-                {console.log("state", this.state.department)
-                }
                 <Query query={deptquery}>
                   {({ data, loading, error }) => {
                     if (!loading) {
