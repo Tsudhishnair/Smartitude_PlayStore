@@ -13,7 +13,8 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import moment from "../QuizManage/QuizForm";
+import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
+import { Mutation } from "react-apollo";
 
 const styles = theme => ({
   formControl: {
@@ -53,8 +54,15 @@ class FormAddStudent extends Component {
     super(props);
     this.props = props;
     this.state = {
-      department: "",
-      open: false
+      deptdrop: { department: "", open: false },
+      assignval: {
+        username: "",
+        name: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        batch: ""
+      }
     };
   }
 
@@ -63,18 +71,22 @@ class FormAddStudent extends Component {
   };
 
   handleOpen = () => {
-    this.setState({ open: true });
+    this.setState({ deptdrop: { open: true } });
   };
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ deptdrop: { open: false } });
   };
   handleChange = value => {
     if (this.state.open) {
-      this.setState({ open: false });
+      this.setState({ deptdrop: { open: false } });
     }
-    this.setState({ department: value });
+    this.setState({ deptdrop: { department: value } });
   };
-
+  handleValuechange = event => {
+    this.setstate({
+      [event.target.assignval.name]: event.target.assignval.value
+    });
+  };
   render() {
     const { classes } = this.props;
     const deptquery = gql`
@@ -84,119 +96,169 @@ class FormAddStudent extends Component {
         }
       }
     `;
+    const Add_Student = gql`
+      mutation addStudent($studentInput: StudentInput!) {
+        addStudent(studentInput: $studentInput) {
+          username
+          name
+          email
+          password
+          phoneNumber
+          department
+          batch
+        }
+      }
+    `;
     return (
-      <div className={classes.root}>
-        <Typography>
-          {" "}
-          <strong>Basic Info</strong>
-        </Typography>
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              type="name"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="username"
-              label="Username"
-              type="name"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <Typography>
-          {" "}
-          <strong>College Info</strong>
-        </Typography>
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="phone"
-              label="Phone Number"
-              type="phone"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="dept">Department</InputLabel>
-              <Select
-                open={this.state.open}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-                onChange={this.handleChange}
-                value={this.state.department}
-                renderValue={value => {
-                  return value;
-                }}
-                inputProps={{
-                  name: "department",
-                  id: "dept"
-                }}
-                fullWidth
-              >
-                {console.log("state", this.state.department)}
-                <Query query={deptquery}>
-                  {({ data, loading, error }) => {
-                    if (!loading) {
-                      return (
-                        <Fragment>
-                          {data.departments.map(department => {
+      <Mutation mutation={Add_Student}>
+        {(addStudent, data) => (
+          <div className={classes.root}>
+            <form onSubmit={e => e.preventDefault()}>
+              <Typography>
+                {" "}
+                <strong>Basic Info</strong>
+              </Typography>
+              <GridContainer>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    type="name"
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="username"
+                    label="Username"
+                    type="name"
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="email"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                  />
+                </GridItem>
+              </GridContainer>
+              <Spacing />
+              <Typography>
+                {" "}
+                <strong>College Info</strong>
+              </Typography>
+              <GridContainer>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="phone"
+                    label="Phone Number"
+                    type="phone"
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="dept">Department</InputLabel>
+                    <Select
+                      open={this.state.deptdrop.open}
+                      onClose={this.handleClose}
+                      onOpen={this.handleOpen}
+                      onChange={this.handleChange}
+                      value={this.state.deptdrop.department}
+                      renderValue={value => {
+                        return value;
+                      }}
+                      inputProps={{
+                        name: "department",
+                        id: "dept"
+                      }}
+                      fullWidth
+                    >
+                      <Query query={deptquery}>
+                        {({ data, loading, error }) => {
+                          if (!loading) {
                             return (
-                              <MenuItem
-                                onClick={() =>
-                                  this.handleChange(department.name)
-                                }
-                                value={department.name}
-                              >
-                                {department.name}
-                              </MenuItem>
+                              <Fragment>
+                                {data.departments.map(department => {
+                                  return (
+                                    <MenuItem
+                                      onClick={() =>
+                                        this.handleChange(department.name)
+                                      }
+                                      value={department.name}
+                                    >
+                                      {department.name}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Fragment>
                             );
-                          })}
-                        </Fragment>
-                      );
-                    }
-                  }}
-                </Query>
-              </Select>
-            </FormControl>
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                className={classes.date_root}
-                minDate={this.state.selectedDate}
-                views={["year"]}
-                label="Batch"
-                value={this.state.selectedDate}
-                onChange={this.handleDateChange}
-                animateYearScrolling
-              />
-            </MuiPickersUtilsProvider>
-          </GridItem>
-        </GridContainer>
-      </div>
+                          }
+                        }}
+                      </Query>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      className={classes.date_root}
+                      minDate={this.state.selectedDate}
+                      views={["year"]}
+                      label="Batch"
+                      value={this.state.selectedDate}
+                      onChange={this.handleDateChange}
+                      animateYearScrolling
+                    />
+                  </MuiPickersUtilsProvider>
+                </GridItem>
+              </GridContainer>
+              <Divider />
+              <ExpansionPanelActions>
+                <Button size="small">Clear</Button>
+                <Button size="small" color="primary">
+                  Assign
+                </Button>
+              </ExpansionPanelActions>
+            </form>
+          </div>
+        )}
+      </Mutation>
     );
   }
 }

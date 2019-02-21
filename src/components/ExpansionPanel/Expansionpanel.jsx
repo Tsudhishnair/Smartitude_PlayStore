@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -50,49 +50,49 @@ const styles = theme => ({
 // TODO: REFACTOR THIS WHOLE THING
 
 class Expansionpanel extends Component {
-  render(){
-  const { classes, directingValue, header, headers, Footer1, Footer2 } = this.props;
-  let layout;
+  render() {
+    const {
+      classes,
+      directingValue,
+      header,
+      headers,
+      Footer1,
+      Footer2
+    } = this.props;
+    let layout;
 
-  if (directingValue == "1") {
-    layout = <QuizForm />;
-  } else if (directingValue == "2") {
-    layout = <CreateFacultyForm />;
-  } else if (directingValue == "3") {
-    layout = <StudentGroupManagement />;
-  } else if (directingValue == "4") {
-    layout = <FormAddStudent />;
-  } else if (directingValue == "5") {
-    layout = <AddDeptForm />;
+    if (directingValue == "1") {
+      layout = <QuizForm />;
+    } else if (directingValue == "2") {
+      layout = <CreateFacultyForm />;
+    } else if (directingValue == "3") {
+      layout = <StudentGroupManagement />;
+    } else if (directingValue == "4") {
+      layout = <FormAddStudent />;
+    } else if (directingValue == "5") {
+      layout = <AddDeptForm />;
+    }
+
+    return (
+      <div className={classes.root}>
+        <ExpansionPanel>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <div className={classes.column}>
+              <Typography className={classes.heading}>{headers}</Typography>
+            </div>
+            <div className={classes.column}>
+              <Typography className={classes.secondaryHeading}>
+                {header}
+              </Typography>
+            </div>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails className={classes.formSpacing}>
+            {layout}
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </div>
+    );
   }
-
-  return (
-    <div className={classes.root}>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <div className={classes.column}>
-            <Typography className={classes.heading}>{headers}</Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              {header}
-            </Typography>
-          </div>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.formSpacing}>
-          {layout}
-        </ExpansionPanelDetails>
-        <Divider />
-        <ExpansionPanelActions>
-          <Button size="small">{Footer1}</Button>
-          <Button size="small" color="primary">
-            {Footer2}
-          </Button>
-        </ExpansionPanelActions>
-      </ExpansionPanel>
-    </div>
-  );
-}
 }
 
 Expansionpanel.PropTypes = {
