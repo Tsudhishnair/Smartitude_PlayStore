@@ -11,9 +11,8 @@ import "react-datasheet/lib/react-datasheet.css";
 import { Button, Typography } from "../../../../node_modules/@material-ui/core";
 
 import { Query } from "react-apollo";
+import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-
-// TODO: SHOW VALID DEPART  TS
 
 const styles = theme => ({
   formControl: {
@@ -45,6 +44,15 @@ const styles = theme => ({
     margin: theme.spacing.unit * 4
   }
 });
+
+// login mutation query
+const BATCH_ADD_STUDENTS = gql`
+  mutation addStudents($studentInputs: [StudentInput!]) {
+    addStudents(studentInputs: $studentInputs) {
+      _id
+    }
+  }
+`;
 
 class StudentBatchAddition extends React.Component {
   constructor(props) {
@@ -972,32 +980,38 @@ class StudentBatchAddition extends React.Component {
     this.uploadData = [];
   }
 
-  handleClick = () => {
+  handleClick = (addStudents, e) => {
     let rows = this.state.grid;
     const rowsLength = rows.length;
 
+    this.uploadData = [];
+
     for (let i = 1; i < rowsLength; i++) {
-      // console.log("Searcing: ", rows[i]);
       let found = this.departments.findIndex(element => {
         return rows[i][5].value === element.name;
       });
-      // console.log("FOund: ", found);
 
-      // handle error
+      // TODO: handle error. show modal for invalid departments
       if (found != -1) {
         this.uploadData.push({
           username: rows[i][0].value,
           email: rows[i][1].value,
           name: rows[i][2].value,
           password: rows[i][3].value,
-          phoneNumber: rows[i][4].value,
+          phoneNumber: Number(rows[i][4].value),
           department: this.departments[found]._id,
-          batch: rows[i][6].value
+          batch: Number(rows[i][6].value)
         });
       }
     }
 
-    console.log(this.uploadData);
+    addStudents({
+      variables: {
+        studentInputs: this.uploadData
+      }
+    })
+      .then(response => console.log(response))
+      .catch(err => console.log(err));
   };
 
   render() {
@@ -1057,14 +1071,18 @@ class StudentBatchAddition extends React.Component {
             />
           </GridItem>
           <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={this.handleClick}
-            >
-              Validate & Upload
-            </Button>
+            <Mutation mutation={BATCH_ADD_STUDENTS}>
+              {addStudents => (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={e => this.handleClick(addStudents, e)}
+                >
+                  Validate & Upload
+                </Button>
+              )}
+            </Mutation>
           </GridItem>
         </GridContainer>
       </div>
