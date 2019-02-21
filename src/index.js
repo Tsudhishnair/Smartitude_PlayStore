@@ -23,7 +23,7 @@ import { PrivateRoute } from "./routes/PrivateRoute";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: orange700 }, // Purple and green play nicely together.
+    primary: { main: "#ff9800" }, // Purple and green play nicely together.
     secondary: { main: orange700 } // This is just green.A700 as hex.
   },
   typography: { useNextVariants: true }

@@ -15,7 +15,7 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import QuizForm from "../../views/Admin/QuizManage/QuizForm";
 import CreateFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
-import CreateStudentForm from "../../views/Admin/StudentManage/FormAddStudent.jsx";
+import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
 import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
 
@@ -61,7 +61,7 @@ class Expansionpanel extends Component {
   } else if (directingValue == "3") {
     layout = <StudentGroupManagement />;
   } else if (directingValue == "4") {
-    layout = <CreateStudentForm />;
+    layout = <FormAddStudent />;
   } else if (directingValue == "5") {
     layout = <AddDeptForm />;
   }

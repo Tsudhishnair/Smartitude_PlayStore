@@ -11,7 +11,7 @@ import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import MUIDataTable from "mui-datatables";
-import TableDialog from "../../../components/Dialog/DialogFacultyTable";
+import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 
 class Dashboard extends React.Component {
