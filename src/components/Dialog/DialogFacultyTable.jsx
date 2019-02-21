@@ -60,7 +60,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class FacultyDialog extends React.Component {
+class DialogFacultyTable extends React.Component {
   state = {
     open: false,
     delopen: false,
@@ -367,8 +367,8 @@ class FacultyDialog extends React.Component {
   }
 }
 
-FacultyDialog.propTypes = {
+DialogFacultyTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(FacultyDialog);
+export default withStyles(styles)(DialogFacultyTable);

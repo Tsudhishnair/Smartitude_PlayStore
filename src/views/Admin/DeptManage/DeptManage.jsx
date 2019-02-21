@@ -18,14 +18,66 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import Grow from "../AdminDashboard/AdminDashboard";
+
 import { Link } from "react-router-dom";
+import Grow from "../AdminDashboard/AdminDashboard";
 
 class DeptManage extends React.Component {
   render() {
     const { classes } = this.props;
     let header1 = "Dept";
     let header2 = "Add new department";
+    let data = [
+      {
+        dept_id: "124",
+        dept_name: "Computer Science",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering.",},
+      {
+        dept_id: "123",
+        dept_name: "Information Technology",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+      },
+      {
+        dept_id: "124",
+        dept_name: "Mechanical Engineering",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+      }
+    ];
+    const Frameworks = props => {
+      return (
+        <React.Fragment>
+          {props.items.map(item => (
+            <React.Fragment key={item.id}>
+              <GridItem xs={12} sm={6} md={4}>
+                <Card>
+                  <CardBody>
+                    <h4 className={classes.cardTitle}>
+                      {item.dept_name}
+                    </h4>
+                    <p className={classes.cardCategory}>
+                      {item.dept_desc}
+                    </p>
+                  </CardBody>
+                  <CardFooter>
+                    <Icon style={{ color: "white" }}>school</Icon>
+                    <Button
+                      round
+                      color="success"
+                      style={{ marginLeft: "auto" }}
+                    >
+                      Manage
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </GridItem>
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      );
+    };
     return (
       <div>
         <Expansionpanel
@@ -36,48 +88,7 @@ class DeptManage extends React.Component {
           directingValue={"5"}
         />
         <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Choose your desired test type below
-                </p>
-              </CardHeader>
-              <CardBody>
-                {/* <h3 className={classes.cardTitle}>Dashboard</h3> */}
-                <p className={classes.cardCategory}>
-                  Choose your desired settings from below
-                </p>
-                <GridContainer>
-                  <GridItem xs={12} sm={6} md={4}>
-                    <Grow in={true}>
-                      <Card>
-                        <CardBody>
-                          <h4 className={classes.cardTitleWhite}>
-                            Student Management
-                          </h4>
-                          <p className={classes.cardCategoryWhite}>
-                            Add, Remove and Manage Students
-                          </p>
-                        </CardBody>
-                        <CardFooter>
-                          <Icon style={{ color: "white" }}>school</Icon>
-                          <Button
-                            round
-                            color="success"
-                            style={{ marginLeft: "auto" }}
-                          >
-                            Manage
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    </Grow>
-                  </GridItem>
-                </GridContainer>
-              </CardBody>
-            </Card>
-          </GridItem>
+          <Frameworks items={data} />
         </GridContainer>
       </div>
     );
