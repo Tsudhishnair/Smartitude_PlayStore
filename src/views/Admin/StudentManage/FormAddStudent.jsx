@@ -82,9 +82,12 @@ class FormAddStudent extends Component {
     }
     this.setState({ deptdrop: { department: value } });
   };
-  handleValuechange = event => {
-    this.setstate({
-      [event.target.assignval.name]: event.target.assignval.value
+  handleValueChange = event => {
+    this.setState({
+      assignval: {
+        ...this.state.assignval,
+        [event.target.name]: event.target.value
+      }
     });
   };
   render() {
@@ -130,7 +133,10 @@ class FormAddStudent extends Component {
                     margin="dense"
                     id="name"
                     label="Name"
-                    type="name"
+                    type="text"
+                    name="name"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.name}
                     fullWidth
                   />
                 </GridItem>
