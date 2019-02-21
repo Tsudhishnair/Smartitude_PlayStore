@@ -19,9 +19,6 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
-import { Link } from "react-router-dom";
-import Grow from "../AdminDashboard/AdminDashboard";
-
 class DeptManage extends React.Component {
   render() {
     const { classes } = this.props;
