@@ -33,12 +33,6 @@ const ADMIN_LOGIN = gql`
   }
 `;
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: orange100 }, // Purple and green play nicely together.
-    secondary: { main: "#11cb5f" } // This is just green.A700 as hex.
-  }
-});
 
 const styles = theme => ({
   "@global": {

@@ -61,6 +61,7 @@ class FormAddStudent extends Component {
         email: "",
         password: "",
         phoneNumber: "",
+        department:"",
         batch: ""
       }
     };
@@ -114,7 +115,7 @@ class FormAddStudent extends Component {
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {(addStudent, data) => (
+        {(addStudent) => (
           <div className={classes.root}>
             <form onSubmit={e => e.preventDefault()}>
               <Typography>
@@ -151,7 +152,10 @@ class FormAddStudent extends Component {
                     margin="dense"
                     id="username"
                     label="Username"
-                    type="name"
+                    type="text"
+                    name="username"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.username}
                     fullWidth
                   />
                 </GridItem>
@@ -167,6 +171,9 @@ class FormAddStudent extends Component {
                     id="email"
                     label="Email Address"
                     type="email"
+                    name="email"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.email}
                     fullWidth
                   />
                 </GridItem>
@@ -189,6 +196,9 @@ class FormAddStudent extends Component {
                     id="phone"
                     label="Phone Number"
                     type="phone"
+                    name="phoneNumber"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.phoneNumber}
                     fullWidth
                   />
                 </GridItem>
@@ -200,6 +210,7 @@ class FormAddStudent extends Component {
                       onClose={this.handleClose}
                       onOpen={this.handleOpen}
                       onChange={this.handleChange}
+                      onChange={this.handleValueChange}
                       value={this.state.deptdrop.department}
                       renderValue={value => {
                         return value;
@@ -249,6 +260,7 @@ class FormAddStudent extends Component {
                       label="Batch"
                       value={this.state.selectedDate}
                       onChange={this.handleDateChange}
+                      onChange={this.handleValueChange}
                       animateYearScrolling
                     />
                   </MuiPickersUtilsProvider>

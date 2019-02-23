@@ -55,9 +55,7 @@ class Expansionpanel extends Component {
       classes,
       directingValue,
       header,
-      headers,
-      Footer1,
-      Footer2
+      headers
     } = this.props;
     let layout;
 
