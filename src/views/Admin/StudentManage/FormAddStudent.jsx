@@ -57,11 +57,11 @@ class FormAddStudent extends Component {
       deptdrop: { department: "", open: false },
       assignval: {
         username: "",
-        name: "",
+        mname: "",
         email: "",
         password: "",
         phoneNumber: "",
-        department:"",
+        department: "",
         batch: ""
       }
     };
@@ -115,7 +115,7 @@ class FormAddStudent extends Component {
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {(addStudent) => (
+        {addStudent => (
           <div className={classes.root}>
             <form onSubmit={e => e.preventDefault()}>
               <Typography>
@@ -135,9 +135,9 @@ class FormAddStudent extends Component {
                     id="name"
                     label="Name"
                     type="text"
-                    name="name"
+                    name="mname"
                     onChange={this.handleValueChange}
-                    value={this.state.assignval.name}
+                    value={this.state.assignval.mname}
                     fullWidth
                   />
                 </GridItem>
@@ -269,7 +269,25 @@ class FormAddStudent extends Component {
               <Divider />
               <ExpansionPanelActions>
                 <Button size="small">Clear</Button>
-                <Button size="small" color="primary">
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={e => {
+                    e.preventDefault();
+                    addStudent({
+                      variables: {
+                        id: "1",
+                        username: this.state.assignval.username,
+                        name: this.state.assignval.mname,
+                        email: this.state.assignval.email,
+                        password: this.state.assignval.password,
+                        phoneNumber: this.state.assignval.phoneNumber,
+                        department: this.state.assignval.department,
+                        batch: this.state.assignval.batch,
+                      }
+                    });
+                  }}
+                >
                   Assign
                 </Button>
               </ExpansionPanelActions>
