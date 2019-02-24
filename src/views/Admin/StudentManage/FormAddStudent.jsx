@@ -91,6 +91,22 @@ class FormAddStudent extends Component {
       }
     });
   };
+  handleReset=e=> {
+    this.setState({
+      deptdrop: {
+        department: ""
+      },
+      assignval: {
+        username: "",
+        mname: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        department: "",
+        batch: ""
+      }
+    });
+  }
   render() {
     const { classes } = this.props;
     const deptquery = gql`
@@ -268,7 +284,12 @@ class FormAddStudent extends Component {
               </GridContainer>
               <Divider />
               <ExpansionPanelActions>
-                <Button size="small">Clear</Button>
+                <Button size="small" onClick={
+                  e => {
+                    e.preventDefault();
+                    this.handleReset();
+                  }
+                }>Clear</Button>
                 <Button
                   size="small"
                   color="primary"
@@ -283,7 +304,7 @@ class FormAddStudent extends Component {
                         password: this.state.assignval.password,
                         phoneNumber: this.state.assignval.phoneNumber,
                         department: this.state.assignval.department,
-                        batch: this.state.assignval.batch,
+                        batch: this.state.assignval.batch
                       }
                     });
                   }}
