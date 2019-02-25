@@ -139,7 +139,9 @@ class FormAddStudent extends Component {
           email
           password
           phoneNumber
-          department 
+          department {
+            name
+          }
           batch
         }
       }
