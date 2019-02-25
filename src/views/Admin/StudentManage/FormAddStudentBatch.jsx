@@ -45,7 +45,7 @@ const styles = theme => ({
   }
 });
 
-// login mutation query
+//add students mutation query
 const BATCH_ADD_STUDENTS = gql`
   mutation addStudents($studentInputs: [StudentInput!]) {
     addStudents(studentInputs: $studentInputs) {
@@ -60,6 +60,7 @@ class StudentBatchAddition extends React.Component {
 
     this.props = props;
 
+    // store data from datasheet
     this.state = {
       grid: [
         [
@@ -975,24 +976,32 @@ class StudentBatchAddition extends React.Component {
       ]
     };
 
+    // store list of departments
     this.departments = [];
 
+    // store list of data that is going to be uplaoded
     this.uploadData = [];
   }
 
+  // called on click of valiate & upload button
   handleClick = (addStudents, e) => {
+    // temporarily store datasheet values
     let rows = this.state.grid;
     const rowsLength = rows.length;
 
+    // clear upload data
     this.uploadData = [];
 
+    // run loop for each row in the datasheet
     for (let i = 1; i < rowsLength; i++) {
+      // found contains the index of the dept that was found from the search
       let found = this.departments.findIndex(element => {
         return rows[i][5].value === element.name;
       });
 
-      // TODO: handle error. show modal for invalid departments
+      // if department is found
       if (found !== -1) {
+        // check if any of the values are null
         if (
           !rows[i][0].value ||
           !rows[i][1].value ||
@@ -1000,9 +1009,12 @@ class StudentBatchAddition extends React.Component {
           !rows[i][3].value ||
           Number(!rows[i][0].value)
         ) {
+          // stop the loop if there is an error in input
           alert("Student could not be validated. Please check your input!");
+          break;
         }
 
+        // gather data to be uploaded
         this.uploadData.push({
           username: rows[i][0].value,
           email: rows[i][1].value,
@@ -1013,12 +1025,14 @@ class StudentBatchAddition extends React.Component {
           batch: Number(rows[i][6].value)
         });
       } else if (found === -1 && !!rows[i][0].value) {
+        //if department was not found while there was a valid entry, notify user
         alert(
           "You have entered an invalid department. Please check the departments that you have entered"
         );
       }
     }
 
+    // set variables of the mutation and call mutation
     addStudents({
       variables: {
         studentInputs: this.uploadData
@@ -1031,6 +1045,7 @@ class StudentBatchAddition extends React.Component {
   render() {
     const { classes } = this.props;
 
+    // initialise query to get list of all departments
     const deptList = gql`
       {
         departments {
@@ -1054,9 +1069,10 @@ class StudentBatchAddition extends React.Component {
                   <Typography variant="body1">
                     {!loading
                       ? data.departments.map((department, i, array) => {
+                          // add department to list of departments
                           this.departments.push(department);
-                          // console.log(this.departments);
 
+                          // display the list of valid departments to admin
                           if (array.length - 1 == i) {
                             return department.name;
                           } else {
