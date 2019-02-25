@@ -111,7 +111,6 @@ class Dashboard extends React.Component {
       filterType: "checkbox",
       rowsPerPage: 20,
       elevation: 0,
-      serverSide: "true",
       rowsPerPageOptions: [20, 30, 100, 200],
 
       onRowClick: (rowData, rowState) => {
