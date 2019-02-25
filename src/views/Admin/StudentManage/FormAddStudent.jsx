@@ -47,7 +47,7 @@ const styles = theme => ({
 
 class FormAddStudent extends Component {
   state = {
-    selectedDate: new Date()
+    selectedDate: ""
   };
 
   constructor(props) {
@@ -308,7 +308,7 @@ class FormAddStudent extends Component {
                       </Select>
                     </FormControl>
                   </GridItem>
-                  <GridItem
+                  {/* <GridItem
                     xs={12}
                     sm={4}
                     md={4}
@@ -322,9 +322,30 @@ class FormAddStudent extends Component {
                         label="Batch"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
+                        
+                        disableFuture="true"
                         animateYearScrolling
                       />
+                      {console.log(this.state.selectedDate)}
                     </MuiPickersUtilsProvider>
+                  </GridItem> */}
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="phone"
+                      label="batch"
+                      type="number"
+                      name="batch"
+                      onChange={this.handleValueChange}
+                      value={this.state.assignval.batch}
+                      fullWidth
+                    />
                   </GridItem>
                 </GridContainer>
                 <Divider />
