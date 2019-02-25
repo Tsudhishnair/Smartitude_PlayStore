@@ -54,7 +54,7 @@ class FormAddStudent extends Component {
     super(props);
     this.props = props;
     this.state = {
-      deptdrop: { department: "", open: false },
+      deptdrop: { deptid: "", department: "", open: false },
       assignval: {
         username: "",
         mname: "",
@@ -65,10 +65,17 @@ class FormAddStudent extends Component {
         batch: ""
       }
     };
+    this.departments = [];
   }
 
   handleDateChange = date => {
     this.setState({ selectedDate: date });
+    this.setState({
+      assignval: {
+        ...this.state.assignval,
+        batch: date
+      }
+    });
   };
 
   handleOpen = () => {
@@ -77,11 +84,17 @@ class FormAddStudent extends Component {
   handleClose = () => {
     this.setState({ deptdrop: { open: false } });
   };
-  handleChange = value => {
+  handleChange = (value, id) => {
     if (this.state.open) {
       this.setState({ deptdrop: { open: false } });
     }
-    this.setState({ deptdrop: { department: value } });
+    this.setState({ deptdrop: { deptid: id, department: value } });
+    this.setState({
+      assignval: {
+        ...this.state.assignval,
+        department: this.state.deptdrop.deptid
+      }
+    });
   };
   handleValueChange = event => {
     this.setState({
@@ -91,9 +104,10 @@ class FormAddStudent extends Component {
       }
     });
   };
-  handleReset=e=> {
+  handleReset = e => {
     this.setState({
       deptdrop: {
+        deptid: "",
         department: ""
       },
       assignval: {
@@ -106,12 +120,13 @@ class FormAddStudent extends Component {
         batch: ""
       }
     });
-  }
+  };
   render() {
     const { classes } = this.props;
     const deptquery = gql`
       {
         departments {
+          _id
           name
         }
       }
@@ -124,197 +139,228 @@ class FormAddStudent extends Component {
           email
           password
           phoneNumber
-          department
+          department 
           batch
         }
       }
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {addStudent => (
-          <div className={classes.root}>
-            <form onSubmit={e => e.preventDefault()}>
-              <Typography>
-                {" "}
-                <strong>Basic Info</strong>
-              </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Name"
-                    type="text"
-                    name="mname"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.mname}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="username"
-                    label="Username"
-                    type="text"
-                    name="username"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.username}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    label="Email Address"
-                    type="email"
-                    name="email"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.email}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <Spacing />
-              <Typography>
-                {" "}
-                <strong>College Info</strong>
-              </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="phone"
-                    label="Phone Number"
-                    type="phone"
-                    name="phoneNumber"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.phoneNumber}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="dept">Department</InputLabel>
-                    <Select
-                      open={this.state.deptdrop.open}
-                      onClose={this.handleClose}
-                      onOpen={this.handleOpen}
-                      onChange={this.handleChange}
+        {(addStudent, { error }) => {
+          if (error) {
+            console.log(error);
+          }
+          return (
+            <div className={classes.root}>
+              <form onSubmit={e => e.preventDefault()}>
+                <Typography>
+                  <strong>Basic Info</strong>
+                </Typography>
+                <GridContainer>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Name"
+                      type="text"
+                      name="mname"
                       onChange={this.handleValueChange}
-                      value={this.state.deptdrop.department}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "department",
-                        id: "dept"
-                      }}
+                      value={this.state.assignval.mname}
                       fullWidth
-                    >
-                      <Query query={deptquery}>
-                        {({ data, loading, error }) => {
-                          if (!loading) {
-                            return (
-                              <Fragment>
-                                {data.departments.map(department => {
-                                  return (
-                                    <MenuItem
-                                      onClick={() =>
-                                        this.handleChange(department.name)
-                                      }
-                                      value={department.name}
-                                    >
-                                      {department.name}
-                                    </MenuItem>
-                                  );
-                                })}
-                              </Fragment>
-                            );
-                          }
-                        }}
-                      </Query>
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DatePicker
-                      className={classes.date_root}
-                      minDate={this.state.selectedDate}
-                      views={["year"]}
-                      label="Batch"
-                      value={this.state.selectedDate}
-                      onChange={this.handleDateChange}
-                      onChange={this.handleValueChange}
-                      animateYearScrolling
                     />
-                  </MuiPickersUtilsProvider>
-                </GridItem>
-              </GridContainer>
-              <Divider />
-              <ExpansionPanelActions>
-                <Button size="small" onClick={
-                  e => {
-                    e.preventDefault();
-                    this.handleReset();
-                  }
-                }>Clear</Button>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={e => {
-                    e.preventDefault();
-                    addStudent({
-                      variables: {
-                        id: "1",
-                        username: this.state.assignval.username,
-                        name: this.state.assignval.mname,
-                        email: this.state.assignval.email,
-                        password: this.state.assignval.password,
-                        phoneNumber: this.state.assignval.phoneNumber,
-                        department: this.state.assignval.department,
-                        batch: this.state.assignval.batch
-                      }
-                    });
-                  }}
-                >
-                  Assign
-                </Button>
-              </ExpansionPanelActions>
-            </form>
-          </div>
-        )}
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="username"
+                      label="Username"
+                      type="text"
+                      name="username"
+                      onChange={this.handleValueChange}
+                      value={this.state.assignval.username}
+                      fullWidth
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="email"
+                      label="Email Address"
+                      type="email"
+                      name="email"
+                      onChange={this.handleValueChange}
+                      value={this.state.assignval.email}
+                      fullWidth
+                    />
+                  </GridItem>
+
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="password"
+                      label="Password"
+                      type="password"
+                      name="password"
+                      onChange={this.handleValueChange}
+                      value={this.state.assignval.password}
+                      fullWidth
+                    />
+                  </GridItem>
+                </GridContainer>
+                <Spacing />
+                <Typography>
+                  <strong>College Info</strong>
+                </Typography>
+                <GridContainer>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="phone"
+                      label="Phone Number"
+                      type="phone"
+                      name="phoneNumber"
+                      onChange={this.handleValueChange}
+                      value={this.state.assignval.phoneNumber}
+                      fullWidth
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.formControl}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="dept">Department</InputLabel>
+                      <Select
+                        open={this.state.deptdrop.open}
+                        onClose={this.handleClose}
+                        onOpen={this.handleOpen}
+                        onChange={this.handleChange}
+                        value={this.state.deptdrop.department}
+                        renderValue={value => {
+                          return value;
+                        }}
+                        inputProps={{
+                          name: "department",
+                          id: "dept"
+                        }}
+                        fullWidth
+                      >
+                        <Query query={deptquery}>
+                          {({ data, loading, error }) => {
+                            if (!loading) {
+                              return (
+                                <Fragment>
+                                  {data.departments.map(department => {
+                                    return (
+                                      <MenuItem
+                                        onClick={() =>
+                                          this.handleChange(
+                                            department.name,
+                                            department._id
+                                          )
+                                        }
+                                        value={department.name}
+                                        key={department._id}
+                                      >
+                                        {department.name}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Fragment>
+                              );
+                            }
+                          }}
+                        </Query>
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        className={classes.date_root}
+                        minDate={this.state.selectedDate}
+                        views={["year"]}
+                        label="Batch"
+                        value={this.state.selectedDate}
+                        onChange={this.handleDateChange}
+                        animateYearScrolling
+                      />
+                    </MuiPickersUtilsProvider>
+                  </GridItem>
+                </GridContainer>
+                <Divider />
+                <ExpansionPanelActions>
+                  <Button
+                    size="small"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.handleReset();
+                    }}
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={e => {
+                      e.preventDefault();
+                      addStudent({
+                        variables: {
+                          username: this.state.assignval.username,
+                          name: this.state.assignval.mname,
+                          email: this.state.assignval.email,
+                          password: this.state.assignval.password,
+                          phoneNumber: this.state.assignval.phoneNumber,
+                          department: this.state.deptdrop.deptid,
+                          batch: this.state.assignval.batch
+                        }
+                      });
+                    }}
+                  >
+                    Assign
+                  </Button>
+                </ExpansionPanelActions>
+              </form>
+            </div>
+          );
+        }}
       </Mutation>
     );
   }
