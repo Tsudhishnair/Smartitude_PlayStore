@@ -992,7 +992,17 @@ class StudentBatchAddition extends React.Component {
       });
 
       // TODO: handle error. show modal for invalid departments
-      if (found != -1) {
+      if (found !== -1) {
+        if (
+          !rows[i][0].value ||
+          !rows[i][1].value ||
+          !rows[i][2].value ||
+          !rows[i][3].value ||
+          Number(!rows[i][0].value)
+        ) {
+          alert("Student could not be validated. Please check your input!");
+        }
+
         this.uploadData.push({
           username: rows[i][0].value,
           email: rows[i][1].value,
@@ -1002,6 +1012,10 @@ class StudentBatchAddition extends React.Component {
           department: this.departments[found]._id,
           batch: Number(rows[i][6].value)
         });
+      } else if (found === -1 && !!rows[i][0].value) {
+        alert(
+          "You have entered an invalid department. Please check the departments that you have entered"
+        );
       }
     }
 
