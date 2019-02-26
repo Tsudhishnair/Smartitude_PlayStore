@@ -158,7 +158,7 @@ class Dashboard extends React.Component {
                               facultyData.push(faculty.department.name);
                               facultyData.push(faculty.email);
                               facultyData.push(faculty.phoneNumber);
-                              if (!faculty.category.name) {
+                              if (faculty.category) {
                                 facultyData.push(faculty.category.name);
                               }
                               return facultyData;
