@@ -14,7 +14,9 @@ import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
+import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
 
 const styles = theme => ({
   formControl: {
@@ -51,7 +53,7 @@ class CreateNewFacultyForm extends Component {
     this.state = {
       deptdrop: {
         department: "",
-        open: false,
+        open: false
       },
       assignval: {
         username: "",
@@ -60,7 +62,9 @@ class CreateNewFacultyForm extends Component {
         password: "",
         phoneNumber: "",
         department: "",
-        batch: ""
+        subcategory: [],
+        isincharge: "",
+        inChargeSubcategory: []
       }
     };
   }
@@ -98,12 +102,14 @@ class CreateNewFacultyForm extends Component {
       },
       assignval: {
         username: "",
-        mname: "",
+        name: "",
         email: "",
         password: "",
         phoneNumber: "",
         department: "",
-        batch: ""
+        subcategory: [],
+        isincharge: "",
+        inChargeSubcategory: []
       }
     });
   };
@@ -113,6 +119,13 @@ class CreateNewFacultyForm extends Component {
       {
         departments {
           name
+        }
+      }
+    `;
+    const ADD_FACULTY = gql`
+      mutation addFaculty($facultyInput: FacultyInput!) {
+        addFaculty(facultyInput: $facultyInput) {
+          _id
         }
       }
     `;
@@ -154,135 +167,229 @@ class CreateNewFacultyForm extends Component {
     ];
 
     return (
-      <div className={classes.root}>
-        <Typography>
-          <strong>Basic Info</strong>
-        </Typography>
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              type="name"
-              onChange={this.handleChange}
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="username"
-              label="Username"
-              type="username"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="phone"
-              label="Phone Number"
-              type="phone"
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="pssword"
-              label="Password"
-              type="password"
-              fullWidth
-            />
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="age-simple">Department</InputLabel>
-              <Select
-                open={this.state.open}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-                onChange={this.handleChange}
-                value={this.state.department}
-                renderValue={value => { return value }}
-                inputProps={{
-                  name: "department",
-                  id: "dept"
-                }}
-                fullWidth
-              >
-                <Query query={deptquery}>
-                  {({ data, loading, error }) => {
-                    if (!loading) {
-
-                      return (<Fragment>
-                        {
-                          data.departments.map(department => {
-                            return <MenuItem onClick={() => this.handleChange(department.name)} value={department.name}>{department.name}</MenuItem>;
-                          })
-                        }
-                      </Fragment>);
-                    }
+      <Mutation mutation={ADD_FACULTY}>
+        {(addFaculty) => {
+          return (
+            <div className={classes.root}>
+              <Typography>
+                <strong>Basic Info</strong>
+              </Typography>
+              <GridContainer>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    type="name"
+                    name="name"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.name}
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="email"
+                    label="Email Address"
+                    type="email"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.email}
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="username"
+                    label="Username"
+                    type="username"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.username}
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="phone"
+                    label="Phone Number"
+                    type="phone"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.phoneNumber}
+                    fullWidth
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={4}
+                  md={4}
+                  className={classes.elementPadding}
+                >
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="pssword"
+                    label="Password"
+                    type="password"
+                    onChange={this.handleValueChange}
+                    value={this.state.assignval.password}
+                    fullWidth
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="age-simple">Department</InputLabel>
+                    <Select
+                      open={this.state.open}
+                      onClose={this.handleClose}
+                      onOpen={this.handleOpen}
+                      onChange={this.handleChange}
+                      value={this.state.department}
+                      renderValue={value => {
+                        return value;
+                      }}
+                      inputProps={{
+                        name: "department",
+                        id: "dept"
+                      }}
+                      fullWidth
+                    >
+                      <Query query={deptquery}>
+                        {({ data, loading, error }) => {
+                          if (!loading) {
+                            return (
+                              <Fragment>
+                                {data.departments.map(department => {
+                                  return (
+                                    <MenuItem
+                                      onClick={() =>
+                                        this.handleChange(
+                                          department.name,
+                                          department._id
+                                        )
+                                      }
+                                      value={department.name}
+                                    >
+                                      {department.name}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Fragment>
+                            );
+                          }
+                        }}
+                      </Query>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="age-simple">Role</InputLabel>
+                    <Select
+                      inputProps={{
+                        name: "dept",
+                        id: "dept"
+                      }}
+                      fullWidth
+                    >
+                      <MenuItem value="xs">Incharge</MenuItem>
+                      <MenuItem value="sm">Faculty</MenuItem>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+              </GridContainer>
+              <Spacing />
+              <GridContainer>
+                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="age-simple">Category</InputLabel>
+                    <Select
+                      inputProps={{
+                        name: "dept",
+                        id: "dept"
+                      }}
+                      fullWidth
+                    >
+                      <MenuItem value="xs">Verbal</MenuItem>
+                      <MenuItem value="sm">Ling</MenuItem>
+                    </Select>
+                  </FormControl>
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={8}
+                  md={8}
+                  className={classes.elementPadding}
+                >
+                  <ReactChipInput style={{ zIndex: 0 }} data={options} />
+                </GridItem>
+              </GridContainer>
+              <ExpansionPanelActions>
+                <Button
+                  size="small"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.handleReset();
                   }}
-                </Query>
-              </Select>
-            </FormControl>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="age-simple">Role</InputLabel>
-              <Select
-                inputProps={{
-                  name: "dept",
-                  id: "dept"
-                }}
-                fullWidth
-              >
-                <MenuItem value="xs">Incharge</MenuItem>
-                <MenuItem value="sm">Faculty</MenuItem>
-              </Select>
-            </FormControl>
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="age-simple">Category</InputLabel>
-              <Select
-                inputProps={{
-                  name: "dept",
-                  id: "dept"
-                }}
-                fullWidth
-              >
-                <MenuItem value="xs">Verbal</MenuItem>
-                <MenuItem value="sm">Ling</MenuItem>
-              </Select>
-            </FormControl>
-          </GridItem>
-          <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
-            <ReactChipInput style={{ zIndex: 0 }} data={options} />
-          </GridItem>
-        </GridContainer>
-      </div>
+                >
+                  Clear
+                </Button>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={e => {
+                    e.preventDefault();
+                    addFaculty({
+                      variables: {
+                        studentInput: {
+                          username: this.state.assignval.username,
+                          name: this.state.assignval.mname,
+                          email: this.state.assignval.email,
+                          password: this.state.assignval.password,
+                          phoneNumber: this.state.assignval.phoneNumber,
+                          department: this.state.deptdrop.deptid,
+                          batch: parseInt(
+                            this.state.assignval.batch.substring(0, 4)
+                          )
+                        }
+                      }
+                    });
+                  }}
+                >
+                  Assign
+                </Button>
+              </ExpansionPanelActions>
+            </div>
+          );
+        }}
+      </Mutation>
     );
   }
 }
