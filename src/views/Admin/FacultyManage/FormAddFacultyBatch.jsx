@@ -486,7 +486,7 @@ class FacultyBatchAddition extends React.Component {
     // temporarily store datasheet values
     let rows = this.state.grid;
     const rowsLength = rows.length;
-
+    let disablePush = false;
     // clear upload data
     this.uploadData = [];
 
@@ -508,8 +508,10 @@ class FacultyBatchAddition extends React.Component {
           !rows[i][4].value
         ) {
           // stop the loop if there is an error in input
-          alert("Student could not be validated. Please check your input!");
-          break;
+          alert(
+            `Faculty could not be validated at row number: ${i}. Please check your input!`
+          );
+          disablePush = true;
         }
 
         // gather data to be uploaded
@@ -524,19 +526,21 @@ class FacultyBatchAddition extends React.Component {
       } else if (found === -1 && !!rows[i][0].value) {
         //if department was not found while there was a valid entry, notify user
         alert(
-          "You have entered an invalid department. Please check the departments that you have entered"
+          `You have entered an invalid department in row number ${i}. Please check the departments that you have entered and make that entry separately`
         );
       }
     }
 
     // set variables of the mutation and call mutation
-    addFaculties({
-      variables: {
-        facultyInputs: this.uploadData
-      }
-    })
-      .then(response => console.log(response))
-      .catch(err => console.log(err));
+    if (!disablePush) {
+      addFaculties({
+        variables: {
+          facultyInputs: this.uploadData
+        }
+      })
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+    }
   };
 
   render() {
