@@ -46,15 +46,15 @@ const styles = theme => ({
 });
 
 //add students mutation query
-const BATCH_ADD_STUDENTS = gql`
-  mutation addStudents($studentInputs: [StudentInput!]) {
-    addStudents(studentInputs: $studentInputs) {
+const BATCH_ADD_FACULTIES = gql`
+  mutation addStudents($facultyInputs: [FacultyInput!]) {
+    addFaculties(facultyInputs: $facultyInputs) {
       _id
     }
   }
 `;
 
-class StudentBatchAddition extends React.Component {
+class FacultyBatchAddition extends React.Component {
   constructor(props) {
     super(props);
 
@@ -69,8 +69,7 @@ class StudentBatchAddition extends React.Component {
           { value: "name", readOnly: true },
           { value: "password", readOnly: true },
           { value: "phoneNumber", readOnly: true },
-          { value: "department", readOnly: true },
-          { value: "batch", readOnly: true }
+          { value: "department", readOnly: true }
         ],
         [
           { value: "" },
@@ -78,462 +77,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -547,11 +93,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -565,11 +109,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -583,11 +125,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -601,11 +141,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -619,11 +157,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -637,11 +173,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -655,11 +189,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -673,11 +205,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -691,11 +221,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -709,11 +237,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -727,11 +253,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -745,11 +269,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -763,11 +285,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -781,11 +301,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -799,11 +317,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -817,11 +333,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -835,11 +349,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -853,11 +365,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -871,11 +381,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -889,11 +397,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -907,11 +413,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -925,11 +429,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -943,11 +445,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -961,11 +461,9 @@ class StudentBatchAddition extends React.Component {
           { value: "" },
           { value: "" },
           { value: "" },
-          { value: "" },
           { value: "" }
         ],
         [
-          { value: "" },
           { value: "" },
           { value: "" },
           { value: "" },
@@ -984,7 +482,7 @@ class StudentBatchAddition extends React.Component {
   }
 
   // called on click of valiate & upload button
-  handleClick = (addStudents, e) => {
+  handleClick = (addFaculties, e) => {
     // temporarily store datasheet values
     let rows = this.state.grid;
     const rowsLength = rows.length;
@@ -1021,8 +519,7 @@ class StudentBatchAddition extends React.Component {
           name: rows[i][2].value,
           password: rows[i][3].value,
           phoneNumber: rows[i][4].value,
-          department: this.departments[found]._id,
-          batch: Number(rows[i][6].value)
+          department: this.departments[found]._id
         });
       } else if (found === -1 && !!rows[i][0].value) {
         //if department was not found while there was a valid entry, notify user
@@ -1033,9 +530,9 @@ class StudentBatchAddition extends React.Component {
     }
 
     // set variables of the mutation and call mutation
-    addStudents({
+    addFaculties({
       variables: {
-        studentInputs: this.uploadData
+        facultyInputs: this.uploadData
       }
     })
       .then(response => console.log(response))
@@ -1101,13 +598,13 @@ class StudentBatchAddition extends React.Component {
             />
           </GridItem>
           <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
-            <Mutation mutation={BATCH_ADD_STUDENTS}>
-              {addStudents => (
+            <Mutation mutation={BATCH_ADD_FACULTIES}>
+              {addFaculties => (
                 <Button
                   variant="contained"
                   color="primary"
                   className={classes.button}
-                  onClick={e => this.handleClick(addStudents, e)}
+                  onClick={e => this.handleClick(addFaculties, e)}
                 >
                   Validate & Upload
                 </Button>
@@ -1120,8 +617,8 @@ class StudentBatchAddition extends React.Component {
   }
 }
 
-StudentBatchAddition.propTypes = {
+FacultyBatchAddition.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(StudentBatchAddition);
+export default withStyles(styles)(FacultyBatchAddition);

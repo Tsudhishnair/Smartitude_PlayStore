@@ -18,6 +18,7 @@ import CreateFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyF
 import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
 import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
+import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
 
 const styles = theme => ({
   root: {
@@ -69,6 +70,8 @@ class Expansionpanel extends Component {
       layout = <FormAddStudent />;
     } else if (directingValue == "5") {
       layout = <AddDeptForm />;
+    } else if (directingValue === "6") {
+      layout = <FacultyGroupManagement />;
     }
 
     return (
