@@ -133,24 +133,13 @@ class FormAddStudent extends Component {
     const Add_Student = gql`
       mutation addStudent($studentInput: StudentInput!) {
         addStudent(studentInput: $studentInput) {
-          username
-          name
-          email
-          password
-          phoneNumber
-          department {
-            name
-          }
-          batch
+        _id
         }
       }
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {(addStudent, { error }) => {
-          if (error) {
-            console.log(error);
-          }
+        {(addStudent) => {
           return (
             <div className={classes.root}>
               <form onSubmit={e => e.preventDefault()}>
