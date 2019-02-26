@@ -368,12 +368,12 @@ class FormAddStudent extends Component {
                         variables: {
                           studentInput: {
                             username: this.state.assignval.username,
-                          name: this.state.assignval.mname,
-                          email: this.state.assignval.email,
-                          password: this.state.assignval.password,
-                          phoneNumber: this.state.assignval.phoneNumber,
-                          department: this.state.deptdrop.deptid,
-                          batch: parseInt(this.state.assignval.batch.substring(0,4))
+                            name: this.state.assignval.mname,
+                            email: this.state.assignval.email,
+                            password: this.state.assignval.password,
+                            phoneNumber: this.state.assignval.phoneNumber,
+                            department: this.state.deptdrop.deptid,
+                            batch: parseInt(this.state.assignval.batch.substring(0, 4))
                           }
                         }
                       });

@@ -1,4 +1,4 @@
-import React, { Component,Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -50,7 +50,14 @@ class CreateNewFacultyForm extends Component {
     this.props = props;
     this.state = {
       department: "",
-      open: false
+      open: false,
+      username: "",
+      name: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+      department: "",
+      batch: ""
     };
   }
   handleOpen = () => {
@@ -114,7 +121,6 @@ class CreateNewFacultyForm extends Component {
     return (
       <div className={classes.root}>
         <Typography>
-          {" "}
           <strong>Basic Info</strong>
         </Typography>
         <GridContainer>
@@ -159,7 +165,7 @@ class CreateNewFacultyForm extends Component {
                 onOpen={this.handleOpen}
                 onChange={this.handleChange}
                 value={this.state.department}
-                renderValue={value => { return value}}
+                renderValue={value => { return value }}
                 inputProps={{
                   name: "department",
                   id: "dept"
@@ -169,7 +175,7 @@ class CreateNewFacultyForm extends Component {
                 <Query query={deptquery}>
                   {({ data, loading, error }) => {
                     if (!loading) {
-                    
+
                       return (<Fragment>
                         {
                           data.departments.map(department => {
