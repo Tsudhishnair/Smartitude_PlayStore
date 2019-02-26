@@ -74,32 +74,31 @@ class Dashboard extends React.Component {
       }
     ];
 
-  
     const dataList = gql`
-    {
-      faculties {
-        _id
-        username
-        name
-        email
-        password
-        phoneNumber
-        department {
+      {
+        faculties {
+          _id
+          username
           name
-        }
-        subcategory{
-          name
-        }
-        category{
-          name
-        }
-        isInCharge
-        inChargeSubcategories{
-          name
+          email
+          password
+          phoneNumber
+          department {
+            name
+          }
+          subcategory {
+            name
+          }
+          category {
+            name
+          }
+          isInCharge
+          inChargeSubcategories {
+            name
+          }
         }
       }
-    }
-  `;
+    `;
 
     const options = {
       filterType: "checkbox",
@@ -133,7 +132,7 @@ class Dashboard extends React.Component {
               header={"Add groups of faculty"}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"3"}
+              directingValue={"6"}
             />
           </GridItem>
         </GridContainer>
@@ -150,17 +149,22 @@ class Dashboard extends React.Component {
                   return (
                     <MUIDataTable
                       title={""}
-                      data={ !loading ? data.faculties.map(faculty => {
-                        let facultyData = [];
-                        facultyData.push(faculty.name);
-                        facultyData.push(faculty.username);
-                        facultyData.push(faculty.department.name);
-                        facultyData.push(faculty.email);
-                        facultyData.push(faculty.phoneNumber);
-                        facultyData.push(faculty.category.name);
-                        return facultyData;
-                        
-                      }) : "" }
+                      data={
+                        !loading
+                          ? data.faculties.map(faculty => {
+                              let facultyData = [];
+                              facultyData.push(faculty.name);
+                              facultyData.push(faculty.username);
+                              facultyData.push(faculty.department.name);
+                              facultyData.push(faculty.email);
+                              facultyData.push(faculty.phoneNumber);
+                              if (!faculty.category.name) {
+                                facultyData.push(faculty.category.name);
+                              }
+                              return facultyData;
+                            })
+                          : ""
+                      }
                       columns={columns}
                       options={options}
                     />
