@@ -65,7 +65,6 @@ class FormAddStudent extends Component {
         batch: ""
       }
     };
-    this.departments = [];
   }
 
   handleDateChange = date => {

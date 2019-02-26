@@ -49,15 +49,19 @@ class CreateNewFacultyForm extends Component {
     super(props);
     this.props = props;
     this.state = {
-      department: "",
-      open: false,
-      username: "",
-      name: "",
-      email: "",
-      password: "",
-      phoneNumber: "",
-      department: "",
-      batch: ""
+      deptdrop: {
+        department: "",
+        open: false,
+      },
+      assignval: {
+        username: "",
+        name: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        department: "",
+        batch: ""
+      }
     };
   }
   handleOpen = () => {
@@ -66,11 +70,42 @@ class CreateNewFacultyForm extends Component {
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleChange = value => {
+  handleChange = (value, id) => {
     if (this.state.open) {
-      this.setState({ open: false });
+      this.setState({ deptdrop: { open: false } });
     }
-    this.setState({ department: value });
+    this.setState({ deptdrop: { deptid: id, department: value } });
+    this.setState({
+      assignval: {
+        ...this.state.assignval,
+        department: this.state.deptdrop.deptid
+      }
+    });
+  };
+  handleValueChange = event => {
+    this.setState({
+      assignval: {
+        ...this.state.assignval,
+        [event.target.name]: event.target.value
+      }
+    });
+  };
+  handleReset = e => {
+    this.setState({
+      deptdrop: {
+        deptid: "",
+        department: ""
+      },
+      assignval: {
+        username: "",
+        mname: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        department: "",
+        batch: ""
+      }
+    });
   };
   render() {
     const { classes } = this.props;
@@ -131,6 +166,7 @@ class CreateNewFacultyForm extends Component {
               id="name"
               label="Name"
               type="name"
+              onChange={this.handleChange}
               fullWidth
             />
           </GridItem>
@@ -148,9 +184,29 @@ class CreateNewFacultyForm extends Component {
             <TextField
               autoFocus
               margin="dense"
+              id="username"
+              label="Username"
+              type="username"
+              fullWidth
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
               id="phone"
               label="Phone Number"
               type="phone"
+              fullWidth
+            />
+          </GridItem>
+          <GridItem xs={12} sm={4} md={4} className={classes.elementPadding}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="pssword"
+              label="Password"
+              type="password"
               fullWidth
             />
           </GridItem>
