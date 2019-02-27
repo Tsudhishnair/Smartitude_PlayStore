@@ -124,15 +124,11 @@ class Dashboard extends React.Component {
             <ExpansionPanel
               headers={header1}
               header={header2}
-              Footer1={"Cancel"}
-              Footer2={"Assign"}
               directingValue={EXPANSION_FACULTY_FORM}
             />
             <ExpansionPanel
               headers={"Multiple Faculty"}
               header={"Add groups of faculty"}
-              Footer1={"Cancel"}
-              Footer2={"Assign"}
               directingValue={EXPANSION_FACULTY_BATCH}
             />
           </GridItem>

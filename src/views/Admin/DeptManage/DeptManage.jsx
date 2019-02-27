@@ -48,8 +48,6 @@ class DeptManage extends React.Component {
         <Expansionpanel
           headers={header1}
           header={header2}
-          Footer1={"Cancel"}
-          Footer2={"Assign"}
           directingValue={EXPANSION_DEPARTMENT_FORM}
         />
 

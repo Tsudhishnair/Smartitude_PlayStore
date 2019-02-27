@@ -59,7 +59,6 @@ class FormAddDepartment extends React.Component {
     return (
       <div>
         <Typography>
-          {" "}
           <strong>Basic Info</strong>
         </Typography>
         <GridContainer>
