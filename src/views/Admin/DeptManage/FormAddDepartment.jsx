@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Avatar from "react-avatar-edit";
+
 import { orange } from "@material-ui/core/colors";
 import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
 
@@ -39,54 +39,22 @@ const styles = theme => ({
 class FormAddDepartment extends React.Component {
   constructor(props) {
     super(props);
-    const src = "./example/einshtein.jpg";
-    this.state = {
-      preview: null,
-      src
-    };
-    this.onCrop = this.onCrop.bind(this);
-    this.onClose = this.onClose.bind(this);
-  }
-
-  onClose() {
-    this.setState({ preview: null });
-  }
-
-  onCrop(preview) {
-    this.setState({ preview });
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div>
-        <Typography>
-          <strong>Basic Info</strong>
-        </Typography>
+      <div className={classes.root}>
         <GridContainer>
-          <GridItem xs={12} sm={5} md={5}>
+          <GridItem xs={12} md={12}>
             <TextField
               autoFocus
-              margin="dense"
+              margin="normal"
               id="name"
               label="Department Name"
               type="name"
               fullWidth
             />
-          </GridItem>
-          <GridItem xs={12} sm={5} md={5}>
-            <Avatar
-              width={200}
-              height={200}
-              imageWidth={300}
-              imageHeight={300}
-              onCrop={this.onCrop}
-              onClose={this.onClose}
-              src={this.state.src}
-              closeIconColor={orange}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={2} md={2}>
-            <img src={this.state.preview} alt="Preview" />
           </GridItem>
         </GridContainer>
         <GridContainer>
@@ -95,32 +63,32 @@ class FormAddDepartment extends React.Component {
               autoFocus
               margin="dense"
               id="name"
-              label="Desc."
+              label="Description"
               type="name"
+              multiline
               fullWidth
             />
           </GridItem>
+          <ExpansionPanelActions>
+            <Button
+              size="small"
+              onClick={e => {
+                e.preventDefault();
+              }}
+            >
+              Clear
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              onClick={e => {
+                e.preventDefault();
+              }}
+            >
+              Assign
+            </Button>
+          </ExpansionPanelActions>
         </GridContainer>
-        <ExpansionPanelActions>
-          <Button
-            size="small"
-            onClick={e => {
-              e.preventDefault();
-            }}
-          >
-            Clear
-          </Button>
-          <Button
-            size="small"
-            color="primary"
-            onClick={e => {
-              e.preventDefault();
-            }}
-          >
-          Assign
-          </Button>
-          
-        </ExpansionPanelActions>
       </div>
     );
   }
