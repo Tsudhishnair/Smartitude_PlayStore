@@ -11,8 +11,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 

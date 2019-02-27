@@ -6,6 +6,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Avatar from "react-avatar-edit";
 import { orange } from "@material-ui/core/colors";
+import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
 
 const styles = theme => ({
   formControl: {
@@ -100,6 +101,26 @@ class FormAddDepartment extends React.Component {
             />
           </GridItem>
         </GridContainer>
+        <ExpansionPanelActions>
+          <Button
+            size="small"
+            onClick={e => {
+              e.preventDefault();
+            }}
+          >
+            Clear
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={e => {
+              e.preventDefault();
+            }}
+          >
+          Assign
+          </Button>
+          
+        </ExpansionPanelActions>
       </div>
     );
   }
