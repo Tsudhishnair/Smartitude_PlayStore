@@ -25,6 +25,8 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
 
+import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
+
 // login mutation query
 const ADMIN_LOGIN = gql`
   mutation adminLogin($username: String!, $password: String!) {
@@ -240,11 +242,19 @@ class AdminLogin extends Component {
               </main>
             </div>
             <Snackbar
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
               open={snackbar.open}
-              onClose={this.closeSnackbar}
-              message={error.message}
-            />
+              autoHideDuration={6000}
+            >
+              <CustomSnackbar
+                onClose={this.closeSnackbar}
+                variant="error"
+                message={error.message}
+              />
+            </Snackbar>
           </MuiThemeProvider>
         )}
       </Mutation>

@@ -43,35 +43,6 @@ class DeptManage extends React.Component {
     const header1 = "Dept";
     const header2 = "Add new department";
 
-    const Frameworks = props => {
-      return (
-        <React.Fragment>
-          {props.items.map(item => (
-            <React.Fragment key={item.id}>
-              <GridItem xs={12} sm={6} md={4}>
-                <Card>
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>{item.dept_name}</h4>
-                    <p className={classes.cardCategory}>{item.dept_desc}</p>
-                  </CardBody>
-                  <CardFooter>
-                    <Icon style={{ color: "white" }}>school</Icon>
-                    <Button
-                      round
-                      color="success"
-                      style={{ marginLeft: "auto" }}
-                    >
-                      Manage
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </GridItem>
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      );
-    };
-
     return (
       <div>
         <Expansionpanel
