@@ -46,7 +46,7 @@ class FormAddDepartment extends React.Component {
     return (
       <div className={classes.root}>
         <GridContainer>
-          <GridItem xs={12} md={12}>
+          <GridItem xs={6} md={6}>
             <TextField
               autoFocus
               margin="normal"
@@ -69,7 +69,8 @@ class FormAddDepartment extends React.Component {
               fullWidth
             />
           </GridItem>
-          <ExpansionPanelActions>
+        </GridContainer>
+        <ExpansionPanelActions>
             <Button
               size="small"
               onClick={e => {
@@ -88,7 +89,6 @@ class FormAddDepartment extends React.Component {
               Assign
             </Button>
           </ExpansionPanelActions>
-        </GridContainer>
       </div>
     );
   }
