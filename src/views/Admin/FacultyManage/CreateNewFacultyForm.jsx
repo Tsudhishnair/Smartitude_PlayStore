@@ -52,8 +52,12 @@ class CreateNewFacultyForm extends Component {
     this.props = props;
     this.state = {
       deptdrop: {
+        deptid: "",
         department: "",
         open: false
+      },
+      role: {
+        isincharge: ""
       },
       assignval: {
         username: "",
@@ -63,11 +67,26 @@ class CreateNewFacultyForm extends Component {
         phoneNumber: "",
         department: "",
         subcategory: [],
-        isincharge: "",
+        isincharge: false,
         inChargeSubcategory: []
       }
     };
   }
+  handleRole = event => {
+    this.setState({ role: { isincharge: event.target.value } });
+    if (event.target.value === "Incharge") {
+      this.setState({
+        assignval: { ...this.state.assignval, isincharge: true }
+      });
+    } else {
+      this.setState({
+        assignval: { ...this.state.assignval, isincharge: false }
+      });
+    }
+    console.log(this.state.role.isincharge);
+    console.log(this.state.assignval.role);
+    
+  };
   handleOpen = () => {
     this.setState({ open: true });
   };
@@ -75,9 +94,10 @@ class CreateNewFacultyForm extends Component {
     this.setState({ open: false });
   };
   handleChange = (value, id) => {
-    if (this.state.open) {
+    if (this.state.deptdrop.open) {
       this.setState({ deptdrop: { open: false } });
     }
+
     this.setState({ deptdrop: { deptid: id, department: value } });
     this.setState({
       assignval: {
@@ -100,6 +120,9 @@ class CreateNewFacultyForm extends Component {
         deptid: "",
         department: ""
       },
+      role:{
+        isincharge:"",
+      },
       assignval: {
         username: "",
         name: "",
@@ -118,6 +141,7 @@ class CreateNewFacultyForm extends Component {
     const deptquery = gql`
       {
         departments {
+          _id
           name
         }
       }
@@ -168,7 +192,7 @@ class CreateNewFacultyForm extends Component {
 
     return (
       <Mutation mutation={ADD_FACULTY}>
-        {(addFaculty) => {
+        {addFaculty => {
           return (
             <div className={classes.root}>
               <Typography>
@@ -205,6 +229,7 @@ class CreateNewFacultyForm extends Component {
                     id="email"
                     label="Email Address"
                     type="email"
+                    name="email"
                     onChange={this.handleValueChange}
                     value={this.state.assignval.email}
                     fullWidth
@@ -221,7 +246,8 @@ class CreateNewFacultyForm extends Component {
                     margin="dense"
                     id="username"
                     label="Username"
-                    type="username"
+                    type="text"
+                    name="username"
                     onChange={this.handleValueChange}
                     value={this.state.assignval.username}
                     fullWidth
@@ -239,6 +265,7 @@ class CreateNewFacultyForm extends Component {
                     id="phone"
                     label="Phone Number"
                     type="phone"
+                    name="phoneNumber"
                     onChange={this.handleValueChange}
                     value={this.state.assignval.phoneNumber}
                     fullWidth
@@ -256,6 +283,7 @@ class CreateNewFacultyForm extends Component {
                     id="pssword"
                     label="Password"
                     type="password"
+                    name="password"
                     onChange={this.handleValueChange}
                     value={this.state.assignval.password}
                     fullWidth
@@ -270,8 +298,7 @@ class CreateNewFacultyForm extends Component {
                       open={this.state.open}
                       onClose={this.handleClose}
                       onOpen={this.handleOpen}
-                      onChange={this.handleChange}
-                      value={this.state.department}
+                      value={this.state.deptdrop.department}
                       renderValue={value => {
                         return value;
                       }}
@@ -313,14 +340,19 @@ class CreateNewFacultyForm extends Component {
                   <FormControl fullWidth>
                     <InputLabel htmlFor="age-simple">Role</InputLabel>
                     <Select
+                      value={this.state.role.isincharge}
+                      onChange={this.handleRole}
+                      renderValue={value => {
+                        return value;
+                      }}
                       inputProps={{
-                        name: "dept",
-                        id: "dept"
+                        name: "role",
+                        id: "role"
                       }}
                       fullWidth
                     >
-                      <MenuItem value="xs">Incharge</MenuItem>
-                      <MenuItem value="sm">Faculty</MenuItem>
+                      <MenuItem value="Incharge" onClick={this.handleRole}>Incharge</MenuItem>
+                      <MenuItem value="Faculty" onClick={this.handleRole}s>Faculty</MenuItem>
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -368,7 +400,7 @@ class CreateNewFacultyForm extends Component {
                     e.preventDefault();
                     addFaculty({
                       variables: {
-                        studentInput: {
+                        facultyInput: {
                           username: this.state.assignval.username,
                           name: this.state.assignval.mname,
                           email: this.state.assignval.email,
