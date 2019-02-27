@@ -52,108 +52,90 @@ class CreateNewFacultyForm extends Component {
     this.props = props;
     this.state = {
       subcategories: [],
-      deptdrop: {
-        deptid: "",
-        department: "",
-        open: false
-      },
-      role: {
-        isincharge: ""
-      },
-      assignval: {
-        username: "",
+      department: {
         name: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
-        department: "",
-        category: "",
-        subcategory: [],
-        isincharge: false,
-        inChargeSubcategory: []
-      }
+      },
+      category: {
+        name: "",
+      },
+      username: "",
+      password: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      isInCharge: false,
+      isInChargeText: "",
+      inChargeSubcategories: [],
+      subcategoryList: [],
+      clearSubcategoryChips: false,
     };
   }
-  handleRole = event => {
-    this.setState({ role: { isincharge: event.target.value } });
-    if (event.target.value === "Incharge") {
-      this.setState({
-        assignval: { ...this.state.assignval, isincharge: true }
-      });
-    } else {
-      this.setState({
-        assignval: { ...this.state.assignval, isincharge: false }
-      });
-    }
-  };
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-  handleChange = (value, id) => {
-    console.log("Department");
-    
-    console.log(value);
-    
-    if (this.state.deptdrop.open) {
-      this.setState({ deptdrop: { open: false } });
-    }
-
-    this.setState({ deptdrop: { deptid: id, department: value } });
-    this.setState({
-      assignval: {
-        ...this.state.assignval,
-        department: this.state.deptdrop.deptid
-      }
-    });
-  };
-  handleValueChange = event => {
-    this.setState({
-      assignval: {
-        ...this.state.assignval,
-        [event.target.name]: event.target.value
-      }
-    });
-  };
-  handleCategorySelect = categoryDetail => {
-    console.log(categoryDetail);
-    console.log("Clickeddd");
-    
-    let subcategories = categoryDetail.subcategory.map(subcategory => {
-      return { label: subcategory.name };
-    });
+  getSelectedSubcategories = (selectedSubcategories) => {
+    const subcategories = selectedSubcategories.map(selectedSubcategory => {
+      return selectedSubcategory.value
+    })
     this.setState({
       ...this.state,
       subcategories,
-      assignval: {
-        ...this.state.assignval,
-        category: categoryDetail.category
-      }
+    });    
+  }
+  chipsCleared = () => {
+    this.setState({
+      ...this.state,
+      clearSubcategoryChips: false,
+    })
+  }
+  handleRole = event => {
+    this.setState({ isInChargeText: event.target.value });
+    if (event.target.value === "Incharge") {
+      this.setState({ isInCharge: true });
+    } else {
+      this.setState({ isInCharge: false });
+    }
+  };
+  handleValueChange = event => {    
+    this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value
+      });
+  };
+  handleCategorySelect = event => {
+    const categoryDetail = event.target.value;
+    console.log(categoryDetail);
+    
+    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
+      return { 
+        key: subcategory._id,
+        label: subcategory.name
+       };
+    });
+    this.setState({
+      ...this.state,
+      [event.target.name]: categoryDetail.category,
+      subcategoryList: availableSubcategories,
+      subcategories: [],
+      clearSubcategoryChips: true,
     });
   };
   handleReset = e => {
     this.setState({
       subcategories: [],
-      deptdrop: {
-        deptid: "",
-        department: ""
-      },
-      role: {
-        isincharge: ""
-      },
-      assignval: {
-        username: "",
+      department: {
         name: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
-        department: "",
-        subcategory: [],
-        isincharge: "",
-        inChargeSubcategory: []
-      }
+      },
+      category: {
+        name: "",
+      },
+      username: "",
+      password: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      isInCharge: false,
+      isInChargeText: "",
+      inChargeSubcategories: [],
+      subcategoryList: [],
+      clearSubcategoryChips: true,
     });
   };
   render() {
@@ -185,7 +167,9 @@ class CreateNewFacultyForm extends Component {
     `;
 
     return (
-      <Mutation mutation={ADD_FACULTY}>
+      <Mutation 
+      mutation={ADD_FACULTY}
+      onCompleted={this.handleReset}>
         {addFaculty => {
           return (
             <Query query={FETCH_FORM_FIELDS}>
@@ -212,7 +196,7 @@ class CreateNewFacultyForm extends Component {
                               type="name"
                               name="name"
                               onChange={this.handleValueChange}
-                              value={this.state.assignval.name}
+                              value={this.state.name}
                               fullWidth
                             />
                           </GridItem>
@@ -230,7 +214,7 @@ class CreateNewFacultyForm extends Component {
                               type="email"
                               name="email"
                               onChange={this.handleValueChange}
-                              value={this.state.assignval.email}
+                              value={this.state.email}
                               fullWidth
                             />
                           </GridItem>
@@ -248,7 +232,7 @@ class CreateNewFacultyForm extends Component {
                               type="text"
                               name="username"
                               onChange={this.handleValueChange}
-                              value={this.state.assignval.username}
+                              value={this.state.username}
                               fullWidth
                             />
                           </GridItem>
@@ -266,7 +250,7 @@ class CreateNewFacultyForm extends Component {
                               type="phone"
                               name="phoneNumber"
                               onChange={this.handleValueChange}
-                              value={this.state.assignval.phoneNumber}
+                              value={this.state.phoneNumber}
                               fullWidth
                             />
                           </GridItem>
@@ -284,7 +268,7 @@ class CreateNewFacultyForm extends Component {
                               type="password"
                               name="password"
                               onChange={this.handleValueChange}
-                              value={this.state.assignval.password}
+                              value={this.state.password}
                               fullWidth
                             />
                           </GridItem>
@@ -301,31 +285,20 @@ class CreateNewFacultyForm extends Component {
                                 Department
                               </InputLabel>
                               <Select
-                                open={this.state.open}
-                                onClose={this.handleClose}
-                                onOpen={this.handleOpen}
-                                onChange={this.handleChange}
-                                value={this.state.deptdrop.department}
-                                renderValue={value => {
-                                  return value;
+                                onChange={this.handleValueChange}
+                                value={this.state.department.name}
+                                renderValue={department => {
+                                    return department;
                                 }}
                                 inputProps={{
                                   name: "department",
-                                  id: "dept"
+                                  id: "department",
                                 }}
                                 fullWidth
                               >
                                 {data.departments.map(department => {
                                   return (
-                                    <MenuItem
-                                      onSelect={() =>
-                                        this.handleChange(
-                                          department.name,
-                                          department._id
-                                        )
-                                      }
-                                      value={department.name}
-                                    >
+                                    <MenuItem value={department}>
                                       {department.name}
                                     </MenuItem>
                                   );
@@ -342,7 +315,7 @@ class CreateNewFacultyForm extends Component {
                             <FormControl fullWidth>
                               <InputLabel htmlFor="role">Role</InputLabel>
                               <Select
-                                value={this.state.role.isincharge}
+                                value={this.state.isInChargeText}
                                 onChange={this.handleRole}
                                 renderValue={value => {
                                   return value;
@@ -362,7 +335,6 @@ class CreateNewFacultyForm extends Component {
                                 <MenuItem
                                   value="Faculty"
                                   onClick={this.handleRole}
-                                  s
                                 >
                                   Faculty
                                 </MenuItem>
@@ -383,7 +355,8 @@ class CreateNewFacultyForm extends Component {
                                 Category
                               </InputLabel>
                               <Select
-                                value={this.state.assignval.category}
+                                onChange={this.handleCategorySelect}
+                                value={this.state.category.name}
                                 renderValue={value => {
                                   return value;
                                 }}
@@ -395,14 +368,7 @@ class CreateNewFacultyForm extends Component {
                               >
                                 {data.categoryDetailsList.map(categoryDetail => {
                                   return (
-                                    <MenuItem
-                                      onClick={() =>
-                                        this.handleCategorySelect(
-                                          categoryDetail
-                                        )
-                                      }
-                                      value={categoryDetail.category.name}
-                                    >
+                                    <MenuItem value={categoryDetail}>
                                       {categoryDetail.category.name}
                                     </MenuItem>
                                   );
@@ -418,7 +384,10 @@ class CreateNewFacultyForm extends Component {
                           >
                             <ReactChipInput
                               style={{ zIndex: 0 }}
-                              data={this.state.subcategories}
+                              data={this.state.subcategoryList}
+                              getSelectedObjects={this.getSelectedSubcategories}
+                              clearChips={this.state.clearSubcategoryChips}
+                              onChipsCleared={this.chipsCleared}
                             />
                           </GridItem>
                         </GridContainer>
@@ -440,16 +409,14 @@ class CreateNewFacultyForm extends Component {
                               addFaculty({
                                 variables: {
                                   facultyInput: {
-                                    username: this.state.assignval.username,
-                                    name: this.state.assignval.mname,
-                                    email: this.state.assignval.email,
-                                    password: this.state.assignval.password,
-                                    phoneNumber: this.state.assignval
-                                      .phoneNumber,
-                                    department: this.state.deptdrop.deptid,
-                                    batch: parseInt(
-                                      this.state.assignval.batch.substring(0, 4)
-                                    )
+                                    username: this.state.username,
+                                    name: this.state.name,
+                                    email: this.state.email,
+                                    password: this.state.password,
+                                    phoneNumber: this.state.phoneNumber,
+                                    department: this.state.department._id,
+                                    category: this.state.category._id,
+                                    subcategory: this.state.subcategories,
                                   }
                                 }
                               });
@@ -460,8 +427,8 @@ class CreateNewFacultyForm extends Component {
                         </ExpansionPanelActions>
                       </div>
                     ) : (
-                      <Fragment />
-                    )}
+                        <Fragment />
+                      )}
                   </Fragment>
                 );
               }}

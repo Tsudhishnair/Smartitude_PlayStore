@@ -187,15 +187,22 @@ class ReactChipSelect extends React.Component {
     multi: null
   };
 
-  handleChange = name => value => {
-    this.setState({
+  handleChange = name => async value => {    
+    await this.setState({
       [name]: value
     });
+    this.props.getSelectedObjects(this.state.multi)
   };
 
   render() {
-    const { classes, theme } = this.props;
-
+    const { classes, theme, getSelectedObjects, clearChips, onChipsCleared } = this.props;
+    if(clearChips) {
+      this.setState({
+        ...this.state,
+        multi: null
+      });
+      this.props.onChipsCleared();
+    }
     const selectStyles = {
       input: base => ({
         ...base,
@@ -207,7 +214,7 @@ class ReactChipSelect extends React.Component {
     };
 
     const suggestions = this.props.data.map(suggestion => ({
-      value: suggestion.label,
+      value: suggestion.key,
       label: suggestion.label
     }));
 
@@ -240,7 +247,10 @@ class ReactChipSelect extends React.Component {
 
 ReactChipSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  getSelectedObjects: PropTypes.func.isRequired,
+  clearChips: PropTypes.bool.isRequired,
+  onChipsCleared: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(ReactChipSelect);
