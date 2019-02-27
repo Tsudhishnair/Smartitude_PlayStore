@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import PropTypes, { func } from "prop-types";
+import { NavLink, Redirect } from "react-router-dom";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from "@material-ui/core/Drawer";
@@ -11,121 +11,160 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
+import LogOutIcon from "@material-ui/icons/ExitToApp";
+
 // core components
 import HeaderLinks from "components/Header/HeaderLinks.jsx";
 
 import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
 
-const Sidebar = ({ ...props }) => {
-  // verifies if routeName is the one active (in browser input)
-  function activeRoute(routeName) {
-    return props.location.pathname.indexOf(routeName) > -1 ? true : false;
+class Sidebar extends Component {
+  state = {
+    redirect: false
   }
-  const { classes, color, logo, image, logoText, routes } = props;
-  var links = (
-    <List className={classes.list}>
-      {routes.map((prop, key) => {
-        if (prop.redirect) return null;
-        var activePro = " ";
-        var listItemClasses;
-        if (prop.path === "/admin/log-out") {
-          activePro = classes.activePro + " ";
-          listItemClasses = classNames({
-            [" " + classes[color]]: false
-          });
-        } else {
-          listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.path)
-          });
-        }
-        const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.path)
+
+  // verifies if routeName is the one active (in browser input)
+  activeRoute = (routeName) => {
+    return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
+  }
+
+  logout = () => {
+    console.log("logout clicked");
+    localStorage.removeItem("token");
+    this.setState({
+      redirect: true
+    })
+  }
+
+  renderRedirect = () => {
+    if(this.state.redirect) {
+      return <Redirect to="/admin/login" />
+
+    }
+  }
+
+  render() {
+    const { classes, color, logo, image, logoText, routes } = this.props;
+
+    const listItems = routes.map((prop, key) => {
+      if (prop.redirect) return null;
+      var activePro = " ";
+      var listItemClasses;
+      if (prop.path === "/admin/log-out") {
+        activePro = classes.activePro + " ";
+        listItemClasses = classNames({
+          [" " + classes[color]]: false
         });
-        return (
-          <NavLink
-            to={prop.path}
-            className={activePro + classes.item}
-            activeClassName="active"
-            key={key}
-          >
-            <ListItem button className={classes.itemLink + listItemClasses}>
-              <ListItemIcon className={classes.itemIcon + whiteFontClasses}>
-                {typeof prop.icon === "string" ? (
-                  <Icon>{prop.icon}</Icon>
-                ) : (
+      } else {
+        listItemClasses = classNames({
+          [" " + classes[color]]: this.activeRoute(prop.path)
+        });
+      }
+      const whiteFontClasses = classNames({
+        [" " + classes.whiteFont]: this.activeRoute(prop.path)
+      });
+      return (
+        <NavLink
+          to={prop.path}
+          className={activePro + classes.item}
+          activeClassName="active"
+          key={key}
+        >
+          <ListItem button className={classes.itemLink + listItemClasses}>
+            <ListItemIcon className={classes.itemIcon + whiteFontClasses}>
+              {typeof prop.icon === "string" ? (
+                <Icon>{prop.icon}</Icon>
+              ) : (
                   <prop.icon />
                 )}
-              </ListItemIcon>
-              <ListItemText
-                primary={prop.sidebarName}
-                className={classes.itemText + whiteFontClasses}
-                disableTypography={true}
-              />
-            </ListItem>
-          </NavLink>
-        );
-      })}
-    </List>
-  );
-  var brand = (
-    <div className={classes.logo}>
-      <a href="#" className={classes.logoLink}>
-        <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
-        </div>
-        {logoText}
-      </a>
-    </div>
-  );
-  return (
-    <div>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          variant="temporary"
-          anchor="right"
-          open={props.open}
-          classes={{
-            paper: classes.drawerPaper
-          }}
-          onClose={props.handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true // Better open performance on mobile.
-          }}
-        >
-          {brand}
-          <div className={classes.sidebarWrapper}>
-            <HeaderLinks />
-            {links}
+            </ListItemIcon>
+            <ListItemText
+              primary={prop.sidebarName}
+              className={classes.itemText + whiteFontClasses}
+              disableTypography={true}
+            />
+          </ListItem>
+        </NavLink>
+      );
+    })
+    listItems.push(<ListItem button className={classes.itemLink} onClick={this.logout}>
+      <ListItemIcon className={classes.itemIcon}>
+        <LogOutIcon />
+      </ListItemIcon>
+      <ListItemText
+        primary={"Log Out"}
+        className={classes.itemText}
+        disableTypography={true}
+      />
+    </ListItem>);
+    var links = (
+      <List className={classes.list}>
+        {
+          listItems
+        }
+        {this.renderRedirect()}
+      </List>
+    );
+    var brand = (
+      <div className={classes.logo}>
+        <a href="#" className={classes.logoLink}>
+          <div className={classes.logoImage}>
+            <img src={logo} alt="logo" className={classes.img} />
           </div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
-        </Drawer>
-      </Hidden>
-      <Hidden smDown implementation="css">
-        <Drawer
-          anchor="left"
-          variant="permanent"
-          open
-          classes={{
-            paper: classes.drawerPaper
-          }}
-        >
-          {brand}
-          <div className={classes.sidebarWrapper}>{links}</div>
-          {image !== undefined ? (
-            <div
-              className={classes.background}
-              style={{ backgroundImage: "url(" + image + ")" }}
-            />
-          ) : null}
-        </Drawer>
-      </Hidden>
-    </div>
-  );
+          {logoText}
+        </a>
+      </div>
+    );
+    return (
+      <div>
+        <Hidden mdUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor="right"
+            open={this.props.open}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            onClose={this.props.handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true // Better open performance on mobile.
+            }}
+          >
+            {brand}
+            <div className={classes.sidebarWrapper}>
+              <HeaderLinks />
+              {links}
+            </div>
+            {image !== undefined ? (
+              <div
+                className={classes.background}
+                style={{ backgroundImage: "url(" + image + ")" }}
+              />
+            ) : null}
+          </Drawer>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <Drawer
+            anchor="left"
+            variant="permanent"
+            open
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            {brand}
+            <div className={classes.sidebarWrapper}>{links}</div>
+            {image !== undefined ? (
+              <div
+                className={classes.background}
+                style={{ backgroundImage: "url(" + image + ")" }}
+              />
+            ) : null}
+          </Drawer>
+        </Hidden>
+      </div>
+    );
+  }
 };
 
 Sidebar.propTypes = {

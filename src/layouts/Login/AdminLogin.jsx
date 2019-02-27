@@ -6,12 +6,11 @@ import {
   Button,
   CssBaseline,
   FormControl,
-  FormControlLabel,
-  Checkbox,
   Input,
   InputLabel,
   Typography,
-  Paper
+  Paper,
+  Snackbar
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -32,7 +31,6 @@ const ADMIN_LOGIN = gql`
     adminLogin(username: $username, password: $password)
   }
 `;
-
 
 const styles = theme => ({
   "@global": {
@@ -88,7 +86,13 @@ class AdminLogin extends Component {
         username: "",
         password: ""
       },
-      redirecter: false
+      redirecter: false,
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
+      }
     };
   }
 
@@ -129,7 +133,36 @@ class AdminLogin extends Component {
           }));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({
+          error: {
+            message: !!err.graphQLErrors
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+        this.openSnackbar();
+        console.log(err.graphQLErrors);
+        console.log(err.networkError);
+      });
+  };
+
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
   };
 
   // when component mounts, check for authentication state for redirection
@@ -143,7 +176,7 @@ class AdminLogin extends Component {
 
   render() {
     const { classes } = this.props;
-    const { redirecter } = this.state;
+    const { redirecter, snackbar, error } = this.state;
 
     // if auth token is present in storage, redirect to dashboard
     if (redirecter === true) {
@@ -191,10 +224,6 @@ class AdminLogin extends Component {
                         value={this.state.form.password}
                       />
                     </FormControl>
-                    <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="Remember me"
-                    />
                     <Button
                       type="submit"
                       fullWidth
@@ -210,6 +239,12 @@ class AdminLogin extends Component {
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
+            <Snackbar
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              open={snackbar.open}
+              onClose={this.closeSnackbar}
+              message={error.message}
+            />
           </MuiThemeProvider>
         )}
       </Mutation>
