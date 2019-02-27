@@ -18,6 +18,7 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
 
 class DeptManage extends React.Component {
   render() {
@@ -29,7 +30,8 @@ class DeptManage extends React.Component {
         dept_id: "124",
         dept_name: "Computer Science",
         dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering.",},
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+      },
       {
         dept_id: "123",
         dept_name: "Information Technology",
@@ -51,12 +53,8 @@ class DeptManage extends React.Component {
               <GridItem xs={12} sm={6} md={4}>
                 <Card>
                   <CardBody>
-                    <h4 className={classes.cardTitle}>
-                      {item.dept_name}
-                    </h4>
-                    <p className={classes.cardCategory}>
-                      {item.dept_desc}
-                    </p>
+                    <h4 className={classes.cardTitle}>{item.dept_name}</h4>
+                    <p className={classes.cardCategory}>{item.dept_desc}</p>
                   </CardBody>
                   <CardFooter>
                     <Icon style={{ color: "white" }}>school</Icon>
@@ -82,7 +80,7 @@ class DeptManage extends React.Component {
           header={header2}
           Footer1={"Cancel"}
           Footer2={"Assign"}
-          directingValue={"5"}
+          directingValue={EXPANSION_DEPARTMENT_FORM}
         />
         <GridContainer>
           <Frameworks items={data} />

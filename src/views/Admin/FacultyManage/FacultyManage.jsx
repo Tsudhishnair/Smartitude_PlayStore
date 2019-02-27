@@ -16,6 +16,7 @@ import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import { EXPANSION_FACULTY_FORM, EXPANSION_FACULTY_BATCH } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -125,14 +126,14 @@ class Dashboard extends React.Component {
               header={header2}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"2"}
+              directingValue={EXPANSION_FACULTY_FORM}
             />
             <ExpansionPanel
               headers={"Multiple Faculty"}
               header={"Add groups of faculty"}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"6"}
+              directingValue={EXPANSION_FACULTY_BATCH}
             />
           </GridItem>
         </GridContainer>

@@ -16,7 +16,10 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import { ApolloProvider } from "react-apollo";
+import {
+  EXPANSION_STUDENT_FORM,
+  EXPANSION_STUDENT_BATCH
+} from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -129,14 +132,14 @@ class Dashboard extends React.Component {
               header={header2}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"4"}
+              directingValue={EXPANSION_STUDENT_FORM}
             />
             <Exp
               headers={"Multiple Student"}
               header={"Add groups of students"}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"3"}
+              directingValue={EXPANSION_STUDENT_BATCH}
             />
           </GridItem>
         </GridContainer>

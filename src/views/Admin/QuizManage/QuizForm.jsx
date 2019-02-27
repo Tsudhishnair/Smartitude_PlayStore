@@ -1,7 +1,4 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
@@ -9,11 +6,16 @@ import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Button,
+  Typography,
+  TextField,
+  withStyles
+} from "@material-ui/core";
 
 import moment from "moment";
 
@@ -62,7 +64,6 @@ class QuizForm extends React.Component {
       <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
           <Typography>
-            {" "}
             <strong>Basic Info</strong>
           </Typography>
           <GridContainer>
@@ -117,7 +118,6 @@ class QuizForm extends React.Component {
             </GridItem>
           </GridContainer>
           <Typography>
-            {" "}
             <strong>Other Info</strong>
           </Typography>
           <GridContainer>
@@ -192,4 +192,7 @@ class QuizForm extends React.Component {
     );
   }
 }
+
+// QuizForm.propTypes = 
+
 export default withStyles(styles)(QuizForm);

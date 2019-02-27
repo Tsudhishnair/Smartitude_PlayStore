@@ -13,6 +13,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import MUIDataTable from "mui-datatables";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
+import { EXPANSION_QUIZ_FORM } from "../../../Utils";
 
 class Dashboard extends React.Component {
   render() {
@@ -105,7 +106,7 @@ class Dashboard extends React.Component {
               header={header2}
               Footer1={"Cancel"}
               Footer2={"Assign"}
-              directingValue={"1"}
+              directingValue={EXPANSION_QUIZ_FORM}
             />
           </GridItem>
         </GridContainer>

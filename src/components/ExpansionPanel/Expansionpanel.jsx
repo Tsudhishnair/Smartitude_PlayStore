@@ -6,10 +6,7 @@ import {
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  ExpansionPanelActions,
-  Typography,
-  Button,
-  Divider
+  Typography
 } from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -19,6 +16,15 @@ import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
 import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
 import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
+
+import {
+  EXPANSION_QUIZ_FORM,
+  EXPANSION_DEPARTMENT_FORM,
+  EXPANSION_FACULTY_BATCH,
+  EXPANSION_FACULTY_FORM,
+  EXPANSION_STUDENT_BATCH,
+  EXPANSION_STUDENT_FORM
+} from "../../Utils";
 
 const styles = theme => ({
   root: {
@@ -52,25 +58,20 @@ const styles = theme => ({
 
 class Expansionpanel extends Component {
   render() {
-    const {
-      classes,
-      directingValue,
-      header,
-      headers
-    } = this.props;
+    const { classes, directingValue, header, headers } = this.props;
     let layout;
 
-    if (directingValue == "1") {
+    if (directingValue == EXPANSION_QUIZ_FORM) {
       layout = <QuizForm />;
-    } else if (directingValue == "2") {
+    } else if (directingValue == EXPANSION_FACULTY_FORM) {
       layout = <CreateFacultyForm />;
-    } else if (directingValue == "3") {
+    } else if (directingValue == EXPANSION_STUDENT_BATCH) {
       layout = <StudentGroupManagement />;
-    } else if (directingValue == "4") {
+    } else if (directingValue == EXPANSION_STUDENT_FORM) {
       layout = <FormAddStudent />;
-    } else if (directingValue == "5") {
+    } else if (directingValue == EXPANSION_DEPARTMENT_FORM) {
       layout = <AddDeptForm />;
-    } else if (directingValue === "6") {
+    } else if (directingValue === EXPANSION_FACULTY_BATCH) {
       layout = <FacultyGroupManagement />;
     }
 
@@ -96,7 +97,7 @@ class Expansionpanel extends Component {
   }
 }
 
-Expansionpanel.PropTypes = {
+Expansionpanel.propTypes = {
   classes: PropTypes.object.isRequired,
   directingValue: PropTypes.object.isRequired,
   header: PropTypes.object.isRequired,
