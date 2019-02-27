@@ -11,8 +11,6 @@ import Button from "components/CustomButtons/Button.jsx";
 
 // core components
 import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
@@ -20,31 +18,31 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
 
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
 class DeptManage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { classes } = this.props;
-    let header1 = "Dept";
-    let header2 = "Add new department";
-    let data = [
+
+    // initialise query to get list of all departments
+    const deptList = gql`
       {
-        dept_id: "124",
-        dept_name: "Computer Science",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "123",
-        dept_name: "Information Technology",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Mechanical Engineering",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        departments {
+          _id
+          name
+          description
+        }
       }
-    ];
+    `;
+
+    const header1 = "Dept";
+    const header2 = "Add new department";
+
     const Frameworks = props => {
       return (
         <React.Fragment>
@@ -73,6 +71,7 @@ class DeptManage extends React.Component {
         </React.Fragment>
       );
     };
+
     return (
       <div>
         <Expansionpanel
@@ -82,9 +81,45 @@ class DeptManage extends React.Component {
           Footer2={"Assign"}
           directingValue={EXPANSION_DEPARTMENT_FORM}
         />
-        <GridContainer>
-          <Frameworks items={data} />
-        </GridContainer>
+
+        <Query query={deptList}>
+          {({ data, loading, error }) => {
+            return (
+              <GridContainer>
+                {!loading
+                  ? data.departments.map(department => {
+                      return (
+                        <React.Fragment key={department._id}>
+                          <GridItem xs={12} sm={6} md={4}>
+                            <Card>
+                              <CardBody>
+                                <h4 className={classes.cardTitle}>
+                                  {department.name}
+                                </h4>
+                                <p className={classes.cardCategory}>
+                                  {department.description}
+                                </p>
+                              </CardBody>
+                              <CardFooter>
+                                <Icon style={{ color: "white" }}>school</Icon>
+                                <Button
+                                  round
+                                  color="success"
+                                  style={{ marginLeft: "auto" }}
+                                >
+                                  Manage
+                                </Button>
+                              </CardFooter>
+                            </Card>
+                          </GridItem>
+                        </React.Fragment>
+                      );
+                    })
+                  : ""}
+              </GridContainer>
+            );
+          }}
+        </Query>
       </div>
     );
   }
