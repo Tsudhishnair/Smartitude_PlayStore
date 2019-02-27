@@ -67,6 +67,7 @@ class CreateNewFacultyForm extends Component {
         password: "",
         phoneNumber: "",
         department: "",
+        category: "",
         subcategory: [],
         isincharge: false,
         inChargeSubcategory: []
@@ -92,6 +93,10 @@ class CreateNewFacultyForm extends Component {
     this.setState({ open: false });
   };
   handleChange = (value, id) => {
+    console.log("Department");
+    
+    console.log(value);
+    
     if (this.state.deptdrop.open) {
       this.setState({ deptdrop: { open: false } });
     }
@@ -113,13 +118,24 @@ class CreateNewFacultyForm extends Component {
     });
   };
   handleCategorySelect = categoryDetail => {
+    console.log(categoryDetail);
+    console.log("Clickeddd");
+    
+    let subcategories = categoryDetail.subcategory.map(subcategory => {
+      return { label: subcategory.name };
+    });
     this.setState({
       ...this.state,
-      subcategories: categoryDetail.subcategory
-    })
-  }
+      subcategories,
+      assignval: {
+        ...this.state.assignval,
+        category: categoryDetail.category
+      }
+    });
+  };
   handleReset = e => {
     this.setState({
+      subcategories: [],
       deptdrop: {
         deptid: "",
         department: ""
@@ -142,21 +158,19 @@ class CreateNewFacultyForm extends Component {
   };
   render() {
     const { classes } = this.props;
-    const deptquery = gql`
+    const FETCH_FORM_FIELDS = gql`
       {
         departments {
           _id
           name
         }
-      }
-    `;
-    const category = gql`
-      {
         categoryDetailsList {
-          category{
+          category {
+            _id
             name
-          },
-          subcategory{
+          }
+          subcategory {
+            _id
             name
           }
         }
@@ -169,170 +183,142 @@ class CreateNewFacultyForm extends Component {
         }
       }
     `;
-    const options = [
-      { label: "Afghanistan" },
-      { label: "Aland Islands" },
-      { label: "Albania" },
-      { label: "Algeria" },
-      { label: "American Samoa" },
-      { label: "Andorra" },
-      { label: "Angola" },
-      { label: "Anguilla" },
-      { label: "Antarctica" },
-      { label: "Antigua and Barbuda" },
-      { label: "Argentina" },
-      { label: "Armenia" },
-      { label: "Aruba" },
-      { label: "Australia" },
-      { label: "Austria" },
-      { label: "Azerbaijan" },
-      { label: "Bahamas" },
-      { label: "Bahrain" },
-      { label: "Bangladesh" },
-      { label: "Barbados" },
-      { label: "Belarus" },
-      { label: "Belgium" },
-      { label: "Belize" },
-      { label: "Benin" },
-      { label: "Bermuda" },
-      { label: "Bhutan" },
-      { label: "Bolivia, Plurinational State of" },
-      { label: "Bonaire, Sint Eustatius and Saba" },
-      { label: "Bosnia and Herzegovina" },
-      { label: "Botswana" },
-      { label: "Bouvet Island" },
-      { label: "Brazil" },
-      { label: "British Indian Ocean Territory" },
-      { label: "Brunei Darussalam" }
-    ];
 
     return (
       <Mutation mutation={ADD_FACULTY}>
         {addFaculty => {
           return (
-            <div className={classes.root}>
-              <Typography>
-                <strong>Basic Info</strong>
-              </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Name"
-                    type="name"
-                    name="name"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.name}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    label="Email Address"
-                    type="email"
-                    name="email"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.email}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="username"
-                    label="Username"
-                    type="text"
-                    name="username"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.username}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="phone"
-                    label="Phone Number"
-                    type="phone"
-                    name="phoneNumber"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.phoneNumber}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="pssword"
-                    label="Password"
-                    type="password"
-                    name="password"
-                    onChange={this.handleValueChange}
-                    value={this.state.assignval.password}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="age-simple">Department</InputLabel>
-                    <Select
-                      open={this.state.open}
-                      onClose={this.handleClose}
-                      onOpen={this.handleOpen}
-                      value={this.state.deptdrop.department}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "department",
-                        id: "dept"
-                      }}
-                      fullWidth
-                    >
-                      <Query query={deptquery}>
-                        {({ data, loading, error }) => {
-                          if (!loading) {
-                            return (
-                              <Fragment>
+            <Query query={FETCH_FORM_FIELDS}>
+              {({ data, loading, error }) => {
+                return (
+                  <Fragment>
+                    {!loading ? (
+                      <div className={classes.root}>
+                        <Typography>
+                          <strong>Basic Info</strong>
+                        </Typography>
+                        <GridContainer>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.elementPadding}
+                          >
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="name"
+                              label="Name"
+                              type="name"
+                              name="name"
+                              onChange={this.handleValueChange}
+                              value={this.state.assignval.name}
+                              fullWidth
+                            />
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.elementPadding}
+                          >
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="email"
+                              label="Email Address"
+                              type="email"
+                              name="email"
+                              onChange={this.handleValueChange}
+                              value={this.state.assignval.email}
+                              fullWidth
+                            />
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.elementPadding}
+                          >
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="username"
+                              label="Username"
+                              type="text"
+                              name="username"
+                              onChange={this.handleValueChange}
+                              value={this.state.assignval.username}
+                              fullWidth
+                            />
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.elementPadding}
+                          >
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="phone"
+                              label="Phone Number"
+                              type="phone"
+                              name="phoneNumber"
+                              onChange={this.handleValueChange}
+                              value={this.state.assignval.phoneNumber}
+                              fullWidth
+                            />
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.elementPadding}
+                          >
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="pssword"
+                              label="Password"
+                              type="password"
+                              name="password"
+                              onChange={this.handleValueChange}
+                              value={this.state.assignval.password}
+                              fullWidth
+                            />
+                          </GridItem>
+                        </GridContainer>
+                        <GridContainer>
+                          <GridItem
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            className={classes.formControl}
+                          >
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor="department">
+                                Department
+                              </InputLabel>
+                              <Select
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                                onOpen={this.handleOpen}
+                                onChange={this.handleChange}
+                                value={this.state.deptdrop.department}
+                                renderValue={value => {
+                                  return value;
+                                }}
+                                inputProps={{
+                                  name: "department",
+                                  id: "dept"
+                                }}
+                                fullWidth
+                              >
                                 {data.departments.map(department => {
                                   return (
                                     <MenuItem
-                                      onClick={() =>
+                                      onSelect={() =>
                                         this.handleChange(
                                           department.name,
                                           department._id
@@ -344,57 +330,70 @@ class CreateNewFacultyForm extends Component {
                                     </MenuItem>
                                   );
                                 })}
-                              </Fragment>
-                            );
-                          }
-                        }}
-                      </Query>
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="age-simple">Role</InputLabel>
-                    <Select
-                      value={this.state.role.isincharge}
-                      onChange={this.handleRole}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "role",
-                        id: "role"
-                      }}
-                      fullWidth
-                    >
-                      <MenuItem value="Incharge" onClick={this.handleRole}>
-                        Incharge
-                      </MenuItem>
-                      <MenuItem value="Faculty" onClick={this.handleRole} s>
-                        Faculty
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </GridItem>
-              </GridContainer>
-              <Spacing />
-              <GridContainer>
-                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="age-simple">Category</InputLabel>
-                    <Select
-                      inputProps={{
-                        name: "dept",
-                        id: "dept"
-                      }}
-                      fullWidth
-                    >
-                      <Query query={category}>
-                      {({ data, loading, error }) => {
-                          if (!loading) {
-                            return (
-                              <Fragment>
-                                {data.categoryDetails.map(categoryDetail => {
+                              </Select>
+                            </FormControl>
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={6}
+                            md={6}
+                            className={classes.formControl}
+                          >
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor="role">Role</InputLabel>
+                              <Select
+                                value={this.state.role.isincharge}
+                                onChange={this.handleRole}
+                                renderValue={value => {
+                                  return value;
+                                }}
+                                inputProps={{
+                                  name: "role",
+                                  id: "role"
+                                }}
+                                fullWidth
+                              >
+                                <MenuItem
+                                  value="Incharge"
+                                  onClick={this.handleRole}
+                                >
+                                  Incharge
+                                </MenuItem>
+                                <MenuItem
+                                  value="Faculty"
+                                  onClick={this.handleRole}
+                                  s
+                                >
+                                  Faculty
+                                </MenuItem>
+                              </Select>
+                            </FormControl>
+                          </GridItem>
+                        </GridContainer>
+                        <Spacing />
+                        <GridContainer>
+                          <GridItem
+                            xs={12}
+                            sm={4}
+                            md={4}
+                            className={classes.formControl}
+                          >
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor="category">
+                                Category
+                              </InputLabel>
+                              <Select
+                                value={this.state.assignval.category}
+                                renderValue={value => {
+                                  return value;
+                                }}
+                                inputProps={{
+                                  name: "category",
+                                  id: "category"
+                                }}
+                                fullWidth
+                              >
+                                {data.categoryDetailsList.map(categoryDetail => {
                                   return (
                                     <MenuItem
                                       onClick={() =>
@@ -408,61 +407,65 @@ class CreateNewFacultyForm extends Component {
                                     </MenuItem>
                                   );
                                 })}
-                              </Fragment>
-                            );
-                          }
-                        }}
-                      </Query>
-                      {/* <MenuItem value="xs">Verbal</MenuItem>
-                      <MenuItem value="sm">Ling</MenuItem> */}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={8}
-                  md={8}
-                  className={classes.elementPadding}
-                >
-                  <ReactChipInput style={{ zIndex: 0 }} data={this.state.subcategories} />
-                </GridItem>
-              </GridContainer>
-              <ExpansionPanelActions>
-                <Button
-                  size="small"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.handleReset();
-                  }}
-                >
-                  Clear
-                </Button>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={e => {
-                    e.preventDefault();
-                    addFaculty({
-                      variables: {
-                        facultyInput: {
-                          username: this.state.assignval.username,
-                          name: this.state.assignval.mname,
-                          email: this.state.assignval.email,
-                          password: this.state.assignval.password,
-                          phoneNumber: this.state.assignval.phoneNumber,
-                          department: this.state.deptdrop.deptid,
-                          batch: parseInt(
-                            this.state.assignval.batch.substring(0, 4)
-                          )
-                        }
-                      }
-                    });
-                  }}
-                >
-                  Assign
-                </Button>
-              </ExpansionPanelActions>
-            </div>
+                              </Select>
+                            </FormControl>
+                          </GridItem>
+                          <GridItem
+                            xs={12}
+                            sm={8}
+                            md={8}
+                            className={classes.elementPadding}
+                          >
+                            <ReactChipInput
+                              style={{ zIndex: 0 }}
+                              data={this.state.subcategories}
+                            />
+                          </GridItem>
+                        </GridContainer>
+                        <ExpansionPanelActions>
+                          <Button
+                            size="small"
+                            onClick={e => {
+                              e.preventDefault();
+                              this.handleReset();
+                            }}
+                          >
+                            Clear
+                          </Button>
+                          <Button
+                            size="small"
+                            color="primary"
+                            onClick={e => {
+                              e.preventDefault();
+                              addFaculty({
+                                variables: {
+                                  facultyInput: {
+                                    username: this.state.assignval.username,
+                                    name: this.state.assignval.mname,
+                                    email: this.state.assignval.email,
+                                    password: this.state.assignval.password,
+                                    phoneNumber: this.state.assignval
+                                      .phoneNumber,
+                                    department: this.state.deptdrop.deptid,
+                                    batch: parseInt(
+                                      this.state.assignval.batch.substring(0, 4)
+                                    )
+                                  }
+                                }
+                              });
+                            }}
+                          >
+                            Assign
+                          </Button>
+                        </ExpansionPanelActions>
+                      </div>
+                    ) : (
+                      <Fragment />
+                    )}
+                  </Fragment>
+                );
+              }}
+            </Query>
           );
         }}
       </Mutation>
