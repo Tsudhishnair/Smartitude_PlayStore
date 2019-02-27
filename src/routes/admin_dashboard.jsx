@@ -83,13 +83,13 @@ const dashboardRoutes = [
   //   icon: LogOutIcon,
   //   component: ReportGen
   // },
-  {
-    path: "/admin/log-out",
-    sidebarName: "Log Out",
-    navbarName: "Log Out",
-    icon: LogOutIcon,
-    component: DialogLogOut
-  },
+  // {
+  //   path: "/admin/log-out",
+  //   sidebarName: "Log Out",
+  //   navbarName: "Log Out",
+  //   icon: LogOutIcon,
+  //   component: DialogLogOut
+  // },
   {
     redirect: true,
     path: "/admin",

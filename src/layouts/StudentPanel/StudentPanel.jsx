@@ -90,7 +90,7 @@ class App extends React.Component {
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>
             </div>
-         }
+          }
           {<Footer />}
         </div>
       </div>
