@@ -51,6 +51,7 @@ class CreateNewFacultyForm extends Component {
     super(props);
     this.props = props;
     this.state = {
+      subcategories: [],
       deptdrop: {
         deptid: "",
         department: "",
@@ -83,9 +84,6 @@ class CreateNewFacultyForm extends Component {
         assignval: { ...this.state.assignval, isincharge: false }
       });
     }
-    console.log(this.state.role.isincharge);
-    console.log(this.state.assignval.role);
-    
   };
   handleOpen = () => {
     this.setState({ open: true });
@@ -114,14 +112,20 @@ class CreateNewFacultyForm extends Component {
       }
     });
   };
+  handleCategorySelect = categoryDetail => {
+    this.setState({
+      ...this.state,
+      subcategories: categoryDetail.subcategory
+    })
+  }
   handleReset = e => {
     this.setState({
       deptdrop: {
         deptid: "",
         department: ""
       },
-      role:{
-        isincharge:"",
+      role: {
+        isincharge: ""
       },
       assignval: {
         username: "",
@@ -143,6 +147,18 @@ class CreateNewFacultyForm extends Component {
         departments {
           _id
           name
+        }
+      }
+    `;
+    const category = gql`
+      {
+        categoryDetailsList {
+          category{
+            name
+          },
+          subcategory{
+            name
+          }
         }
       }
     `;
@@ -351,8 +367,12 @@ class CreateNewFacultyForm extends Component {
                       }}
                       fullWidth
                     >
-                      <MenuItem value="Incharge" onClick={this.handleRole}>Incharge</MenuItem>
-                      <MenuItem value="Faculty" onClick={this.handleRole}s>Faculty</MenuItem>
+                      <MenuItem value="Incharge" onClick={this.handleRole}>
+                        Incharge
+                      </MenuItem>
+                      <MenuItem value="Faculty" onClick={this.handleRole} s>
+                        Faculty
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -369,8 +389,32 @@ class CreateNewFacultyForm extends Component {
                       }}
                       fullWidth
                     >
-                      <MenuItem value="xs">Verbal</MenuItem>
-                      <MenuItem value="sm">Ling</MenuItem>
+                      <Query query={category}>
+                      {({ data, loading, error }) => {
+                          if (!loading) {
+                            return (
+                              <Fragment>
+                                {data.categoryDetails.map(categoryDetail => {
+                                  return (
+                                    <MenuItem
+                                      onClick={() =>
+                                        this.handleCategorySelect(
+                                          categoryDetail
+                                        )
+                                      }
+                                      value={categoryDetail.category.name}
+                                    >
+                                      {categoryDetail.category.name}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Fragment>
+                            );
+                          }
+                        }}
+                      </Query>
+                      {/* <MenuItem value="xs">Verbal</MenuItem>
+                      <MenuItem value="sm">Ling</MenuItem> */}
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -380,7 +424,7 @@ class CreateNewFacultyForm extends Component {
                   md={8}
                   className={classes.elementPadding}
                 >
-                  <ReactChipInput style={{ zIndex: 0 }} data={options} />
+                  <ReactChipInput style={{ zIndex: 0 }} data={this.state.subcategories} />
                 </GridItem>
               </GridContainer>
               <ExpansionPanelActions>
