@@ -1,37 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "components/Card/Card.jsx";
-import Button from "components/CustomButtons/Button.jsx";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+// react plugin for creating charts
 
-import ListSubheader from "@material-ui/core/ListSubheader";
+// @material-ui/core
+import Card from "components/Card/Card.jsx";
+import Typography from "@material-ui/core/Typography";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+import GridContainer from "components/Grid/GridContainer.jsx";
+
+// @material-ui/icons
+
+// core components
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 const styles = theme => ({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    margin: "auto",
-    width: "fit-content"
-  },
-  formControl: {
-    marginTop: theme.spacing.unit * 2,
-    minWidth: 120
-  },
-  formControlLabel: {
-    marginTop: theme.spacing.unit
-  },
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper
@@ -41,7 +29,7 @@ const styles = theme => ({
   }
 });
 
-class MaxWidthDialog extends React.Component {
+class DeptManage extends React.Component {
   state = {
     open: false
   };
@@ -52,8 +40,6 @@ class MaxWidthDialog extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let header1 = "Dept";
-    let header2 = "Add new department";
     let data = [
       {
         _id: "affa",
@@ -79,7 +65,7 @@ class MaxWidthDialog extends React.Component {
       },
       {
         _id: "affa",
-        name: "Linguistic",
+        name: "Verbal",
         desc: "subcat",
         subcategories: [
           {
@@ -108,21 +94,11 @@ class MaxWidthDialog extends React.Component {
               <React.Fragment key={item.id}>
                 <List component="nav">
                   <ListItem button onClick={this.handleClick}>
-                    <ListItemText primary={item.name} secondary={item.desc} />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        aria-label="Comments"
-                        onClick={this.handleClick}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="Comments"
-                        onClick={this.handleClick}
-                      >
-                        {this.state.open ? <ExpandLess /> : <ExpandMore />}
-                      </IconButton>
-                    </ListItemSecondaryAction>
+                    <ListItemText
+                      primary={item.name}
+                      secondary={item.desc}
+                    />
+                    {this.state.open ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     {item.subcategories.map(subitem => (
@@ -143,24 +119,18 @@ class MaxWidthDialog extends React.Component {
         </React.Fragment>
       );
     };
-    ``;
     return (
-      <React.Fragment>
-        <Expansionpanel
-          headers={header1}
-          header={header2}
-          Footer1={"Cancel"}
-          Footer2={"Assign"}
-          directingValue={"5"}
-        />
-        <Frameworks items={data} />
-      </React.Fragment>
+      <div>
+        <GridContainer>
+          <Frameworks items={data} />
+        </GridContainer>
+      </div>
     );
   }
 }
 
-MaxWidthDialog.propTypes = {
+DeptManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MaxWidthDialog);
+export default withStyles(styles)(DeptManage);

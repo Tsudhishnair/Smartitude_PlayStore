@@ -16,7 +16,7 @@ import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DeptManage from "../views/Admin/DeptManage/DeptManage";
 import ReportGen from "../views/Admin/ReportGen/ReportGen";
 import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManagement.jsx";
-import DialogLogOut from "components/Dialog/DialogLogOut.jsx"
+import DialogLogOut from "components/Dialog/DialogLogOut.jsx";
 
 const dashboardRoutes = [
   {
