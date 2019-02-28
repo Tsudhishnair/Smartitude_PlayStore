@@ -135,11 +135,13 @@ class FormAddDepartment extends React.Component {
           this.setState({
             loading: false
           });
+          this.closeSnackbar();
         })
         .catch(err => {
           this.setState({
             loading: false
           });
+          this.closeSnackbar();
         });
     }
   };
@@ -161,6 +163,15 @@ class FormAddDepartment extends React.Component {
       }
     });
   };
+
+  clearFields = () => {
+    this.setState({
+      form: {
+        name: "",
+        description: ""
+      }
+    });
+  }
 
   render() {
     const { classes } = this.props;
@@ -202,12 +213,7 @@ class FormAddDepartment extends React.Component {
               </GridItem>
             </GridContainer>
             <ExpansionPanelActions>
-              <Button
-                size="small"
-                onClick={e => {
-                  e.preventDefault();
-                }}
-              >
+              <Button size="small" onClick={e => this.clearFields(e)}>
                 Clear
               </Button>
               <div className={classes.wrapper}>
