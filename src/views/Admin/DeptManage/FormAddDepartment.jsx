@@ -1,11 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { ExpansionPanelActions, Button } from "@material-ui/core";
+import {
+  ExpansionPanelActions,
+  Button,
+  CircularProgress,
+  Snackbar
+} from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
+
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 import gql from "graphql-tag";
 
@@ -35,6 +43,18 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit * 4
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 
@@ -53,19 +73,75 @@ class FormAddDepartment extends React.Component {
       form: {
         name: "",
         description: ""
+      },
+      loading: false,
+      snackbar: {
+        open: false,
+        message: ""
       }
     };
   }
 
-  handleClick = (addDepartment, e) => {
-    addDepartment({
-      variables: {
-        name: this.state.form.name,
-        description: this.state.form.description
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
       }
-    })
-      .then(response => console.log(response))
-      .catch(err => console.log(err));
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  handleClick = (addDepartment, e) => {
+    if (!this.state.form.name) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Name field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.form.description) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Description field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else {
+      this.setState({
+        loading: true
+      });
+      addDepartment({
+        variables: {
+          name: this.state.form.name,
+          description: this.state.form.description
+        }
+      })
+        .then(response => {
+          this.setState({
+            loading: false
+          });
+        })
+        .catch(err => {
+          this.setState({
+            loading: false
+          });
+        });
+    }
   };
 
   handleName = event => {
@@ -84,10 +160,12 @@ class FormAddDepartment extends React.Component {
         description: event.target.value
       }
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
+    const { loading, snackbar } = this.state;
+
     return (
       <Mutation mutation={DEPARTMENT_LIST}>
         {(addDepartment, data) => (
@@ -103,6 +181,7 @@ class FormAddDepartment extends React.Component {
                   value={this.state.form.name}
                   onChange={this.handleName}
                   fullWidth
+                  required
                 />
               </GridItem>
             </GridContainer>
@@ -118,6 +197,7 @@ class FormAddDepartment extends React.Component {
                   onChange={this.handleDescription}
                   multiline
                   fullWidth
+                  required
                 />
               </GridItem>
             </GridContainer>
@@ -130,14 +210,38 @@ class FormAddDepartment extends React.Component {
               >
                 Clear
               </Button>
-              <Button
-                size="small"
-                color="primary"
-                onClick={e => this.handleClick(addDepartment, e)}
-              >
-                Assign
-              </Button>
+              <div className={classes.wrapper}>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  disabled={loading}
+                  onClick={e => this.handleClick(addDepartment, e)}
+                >
+                  Assign
+                </Button>
+                {loading && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
             </ExpansionPanelActions>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={snackbar.open}
+              autoHideDuration={6000}
+            >
+              <CustomSnackbar
+                onClose={this.closeSnackbar}
+                variant="error"
+                message={snackbar.message}
+              />
+            </Snackbar>
           </div>
         )}
       </Mutation>

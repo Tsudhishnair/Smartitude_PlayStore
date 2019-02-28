@@ -18,9 +18,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
 
 import lock from "assets/img/drawable/smart_logo.png";
-import { createMuiTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "material-ui/styles";
-import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
