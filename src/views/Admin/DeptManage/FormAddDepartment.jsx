@@ -58,6 +58,7 @@ const styles = theme => ({
   }
 });
 
+// mutation command
 const DEPARTMENT_LIST = gql`
   mutation addDepartment($name: String!, $description: String!) {
     addDepartment(name: $name, description: $description) {
@@ -70,11 +71,14 @@ class FormAddDepartment extends React.Component {
     super(props);
 
     this.state = {
+      // state for add dept fields
       form: {
         name: "",
         description: ""
       },
+      // used to handle loading state
       loading: false,
+      // maintaining snackbar states
       snackbar: {
         open: false,
         message: ""
@@ -82,6 +86,7 @@ class FormAddDepartment extends React.Component {
     };
   }
 
+  // open snackbar
   openSnackbar = () => {
     this.setState({
       snackbar: {
@@ -91,6 +96,7 @@ class FormAddDepartment extends React.Component {
     });
   };
 
+  // close snackbar by changing open state
   closeSnackbar = () => {
     this.setState({
       snackbar: {
@@ -100,7 +106,9 @@ class FormAddDepartment extends React.Component {
     });
   };
 
+  // handle assign button click
   handleClick = (addDepartment, e) => {
+    // check if name or dept fields are empty, if so, throw up snackbar and set msg accordingly
     if (!this.state.form.name) {
       this.setState(
         {
@@ -122,6 +130,7 @@ class FormAddDepartment extends React.Component {
         () => this.openSnackbar()
       );
     } else {
+      // set loading state and start mutation. upon completion, change loading states
       this.setState({
         loading: true
       });
@@ -146,6 +155,7 @@ class FormAddDepartment extends React.Component {
     }
   };
 
+  // handle name fields
   handleName = event => {
     this.setState({
       form: {
@@ -155,6 +165,7 @@ class FormAddDepartment extends React.Component {
     });
   };
 
+  // handle description fields
   handleDescription = event => {
     this.setState({
       form: {
@@ -164,6 +175,7 @@ class FormAddDepartment extends React.Component {
     });
   };
 
+  // clear name & desc fields
   clearFields = () => {
     this.setState({
       form: {
