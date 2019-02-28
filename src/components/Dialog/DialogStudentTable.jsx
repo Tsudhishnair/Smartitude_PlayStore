@@ -127,6 +127,7 @@ class StudentDialog extends React.Component {
                     label="Name"
                     type="name"
                     value={this.state.rowdata[0]}
+                   
                     fullWidth
                   />
                 </GridItem>

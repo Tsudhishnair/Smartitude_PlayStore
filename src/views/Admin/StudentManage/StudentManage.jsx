@@ -12,7 +12,6 @@ import CardHeader from "components/Card/CardHeader.jsx";
 
 import Exp from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogStudentTable";
-
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -116,8 +115,8 @@ class Dashboard extends React.Component {
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
 
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
+      onRowClick: (rowData) => {
+        console.log(rowData);
         this.child.handleClickOpen(rowData);
       }
     };
