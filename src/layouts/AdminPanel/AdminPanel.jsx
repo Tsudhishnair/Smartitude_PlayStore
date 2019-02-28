@@ -14,7 +14,7 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import dashboardRoutes from "routes/admin_dashboard.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import logo from "assets/img/reactlogo.png";
-import DialogLogOut from "../../components/Dialog/DialogLogOut";
+import MessageDialog from "../../components/Dialog/MessageDialog";
 
 const switchRoutes = (
   <Switch>
@@ -89,8 +89,7 @@ class AdminPanel extends React.Component {
   renderLogoutDialog = (isVisible) => {
       if(isVisible){
         return (
-          <DialogLogOut
-            onRef={ref => (this.child = ref)}
+          <MessageDialog
             title="Logout"
             content="Are you sure that you want to logout?"
             positiveAction="YES"

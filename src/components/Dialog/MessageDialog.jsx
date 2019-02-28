@@ -49,16 +49,11 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class DialogLogOut extends React.Component {
+class MessageDialog extends React.Component {
   state = {
     open: true,
   };
-  componentDidMount() {
-    this.props.onRef(this);
-  }
-  componentWillUnmount() {
-    this.props.onRef(undefined);
-  }
+
   handleDialogOpen = () => {
     this.setState({ open: true });
   };
@@ -100,7 +95,7 @@ class DialogLogOut extends React.Component {
   }
 }
 
-DialogLogOut.propTypes = {
+MessageDialog.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
@@ -110,4 +105,4 @@ DialogLogOut.propTypes = {
   onClose: PropTypes.func,
 };
 
-export default withStyles(styles)(DialogLogOut);
+export default withStyles(styles)(MessageDialog);
