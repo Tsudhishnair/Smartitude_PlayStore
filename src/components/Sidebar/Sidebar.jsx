@@ -19,28 +19,10 @@ import HeaderLinks from "components/Header/HeaderLinks.jsx";
 import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
 
 class Sidebar extends Component {
-  state = {
-    redirect: false
-  }
 
   // verifies if routeName is the one active (in browser input)
   activeRoute = (routeName) => {
     return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
-  }
-
-  logout = () => {
-    console.log("logout clicked");
-    localStorage.removeItem("token");
-    this.setState({
-      redirect: true
-    })
-  }
-
-  renderRedirect = () => {
-    if(this.state.redirect) {
-      return <Redirect to="/admin/login" />
-
-    }
   }
 
   render() {
@@ -87,7 +69,7 @@ class Sidebar extends Component {
         </NavLink>
       );
     })
-    listItems.push(<ListItem button className={classes.itemLink} onClick={this.logout}>
+    listItems.push(<ListItem button className={classes.itemLink} onClick={this.props.logoutDialogToggle}>
       <ListItemIcon className={classes.itemIcon}>
         <LogOutIcon />
       </ListItemIcon>
@@ -102,7 +84,6 @@ class Sidebar extends Component {
         {
           listItems
         }
-        {this.renderRedirect()}
       </List>
     );
     var brand = (
@@ -168,7 +149,8 @@ class Sidebar extends Component {
 };
 
 Sidebar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  logoutDialogToggle: PropTypes.func.isRequired
 };
 
 export default withStyles(sidebarStyle)(Sidebar);

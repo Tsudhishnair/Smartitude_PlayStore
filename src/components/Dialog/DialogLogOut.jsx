@@ -9,8 +9,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-
 import Spacing from "../Spacing/Spacing";
+
 const styles = theme => ({
   appBar: {
     position: "relative"
@@ -52,47 +52,46 @@ function Transition(props) {
 class DialogLogOut extends React.Component {
   state = {
     open: true,
-    delopen: false
   };
-  // componentDidMount() {
-  //   this.props.onRef(this);
-  // }
-  // componentWillUnmount() {
-  //   this.props.onRef(undefined);
-  // }
-  handleDeleteClickOpen = () => {
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined);
+  }
+  handleDialogOpen = () => {
     this.setState({ open: true });
   };
 
-  handleDeleteClose = () => {
+  handleDialogClose = () => {
     this.setState({ open: false });
+    this.props.onClose();
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, title, content, positiveAction, negativeAction, action } = this.props;
     return (
       <div>
         <Dialog
           open={this.state.open}
-          onClose={this.handleDeleteClose}
+          onClose={this.handleDialogClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"Are you sure you want to log out?"}
+            {title}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              This action once done cannot be undone. Please continue with
-              caution.
+              {content}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleDeleteClose} color="primary">
-              Cancel
+            <Button onClick={this.handleDialogClose} color="primary">
+              {negativeAction ? negativeAction : "CANCEL"}
             </Button>
-            <Button onClick={this.handleDeleteClose} color="primary" autoFocus>
-              Log Out
+            <Button onClick={action} color="primary" autoFocus>
+              {positiveAction ? positiveAction : "OK"}
             </Button>
           </DialogActions>
         </Dialog>
@@ -102,7 +101,13 @@ class DialogLogOut extends React.Component {
 }
 
 DialogLogOut.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  positiveAction: PropTypes.string,
+  negativeAction: PropTypes.string,
+  action: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
 };
 
 export default withStyles(styles)(DialogLogOut);

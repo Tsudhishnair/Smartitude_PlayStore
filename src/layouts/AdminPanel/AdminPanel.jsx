@@ -14,28 +14,29 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import dashboardRoutes from "routes/admin_dashboard.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import logo from "assets/img/reactlogo.png";
-
+import DialogLogOut from "../../components/Dialog/DialogLogOut";
 
 const switchRoutes = (
   <Switch>
     {dashboardRoutes.map((prop, key) => {
       if (prop.redirect)
         return <Redirect from={prop.path} to={prop.to} key={key} />;
-      else if (prop.logout)
-        return null;
+      else if (prop.logout) return null;
       return <Route path={prop.path} component={prop.component} key={key} />;
     })}
   </Switch>
 );
 
-class App extends React.Component {
+class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
+      redirect: false,
+      isLogoutDialogVisible: false,
     };
     this.resizeFunction = this.resizeFunction.bind(this);
-    if (this.props.logout){
+    if (this.props.logout) {
       this.child.handleClickOpen();
     }
   }
@@ -64,11 +65,51 @@ class App extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeFunction);
   }
+
+  logout = () => {
+    console.log("logout clicked");
+    localStorage.removeItem("token");
+    this.setState({
+      redirect: true
+    });
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/admin/login" />;
+    }
+  };
+
+  toggleLogoutVisibility = () => {
+    this.setState(prevState => ({
+      isLogoutDialogVisible: !prevState.isLogoutDialogVisible,
+    }));
+  }
+
+  renderLogoutDialog = (isVisible) => {
+      if(isVisible){
+        return (
+          <DialogLogOut
+            onRef={ref => (this.child = ref)}
+            title="Logout"
+            content="Are you sure that you want to logout?"
+            positiveAction="YES"
+            negativeAction="NO"
+            action={this.logout}
+            onClose={this.toggleLogoutVisibility}
+          />
+        )
+      }
+  }
+
   render() {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
+        {this.renderRedirect()}
+        {this.renderLogoutDialog(this.state.isLogoutDialogVisible)}
         <Sidebar
+          logoutDialogToggle={this.toggleLogoutVisibility}
           routes={dashboardRoutes}
           logoText={"Smartitude"}
           logo={logo}
@@ -96,8 +137,8 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+AdminPanel.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(App);
+export default withStyles(dashboardStyle)(AdminPanel);
