@@ -3,7 +3,8 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
+import Button from "components/CustomButtons/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -20,12 +21,13 @@ import lock from "assets/img/drawable/smart_logo.png";
 const styles = theme => ({
   "@global": {
     body: {
-      // backgroundColor: theme.palette.common.white,
-      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+      backgroundColor: theme.palette.common.white,
+      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
   appBar: {
-    position: "relative"
+    position: "relative",
+    background: "linear-gradient(80deg,#ffa726,#fb8c00)"
   },
   toolbarTitle: {
     flex: 1
@@ -41,7 +43,7 @@ const styles = theme => ({
     }
   },
   heroContent: {
-    maxWidth: 500,
+    maxWidth: 600,
     margin: "auto auto",
     padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
   },
@@ -107,18 +109,12 @@ const tiers = [
 ];
 const footers = [
   {
-    title: "Company",
-    description: ["Team", "History", "Contact us", "Locations"]
+    title: "Smartitude",
+    description: ["Team", "Contact us", "Locations"]
   },
   {
     title: "Features",
-    description: [
-      "Cool stuff",
-      "Random feature",
-      "Team feature",
-      "Developer stuff",
-      "Another one"
-    ]
+    description: ["Cool stuff", "Team feature", "Developer stuff"]
   },
   {
     title: "Login",
@@ -147,9 +143,7 @@ function Landing(props) {
             Smartitude
           </Typography>
           <Link to="admin/login">
-            <Button color="primary" variant="outlined">
-              Login
-            </Button>
+            <Button color="warning">Admin Login</Button>
           </Link>
         </Toolbar>
       </AppBar>
@@ -163,66 +157,17 @@ function Landing(props) {
           {/*color="textPrimary"*/}
           {/*gutterBottom*/}
           {/*/>*/}
-          <img width="5 00dp" align="" src={lock} alt="..." />
+          <img width="600dp" align="" src={lock} alt="..." />
           <Typography
             variant="h6"
             align="center"
             color="textSecondary"
             component="p"
           >
-            Quickly build an effective pricing table for your potential
-            customers with this layout. It&apos;s built with default Material-UI
-            components with little customization.
+            Aptitude tests assess a person’s core capability of common skills, such as numerical, verbal and diagrammatic reasoning. They offer a very effective mechanism for selecting candidates so have become increasingly involved in the recruitment process.
           </Typography>
         </div>
         {/* End hero unit */}
-        <Grid container spacing={40} alignItems="flex-end">
-          {tiers.map(tier => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid
-              item
-              key={tier.title}
-              xs={12}
-              sm={tier.title === "Enterprise" ? 12 : 6}
-              md={4}
-            >
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: "center" }}
-                  subheaderTypographyProps={{ align: "center" }}
-                  action={tier.title === "Pro" ? <StarIcon /> : null}
-                  className={classes.cardHeader}
-                />
-                <CardContent>
-                  <div className={classes.cardPricing}>
-                    <Typography component="h2" variant="h3" color="textPrimary">
-                      ${tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="textSecondary">
-                      /mo
-                    </Typography>
-                  </div>
-                  {tier.description.map(line => (
-                    <Typography variant="subtitle1" align="center" key={line}>
-                      {line}
-                    </Typography>
-                  ))}
-                </CardContent>
-                <CardActions className={classes.cardActions}>
-                  <Button
-                    fullWidth
-                    variant={tier.buttonVariant}
-                    color="primary"
-                  >
-                    {tier.buttonText}
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
       </main>
       {/* Footer */}
       <footer className={classNames(classes.footer, classes.layout)}>
