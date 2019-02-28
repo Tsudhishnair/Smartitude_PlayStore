@@ -3,16 +3,16 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Hidden from "@material-ui/core/Hidden";
+
+import { AppBar, Toolbar, IconButton, Hidden } from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
+import { Query } from "../../../node_modules/react-apollo";
+import gql from "graphql-tag";
 
 function Header({ ...props }) {
   function makeBrand() {
@@ -25,10 +25,22 @@ function Header({ ...props }) {
     });
     return name;
   }
+
   const { classes, color } = props;
+
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+
+  const adminInfo = gql`
+    {
+      me {
+        _id
+        name
+      }
+    }
+  `;
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -37,6 +49,21 @@ function Header({ ...props }) {
           <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
           </Button>
+          <div>
+            <Query query={adminInfo}>
+              {({ data, loading, error }) => {
+                return (
+                  <Button
+                    color="transparent"
+                    href="#"
+                    className={classes.title}
+                  >
+                    {!loading ? `You are logged in as: ${data.me.name}` : ""}
+                  </Button>
+                );
+              }}
+            </Query>
+          </div>
         </div>
         <Hidden mdUp implementation="css">
           <IconButton
