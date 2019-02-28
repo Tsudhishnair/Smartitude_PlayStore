@@ -14,9 +14,13 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from "@material-ui/core/IconButton";
+import CategoryDialog from "../../../components/Dialog/DialogCategoryClick";
+import Avatar from "@material-ui/core/Avatar";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import EditIcon from "@material-ui/icons/Edit";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import TableDialog from "../FacultyManage/FacultyManage";
 
 const styles = theme => ({
   form: {
@@ -49,6 +53,9 @@ class MaxWidthDialog extends React.Component {
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
   };
+  handleCategoryDialogOpen = () => {
+    this.child.handleDialogOpen();
+  };
 
   render() {
     const { classes } = this.props;
@@ -58,44 +65,44 @@ class MaxWidthDialog extends React.Component {
       {
         _id: "affa",
         name: "Verbal",
-        desc: "subcat",
+        desc: "desc",
         subcategories: [
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           },
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           },
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           }
         ]
       },
       {
         _id: "affa",
         name: "Linguistic",
-        desc: "subcat",
+        desc: "desc",
         subcategories: [
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           },
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           },
           {
             _id: "affa",
             name: "Verbal",
-            desc: "subcat"
+            desc: "desc"
           }
         ]
       }
@@ -103,21 +110,28 @@ class MaxWidthDialog extends React.Component {
     const Frameworks = props => {
       return (
         <React.Fragment>
+          <CategoryDialog onRef={ref => (this.child = ref)} />
           <Card>
             {props.items.map(item => (
               <React.Fragment key={item.id}>
                 <List component="nav">
                   <ListItem button onClick={this.handleClick}>
+                    <ListItemAvatar>
+                      <Avatar
+                        alt="Category Icon"
+                        src="assets/img/faces/marc.jpg"
+                      />
+                    </ListItemAvatar>
                     <ListItemText primary={item.name} secondary={item.desc} />
                     <ListItemSecondaryAction>
                       <IconButton
-                        aria-label="Comments"
-                        onClick={this.handleClick}
+                        aria-label="Edit"
+                        onClick={this.handleCategoryDialogOpen}
                       >
                         <EditIcon />
                       </IconButton>
                       <IconButton
-                        aria-label="Comments"
+                        aria-label="Expand"
                         onClick={this.handleClick}
                       >
                         {this.state.open ? <ExpandLess /> : <ExpandMore />}
@@ -127,7 +141,11 @@ class MaxWidthDialog extends React.Component {
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     {item.subcategories.map(subitem => (
                       <List component="div" disablePadding key={subitem.id}>
-                        <ListItem button className={classes.nested}>
+                        <ListItem
+                          button
+                          className={classes.nested}
+                          onClick={this.handleCategoryDialogOpen}
+                        >
                           <ListItemText
                             primary={subitem.name}
                             secondary={subitem.desc}
