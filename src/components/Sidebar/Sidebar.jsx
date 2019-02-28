@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import PropTypes, { func } from "prop-types";
-import { NavLink, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Drawer from "@material-ui/core/Drawer";
@@ -13,17 +13,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 
-// core components
-import HeaderLinks from "components/Header/HeaderLinks.jsx";
-
 import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
 
 class Sidebar extends Component {
-
   // verifies if routeName is the one active (in browser input)
-  activeRoute = (routeName) => {
+  activeRoute = routeName => {
     return this.props.location.pathname.indexOf(routeName) > -1 ? true : false;
-  }
+  };
 
   render() {
     const { classes, color, logo, image, logoText, routes } = this.props;
@@ -57,8 +53,8 @@ class Sidebar extends Component {
               {typeof prop.icon === "string" ? (
                 <Icon>{prop.icon}</Icon>
               ) : (
-                  <prop.icon />
-                )}
+                <prop.icon />
+              )}
             </ListItemIcon>
             <ListItemText
               primary={prop.sidebarName}
@@ -68,24 +64,24 @@ class Sidebar extends Component {
           </ListItem>
         </NavLink>
       );
-    })
-    listItems.push(<ListItem button className={classes.itemLink} onClick={this.props.logoutDialogToggle}>
-      <ListItemIcon className={classes.itemIcon}>
-        <LogOutIcon />
-      </ListItemIcon>
-      <ListItemText
-        primary={"Log Out"}
-        className={classes.itemText}
-        disableTypography={true}
-      />
-    </ListItem>);
-    var links = (
-      <List className={classes.list}>
-        {
-          listItems
-        }
-      </List>
+    });
+    listItems.push(
+      <ListItem
+        button
+        className={classes.itemLink}
+        onClick={this.props.logoutDialogToggle}
+      >
+        <ListItemIcon className={classes.itemIcon}>
+          <LogOutIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={"Log Out"}
+          className={classes.itemText}
+          disableTypography={true}
+        />
+      </ListItem>
     );
+    var links = <List className={classes.list}>{listItems}</List>;
     var brand = (
       <div className={classes.logo}>
         <a href="#" className={classes.logoLink}>
@@ -112,10 +108,7 @@ class Sidebar extends Component {
             }}
           >
             {brand}
-            <div className={classes.sidebarWrapper}>
-              <HeaderLinks />
-              {links}
-            </div>
+            <div className={classes.sidebarWrapper}>{links}</div>
             {image !== undefined ? (
               <div
                 className={classes.background}
@@ -146,7 +139,7 @@ class Sidebar extends Component {
       </div>
     );
   }
-};
+}
 
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
