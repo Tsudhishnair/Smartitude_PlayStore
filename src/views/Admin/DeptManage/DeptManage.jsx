@@ -34,7 +34,6 @@ class DeptManage extends React.Component {
   handleUpdate = (data) => {
    
     if (data) {
-      console.log("hbksfdalfsd")
       this.setState({
         // ...this.state,
         // open: true,
@@ -79,7 +78,7 @@ class DeptManage extends React.Component {
 
     return (
       <div>
-        {/* {this.renderDialog(this.state.open)} */}
+        {this.renderDialog(this.state.open)}
         <Expansionpanel
           headers={header1}
           header={header2}
