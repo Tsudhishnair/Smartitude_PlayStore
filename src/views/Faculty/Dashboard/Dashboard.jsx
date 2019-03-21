@@ -68,7 +68,7 @@ class Dashboard extends React.Component {
                   4.9/10 <small>points</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats >
+              <CardFooter stats>
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
@@ -87,7 +87,9 @@ class Dashboard extends React.Component {
                   <Store />
                 </CardIcon>
                 <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
+                <h3 className={classes.cardTitle}>
+                  420th<small> Postion</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -145,50 +147,89 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitle}>Take a Test</h4>
                 <p className={classes.cardCategory}>
                   Choose your desired test type below
-            </p>
+                </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
-  
-                      <CardBody >
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #66bb6a, #43a047)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
                         <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
                           Create a customised quiz from a set of catagories
-                </p>
+                        </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>build</Icon>
-                        <Button round color="success" style={{ marginLeft: 'auto', }}>Take Quiz</Button>
+                        <Button
+                          round
+                          color="success"
+                          style={{ marginLeft: "auto" }}
+                        >
+                          Take Quiz
+                        </Button>
                       </CardFooter>
-               
                     </Card>
                   </GridItem>
-   
+
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
-                      <CardBody >
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #26c6da, #00acc1)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
                         <h4 className={classes.cardTitleWhite}>Random Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
                           Create a quick random quiz of 10 questions
-                </p>
+                        </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>cached</Icon>
-                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        <Button
+                          round
+                          color="info"
+                          style={{
+                            background: "transparent",
+                            marginLeft: "auto"
+                          }}
+                        >
+                          Take Quiz
+                        </Button>
                       </CardFooter>
                     </Card>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Assigned Quiz</h4>
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #ef5350, #e53935)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
+                        <h4 className={classes.cardTitleWhite}>
+                          Assigned Quiz
+                        </h4>
                         <p className={classes.cardCategoryWhite}>
                           Attempt assigned quizzes
-                </p>
+                        </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>done_all</Icon>
-                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        <Button
+                          round
+                          color="danger"
+                          style={{
+                            background: "transparent",
+                            marginLeft: "auto"
+                          }}
+                        >
+                          Take Quiz
+                        </Button>
                       </CardFooter>
                     </Card>
                   </GridItem>

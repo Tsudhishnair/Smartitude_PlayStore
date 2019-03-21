@@ -1,40 +1,35 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "../../components/CustomButtons/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Input from "@material-ui/core/Input";
-// import Input from '../../components';
-import InputLabel from "@material-ui/core/InputLabel";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  FormControl,
+  Input,
+  InputLabel,
+  Typography,
+  Paper,
+  Snackbar
+} from "@material-ui/core";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
 
 import lock from "assets/img/drawable/smart_logo.png";
-import { createMuiTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "material-ui/styles";
-import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import { loginHandler } from "../../Utils";
+
+import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
 
 const FACULTY_LOGIN = gql`
   mutation facultyLogin($username: String!, $password: String!) {
     facultyLogin(username: $username, password: $password)
   }
 `;
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: orange100 }, // Purple and green play nicely together.
-    secondary: { main: "#11cb5f" } // This is just green.A700 as hex.
-  }
-});
 
 const styles = theme => ({
   "@global": {
@@ -89,10 +84,18 @@ class FacultyLogin extends Component {
       form: {
         username: "",
         password: ""
+      },
+      redirecter: false,
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
       }
     };
   }
 
+  // handle username field
   handleUserName = event => {
     this.setState({
       form: {
@@ -101,6 +104,7 @@ class FacultyLogin extends Component {
       }
     });
   };
+  // handle password field
   handlePassword = event => {
     this.setState({
       form: {
@@ -109,6 +113,7 @@ class FacultyLogin extends Component {
       }
     });
   };
+  // handle submit button click
   handleClick = (facultyLogin, e) => {
     facultyLogin({
       variables: {
@@ -116,27 +121,67 @@ class FacultyLogin extends Component {
         password: this.state.form.password
       }
     })
-      .then(response =>
-        localStorage.setItem("token", response.data.facultyLogin)
-      )
-      .catch(err => console.log(err));
+      .then(response => {
+        // set token to the auth token received
+        localStorage.setItem("token", response.data.facultyLogin);
+
+        // check for the value in local storage & update local state accordingly
+        if (loginHandler.authenticated()) {
+          this.setState(() => ({
+            redirecter: true
+          }));
+        }
+      })
+      .catch(err => {
+        this.setState({
+          error: {
+            message: !!err.graphQLErrors
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+        this.openSnackbar();
+        console.log(err.graphQLErrors);
+        console.log(err.networkError);
+      });
   };
 
-  routing(data) {
-    if (data.data !== undefined && data.data.facultyLogin) {
-      return <Redirect to="/faculty" />;
-    }
-  }
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
 
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  // when component mounts, check for authentication state for redirection
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      this.props.history.push("/faculty/dashboard");
+    if (loginHandler.authenticated()) {
+      this.setState(() => ({
+        redirecter: true
+      }));
     }
   }
-
 
   render() {
     const { classes } = this.props;
+    const { redirecter, snackbar, error } = this.state;
+
+    // if auth token is present in storage, redirect to dashboard
+    if (redirecter === true) {
+      return <Redirect to="/faculty/dashboard" />;
+    }
+
     return (
       <Mutation mutation={FACULTY_LOGIN}>
         {(facultyLogin, data) => (
@@ -151,6 +196,7 @@ class FacultyLogin extends Component {
                   <Typography component="h1" variant="h5">
                     Sign in
                   </Typography>
+
                   <form
                     className={classes.form}
                     onSubmit={e => e.preventDefault()}
@@ -177,10 +223,6 @@ class FacultyLogin extends Component {
                         value={this.state.form.password}
                       />
                     </FormControl>
-                    <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="Remember me"
-                    />
                     <Button
                       type="submit"
                       fullWidth
@@ -196,7 +238,20 @@ class FacultyLogin extends Component {
                 <img width="400dp" src={lock} alt="..." />
               </main>
             </div>
-            {this.routing(data)}
+            <Snackbar
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={snackbar.open}
+              autoHideDuration={6000}
+            >
+              <CustomSnackbar
+                onClose={this.closeSnackbar}
+                variant="error"
+                message={error.message}
+              />
+            </Snackbar>
           </MuiThemeProvider>
         )}
       </Mutation>

@@ -18,6 +18,7 @@ import FacultyLogin from "./layouts/Login/FacultyLogin";
 import StudentLogin from "./layouts/Login/StudentLogin";
 import AdminPanel from "./layouts/AdminPanel/AdminPanel";
 import StudentPanel from "./layouts/StudentPanel/StudentPanel";
+import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
 import Landing from "./layouts/Landing/Landing";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
@@ -58,9 +59,10 @@ ReactDOM.render(
       <Router history={hist}>
         <Switch>
           <Route path="/admin/login" component={AdminLogin} />
-          <Route path="/fac/login" component={FacultyLogin} />
+          <Route path="/faculty/login" component={FacultyLogin} />
           <Route path="/stud/login" component={StudentLogin} />
           <PrivateRoute path="/admin/" component={AdminPanel} />
+          <PrivateRoute path="/faculty/" component={FacultyPanel} />
           <Route path="/student/" component={StudentPanel} />
           <Route path="/" component={Landing} />
         </Switch>

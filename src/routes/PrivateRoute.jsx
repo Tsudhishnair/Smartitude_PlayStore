@@ -12,6 +12,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
       ) : (
         // if not logged in, redirect to login page
         <Redirect to="/admin/login" />
+        // TODO: ACCOMODATE ALL TYPES OF USERS
       );
     }}
   />

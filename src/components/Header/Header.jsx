@@ -58,7 +58,7 @@ function Header({ ...props }) {
                     href="#"
                     className={classes.subtitle}
                   >
-                    {!loading ? `Logged in as: ${data.me.name}` : ""}
+                    {/* {!loading ? `Logged in as: ${data.me.name}` : ""} */}
                   </Button>
                 );
               }}
