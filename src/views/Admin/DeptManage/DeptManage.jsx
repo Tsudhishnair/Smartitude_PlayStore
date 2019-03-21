@@ -19,8 +19,10 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
 import DeptDialog from "./DeptDialog";
-import { Query } from "react-apollo";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import DialogDelete from "../../../components/Dialog/DialogDelete";
 
 class DeptManage extends React.Component {
   constructor(props) {
@@ -28,11 +30,11 @@ class DeptManage extends React.Component {
     //state to manage department dialog
     this.state = {
       open: false,
-      deptData:{}
+      deptData: {}
     }
   }
   handleUpdate = (data) => {
-   
+
     if (data) {
       this.setState({
         // ...this.state,
@@ -40,10 +42,19 @@ class DeptManage extends React.Component {
         deptData: data
       });
       this.toggleDialogVisibility();
-      
+
     }
   }
-
+  //delete function passsed to the dialog
+  handleDelete = (deleteDepartment,data) => {
+    deleteDepartment(
+      {
+        variables:{
+          _id:data._id
+        }
+      }
+    );
+  }
   toggleDialogVisibility = () => {
     this.setState(prevState => ({
       open: !prevState.open,
@@ -71,6 +82,13 @@ class DeptManage extends React.Component {
           description
         }
       }
+    `;
+    const deletedept = gql`
+    mutation deleteDepartment($_id: ID!) {
+      deleteDepartment(_id: $_id) {
+      _id
+      }
+    }
     `;
 
     const header1 = "Dept";
@@ -104,7 +122,11 @@ class DeptManage extends React.Component {
                               </p>
                             </CardBody>
                             <CardFooter>
-                              {/* <Icon style={{ color: "white" }}>school</Icon> */}
+                              <Mutation mutation={deletedept}>{(deleteDepartment) => {
+                                return (
+                                  <DeleteForeverIcon className={classes.icon} onClick={e => this.handleDelete(deleteDepartment,department)} />
+                                );
+                              }}</Mutation>
                               <Button
                                 round
                                 color="success"

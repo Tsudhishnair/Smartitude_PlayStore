@@ -51,7 +51,7 @@ function Transition(props) {
 
 class DialogDelete extends React.Component {
   state = {
-    open: false,
+    open: true,
   };
   componentDidMount() {
     this.props.onRef(this);
