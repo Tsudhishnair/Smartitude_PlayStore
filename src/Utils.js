@@ -12,7 +12,8 @@ export const loginHandler = {
   },
   signOut: () => {
     return "";
-  }
+  },
+  userType: localStorage.getItem("userType")
 };
 
 export const EXPANSION_QUIZ_FORM = 1;

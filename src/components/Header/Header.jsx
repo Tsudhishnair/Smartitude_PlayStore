@@ -13,6 +13,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
 import { Query } from "../../../node_modules/react-apollo";
 import gql from "graphql-tag";
+import { loginHandler } from "../../Utils";
 
 function Header({ ...props }) {
   function makeBrand() {
@@ -41,6 +42,15 @@ function Header({ ...props }) {
     }
   `;
 
+  const facultyInfo = gql`
+    {
+      meFaculty {
+        _id
+        name
+      }
+    }
+  `;
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
@@ -50,19 +60,40 @@ function Header({ ...props }) {
             {makeBrand()}
           </Button>
           <div>
-            <Query query={adminInfo}>
-              {({ data, loading, error }) => {
-                return (
-                  <Button
-                    color="transparent"
-                    href="#"
-                    className={classes.subtitle}
-                  >
-                    {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
-                  </Button>
-                );
-              }}
-            </Query>
+            {loginHandler.userType === "admin" ? (
+              <Query query={adminInfo}>
+                {({ data, loading, error }) => {
+                  return (
+                    <Button
+                      color="transparent"
+                      href="#"
+                      className={classes.subtitle}
+                    >
+                      {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
+                    </Button>
+                  );
+                }}
+              </Query>
+            ) : (
+              ""
+            )}
+            {loginHandler.userType === "faculty" ? (
+              <Query query={facultyInfo}>
+                {({ data, loading, error }) => {
+                  return (
+                    <Button
+                      color="transparent"
+                      href="#"
+                      className={classes.subtitle}
+                    >
+                      {!loading ? `Logged in as: ${data.meFaculty.name}` : ""}
+                    </Button>
+                  );
+                }}
+              </Query>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <Hidden mdUp implementation="css">
