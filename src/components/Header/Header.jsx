@@ -34,7 +34,7 @@ function Header({ ...props }) {
 
   const adminInfo = gql`
     {
-      me {
+      meAdmin {
         _id
         name
       }
@@ -58,7 +58,7 @@ function Header({ ...props }) {
                     href="#"
                     className={classes.subtitle}
                   >
-                    {/* {!loading ? `Logged in as: ${data.me.name}` : ""} */}
+                    {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
                   </Button>
                 );
               }}
