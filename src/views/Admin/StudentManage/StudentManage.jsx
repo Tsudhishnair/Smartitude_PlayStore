@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -27,6 +27,7 @@ const styles = theme => ({
   }
 });
 class Dashboard extends React.Component {
+  students = [];
   render() {
     const { classes } = this.props;
     const header1 = "Student";
@@ -90,7 +91,7 @@ class Dashboard extends React.Component {
       }
     ];
 
-    const dataList = gql`
+    const FETCH_STUDENTS = gql`
       {
         students {
           _id
@@ -100,6 +101,7 @@ class Dashboard extends React.Component {
           password
           phoneNumber
           department {
+            _id
             name
           }
           batch
@@ -115,14 +117,14 @@ class Dashboard extends React.Component {
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
 
-      onRowClick: (rowData) => {
-        console.log(rowData);
-        this.child.handleClickOpen(rowData);
+      onRowClick: (rowData, rowMeta) => {
+        const clickedRowIndex = rowMeta.rowIndex;
+        this.child.handleClickOpen(this.students[clickedRowIndex]);
       }
     };
 
     return (
-      <div>
+      <Fragment>
         <TableDialog onRef={ref => (this.child = ref)} />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -144,37 +146,48 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Student List</h4>
               </CardHeader>
-              <Query query={dataList}>
+              <Query query={FETCH_STUDENTS}>
                 {({ data, loading, error }) => {
+                  console.log("test");
+
+                  if (loading) {
+                    return "Loading...";
+                  }
+                  else if (error) {
+                    return "Error occured!";
+                  }
+                  else {
+                    let studentsList = [];
+                  studentsList = data.students.map(student => {
+                    let studentData = [];
+                    studentData.push(student.name);
+                    studentData.push(student.username);
+                    studentData.push(student.email);
+                    studentData.push(student.department.name);
+                    studentData.push(student.batch.toString());
+                    studentData.push(student.phoneNumber);
+                    studentData.push(student.phoneNumber);
+                    return studentData;
+                  });
+                  console.log(studentsList);
+                  this.students = data.students;
                   return (
                     <MUIDataTable
                       title={""}
-                      data={
-                        !loading
-                          ? data.students.map(student => {
-                              let studentData = [];
-                              studentData.push(student.name);
-                              studentData.push(student.username);
-                              studentData.push(student.email);
-                              studentData.push(student.department.name);
-                              studentData.push(student.batch.toString());
-                              studentData.push(student.phoneNumber);
-                              studentData.push(student.phoneNumber);
-
-                              return studentData;
-                            })
-                          : ""
-                      }
+                      data={studentsList}
                       columns={columns}
                       options={options}
                     />
-                  );
-                }}
+                  )
+                  }
+                }
+                }
               </Query>
+
             </Card>
           </GridItem>
         </GridContainer>
-      </div>
+      </Fragment>
     );
   }
 }
