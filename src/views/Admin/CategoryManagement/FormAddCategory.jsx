@@ -10,6 +10,15 @@ const styles = themes => ({
   }
 });
 class FormAddCategory extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      form:{
+        Name:"",
+        Desc:"",
+      },
+    };
+  }
   render() {
     const { classes } = this.props;
     return (
