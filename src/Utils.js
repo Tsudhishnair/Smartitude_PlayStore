@@ -12,7 +12,8 @@ export const loginHandler = {
   logout: () => {
     localStorage.removeItem("token");
     // TODO: remove userType from local storage
-  }
+  },
+  userType: localStorage.getItem("userType")
 };
 
 export const EXPANSION_QUIZ_FORM = 1;
