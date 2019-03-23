@@ -17,9 +17,16 @@ const dashboardRoutes = [
     component: DashboardPage
   },
   {
-    path: "/faculty/notifications",
-    sidebarName: "Notifications",
-    navbarName: "Notifications",
+    path: "/faculty/manage_faculty",
+    sidebarName: "Manage Faculty",
+    navbarName: "Manage Faculty",
+    icon: NotificationIcon,
+    component: NotificationsPage
+  },
+  {
+    path: "/faculty/questions",
+    sidebarName: "Questions",
+    navbarName: "Questions",
     icon: NotificationIcon,
     component: NotificationsPage
   },
