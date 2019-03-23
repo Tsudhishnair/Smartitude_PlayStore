@@ -16,14 +16,15 @@ import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
 import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
 import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
-
+import FormAddCategory from "../../views/Admin/CategoryManagement/FormAddCategory";
 import {
   EXPANSION_QUIZ_FORM,
   EXPANSION_DEPARTMENT_FORM,
   EXPANSION_FACULTY_BATCH,
   EXPANSION_FACULTY_FORM,
   EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
+  EXPANSION_STUDENT_FORM,
+  EXPANSION_CATEGORY_FORM
 } from "../../Utils";
 
 const styles = theme => ({
@@ -73,6 +74,8 @@ class Expansionpanel extends Component {
       layout = <AddDeptForm />;
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
       layout = <FacultyGroupManagement />;
+    } else if (directingValue === EXPANSION_CATEGORY_FORM) {
+      layout = <FormAddCategory/>
     }
 
     return (

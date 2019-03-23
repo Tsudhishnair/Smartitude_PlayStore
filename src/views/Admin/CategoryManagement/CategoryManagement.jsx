@@ -21,6 +21,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import EditIcon from "@material-ui/icons/Edit";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import TableDialog from "../FacultyManage/FacultyManage";
+import { EXPANSION_CATEGORY_FORM } from "../../../Utils";
 
 const styles = theme => ({
   form: {
@@ -165,11 +166,9 @@ class MaxWidthDialog extends React.Component {
     return (
       <React.Fragment>
         <Expansionpanel
-          headers={header1}
-          header={header2}
-          Footer1={"Cancel"}
-          Footer2={"Assign"}
-          directingValue={"5"}
+          headers="category test"
+          header="asdasdlansdlas"
+          directingValue={EXPANSION_CATEGORY_FORM}
         />
         <Frameworks items={data} />
       </React.Fragment>
