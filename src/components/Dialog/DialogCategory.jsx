@@ -53,7 +53,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class DialogCategoryClick extends React.Component {
+class DialogCategory extends React.Component {
   state = {
     open: false
   };
@@ -83,6 +83,10 @@ class DialogCategoryClick extends React.Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="form-dialog-title">Category</DialogTitle>
+
+
+
+          
           <DialogActions>
             <Button onClick={this.handleDialogClose} color="primary">
               {negativeAction ? negativeAction : "CANCEL"}
@@ -97,7 +101,7 @@ class DialogCategoryClick extends React.Component {
   }
 }
 
-DialogCategoryClick.propTypes = {
+DialogCategory.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
@@ -107,4 +111,4 @@ DialogCategoryClick.propTypes = {
   onClose: PropTypes.func,
 };
 
-export default withStyles(styles)(DialogCategoryClick);
+export default withStyles(styles)(DialogCategory);

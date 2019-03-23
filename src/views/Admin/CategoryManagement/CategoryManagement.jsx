@@ -15,7 +15,7 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import CategoryDialog from "../../../components/Dialog/DialogCategoryClick";
+import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import EditIcon from "@material-ui/icons/Edit";
@@ -110,9 +110,9 @@ class MaxWidthDialog extends React.Component {
                   <CategoryDialog onRef={ref => (this.child = ref)} />
                   <Card>
                     {data.categoryDetailsList.map(categoryDetail => (
-                      <React.Fragment key={categoryDetail.category._id}>
+                      <React.Fragment>
                         <List component="nav">
-                          <ListItem button onClick={this.handleClick}>
+                          <ListItem key={categoryDetail.category._id} button onClick={this.handleClick}>
                             <ListItemAvatar>
                               <Avatar
                                 alt="Category Icon"
@@ -139,6 +139,7 @@ class MaxWidthDialog extends React.Component {
                             {categoryDetail.subcategory.map(subcategory => (
                               <List component="div" disablePadding key={subcategory._id}>
                                 <ListItem
+                                  key={subcategory._id}
                                   button
                                   className={classes.nested}
                                   onClick={this.handleCategoryDialogOpen}
