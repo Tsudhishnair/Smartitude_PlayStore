@@ -11,7 +11,7 @@ export const loginHandler = {
   },
   logout: () => {
     localStorage.removeItem("token");
-    // TODO: remove userType from local storage
+    localStorage.removeItem("userType");
   },
   userType: localStorage.getItem("userType")
 };
