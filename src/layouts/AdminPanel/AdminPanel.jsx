@@ -15,6 +15,7 @@ import dashboardRoutes from "routes/admin_dashboard.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import logo from "assets/img/reactlogo.png";
 import MessageDialog from "../../components/Dialog/MessageDialog";
+import { loginHandler } from "../../Utils";
 
 const switchRoutes = (
   <Switch>
@@ -67,8 +68,7 @@ class AdminPanel extends React.Component {
   }
 
   logout = () => {
-    console.log("logout clicked");
-    localStorage.removeItem("token");
+    loginHandler.logout();
     this.setState({
       redirect: true
     });

@@ -4,6 +4,10 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
 import { ExpansionPanelActions, Button } from "@material-ui/core";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
+
 const styles = themes => ({
   root: {
     dispaly: "felx",
@@ -11,83 +15,107 @@ const styles = themes => ({
   }
 });
 class FormAddCategory extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      form: {
-        Name: "",
-        Desc: ""
-      }
+      name: "",
+      description: "",
     };
   }
-  // handle name fields
-  handleName = event => {
+  // handle changes in form fields
+  handleChange = event => {
     this.setState({
-      form: {
-        ...this.state.form,
-        Name: event.target.value
-      }
+      ...this.state,
+      [event.target.name]: event.target.value,
     });
   };
 
-  // handle description fields
-  handleDescription = event => {
+  clearForm = () => {
     this.setState({
-      form: {
-        ...this.state.form,
-        Desc: event.target.value
-      }
+      name: "",
+      description: "",
     });
-  };
+  }
 
 
   render() {
+    const ADD_CATEGORY = gql`
+    mutation addCategory($categoryInput: CategoryInput!) {
+      addCategory(categoryInput: $categoryInput) {
+          _id
+        }
+      }
+  `;
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
-        <GridContainer>
-          <GridItem xs={6} md={6}>
-            <TextField
-              autoFocus
-              margin="normal"
-              id="name"
-              label="Department Name"
-              type="name"
-              value={this.state.form.Name}
-              onChange={this.handleName}
-              fullWidth
-              required
-            />
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Description"
-              type="name"
-              value={this.state.form.Desc}
-              onChange={this.handleDescription}
-              multiline
-              fullWidth
-              required
-            />
-          </GridItem>
-        </GridContainer>
-        <ExpansionPanelActions>
-          <Button size="small">Clear</Button>
-          <Button 
-           size="small" 
-           color="primary"
-           variant="outlined"
-          //  onClick={e=>this.handleClick}
-           >
-            Create
+      <Mutation
+        mutation={ADD_CATEGORY}
+        onCompleted={this.clearForm}>
+        {addCategory => {
+          return (
+            <div className={classes.root}>
+              <GridContainer>
+                <GridItem xs={6} md={6}>
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="name"
+                    name="name"
+                    label="Category Name"
+                    type="name"
+                    value={this.state.name}
+                    onChange={this.handleChange}
+                    fullWidth
+                    required
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="description"
+                    name="description"
+                    label="Category Description"
+                    type="text"
+                    value={this.state.description}
+                    onChange={this.handleChange}
+                    multiline
+                    fullWidth
+                    required
+                  />
+                </GridItem>
+              </GridContainer>
+              <ExpansionPanelActions>
+                <Button
+                  size="small"
+                  onClick={this.clearForm}
+                >Clear</Button>
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onClick={e => {
+                    e.preventDefault();
+                    addCategory({
+                      variables: {
+                        categoryInput: {
+                          name: this.state.name,
+                          description: this.state.description
+                        }
+                      }
+                    });
+                  }}
+                >
+                  Create
           </Button>
-        </ExpansionPanelActions>
-      </div>
+              </ExpansionPanelActions>
+            </div>
+          );
+        }}
+      </Mutation>
     );
   }
 }

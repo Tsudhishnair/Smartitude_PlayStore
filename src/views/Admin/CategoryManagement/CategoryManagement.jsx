@@ -23,6 +23,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import TableDialog from "../FacultyManage/FacultyManage";
 import { EXPANSION_CATEGORY_FORM } from "../../../Utils";
 
+
 const styles = theme => ({
   form: {
     display: "flex",
@@ -166,8 +167,8 @@ class MaxWidthDialog extends React.Component {
     return (
       <React.Fragment>
         <Expansionpanel
-          headers="category test"
-          header="asdasdlansdlas"
+          headers="Category"
+          header="Add new category"
           directingValue={EXPANSION_CATEGORY_FORM}
         />
         <Frameworks items={data} />

@@ -7,11 +7,11 @@ export const loginHandler = {
     } else {
       this.isLoggedIn = false;
     }
-
     return this.isLoggedIn;
   },
-  signOut: () => {
-    return "";
+  logout: () => {
+    localStorage.removeItem("token");
+    // TODO: remove userType from local storage
   }
 };
 
