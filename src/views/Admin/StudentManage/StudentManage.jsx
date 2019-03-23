@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
       }
     ];
 
-    const dataList = gql`
+    const FETCH_STUDENTS = gql`
       {
         students {
           _id
@@ -144,7 +144,7 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Student List</h4>
               </CardHeader>
-              <Query query={dataList}>
+              <Query query={FETCH_STUDENTS}>
                 {({ data, loading, error }) => {
                   return (
                     <MUIDataTable
@@ -159,6 +159,7 @@ class Dashboard extends React.Component {
                               studentData.push(student.department.name);
                               studentData.push(student.batch.toString());
                               studentData.push(student.phoneNumber);
+                              // TODO: Change the phone number.
                               studentData.push(student.phoneNumber);
 
                               return studentData;

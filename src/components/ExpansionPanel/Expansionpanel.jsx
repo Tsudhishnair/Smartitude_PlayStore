@@ -17,6 +17,7 @@ import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
 import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
 import FormAddCategory from "../../views/Admin/CategoryManagement/FormAddCategory";
+import FormAddSubcategory from "../../views/Admin/CategoryManagement/FormAddSubcategory";
 import {
   EXPANSION_QUIZ_FORM,
   EXPANSION_DEPARTMENT_FORM,
@@ -24,7 +25,8 @@ import {
   EXPANSION_FACULTY_FORM,
   EXPANSION_STUDENT_BATCH,
   EXPANSION_STUDENT_FORM,
-  EXPANSION_CATEGORY_FORM
+  EXPANSION_CATEGORY_FORM,
+  EXPANSION_SUBCATEGORY_FORM,
 } from "../../Utils";
 
 const styles = theme => ({
@@ -76,6 +78,8 @@ class Expansionpanel extends Component {
       layout = <FacultyGroupManagement />;
     } else if (directingValue === EXPANSION_CATEGORY_FORM) {
       layout = <FormAddCategory/>
+    } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
+      layout = <FormAddSubcategory categories={this.props.categories}/>
     }
 
     return (

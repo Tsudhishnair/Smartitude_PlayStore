@@ -249,7 +249,7 @@ class FormAddStudent extends Component {
                     className={classes.formControl}
                   >
                     <FormControl fullWidth>
-                      <InputLabel htmlFor="dept">Department</InputLabel>
+                      <InputLabel htmlFor="department">Department</InputLabel>
                       <Select
                         open={this.state.deptdrop.open}
                         onClose={this.handleClose}
@@ -261,7 +261,7 @@ class FormAddStudent extends Component {
                         }}
                         inputProps={{
                           name: "department",
-                          id: "dept"
+                          id: "department"
                         }}
                         fullWidth
                       >
