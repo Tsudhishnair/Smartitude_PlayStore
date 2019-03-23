@@ -218,9 +218,9 @@ class FormAddDepartment extends React.Component {
                   type="name"
                   value={this.state.form.description}
                   onChange={this.handleDescription}
-                    multiline
-                    fullWidth
-                    required
+                  multiline
+                  fullWidth
+                  required
                 />
               </GridItem>
             </GridContainer>

@@ -3,22 +3,44 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
+import { ExpansionPanelActions, Button } from "@material-ui/core";
 const styles = themes => ({
   root: {
     dispaly: "felx",
-    flexGrow:1,
+    flexGrow: 1
   }
 });
 class FormAddCategory extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      form:{
-        Name:"",
-        Desc:"",
-      },
+      form: {
+        Name: "",
+        Desc: ""
+      }
     };
   }
+  // handle name fields
+  handleName = event => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        Name: event.target.value
+      }
+    });
+  };
+
+  // handle description fields
+  handleDescription = event => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        Desc: event.target.value
+      }
+    });
+  };
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -31,8 +53,8 @@ class FormAddCategory extends Component {
               id="name"
               label="Department Name"
               type="name"
-              // value={this.state.form.name}
-              // onChange={this.handleName}
+              value={this.state.form.Name}
+              onChange={this.handleName}
               fullWidth
               required
             />
@@ -46,14 +68,25 @@ class FormAddCategory extends Component {
               id="name"
               label="Description"
               type="name"
-              // value={this.state.form.description}
-              // onChange={this.handleDescription}
+              value={this.state.form.Desc}
+              onChange={this.handleDescription}
               multiline
               fullWidth
               required
             />
           </GridItem>
         </GridContainer>
+        <ExpansionPanelActions>
+          <Button size="small">Clear</Button>
+          <Button 
+           size="small" 
+           color="primary"
+           variant="outlined"
+          //  onClick={e=>this.handleClick}
+           >
+            Create
+          </Button>
+        </ExpansionPanelActions>
       </div>
     );
   }
