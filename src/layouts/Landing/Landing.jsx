@@ -142,6 +142,9 @@ function Landing(props) {
           >
             Smartitude
           </Typography>
+          <Link to="faculty/login">
+            <Button color="warning">Faculty Login</Button>
+          </Link>
           <Link to="admin/login">
             <Button color="warning">Admin Login</Button>
           </Link>
