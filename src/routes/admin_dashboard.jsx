@@ -62,20 +62,23 @@ const dashboardRoutes = [
     icon: Person,
     component: DeptManage
   },
-  {
-    path: "/admin/notification_management",
-    sidebarName: "Notification",
-    navbarName: "Notitfication",
-    icon: NotificationIcon,
-    component: NotificationManage
-  },
-  {
-    path: "/admin/report_generation",
-    sidebarName: "Report",
-    navbarName: "Report",
-    icon: Report,
-    component: ReportGen
-  },
+  // Hiden only for evaluation purpose required to do the work after evaluation
+  // ----------------------------------------------------------------------------------------------
+  // {
+  //   path: "/admin/notification_management",
+  //   sidebarName: "Notification",
+  //   navbarName: "Notitfication",
+  //   icon: NotificationIcon,
+  //   component: NotificationManage
+  // },
+  // {
+  //   path: "/admin/report_generation",
+  //   sidebarName: "Report",
+  //   navbarName: "Report",
+  //   icon: Report,
+  //   component: ReportGen
+  // },
+  //-----------------------------------------------------------------------------------------------------
   // {
   //   path: "/admin/log-out",
   //   sidebarName: "Log Out",
