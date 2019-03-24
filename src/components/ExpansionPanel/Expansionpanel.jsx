@@ -62,8 +62,6 @@ class Expansionpanel extends Component {
     if (directingValue == EXPANSION_QUIZ_FORM) {
       layout = <QuizForm />;
     } else if (directingValue == EXPANSION_FACULTY_FORM) {
-      console.log("test");
-      console.log(this.props.categoryDetails);
       layout = (
         <CreateFacultyForm
           categoryDetails={this.props.categoryDetails}

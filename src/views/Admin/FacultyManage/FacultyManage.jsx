@@ -166,12 +166,6 @@ class Dashboard extends React.Component {
             this.departments = data.departments;
             if (data.categoryDetailsList) {
               this.categoryDetails = data.categoryDetailsList;
-              console.log("hello");
-              console.log(this.categoryDetails);
-              data.categoryDetailsList.map(categoryDetail => {
-                this.categories.push(categoryDetail.category);
-                this.subcategories.push(categoryDetail.subcategory);
-              });
               return (
                 <Fragment>
                   <GridContainer>
@@ -200,8 +194,7 @@ class Dashboard extends React.Component {
                         <Fragment>
                           <TableDialog
                             onRef={ref => (this.child = ref)}
-                            categories={this.categories}
-                            subcategories={this.subcategories}
+                            categoryDetails={this.categoryDetails}
                             departments={this.departments}
                           />
                           <MUIDataTable

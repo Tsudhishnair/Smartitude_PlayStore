@@ -9,7 +9,8 @@ import Select from "@material-ui/core/Select";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from "@material-ui/core/FormControl";
-
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import Spacing from "../../../components/Spacing/Spacing";
 import gql from "graphql-tag";
@@ -67,25 +68,17 @@ class CreateNewFacultyForm extends Component {
     });
   };
   chipsCleared = () => {
-    // if (isInChargeSubcategoryList) {
     this.setState({
       ...this.state,
       clearInchargeSubcategoryChips: false,
       clearSubcategoryChips: false
     });
-    // } else {
-    //   this.setState({
-    //     ...this.state,
-    //   });
-    // }
   };
-  handleRole = event => {
-    this.setState({ isInChargeText: event.target.value });
-    if (event.target.value === "Incharge") {
-      this.setState({ isInCharge: true });
-    } else {
-      this.setState({ isInCharge: false });
-    }
+  toggleInChargeSwitch = () => {
+    this.setState({
+      ...this.state,
+      isInCharge: !this.state.isInCharge
+    });
   };
   handleValueChange = event => {
     this.setState({
@@ -314,28 +307,18 @@ class CreateNewFacultyForm extends Component {
                   </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="role">Role</InputLabel>
-                    <Select
-                      value={this.state.isInChargeText}
-                      onChange={this.handleRole}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "role",
-                        id: "role"
-                      }}
-                      fullWidth
-                    >
-                      <MenuItem value="Incharge" onClick={this.handleRole}>
-                        Incharge
-                      </MenuItem>
-                      <MenuItem value="Faculty" onClick={this.handleRole}>
-                        Faculty
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        name="isInCharge"
+                        checked={this.state.isInCharge}
+                        onChange={this.toggleInChargeSwitch}
+                        value={this.state.isInCharge}
+                        color="primary"
+                      />
+                    }
+                    label="In-charge"
+                  />
                 </GridItem>
               </GridContainer>
               <Spacing/>
