@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 // react plugin for creating charts
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
+import { IconButton } from "@material-ui/core";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Icon from "@material-ui/core/Icon";
@@ -122,15 +123,18 @@ class DeptManage extends React.Component {
                                 <Mutation mutation={deletedept}>
                                   {deleteDepartment => {
                                     return (
-                                      <DeleteForeverIcon
-                                        className={classes.icon}
+                                      <IconButton
                                         onClick={e =>
                                           this.handleDelete(
                                             deleteDepartment,
                                             department
                                           )
                                         }
-                                      />
+                                      >
+                                        <DeleteForeverIcon
+                                          className={classes.icon}
+                                        />
+                                      </IconButton>
                                     );
                                   }}
                                 </Mutation>
