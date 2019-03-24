@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import { ExpansionPanelActions, Button } from "@material-ui/core";
+import { Button, ExpansionPanelActions } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -36,7 +36,7 @@ class FormAddCategory extends Component {
       name: "",
       description: "",
     });
-  }
+  };
 
 
   render() {

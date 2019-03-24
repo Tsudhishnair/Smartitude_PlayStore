@@ -2,13 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "components/Card/Card.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -20,7 +16,6 @@ import Avatar from "@material-ui/core/Avatar";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import EditIcon from "@material-ui/icons/Edit";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import TableDialog from "../FacultyManage/FacultyManage";
 import { EXPANSION_CATEGORY_FORM, EXPANSION_SUBCATEGORY_FORM } from "../../../Utils";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
@@ -92,7 +87,7 @@ class MaxWidthDialog extends React.Component {
           else {
             const categoriesList = data.categoryDetailsList.map(categoryDetail => {
               return categoryDetail.category;
-            }) 
+            });
             
             return (
               <React.Fragment>

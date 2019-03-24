@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -84,7 +84,7 @@ class AdminPanel extends React.Component {
     this.setState(prevState => ({
       isLogoutDialogVisible: !prevState.isLogoutDialogVisible,
     }));
-  }
+  };
 
   renderLogoutDialog = (isVisible) => {
       if(isVisible){
@@ -99,7 +99,7 @@ class AdminPanel extends React.Component {
           />
         )
       }
-  }
+  };
 
   render() {
     const { classes, ...rest } = this.props;

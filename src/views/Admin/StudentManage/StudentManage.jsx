@@ -15,10 +15,7 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_FORM,
-  EXPANSION_STUDENT_BATCH
-} from "../../../Utils";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -169,7 +166,6 @@ class Dashboard extends React.Component {
                     studentData.push(student.phoneNumber);
                     return studentData;
                   });
-                  console.log(studentsList);
                   this.students = data.students;
                   return (
                     <MUIDataTable

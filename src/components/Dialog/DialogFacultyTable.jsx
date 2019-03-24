@@ -18,10 +18,9 @@ import Select from "@material-ui/core/Select";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from "@material-ui/core/FormControl";
-import ChipInput from "material-ui-chip-input";
-
 import Spacing from "../Spacing/Spacing";
-import ReactChipInput from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
+import ReactChipInput from "../AutoChip/ReactChipSelect";
+
 const styles = theme => ({
   appBar: {
     position: "relative"
@@ -61,10 +60,13 @@ function Transition(props) {
 }
 
 class DialogFacultyTable extends React.Component {
-  state = {
-    open: false,
-    delopen: false,
-    rowdata: []
+  subcategoryNames = [];
+  handleClickOpen = faculty => {
+    this.setState({ open: true });
+    this.setState({ ...faculty });
+    this.subcategoryNames = this.props.subcategories.map(subcategory => {
+      return subcategory.name;
+    });
   };
   componentDidMount() {
     this.props.onRef(this);
@@ -72,9 +74,12 @@ class DialogFacultyTable extends React.Component {
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
-  handleClickOpen = data => {
-    this.setState({ open: true });
-    this.setState({ rowdata: data });
+
+  handleValueChange = event => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value
+    });
   };
 
   handleClose = () => {
@@ -89,45 +94,29 @@ class DialogFacultyTable extends React.Component {
     this.setState({ delopen: false });
   };
 
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      open: false,
+      name: "",
+      username: "",
+      _id: "",
+      email: "",
+      phoneNumber: "",
+      category: "",
+      subcategories: [],
+      isInCharge: false,
+      inChargeSubcategories: [],
+      department: {
+        name: "",
+        _id: ""
+      }
+    };
+  }
+
   render() {
     const { classes } = this.props;
-    const options = [
-      { label: "Afghanistan" },
-      { label: "Aland Islands" },
-      { label: "Albania" },
-      { label: "Algeria" },
-      { label: "American Samoa" },
-      { label: "Andorra" },
-      { label: "Angola" },
-      { label: "Anguilla" },
-      { label: "Antarctica" },
-      { label: "Antigua and Barbuda" },
-      { label: "Argentina" },
-      { label: "Armenia" },
-      { label: "Aruba" },
-      { label: "Australia" },
-      { label: "Austria" },
-      { label: "Azerbaijan" },
-      { label: "Bahamas" },
-      { label: "Bahrain" },
-      { label: "Bangladesh" },
-      { label: "Barbados" },
-      { label: "Belarus" },
-      { label: "Belgium" },
-      { label: "Belize" },
-      { label: "Benin" },
-      { label: "Bermuda" },
-      { label: "Bhutan" },
-      { label: "Bolivia, Plurinational State of" },
-      { label: "Bonaire, Sint Eustatius and Saba" },
-      { label: "Bosnia and Herzegovina" },
-      { label: "Botswana" },
-      { label: "Bouvet Island" },
-      { label: "Brazil" },
-      { label: "British Indian Ocean Territory" },
-      { label: "Brunei Darussalam" }
-    ];
-
     return (
       <div>
         <Dialog
@@ -159,9 +148,7 @@ class DialogFacultyTable extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">
-            {this.state.rowdata[0]}
-          </DialogTitle>
+          <DialogTitle id="form-dialog-title">Edit Faculty Details</DialogTitle>
           <DialogContent>
             <DialogContentText>
               <GridContainer>
@@ -171,7 +158,7 @@ class DialogFacultyTable extends React.Component {
                   md={6}
                   className={classes.elementPadding}
                 >
-                  Edit below to update/modify an individual student data.
+                  Edit below to update/modify an individual faculty data.
                 </GridItem>
                 <GridItem
                   xs={2}
@@ -179,10 +166,10 @@ class DialogFacultyTable extends React.Component {
                   md={2}
                   className={classes.elementPadding}
                 >
-                  <Typography>Questions Subt.</Typography>
+                  <Typography>Questions Submitted</Typography>
                   <Typography>
                     <h4>
-                      <strong>{this.state.rowdata[5]}</strong>
+                      <strong>{this.state.email}</strong>
                     </h4>
                   </Typography>
                 </GridItem>
@@ -220,8 +207,10 @@ class DialogFacultyTable extends React.Component {
                     margin="dense"
                     id="name"
                     label="Name"
+                    name="name"
                     type="name"
-                    value={this.state.rowdata[0]}
+                    onChange={this.handleValueChange}
+                    value={this.state.name}
                     fullWidth
                   />
                 </GridItem>
@@ -235,9 +224,11 @@ class DialogFacultyTable extends React.Component {
                     autoFocus
                     margin="dense"
                     id="username"
+                    name="username"
+                    onChange={this.handleValueChange}
                     label="Username"
                     type="name"
-                    value={this.state.rowdata[1]}
+                    value={this.state.username}
                     fullWidth
                   />
                 </GridItem>
@@ -251,46 +242,11 @@ class DialogFacultyTable extends React.Component {
                     autoFocus
                     margin="dense"
                     id="email"
+                    onChange={this.handleValueChange}
+                    name="email"
                     label="Email Address"
                     type="email"
-                    value={this.state.rowdata[2]}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <Spacing />
-              <Typography>
-                {" "}
-                <strong>College Info</strong>
-              </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Name"
-                    type="name"
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    label="Email Address"
-                    type="email"
+                    value={this.state.email}
                     fullWidth
                   />
                 </GridItem>
@@ -300,17 +256,24 @@ class DialogFacultyTable extends React.Component {
                   <FormControl fullWidth>
                     <InputLabel htmlFor="age-simple">Department</InputLabel>
                     <Select
+                      onChange={this.handleValueChange}
+                      value={this.state.department.name}
+                      renderValue={department => {
+                        return department;
+                      }}
                       inputProps={{
-                        name: "dept",
-                        id: "dept"
+                        name: "department",
+                        id: "department"
                       }}
                       fullWidth
                     >
-                      <MenuItem value="xs">Information Technology</MenuItem>
-                      <MenuItem value="sm">Computer Science</MenuItem>
-                      <MenuItem value="md">Mechanical</MenuItem>
-                      <MenuItem value="lg">Civil</MenuItem>
-                      <MenuItem value="xl">Electrical</MenuItem>
+                      {this.props.departments.map(department => {
+                        return (
+                          <MenuItem key={department._id} value={department}>
+                            {department.name}
+                          </MenuItem>
+                        );
+                      })}
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -323,10 +286,13 @@ class DialogFacultyTable extends React.Component {
                   <TextField
                     autoFocus
                     margin="dense"
-                    id="phone"
+                    onChange={this.handleValueChange}
+                    id="phoneNumber"
                     label="Phone Number"
                     type="phone"
+                    name="phoneNumber"
                     fullWidth
+                    value={this.state.phoneNumber}
                   />
                 </GridItem>
               </GridContainer>
@@ -337,21 +303,16 @@ class DialogFacultyTable extends React.Component {
                   md={12}
                   className={classes.elementPadding}
                 >
-                  <ReactChipInput style={{ zIndex: 0 }} data={options} />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
-                  <Spacing />
+                  <ReactChipInput
+                    style={{ zIndex: 0 }}
+                    data={this.props.subcategories}
+                    getSelectedObjects={this.getSelectedSubcategories}
+                    clearChips={this.state.clearSubcategoryChips}
+                    onChipsCleared={this.chipsCleared}
+                  />
                 </GridItem>
               </GridContainer>
             </div>
-
-            <Spacing />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
@@ -368,7 +329,10 @@ class DialogFacultyTable extends React.Component {
 }
 
 DialogFacultyTable.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  categories: PropTypes.array.isRequired,
+  subcategories: PropTypes.array.isRequired,
+  departments: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(DialogFacultyTable);

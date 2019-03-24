@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -20,7 +20,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from "@material-ui/core/FormControl";
 
 import Spacing from "../Spacing/Spacing";
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const styles = theme => ({
@@ -68,6 +68,19 @@ function Transition(props) {
 }
 
 class StudentDialog extends React.Component {
+  handleClickOpen = student => {
+    this.setState({ open: true });
+    this.setState({ ...student });
+  };
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+  handleValueChange = event => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value
+    });
+  };
 
   constructor(props) {
     super(props);
@@ -82,8 +95,6 @@ class StudentDialog extends React.Component {
     };
   }
 
-
-
   componentDidMount() {
     this.props.onRef(this);
   }
@@ -92,42 +103,26 @@ class StudentDialog extends React.Component {
     this.props.onRef(undefined);
   }
 
-  handleClickOpen = student => {
-    this.setState({ open: true });
-    this.setState({ ...student });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-  handleValueChange = event => {
-    this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value
-    });
-  };
   render() {
     const { classes } = this.props;
     const EDIT_STUDENT = gql`
-    mutation editStudent($_id:ID!, $studentEditInput: StudentEditInput!) {
+      mutation editStudent($_id: ID!, $studentEditInput: StudentEditInput!) {
         editStudent(_id: $_id, studentEditInput: $studentEditInput) {
           _id
         }
       }
-  `;
+    `;
     const FETCH_DEPARTMENTS = gql`
-    {
-      departments {
-        _id
-        name
-        description
+      {
+        departments {
+          _id
+          name
+          description
+        }
       }
-    }
-  `;
+    `;
     return (
-      <Mutation
-        mutation={EDIT_STUDENT}
-        onCompleted={this.handleClose}>
+      <Mutation mutation={EDIT_STUDENT} onCompleted={this.handleClose}>
         {editStudent => {
           return (
             <div>
@@ -149,7 +144,7 @@ class StudentDialog extends React.Component {
                         className={classes.elementPadding}
                       >
                         Edit below to update/modify an individual student data.
-                </GridItem>
+                      </GridItem>
                       <GridItem
                         xs={1.5}
                         sm={1}
@@ -184,9 +179,13 @@ class StudentDialog extends React.Component {
                         md={3}
                         className={classes.elementPadding}
                       >
-                        <Button onClick={this.handleClose} fullWidth color="primary">
+                        <Button
+                          onClick={this.handleClose}
+                          fullWidth
+                          color="primary"
+                        >
                           Delete Student
-                  </Button>
+                        </Button>
                       </GridItem>
                     </GridContainer>
                   </DialogContentText>
@@ -279,13 +278,20 @@ class StudentDialog extends React.Component {
 
                       <Query query={FETCH_DEPARTMENTS}>
                         {({ data, loading, error }) => {
-                          if (loading) return "Loading departments..."
-                          else if (error) return "Some error occured!"
+                          if (loading) return "Loading departments...";
+                          else if (error) return "Some error occured!";
                           else {
                             return (
-                              <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+                              <GridItem
+                                xs={12}
+                                sm={4}
+                                md={4}
+                                className={classes.formControl}
+                              >
                                 <FormControl fullWidth>
-                                  <InputLabel htmlFor="department">Department</InputLabel>
+                                  <InputLabel htmlFor="department">
+                                    Department
+                                  </InputLabel>
                                   <Select
                                     onChange={this.handleValueChange}
                                     value={this.state.department.name}
@@ -297,22 +303,20 @@ class StudentDialog extends React.Component {
                                       id: "department"
                                     }}
                                     fullWidth
-                                  >                                {
-                                      data.departments.map(department => {
-                                        return (
-                                          <MenuItem
-                                            value={department}>
-                                            {department.name}
-                                          </MenuItem>
-                                        );
-                                      })
-                                    }
+                                  >
+                                    {data.departments.map(department => {
+                                      return (
+                                        <MenuItem value={department} key={department._id}>
+                                          {department.name}
+                                        </MenuItem>
+                                      );
+                                    })}
                                   </Select>
                                 </FormControl>
-                              </GridItem>)
+                              </GridItem>
+                            );
                           }
-                        }
-                        }
+                        }}
                       </Query>
 
                       <GridItem
@@ -340,7 +344,7 @@ class StudentDialog extends React.Component {
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">
                     Cancel
-            </Button>
+                  </Button>
                   <Button
                     size="small"
                     color="primary"
@@ -363,7 +367,7 @@ class StudentDialog extends React.Component {
                     }}
                   >
                     Save
-            </Button>
+                  </Button>
                 </DialogActions>
               </Dialog>
             </div>

@@ -1,9 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import { ExpansionPanelActions, Button } from "@material-ui/core";
+import { Button, ExpansionPanelActions } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -48,7 +48,7 @@ class FormAddSubcategory extends Component {
         _id: ""
       }
     });
-  }
+  };
 
 
   render() {
@@ -123,7 +123,7 @@ class FormAddSubcategory extends Component {
                             _id: categoryItem._id,
                             name: categoryItem.name,
                             description: categoryItem.description
-                          }
+                          };
                           return (
                             <MenuItem
                             key={category._id}

@@ -225,7 +225,7 @@ class ReactChipSelect extends React.Component {
             classes={classes}
             styles={selectStyles}
             textFieldProps={{
-              label: "Sub-Catagories",
+              label: this.props.label,
               InputLabelProps: {
                 shrink: true
               }
@@ -234,7 +234,7 @@ class ReactChipSelect extends React.Component {
             components={components}
             value={this.state.multi}
             onChange={this.handleChange("multi")}
-            placeholder="Select Sub-Catagories"
+            placeholder={this.props.hintText}
             isMulti
             zIndex="9999"
             fullWidth

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -16,7 +16,7 @@ import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { EXPANSION_FACULTY_FORM, EXPANSION_FACULTY_BATCH } from "../../../Utils";
+import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -26,6 +26,12 @@ const styles = theme => ({
 });
 
 class Dashboard extends React.Component {
+  faculties = [];
+  departments = [];
+  categories = [];
+  subcategories = [];
+  categoryDetails = [];
+
   render() {
     const { classes } = this.props;
     const header1 = "Faculty";
@@ -75,8 +81,25 @@ class Dashboard extends React.Component {
       }
     ];
 
-    const dataList = gql`
+    const FETCH_DATA = gql`
       {
+        departments {
+          _id
+          name
+          description
+        }
+        categoryDetailsList {
+          category {
+            _id
+            name
+            description
+          }
+          subcategory {
+            _id
+            name
+            description
+          }
+        }
         faculties {
           _id
           username
@@ -85,16 +108,20 @@ class Dashboard extends React.Component {
           password
           phoneNumber
           department {
+            _id
             name
           }
           subcategory {
+            _id
             name
           }
           category {
+            _id
             name
           }
           isInCharge
           inChargeSubcategories {
+            _id
             name
           }
         }
@@ -107,71 +134,92 @@ class Dashboard extends React.Component {
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
 
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
-        this.child.handleClickOpen(rowData);
+      onRowClick: (rowData, rowMeta) => {
+        const clickedRowIndex = rowMeta.rowIndex;
+        this.child.handleClickOpen(this.faculties[clickedRowIndex]);
       }
     };
 
     return (
-      <div>
-        <TableDialog onRef={ref => (this.child = ref)} />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <ExpansionPanel
-              headers={header1}
-              header={header2}
-              directingValue={EXPANSION_FACULTY_FORM}
-            />
-            <ExpansionPanel
-              headers={"Multiple Faculty"}
-              header={"Add groups of faculty"}
-              directingValue={EXPANSION_FACULTY_BATCH}
-            />
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card className={classes.root}>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Faculty List</h4>
-              </CardHeader>
-              <Query query={dataList}>
-                {({ data, loading, error }) => {
-                  console.log({ data });
-                  return (
-                    <MUIDataTable
-                      title={""}
-                      data={
-                        !loading
-                          ? data.faculties.map(faculty => {
-                              let facultyData = [];
-                              facultyData.push(faculty.name);
-                              facultyData.push(faculty.username);
-                              facultyData.push(faculty.department.name);
-                              facultyData.push(faculty.email);
-                              facultyData.push(faculty.phoneNumber);
-                              if (faculty.category) {
-                                facultyData.push(faculty.category.name);
-                              }
-                              return facultyData;
-                            })
-                          : ""
-                      }
-                      columns={columns}
-                      options={options}
-                    />
-                  );
-                }}
-              </Query>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
+
+      <Query query={FETCH_DATA}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return "Loading...";
+          } else if (error) {
+            return "Error occured!";
+          } else {
+            let facultiesList = [];
+            facultiesList = data.faculties.map(faculty => {
+              let facultyData = [];
+              facultyData.push(faculty.name);
+              facultyData.push(faculty.username);
+              facultyData.push(faculty.department.name);
+              facultyData.push(faculty.email);
+              facultyData.push(faculty.phoneNumber);
+              if (faculty.category) {
+                facultyData.push(faculty.category.name);
+              }
+              return facultyData;
+            });
+            this.faculties = data.faculties;
+            this.departments = data.departments;
+            if (data.categoryDetailsList) {
+              this.categoryDetails = data.categoryDetailsList;
+              console.log("hello");
+              console.log(this.categoryDetails);
+              data.categoryDetailsList.map(categoryDetail => {
+                this.categories.push(categoryDetail.category);
+                this.subcategories.push(categoryDetail.subcategory);
+              });
+              return (
+                <Fragment>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <ExpansionPanel
+                        headers={header1}
+                        header={header2}
+                        departments={this.departments}
+                        categoryDetails={this.categoryDetails}
+                        directingValue={EXPANSION_FACULTY_FORM}
+                      />
+                      <ExpansionPanel
+                        headers={"Multiple Faculty"}
+                        header={"Add groups of faculty"}
+                        directingValue={EXPANSION_FACULTY_BATCH}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                  <Spacing/>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Card className={classes.root}>
+                        <CardHeader color="warning">
+                          <h4 className={classes.cardTitleWhite}>Faculty List</h4>
+                        </CardHeader>
+                        <Fragment>
+                          <TableDialog
+                            onRef={ref => (this.child = ref)}
+                            categories={this.categories}
+                            subcategories={this.subcategories}
+                            departments={this.departments}
+                          />
+                          <MUIDataTable
+                            title={""}
+                            data={facultiesList}
+                            columns={columns}
+                            options={options}
+                          />
+                        </Fragment>
+                      </Card>
+                    </GridItem>
+                  </GridContainer>
+                </Fragment>
+              );
+            }
+          }
+        }}
+      </Query>
     );
   }
 }

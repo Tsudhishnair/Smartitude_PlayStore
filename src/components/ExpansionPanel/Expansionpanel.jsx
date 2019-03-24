@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Typography
-} from "@material-ui/core";
+import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography } from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import QuizForm from "../../views/Admin/QuizManage/QuizForm";
@@ -19,14 +14,14 @@ import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacul
 import FormAddCategory from "../../views/Admin/CategoryManagement/FormAddCategory";
 import FormAddSubcategory from "../../views/Admin/CategoryManagement/FormAddSubcategory";
 import {
-  EXPANSION_QUIZ_FORM,
+  EXPANSION_CATEGORY_FORM,
   EXPANSION_DEPARTMENT_FORM,
   EXPANSION_FACULTY_BATCH,
   EXPANSION_FACULTY_FORM,
+  EXPANSION_QUIZ_FORM,
   EXPANSION_STUDENT_BATCH,
   EXPANSION_STUDENT_FORM,
-  EXPANSION_CATEGORY_FORM,
-  EXPANSION_SUBCATEGORY_FORM,
+  EXPANSION_SUBCATEGORY_FORM
 } from "../../Utils";
 
 const styles = theme => ({
@@ -67,7 +62,14 @@ class Expansionpanel extends Component {
     if (directingValue == EXPANSION_QUIZ_FORM) {
       layout = <QuizForm />;
     } else if (directingValue == EXPANSION_FACULTY_FORM) {
-      layout = <CreateFacultyForm />;
+      console.log("test");
+      console.log(this.props.categoryDetails);
+      layout = (
+        <CreateFacultyForm
+          categoryDetails={this.props.categoryDetails}
+          departments={this.props.departments}
+        />
+      );
     } else if (directingValue == EXPANSION_STUDENT_BATCH) {
       layout = <StudentGroupManagement />;
     } else if (directingValue == EXPANSION_STUDENT_FORM) {
@@ -77,9 +79,9 @@ class Expansionpanel extends Component {
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
       layout = <FacultyGroupManagement />;
     } else if (directingValue === EXPANSION_CATEGORY_FORM) {
-      layout = <FormAddCategory/>
+      layout = <FormAddCategory/>;
     } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
-      layout = <FormAddSubcategory categories={this.props.categories}/>
+      layout = <FormAddSubcategory categories={this.props.categories}/>;
     }
 
     return (
