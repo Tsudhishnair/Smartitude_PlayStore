@@ -14,6 +14,7 @@ import MUIDataTable from "mui-datatables";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM } from "../../../Utils";
+import { Button } from "@material-ui/core";
 
 class Dashboard extends React.Component {
   render() {
@@ -98,6 +99,11 @@ class Dashboard extends React.Component {
 
     return (
       <div>
+        <GridItem xs={12} sm={2} md={2}>
+          <Button fullWidth color="primary" className={classes.button}>
+            Add a new Question
+          </Button>
+        </GridItem>
         <TableDialog onRef={ref => (this.child = ref)}/>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>

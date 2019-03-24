@@ -6,7 +6,9 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import DashboardPage from "../views/Faculty/Dashboard/Dashboard.jsx";
 
 import FacultyManage from "../views/Faculty/FacultyManage/FacultyManage";
-import QuizManage from "../views/Faculty/QuizManage/QuizManage";
+import QuizManage from "../views/Faculty/QuestionManage/QuestionManage";
+import QuestionManage from "../views/Faculty/QuestionManage/QuestionManage";
+import AddQues from "../views/Faculty/AddQuestion/AddQuestion";
 const dashboardRoutes = [
   {
     path: "/faculty/dashboard",
@@ -24,17 +26,17 @@ const dashboardRoutes = [
   },
   {
     path: "/faculty/questions",
-    sidebarName: "Questions",
-    navbarName: "Questions",
+    sidebarName: "Manage Questions",
+    navbarName: "Manage Questions",
     icon: NotificationIcon,
-    component: FacultyManage
+    component: QuestionManage
   },
   {
-    path: "/faculty/quiz",
-    sidebarName: "Quiz",
-    navbarName: "Quiz",
+    path: "/faculty/addques",
+    sidebarName: "AddQuestion",
+    navbarName: "AddQuestion",
     icon: NotificationIcon,
-    component: QuizManage
+    component: AddQues
   },
   {
     redirect: true,
