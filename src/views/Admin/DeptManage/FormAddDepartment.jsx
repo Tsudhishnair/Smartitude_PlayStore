@@ -59,9 +59,9 @@ const styles = theme => ({
 });
 
 // mutation command
-const DEPARTMENT_LIST = gql`
-  mutation addDepartment($name: String!, $description: String!) {
-    addDepartment(name: $name, description: $description) {
+const ADD_DEPARTMENT = gql`
+  mutation addDepartment($departmentInput: DepartmentInput!) {
+    addDepartment(departmentInput: $departmentInput) {
       _id
     }
   }
@@ -136,8 +136,10 @@ class FormAddDepartment extends React.Component {
       });
       addDepartment({
         variables: {
-          name: this.state.form.name,
-          description: this.state.form.description
+          departmentInput: {
+            name: this.state.form.name,
+            description: this.state.form.description
+          }
         }
       })
         .then(response => {
@@ -190,7 +192,8 @@ class FormAddDepartment extends React.Component {
     const { loading, snackbar } = this.state;
 
     return (
-      <Mutation mutation={DEPARTMENT_LIST}>
+      <Mutation mutation={ADD_DEPARTMENT}
+      onCompleted={this.clearFields}>
         {(addDepartment, data) => (
           <div className={classes.root}>
             <GridContainer>
