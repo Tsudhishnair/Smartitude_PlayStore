@@ -48,7 +48,7 @@ const styles = theme => ({
     flexGrow: 1,
     margin: 0,
     fullWidth: true,
-    wrap: 'nowrap'
+    wrap: "nowrap"
   },
   button: {
     margin: theme.spacing.unit * 4
@@ -132,76 +132,76 @@ class Dashboard extends React.Component {
           </Typography>
           <GridContainer>
             <GridItem xs={12} sm={3} md={3}>
-              <FormControl className={classes.formControl} >
-                <InputLabel fullWidth>
-                  Correct Option
-                </InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                  autoWidth={true}
-                >
-                  <MenuItem value={10}>Option 1</MenuItem>
-                  <MenuItem value={20}>Option 2</MenuItem>
-                  <MenuItem value={30}>Option 3</MenuItem>
-                  <MenuItem value={30}>Option 4</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth>
-                  Category
-                </InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                  autoWidth={true}
-                >
-                  <MenuItem value="">
-                    <em>All Category</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Category 1</MenuItem>
-                  <MenuItem value={20}>Category 2</MenuItem>
-                  <MenuItem value={30}>Category 3</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth>
-                  Sub Category
-                </InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                >
-                  <MenuItem value="">
-                    <em>All Category</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Category 1</MenuItem>
-                  <MenuItem value={20}>Category 2</MenuItem>
-                  <MenuItem value={30}>Category 3</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2}>
-              <TextField
-                id="standard-number"
-                label="Difficulty"
-                type="number"
+              {/* <FormControl className={classes.formControl} > */}
+              <InputLabel fullWidth>Correct Option</InputLabel>
+              <Select
+                inputProps={{
+                  name: "age",
+                  id: "age-simple"
+                }}
                 fullWidth
-                margin="normal"
-              />
+                autoWidth={true}
+              >
+                <MenuItem value={10}>Option 1</MenuItem>
+                <MenuItem value={20}>Option 2</MenuItem>
+                <MenuItem value={30}>Option 3</MenuItem>
+                <MenuItem value={30}>Option 4</MenuItem>
+              </Select>
+              {/* </FormControl> */}
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3}>
+              {/* <FormControl className={classes.formControl}> */}
+              <InputLabel htmlFor="age-simple" fullWidth>
+                Category
+              </InputLabel>
+              <Select
+                inputProps={{
+                  name: "age",
+                  id: "age-simple"
+                }}
+                fullWidth
+                autoWidth={true}
+              >
+                <MenuItem value="">
+                  <em>All Category</em>
+                </MenuItem>
+                <MenuItem value={10}>Category 1</MenuItem>
+                <MenuItem value={20}>Category 2</MenuItem>
+                <MenuItem value={30}>Category 3</MenuItem>
+              </Select>
+              {/* </FormControl> */}
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3}>
+              {/* <FormControl className={classes.formControl}> */}
+              <InputLabel htmlFor="age-simple" fullWidth>
+                Sub Category
+              </InputLabel>
+              <Select
+                inputProps={{
+                  name: "age",
+                  id: "age-simple"
+                }}
+                fullWidth
+              >
+                <MenuItem value="">
+                  <em>All Category</em>
+                </MenuItem>
+                <MenuItem value={10}>Category 1</MenuItem>
+                <MenuItem value={20}>Category 2</MenuItem>
+                <MenuItem value={30}>Category 3</MenuItem>
+              </Select>
+              {/* </FormControl> */}
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3}>
+              <InputLabel htmlFor="age-simple" fullWidth>
+                Difficulty
+                <TextField
+                  id="standard-number"
+                  type="number"
+                  fullWidth
+                  // margin="normal"
+                />
+              </InputLabel>
             </GridItem>
           </GridContainer>
         </form>
