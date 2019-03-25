@@ -23,51 +23,89 @@ import DeptDialog from "./DeptDialog";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import DialogDelete from "../../../components/Dialog/DialogDelete";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 class DeptManage extends React.Component {
   constructor(props) {
     super(props);
     //state to manage department dialog
     this.state = {
-      open: false,
+      updateDialogOpen: false,
+      deleteDialogOpen: false,
       deptData: {}
     };
+
+    this.deptToBeDeleted;
+
+    this.deptDeleteMutation;
   }
+
   handleUpdate = data => {
     if (data) {
       this.setState({
-        // ...this.state,
-        // open: true,
         deptData: data
       });
-      this.toggleDialogVisibility();
+      this.toggleUpdateDialogVisibility();
     }
   };
   //delete function passsed to the dialog
-  handleDelete = (deleteDepartment, data) => {
-    deleteDepartment({
+  handleDelete(deleteDepartment, data) {
+    this.toggleDeleteDialogVisibility();
+
+    this.deptToBeDeleted = data;
+
+    this.deptDeleteMutation = deleteDepartment;
+  }
+
+  deleteDepartment = () => {
+    this.deptDeleteMutation({
       variables: {
-        _id: data._id
+        _id: this.deptToBeDeleted._id
       }
-    });
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+      .finally(this.toggleDeleteDialogVisibility());
   };
-  toggleDialogVisibility = () => {
+
+  toggleUpdateDialogVisibility = () => {
     this.setState(prevState => ({
-      open: !prevState.open
+      updateDialogOpen: !prevState.updateDialogOpen
     }));
   };
 
-  renderDialog = isVisible => {
+  toggleDeleteDialogVisibility = () => {
+    this.setState(prevState => ({
+      deleteDialogOpen: !prevState.deleteDialogOpen
+    }));
+  };
+
+  renderUpdateDialog = isVisible => {
     if (isVisible) {
       return (
         <DeptDialog
           department={this.state.deptData}
-          onClose={this.toggleDialogVisibility}
+          onClose={this.toggleUpdateDialogVisibility}
         />
       );
     }
   };
+
+  renderDeleteDialog = isVisible => {
+    if (isVisible) {
+      return (
+        <MessageDialog
+          title="Delete Department"
+          content="Are you sure you want to delete this department?"
+          positiveAction="Confirm"
+          negativeAction="Cancel"
+          action={this.deleteDepartment}
+          onClose={this.toggleDeleteDialogVisibility}
+        />
+      );
+    }
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -94,7 +132,8 @@ class DeptManage extends React.Component {
 
     return (
       <div>
-        {this.renderDialog(this.state.open)}
+        {this.renderUpdateDialog(this.state.updateDialogOpen)}
+        {this.renderDeleteDialog(this.state.deleteDialogOpen)}
         <Expansionpanel
           headers={header1}
           header={header2}
@@ -142,7 +181,6 @@ class DeptManage extends React.Component {
                                   round
                                   color="success"
                                   style={{ marginLeft: "auto" }}
-                                  // onClick={this.handleUpdate(department)}
                                   onClick={e => this.handleUpdate(department)}
                                 >
                                   Manage
