@@ -32,9 +32,9 @@ const dashboardRoutes = [
     component: QuestionManage
   },
   {
-    path: "/faculty/addques",
-    sidebarName: "AddQuestion",
-    navbarName: "AddQuestion",
+    path: "/faculty/add_new_question",
+    sidebarName: "Add_Question",
+    navbarName: "Add_Question",
     icon: NotificationIcon,
     component: AddQues
   },

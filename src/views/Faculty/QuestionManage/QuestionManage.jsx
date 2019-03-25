@@ -6,127 +6,105 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import MUIDataTable from "mui-datatables";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { EXPANSION_QUIZ_FORM } from "../../../Utils";
-import { Button } from "@material-ui/core";
+import Button from "components/CustomButtons/Button";
+import { Link } from "react-router-dom";
 
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
-    const header1 = "Quiz";
-    const header2 = "Create & Assign Quiz";
-    const columns = [
+    let data = [
       {
-        name: "QuizName",
-        options: {
-          filter: false,
-          sort: true
-        }
+        dept_id: "124",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        name: "Description",
-        options: {
-          filter: false,
-          sort: true
-        }
+        dept_id: "123",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        name: "Created By",
-        options: {
-          filter: true,
-          sort: true
-        }
+        dept_id: "124",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        name: "Target",
-        options: {
-          filter: true,
-          sort: true
-        }
+        dept_id: "124",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        name: "Active",
-        options: {
-          filter: true,
-          sort: true
-        }
+        dept_id: "124",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        name: "Expiry",
-        options: {
-          filter: false,
-          sort: true
-        }
+        dept_id: "124",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       }
     ];
-
-    const data = [
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"]
-    ];
-
-    const options = {
-      filterType: "checkbox",
-      rowsPerPage: 20,
-      elevation: 0,
-      rowsPerPageOptions: [20, 30, 100, 200],
-
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
-        this.child.handleClickOpen(rowData);
-      }
+    const Frameworks = props => {
+      return (
+        <React.Fragment>
+          {props.items.map(item => (
+            <React.Fragment key={item.id}>
+              <GridItem xs={12} sm={12} md={12}>
+                <Card>
+                  <CardBody>
+                    <h4 className={classes.cardTitle}>{item.dept_name}</h4>
+                    <p className={classes.cardCategory}>{item.dept_desc}</p>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      round
+                      color="success"
+                      style={{ marginLeft: "auto" }}
+                    >
+                      Manage
+                    </Button>
+                  </CardFooter>
+                </Card>
+                <Spacing />
+              </GridItem>
+            </React.Fragment>
+          ))}
+        </React.Fragment>
+      );
     };
 
     return (
       <div>
         <GridItem xs={12} sm={2} md={2}>
-          <Button fullWidth color="primary" className={classes.button}>
-            Add a new Question
-          </Button>
+          <Link to="/faculty/add_new_question">
+            <Button fullWidth color="primary" className={classes.button}>
+              Add a new Question
+            </Button>
+          </Link>
         </GridItem>
-        <TableDialog onRef={ref => (this.child = ref)}/>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Expansionpanel
-              headers={header1}
-              header={header2}
-              directingValue={EXPANSION_QUIZ_FORM}
-            />
-          </GridItem>
-        </GridContainer>
+        <TableDialog onRef={ref => (this.child = ref)} />
         <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card className={classes.root}>
               <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Quizzes</h4>
+                <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
-              <MUIDataTable
-                title={""}
-                data={data}
-                columns={columns}
-                options={options}
-              />
+              <GridContainer style={{ padding: "2%" }}>
+                <Frameworks items={data} />
+              </GridContainer>
             </Card>
           </GridItem>
         </GridContainer>
