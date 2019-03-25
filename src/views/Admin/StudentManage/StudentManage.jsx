@@ -149,37 +149,33 @@ class Dashboard extends React.Component {
 
                   if (loading) {
                     return "Loading...";
-                  }
-                  else if (error) {
+                  } else if (error) {
                     return "Error occured!";
-                  }
-                  else {
+                  } else {
                     let studentsList = [];
-                  studentsList = data.students.map(student => {
-                    let studentData = [];
-                    studentData.push(student.name);
-                    studentData.push(student.username);
-                    studentData.push(student.email);
-                    studentData.push(student.department.name);
-                    studentData.push(student.batch.toString());
-                    studentData.push(student.phoneNumber);
-                    studentData.push(student.phoneNumber);
-                    return studentData;
-                  });
-                  this.students = data.students;
-                  return (
-                    <MUIDataTable
-                      title={""}
-                      data={studentsList}
-                      columns={columns}
-                      options={options}
-                    />
-                  )
+                    studentsList = data.students.map(student => {
+                      let studentData = [];
+                      studentData.push(student.name);
+                      studentData.push(student.username);
+                      studentData.push(student.email);
+                      studentData.push(student.department.name);
+                      studentData.push(student.batch.toString());
+                      studentData.push(student.phoneNumber);
+                      studentData.push(student.phoneNumber);
+                      return studentData;
+                    });
+                    this.students = data.students;
+                    return (
+                      <MUIDataTable
+                        title={""}
+                        data={studentsList}
+                        columns={columns}
+                        options={options}
+                      />
+                    );
                   }
-                }
-                }
+                }}
               </Query>
-
             </Card>
           </GridItem>
         </GridContainer>

@@ -60,6 +60,29 @@ function Transition(props) {
 }
 
 class DialogFacultyTable extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      open: false,
+      name: "",
+      username: "",
+      _id: "",
+      email: "",
+      phoneNumber: "",
+      category: "",
+      subcategory: [],
+      subcategoryList: [],
+      isInCharge: false,
+      inChargeSubcategories: [],
+      department: {
+        name: "",
+        _id: ""
+      }
+    };
+  }
+
   getSelectedSubcategories = selectedSubcategories => {
     const subcategory = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value;
@@ -92,6 +115,7 @@ class DialogFacultyTable extends React.Component {
 
   handleClickOpen = faculty => {
     this.setState({ open: true });
+    console.log(faculty.subcategory);
     this.setState({ ...faculty });
   };
   toggleInChargeSwitch = () => {
@@ -125,28 +149,6 @@ class DialogFacultyTable extends React.Component {
   handleDeleteClose = () => {
     this.setState({ delopen: false });
   };
-
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.state = {
-      open: false,
-      name: "",
-      username: "",
-      _id: "",
-      email: "",
-      phoneNumber: "",
-      category: "",
-      subcategory: [],
-      subcategoryList: [],
-      isInCharge: false,
-      inChargeSubcategories: [],
-      department: {
-        name: "",
-        _id: ""
-      }
-    };
-  }
 
   renderCategoryDropdown = () => {
     if (this.props.categoryDetails) {
@@ -400,38 +402,38 @@ class DialogFacultyTable extends React.Component {
                     </Select>
                   </FormControl>
                 </GridItem>
-                 <GridItem
-               xs={12}
-               sm={12}
-               md={12}
-               className={classes.elementPadding}
-               >
-               <ReactChipInput
-               style={{ zIndex: 0 }}
-               data={this.state.subcategoryList}
-               label="Sub-Categories"
-               hintText="Select sub-categories"
-               getSelectedObjects={this.getSelectedSubcategories}
-               clearChips={this.state.clearSubcategoryChips}
-               onChipsCleared={this.chipsCleared}
-               />
-               </GridItem>
-               <GridItem
-               xs={12}
-               sm={8}
-               md={8}
-               className={classes.elementPadding}
-               >
-               <ReactChipInput
-               style={{ zIndex: 0 }}
-               label="In-charge Sub-Categories"
-               hintText="Select in-charge sub-categories"
-               data={this.state.subcategoryList}
-               getSelectedObjects={this.getSelectedInchargeSubcategories}
-               clearChips={this.state.clearInchargeSubcategoryChips}
-               onChipsCleared={this.chipsCleared}
-               />
-               </GridItem>  
+                <GridItem
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  className={classes.elementPadding}
+                >
+                  <ReactChipInput
+                    style={{ zIndex: 0 }}
+                    data={this.state.subcategoryList}
+                    label="Sub-Categories"
+                    hintText="Select sub-categories"
+                    getSelectedObjects={this.getSelectedSubcategories}
+                    clearChips={this.state.clearSubcategoryChips}
+                    onChipsCleared={this.chipsCleared}
+                  />
+                </GridItem>
+                <GridItem
+                  xs={12}
+                  sm={8}
+                  md={8}
+                  className={classes.elementPadding}
+                >
+                  <ReactChipInput
+                    style={{ zIndex: 0 }}
+                    label="In-charge Sub-Categories"
+                    hintText="Select in-charge sub-categories"
+                    data={this.state.subcategoryList}
+                    getSelectedObjects={this.getSelectedInchargeSubcategories}
+                    clearChips={this.state.clearInchargeSubcategoryChips}
+                    onChipsCleared={this.chipsCleared}
+                  />
+                </GridItem>
               </GridContainer>
             </div>
           </DialogContent>
