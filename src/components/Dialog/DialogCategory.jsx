@@ -73,7 +73,14 @@ class DialogCategory extends React.Component {
   };
 
   render() {
-    const { classes, title, content, positiveAction, negativeAction, action } = this.props;
+    const {
+      classes,
+      title,
+      content,
+      positiveAction,
+      negativeAction,
+      action
+    } = this.props;
     return (
       <div>
         <Dialog
@@ -82,11 +89,13 @@ class DialogCategory extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="form-dialog-title">Category</DialogTitle>
-
-
-
-          
+          <DialogTitle id="form-dialog-title">Category </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              This action once done cannot be undone. Please continue with
+              caution.
+            </DialogContentText>
+          </DialogContent>
           <DialogActions>
             <Button onClick={this.handleDialogClose} color="primary">
               {negativeAction ? negativeAction : "CANCEL"}
@@ -108,7 +117,7 @@ DialogCategory.propTypes = {
   positiveAction: PropTypes.string,
   negativeAction: PropTypes.string,
   action: PropTypes.func.isRequired,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func
 };
 
 export default withStyles(styles)(DialogCategory);
