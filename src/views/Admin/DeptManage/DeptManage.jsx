@@ -1,15 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-// react plugin for creating charts
+
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-import { IconButton } from "@material-ui/core";
+
+import { IconButton, Snackbar } from "@material-ui/core";
+
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
 import Button from "components/CustomButtons/Button.jsx";
-// import Button from '@material-ui/core/Button';
 
 // core components
 import Card from "components/Card/Card.jsx";
@@ -18,12 +17,21 @@ import CardFooter from "components/Card/CardFooter.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
-import DeptDialog from "./DeptDialog";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+
+// apollo client
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
+// dialog boxes
 import MessageDialog from "../../../components/Dialog/MessageDialog";
+import DeptDialog from "./DeptDialog";
+
+// constant
+import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
+
+// snackbar
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 class DeptManage extends React.Component {
   constructor(props) {
@@ -32,14 +40,41 @@ class DeptManage extends React.Component {
     this.state = {
       updateDialogOpen: false,
       deleteDialogOpen: false,
-      deptData: {}
+      deptData: {},
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
+      }
     };
 
+    // stores dept which is to be deleted
     this.deptToBeDeleted;
 
+    // stores mutation call of dept
     this.deptDeleteMutation;
   }
 
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  // called when manage button is clicked
   handleUpdate = data => {
     if (data) {
       this.setState({
@@ -48,6 +83,7 @@ class DeptManage extends React.Component {
       this.toggleUpdateDialogVisibility();
     }
   };
+
   //delete function passsed to the dialog
   handleDelete(deleteDepartment, data) {
     this.toggleDeleteDialogVisibility();
@@ -57,6 +93,7 @@ class DeptManage extends React.Component {
     this.deptDeleteMutation = deleteDepartment;
   }
 
+  // called by confirm action of delete confirmation dialog box
   deleteDepartment = () => {
     this.deptDeleteMutation({
       variables: {
@@ -64,10 +101,23 @@ class DeptManage extends React.Component {
       }
     })
       .then(res => console.log(res))
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.setState({
+          // set error message of snackbar
+          error: {
+            message: !!err.graphQLErrors
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+
+        this.openSnackbar();
+      })
+      // close snackbar after resolution of request
       .finally(this.toggleDeleteDialogVisibility());
   };
 
+  // used to toggle visibility of update and delete dialogs
   toggleUpdateDialogVisibility = () => {
     this.setState(prevState => ({
       updateDialogOpen: !prevState.updateDialogOpen
@@ -80,6 +130,7 @@ class DeptManage extends React.Component {
     }));
   };
 
+  // renders update & delete dialogs
   renderUpdateDialog = isVisible => {
     if (isVisible) {
       return (
@@ -196,6 +247,20 @@ class DeptManage extends React.Component {
             );
           }}
         </Query>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={this.state.snackbar.open}
+          autoHideDuration={6000}
+        >
+          <CustomSnackbar
+            onClose={this.closeSnackbar}
+            variant="error"
+            message={this.state.error.message}
+          />
+        </Snackbar>
       </div>
     );
   }
