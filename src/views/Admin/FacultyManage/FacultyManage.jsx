@@ -105,7 +105,6 @@ class Dashboard extends React.Component {
           username
           name
           email
-          password
           phoneNumber
           department {
             _id

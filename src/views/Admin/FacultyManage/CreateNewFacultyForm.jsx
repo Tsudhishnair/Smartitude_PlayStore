@@ -71,7 +71,7 @@ class CreateNewFacultyForm extends Component {
       clearInchargeSubcategoryChips: false
     };
   }
-  
+
   getSelectedSubcategories = selectedSubcategories => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value;
@@ -163,8 +163,6 @@ class CreateNewFacultyForm extends Component {
       return <Fragment/>;
     }
   };
-
- 
 
   render() {
     const { classes } = this.props;

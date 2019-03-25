@@ -1,3 +1,4 @@
+import gql from "graphql-tag";
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -14,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import { Mutation } from "react-apollo";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -60,6 +62,8 @@ function Transition(props) {
 }
 
 class DialogFacultyTable extends React.Component {
+  initialSubcategories = [];
+  initialInChargeSubcategories = [];
 
   constructor(props) {
     super(props);
@@ -114,9 +118,57 @@ class DialogFacultyTable extends React.Component {
   };
 
   handleClickOpen = faculty => {
+    this.initialSubcategories = faculty.subcategory.map(subcategory => {
+      return {
+        label: subcategory.name,
+        value: subcategory._id
+      };
+    });
+    this.initialInChargeSubcategories = faculty.inChargeSubcategories.map(
+      inChargeSubcategory => {
+        return {
+          label: inChargeSubcategory.name,
+          value: inChargeSubcategory._id
+        };
+      }
+    );
     this.setState({ open: true });
-    console.log(faculty.subcategory);
-    this.setState({ ...faculty });
+    const subcategory = faculty.subcategory.map(subcategory => {
+      return subcategory._id;
+    });
+    const category = faculty.category._id;
+    let currentCategoryDetail;
+    const categoryListSize = this.props.categoryDetails.length;
+    for (let i = 0; i < categoryListSize; i++) {
+      const categoryDetail = this.props.categoryDetails[i];
+      if (categoryDetail.category._id === category) {
+        currentCategoryDetail = categoryDetail;
+        break;
+      }
+    }
+    let currentSubcategory = currentCategoryDetail.subcategory.map(
+      subcategory => {
+        return {
+          key: subcategory._id,
+          label: subcategory.name
+        };
+      }
+    );
+    this.setState({
+      ...faculty,
+      subcategory,
+      subcategoryList: currentSubcategory
+    });
+    if (faculty.isInCharge) {
+      const inChargeSubcategories = faculty.inChargeSubcategories.map(
+        inChargeSubcategory => {
+          return inChargeSubcategory._id;
+        }
+      );
+      this.setState({
+        inChargeSubcategories
+      });
+    }
   };
   toggleInChargeSwitch = () => {
     this.setState({
@@ -124,9 +176,11 @@ class DialogFacultyTable extends React.Component {
       isInCharge: !this.state.isInCharge
     });
   };
+
   componentDidMount() {
     this.props.onRef(this);
   }
+
   componentWillUnmount() {
     this.props.onRef(undefined);
   }
@@ -139,7 +193,25 @@ class DialogFacultyTable extends React.Component {
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.initialSubcategories = null;
+    this.initialInChargeSubcategories = null;
+    this.setState({
+      open: false,
+      name: "",
+      username: "",
+      _id: "",
+      email: "",
+      phoneNumber: "",
+      category: "",
+      subcategory: [],
+      subcategoryList: [],
+      isInCharge: false,
+      inChargeSubcategories: [],
+      department: {
+        name: "",
+        _id: ""
+      }
+    });
   };
   handleDeleteClickOpen = () => {
     // this.setState({ open: false });
@@ -181,272 +253,361 @@ class DialogFacultyTable extends React.Component {
       clearInchargeSubcategoryChips: true
     });
   };
+  updateAndClose = async editFaculty => {
+    let facultyEditInput;
+    if (this.state.isInCharge) {
+      facultyEditInput = {
+        name: this.state.name,
+        username: this.state.username,
+        email: this.state.email,
+        phoneNumber: this.state.phoneNumber,
+        department: this.state.department._id,
+        isInCharge: this.state.isInCharge,
+        category: this.state.category._id,
+        subcategory: this.state.subcategory,
+        inChargeSubcategories: this.state.inChargeSubcategories
+      };
+    } else {
+      facultyEditInput = {
+        name: this.state.name,
+        username: this.state.username,
+        email: this.state.email,
+        phoneNumber: this.state.phoneNumber,
+        department: this.state.department._id,
+        isInCharge: this.state.isInCharge,
+        category: this.state.category._id,
+        subcategory: this.state.subcategory
+      };
+    }
+    console.log("faculty input");
+    console.log(facultyEditInput);
+    editFaculty({
+      variables: {
+        _id: this.state._id,
+        facultyEditInput: facultyEditInput
+      }
+    });
+    this.handleClose();
+  };
 
   render() {
     const { classes } = this.props;
+
+    const EDIT_FACULTY_QUERY = gql`
+      mutation editFaculty($_id: ID!, $facultyEditInput: FacultyEditInput!) {
+        editFaculty(_id: $_id, facultyEditInput: $facultyEditInput) {
+          _id
+        }
+      }
+    `;
     return (
-      <div>
-        <Dialog
-          open={this.state.delopen}
-          onClose={this.handleDeleteClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Are you sure you want to delete?"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              This action once done cannot be undone. Please continue with
-              caution.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleDeleteClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleDeleteClose} color="primary" autoFocus>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Edit Faculty Details</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <GridContainer>
-                <GridItem
-                  xs={6}
-                  sm={6}
-                  md={6}
-                  className={classes.elementPadding}
-                >
-                  Edit below to update/modify an individual faculty data.
-                </GridItem>
-                <GridItem
-                  xs={2}
-                  sm={2}
-                  md={2}
-                  className={classes.elementPadding}
-                >
-                  <Typography>Questions Submitted</Typography>
-                  <Typography>
-                    <h4>
-                      <strong>{0}</strong>
-                    </h4>
-                  </Typography>
-                </GridItem>
-                <GridItem
-                  xs={2}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
+      <Mutation mutation={EDIT_FACULTY_QUERY}>
+        {editFaculty => {
+          return (
+            <div>
+              <Dialog
+                open={this.state.delopen}
+                onClose={this.handleDeleteClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"Are you sure you want to delete?"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    This action once done cannot be undone. Please continue with
+                    caution.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleDeleteClose} color="primary">
+                    Cancel
+                  </Button>
                   <Button
-                    onClick={this.handleDeleteClickOpen}
-                    fullWidth
+                    onClick={this.handleDeleteClose}
+                    color="primary"
+                    autoFocus
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="form-dialog-title"
+              >
+                <DialogTitle id="form-dialog-title">
+                  Edit Faculty Details
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    <GridContainer>
+                      <GridItem
+                        xs={6}
+                        sm={6}
+                        md={6}
+                        className={classes.elementPadding}
+                      >
+                        Edit below to update/modify an individual faculty data.
+                      </GridItem>
+                      <GridItem
+                        xs={2}
+                        sm={2}
+                        md={2}
+                        className={classes.elementPadding}
+                      >
+                        <Typography>Questions Submitted</Typography>
+                        <Typography>
+                          <h4>
+                            <strong>{0}</strong>
+                          </h4>
+                        </Typography>
+                      </GridItem>
+                      <GridItem
+                        xs={2}
+                        sm={4}
+                        md={4}
+                        className={classes.elementPadding}
+                      >
+                        <Button
+                          onClick={this.handleDeleteClickOpen}
+                          fullWidth
+                          color="primary"
+                        >
+                          Delete Faculty
+                        </Button>
+                      </GridItem>
+                    </GridContainer>
+                  </DialogContentText>
+                  <div className={classes.root}>
+                    <Spacing/>
+                    <Typography>
+                      {" "}
+                      <strong>Basic Info</strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={4}
+                        md={4}
+                        className={classes.elementPadding}
+                      >
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="name"
+                          label="Name"
+                          name="name"
+                          type="name"
+                          onChange={this.handleValueChange}
+                          value={this.state.name}
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={4}
+                        md={4}
+                        className={classes.elementPadding}
+                      >
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="username"
+                          name="username"
+                          onChange={this.handleValueChange}
+                          label="Username"
+                          type="name"
+                          value={this.state.username}
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={4}
+                        md={4}
+                        className={classes.elementPadding}
+                      >
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          id="email"
+                          onChange={this.handleValueChange}
+                          name="email"
+                          label="Email Address"
+                          type="email"
+                          value={this.state.email}
+                          fullWidth
+                        />
+                      </GridItem>
+                    </GridContainer>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        className={classes.formControl}
+                      >
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="age-simple">
+                            Department
+                          </InputLabel>
+                          <Select
+                            onChange={this.handleValueChange}
+                            value={this.state.department.name}
+                            renderValue={department => {
+                              return department;
+                            }}
+                            inputProps={{
+                              name: "department",
+                              id: "department"
+                            }}
+                            fullWidth
+                          >
+                            {this.props.departments.map(department => {
+                              return (
+                                <MenuItem
+                                  key={department._id}
+                                  value={department}
+                                >
+                                  {department.name}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        className={classes.elementPadding}
+                      >
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              name="isInCharge"
+                              checked={this.state.isInCharge}
+                              onChange={this.toggleInChargeSwitch}
+                              value={this.state.isInCharge}
+                              color="primary"
+                            />
+                          }
+                          label="In-charge"
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={6}
+                        md={6}
+                        className={classes.elementPadding}
+                      >
+                        <TextField
+                          autoFocus
+                          margin="dense"
+                          onChange={this.handleValueChange}
+                          id="phoneNumber"
+                          label="Phone Number"
+                          type="phone"
+                          name="phoneNumber"
+                          fullWidth
+                          value={this.state.phoneNumber}
+                        />
+                      </GridItem>
+                    </GridContainer>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={4}
+                        md={4}
+                        className={classes.formControl}
+                      >
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="category">Category</InputLabel>
+                          <Select
+                            onChange={this.handleCategorySelect}
+                            value={this.state.category.name}
+                            renderValue={value => {
+                              return value;
+                            }}
+                            inputProps={{
+                              name: "category",
+                              id: "category"
+                            }}
+                            fullWidth
+                          >
+                            {this.renderCategoryDropdown()}
+                          </Select>
+                        </FormControl>
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.elementPadding}
+                      >
+                        <ReactChipInput
+                          initialValues={
+                            this.initialSubcategories
+                              ? this.initialSubcategories
+                              : undefined
+                          }
+                          style={{ zIndex: 0 }}
+                          data={this.state.subcategoryList}
+                          label="Sub-Categories"
+                          hintText="Select sub-categories"
+                          getSelectedObjects={this.getSelectedSubcategories}
+                          clearChips={this.state.clearSubcategoryChips}
+                          onChipsCleared={this.chipsCleared}
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={8}
+                        md={8}
+                        className={classes.elementPadding}
+                      >
+                        <ReactChipInput
+                          initialValues={
+                            this.initialInChargeSubcategories
+                              ? this.initialInChargeSubcategories
+                              : undefined
+                          }
+                          style={{ zIndex: 0 }}
+                          label="In-charge Sub-Categories"
+                          hintText="Select in-charge sub-categories"
+                          data={this.state.subcategoryList}
+                          getSelectedObjects={
+                            this.getSelectedInchargeSubcategories
+                          }
+                          clearChips={this.state.clearInchargeSubcategoryChips}
+                          onChipsCleared={this.chipsCleared}
+                        />
+                      </GridItem>
+                    </GridContainer>
+                  </div>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={e => {
+                      e.preventDefault();
+                      this.updateAndClose(editFaculty);
+                    }}
                     color="primary"
                   >
-                    Delete Faculty
+                    Save
                   </Button>
-                </GridItem>
-              </GridContainer>
-            </DialogContentText>
-            <div className={classes.root}>
-              <Spacing />
-              <Typography>
-                {" "}
-                <strong>Basic Info</strong>
-              </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Name"
-                    name="name"
-                    type="name"
-                    onChange={this.handleValueChange}
-                    value={this.state.name}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="username"
-                    name="username"
-                    onChange={this.handleValueChange}
-                    label="Username"
-                    type="name"
-                    value={this.state.username}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="email"
-                    onChange={this.handleValueChange}
-                    name="email"
-                    label="Email Address"
-                    type="email"
-                    value={this.state.email}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="age-simple">Department</InputLabel>
-                    <Select
-                      onChange={this.handleValueChange}
-                      value={this.state.department.name}
-                      renderValue={department => {
-                        return department;
-                      }}
-                      inputProps={{
-                        name: "department",
-                        id: "department"
-                      }}
-                      fullWidth
-                    >
-                      {this.props.departments.map(department => {
-                        return (
-                          <MenuItem key={department._id} value={department}>
-                            {department.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  className={classes.elementPadding}
-                >
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        name="isInCharge"
-                        checked={this.state.isInCharge}
-                        onChange={this.toggleInChargeSwitch}
-                        value={this.state.isInCharge}
-                        color="primary"
-                      />
-                    }
-                    label="In-charge"
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    onChange={this.handleValueChange}
-                    id="phoneNumber"
-                    label="Phone Number"
-                    type="phone"
-                    name="phoneNumber"
-                    fullWidth
-                    value={this.state.phoneNumber}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="category">Category</InputLabel>
-                    <Select
-                      onChange={this.handleCategorySelect}
-                      value={this.state.category.name}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "category",
-                        id: "category"
-                      }}
-                      fullWidth
-                    >
-                      {this.renderCategoryDropdown()}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  className={classes.elementPadding}
-                >
-                  <ReactChipInput
-                    style={{ zIndex: 0 }}
-                    data={this.state.subcategoryList}
-                    label="Sub-Categories"
-                    hintText="Select sub-categories"
-                    getSelectedObjects={this.getSelectedSubcategories}
-                    clearChips={this.state.clearSubcategoryChips}
-                    onChipsCleared={this.chipsCleared}
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={8}
-                  md={8}
-                  className={classes.elementPadding}
-                >
-                  <ReactChipInput
-                    style={{ zIndex: 0 }}
-                    label="In-charge Sub-Categories"
-                    hintText="Select in-charge sub-categories"
-                    data={this.state.subcategoryList}
-                    getSelectedObjects={this.getSelectedInchargeSubcategories}
-                    clearChips={this.state.clearInchargeSubcategoryChips}
-                    onChipsCleared={this.chipsCleared}
-                  />
-                </GridItem>
-              </GridContainer>
+                </DialogActions>
+              </Dialog>
             </div>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          );
+        }}
+      </Mutation>
     );
   }
 }

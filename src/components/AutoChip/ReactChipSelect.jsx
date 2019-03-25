@@ -184,7 +184,8 @@ const components = {
 class ReactChipSelect extends React.Component {
   state = {
     single: null,
-    multi: null
+    multi: null,
+    isInitialValueSet: false
   };
 
   handleChange = name => async value => {    
@@ -193,6 +194,7 @@ class ReactChipSelect extends React.Component {
     });
     this.props.getSelectedObjects(this.state.multi)
   };
+
 
   render() {
     const { classes, theme, getSelectedObjects, clearChips, onChipsCleared } = this.props;
@@ -213,6 +215,13 @@ class ReactChipSelect extends React.Component {
       })
     };
 
+    if (!this.state.isInitialValueSet && this.props.initialValues) {
+      this.setState({
+        ...this.state,
+        multi: this.props.initialValues,
+        isInitialValueSet: true
+      });
+    }
     const suggestions = this.props.data.map(suggestion => ({
       value: suggestion.key,
       label: suggestion.label
@@ -251,6 +260,7 @@ ReactChipSelect.propTypes = {
   getSelectedObjects: PropTypes.func.isRequired,
   clearChips: PropTypes.bool.isRequired,
   onChipsCleared: PropTypes.func.isRequired,
+  initialValues: PropTypes.func
 };
 
 export default withStyles(styles, { withTheme: true })(ReactChipSelect);
