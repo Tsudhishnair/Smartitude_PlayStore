@@ -57,10 +57,9 @@ class DialogCategory extends React.Component {
     this.state = {
       open: false,
       CategoryName: "",
-      CategoryDesc: ""
-      //   SubCategoryName:"",
-      //   SubCategoryDesc:"",
-      //
+      CategoryDesc: "",
+      SubCategoryName: "",
+      SubCategoryDesc: ""
     };
   }
   componentDidMount() {
