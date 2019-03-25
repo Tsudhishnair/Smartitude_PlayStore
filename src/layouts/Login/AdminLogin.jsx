@@ -29,7 +29,7 @@ import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
 const ADMIN_LOGIN = gql`
   mutation adminLogin($username: String!, $password: String!) {
     adminLogin(username: $username, password: $password)
-  } 
+  }
 `;
 
 const styles = theme => ({

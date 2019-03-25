@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 // react plugin for creating charts
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Snackbar } from "@material-ui/core";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Button from "components/CustomButtons/Button.jsx";
 // import Button from '@material-ui/core/Button';
@@ -25,6 +24,8 @@ import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+
 class DeptManage extends React.Component {
   constructor(props) {
     super(props);
@@ -32,13 +33,37 @@ class DeptManage extends React.Component {
     this.state = {
       updateDialogOpen: false,
       deleteDialogOpen: false,
-      deptData: {}
+      deptData: {},
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
+      }
     };
 
     this.deptToBeDeleted;
 
     this.deptDeleteMutation;
   }
+
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
 
   handleUpdate = data => {
     if (data) {
@@ -64,7 +89,17 @@ class DeptManage extends React.Component {
       }
     })
       .then(res => console.log(res))
-      .catch(err => console.log(err))
+      .catch(err => {
+        this.setState({
+          error: {
+            message: !!err.graphQLErrors
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+
+        this.openSnackbar();
+      })
       .finally(this.toggleDeleteDialogVisibility());
   };
 
@@ -196,6 +231,20 @@ class DeptManage extends React.Component {
             );
           }}
         </Query>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={this.state.snackbar.open}
+          autoHideDuration={6000}
+        >
+          <CustomSnackbar
+            onClose={this.closeSnackbar}
+            variant="error"
+            message={this.state.error.message}
+          />
+        </Snackbar>
       </div>
     );
   }
