@@ -197,16 +197,7 @@ class Dashboard extends React.Component {
             <GridItem xs={12} sm={2} md={2}>
               <TextField
                 id="standard-number"
-                label="No. Of Quest."
-                type="number"
-                fullWidth
-                margin="normal"
-              />
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2}>
-              <TextField
-                id="standard-number"
-                label="Time Limit (min)"
+                label="Difficulty"
                 type="number"
                 fullWidth
                 margin="normal"

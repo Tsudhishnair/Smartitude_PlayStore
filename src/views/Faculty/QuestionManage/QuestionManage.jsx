@@ -88,7 +88,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <GridItem xs={12} sm={2} md={2}>
-          <Link to="/faculty/add_new_question">
+          <Link to="/faculty/questions/add">
             <Button fullWidth color="primary" className={classes.button}>
               Add a new Question
             </Button>

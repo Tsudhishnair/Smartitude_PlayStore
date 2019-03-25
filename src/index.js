@@ -22,6 +22,8 @@ import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
 import Landing from "./layouts/Landing/Landing";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
+import AddQues from "./views/Faculty/AddQuestion/AddQuestion";
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#ff9800" }, // Purple and green play nicely together.
@@ -63,6 +65,7 @@ ReactDOM.render(
           <Route path="/stud/login" component={StudentLogin} />
           <PrivateRoute path="/admin/" component={AdminPanel} />
           <PrivateRoute path="/faculty/" component={FacultyPanel} />
+          <PrivateRoute path="/faculty/questions/add" component={AddQues} />
           <Route path="/student/" component={StudentPanel} />
           <Route path="/" component={Landing} />
         </Switch>
