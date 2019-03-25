@@ -63,7 +63,7 @@ class FormAddCategory extends Component {
                     id="name"
                     name="name"
                     label="Category Name"
-                    type="name"
+                    type="text"
                     value={this.state.name}
                     onChange={this.handleChange}
                     fullWidth

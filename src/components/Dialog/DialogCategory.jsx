@@ -2,18 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-
+import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import Spacing from "../Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Typography from "./DialogFacultyTable";
-import { Category } from "@material-ui/icons";
 
 const styles = theme => ({
   appBar: {
@@ -54,9 +51,18 @@ function Transition(props) {
 }
 
 class DialogCategory extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      open: false,
+      CategoryName: "",
+      CategoryDesc: ""
+      //   SubCategoryName:"",
+      //   SubCategoryDesc:"",
+      //
+    };
+  }
   componentDidMount() {
     this.props.onRef(this);
   }
@@ -92,8 +98,30 @@ class DialogCategory extends React.Component {
           <DialogTitle id="form-dialog-title">Category </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              This action once done cannot be undone. Please continue with
-              caution.
+              <GridContainer>
+                <GridItem xs={6} md={6}>
+                  <TextField
+                    id="CategoryName"
+                    name="CategoryName"
+                    label="Category Name"
+                    type="text"
+                    fullWidth
+                    required
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} md={12} lg={12}>
+                  <TextField
+                    id="CategoryName"
+                    name="CategoryName"
+                    label="Category Name"
+                    type="text"
+                    fullWidth
+                    required
+                  />
+                </GridItem>
+              </GridContainer>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
