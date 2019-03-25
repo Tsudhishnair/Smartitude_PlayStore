@@ -204,6 +204,10 @@ class Dashboard extends React.Component {
               </InputLabel>
             </GridItem>
           </GridContainer>
+          <GridContainer>
+            <Button>Clear</Button>
+            <Button >Add</Button>
+          </GridContainer>
         </form>
       </div>
     );
