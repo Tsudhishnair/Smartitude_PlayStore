@@ -47,6 +47,31 @@ const styles = theme => ({
   }
 });
 class CreateNewFacultyForm extends Component {
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      subcategories: [],
+      department: {
+        name: ""
+      },
+      category: {
+        name: ""
+      },
+      username: "",
+      password: "",
+      name: "",
+      email: "",
+      phoneNumber: "",
+      isInCharge: false,
+      isInChargeText: "",
+      inChargeSubcategories: [],
+      subcategoryList: [],
+      clearSubcategoryChips: false,
+      clearInchargeSubcategoryChips: false
+    };
+  }
+  
   getSelectedSubcategories = selectedSubcategories => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value;
@@ -139,30 +164,7 @@ class CreateNewFacultyForm extends Component {
     }
   };
 
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.state = {
-      subcategories: [],
-      department: {
-        name: ""
-      },
-      category: {
-        name: ""
-      },
-      username: "",
-      password: "",
-      name: "",
-      email: "",
-      phoneNumber: "",
-      isInCharge: false,
-      isInChargeText: "",
-      inChargeSubcategories: [],
-      subcategoryList: [],
-      clearSubcategoryChips: false,
-      clearInchargeSubcategoryChips: false
-    };
-  }
+ 
 
   render() {
     const { classes } = this.props;

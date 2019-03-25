@@ -9,7 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-
+import ReactChipInput from "../AutoChip/ReactChipSelect";
 import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -61,12 +61,12 @@ function Transition(props) {
 
 class DialogFacultyTable extends React.Component {
   getSelectedSubcategories = selectedSubcategories => {
-    const subcategories = selectedSubcategories.map(selectedSubcategory => {
+    const subcategory = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value;
     });
     this.setState({
       ...this.state,
-      subcategories
+      subcategory
     });
   };
 
@@ -137,7 +137,8 @@ class DialogFacultyTable extends React.Component {
       email: "",
       phoneNumber: "",
       category: "",
-      subcategories: [],
+      subcategory: [],
+      subcategoryList: [],
       isInCharge: false,
       inChargeSubcategories: [],
       department: {
@@ -173,7 +174,7 @@ class DialogFacultyTable extends React.Component {
       ...this.state,
       [event.target.name]: categoryDetail.category,
       subcategoryList: availableSubcategories,
-      subcategories: [],
+      subcategory: [],
       clearSubcategoryChips: true,
       clearInchargeSubcategoryChips: true
     });
@@ -399,38 +400,38 @@ class DialogFacultyTable extends React.Component {
                     </Select>
                   </FormControl>
                 </GridItem>
-                {/*<GridItem*/}
-                {/*xs={12}*/}
-                {/*sm={12}*/}
-                {/*md={12}*/}
-                {/*className={classes.elementPadding}*/}
-                {/*>*/}
-                {/*<ReactChipInput*/}
-                {/*style={{ zIndex: 0 }}*/}
-                {/*data={this.state.subcategoryList}*/}
-                {/*label="Sub-Categories"*/}
-                {/*hintText="Select sub-categories"*/}
-                {/*getSelectedObjects={this.getSelectedSubcategories}*/}
-                {/*clearChips={this.state.clearSubcategoryChips}*/}
-                {/*onChipsCleared={this.chipsCleared}*/}
-                {/*/>*/}
-                {/*</GridItem>*/}
-                {/*<GridItem*/}
-                {/*xs={12}*/}
-                {/*sm={8}*/}
-                {/*md={8}*/}
-                {/*className={classes.elementPadding}*/}
-                {/*>*/}
-                {/*<ReactChipInput*/}
-                {/*style={{ zIndex: 0 }}*/}
-                {/*label="In-charge Sub-Categories"*/}
-                {/*hintText="Select in-charge sub-categories"*/}
-                {/*data={this.state.subcategoryList}*/}
-                {/*getSelectedObjects={this.getSelectedInchargeSubcategories}*/}
-                {/*clearChips={this.state.clearInchargeSubcategoryChips}*/}
-                {/*onChipsCleared={this.chipsCleared}*/}
-                {/*/>*/}
-                {/*</GridItem>*/}
+                 <GridItem
+               xs={12}
+               sm={12}
+               md={12}
+               className={classes.elementPadding}
+               >
+               <ReactChipInput
+               style={{ zIndex: 0 }}
+               data={this.state.subcategoryList}
+               label="Sub-Categories"
+               hintText="Select sub-categories"
+               getSelectedObjects={this.getSelectedSubcategories}
+               clearChips={this.state.clearSubcategoryChips}
+               onChipsCleared={this.chipsCleared}
+               />
+               </GridItem>
+               <GridItem
+               xs={12}
+               sm={8}
+               md={8}
+               className={classes.elementPadding}
+               >
+               <ReactChipInput
+               style={{ zIndex: 0 }}
+               label="In-charge Sub-Categories"
+               hintText="Select in-charge sub-categories"
+               data={this.state.subcategoryList}
+               getSelectedObjects={this.getSelectedInchargeSubcategories}
+               clearChips={this.state.clearInchargeSubcategoryChips}
+               onChipsCleared={this.chipsCleared}
+               />
+               </GridItem>  
               </GridContainer>
             </div>
           </DialogContent>
@@ -450,8 +451,7 @@ class DialogFacultyTable extends React.Component {
 
 DialogFacultyTable.propTypes = {
   classes: PropTypes.object.isRequired,
-  categories: PropTypes.array.isRequired,
-  subcategories: PropTypes.array.isRequired,
+  categoryDetails: PropTypes.array.isRequired,
   departments: PropTypes.array.isRequired
 };
 
