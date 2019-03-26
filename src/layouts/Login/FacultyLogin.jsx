@@ -124,10 +124,9 @@ class FacultyLogin extends Component {
       .then(response => {
         // set token to the auth token received
         localStorage.setItem("token", response.data.facultyLogin);
-        localStorage.setItem("userType", "faculty");
 
         // check for the value in local storage & update local state accordingly
-        if (loginHandler.authenticated()) {
+        if (loginHandler.authenticated("faculty")) {
           this.setState(() => ({
             redirecter: true
           }));

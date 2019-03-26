@@ -1,19 +1,20 @@
 // used to handle client side session management
 export const loginHandler = {
   isLoggedIn: localStorage.getItem("token") ? true : false,
-  authenticated() {
+  authenticated(userType) {
     if (localStorage.getItem("token") !== null) {
       this.isLoggedIn = true;
     } else {
       this.isLoggedIn = false;
     }
+    this.userType = userType;
     return this.isLoggedIn;
   },
   logout: () => {
+    // remove token from storage
     localStorage.removeItem("token");
-    localStorage.removeItem("userType");
   },
-  userType: localStorage.getItem("userType")
+  userType: ""
 };
 
 export const EXPANSION_QUIZ_FORM = 1;
