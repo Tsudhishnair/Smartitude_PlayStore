@@ -31,11 +31,19 @@ class QuizManage extends Component {
                 <h4>
                   <b>Q:</b> {item.question}
                 </h4>
+
                 <p>
                   <b>Created By: </b>
                   {item.createdBy}
-                  <b>Category/Subcategory:</b>
+                  <br />
+                  <b>Category/Subcategory: </b>
                   {item.category} - {item.subcategory}
+                  <br />
+                  <b>Times Attempted: </b>
+                  {item.timesAttempted}
+                  &nbsp; &nbsp; &nbsp;
+                  <b>Times Solved: </b>
+                  {item.timesSolved}
                 </p>
               </CardBody>
               <CardFooter>
