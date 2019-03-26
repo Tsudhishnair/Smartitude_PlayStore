@@ -8,13 +8,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import Button from "components/CustomButtons/Button";
-
-import { Link } from "react-router-dom";
 import QuizManage from "../../General/QuizManage";
 
 class Dashboard extends React.Component {
@@ -22,81 +17,57 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     let data = [
       {
-        dept_id: "14",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        question:
+          "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        createdBy: "Django",
+        correctOption: "",
+        category: "Speed and Distance",
+        subcategory: "Problems on Trains"
       },
       {
-        dept_id: "12",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        question:
+          "The length of the bridge, which a train 130 metres long and travelling at 45 km/hr can cross in 30 seconds, is:",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        correctOption: "4"
       },
       {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        question:
+          "In the first 10 overs of a cricket game, the run rate was only 3.2. What should be the run rate in the remaining 40 overs to reach the target of 282 runs?",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        correctOption: "4"
       },
       {
-        dept_id: "1",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        question:
+          "A family consists of two grandparents, two parents and three grandchildren. The average age of the grandparents is 67 years, that of the parents is 35 years and that of the grandchildren is 6 years. What is the average age of the family?",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        correctOption: "4"
       },
       {
-        dept_id: "13",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+        question: "Question Question",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        correctOption: "4"
       },
       {
-        dept_id: "24",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      }
+        question: "Question Question",
+        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+        timesAttempted: "2",
+        timesSolved: "1",
+        correctOption: "4"
+      },
     ];
-    // const Frameworks = props => {
-    //   return (
-    //     // <React.Fragment>
-    //     //   {props.items.map(item => (
-    //     //     <React.Fragment key={item.id}>
-    //     //       <GridItem xs={12} sm={12} md={12}>
-    //     //         <Card>
-    //     //           <CardBody>
-    //     //             <h4 className={classes.cardTitle}>{item.dept_name}</h4>
-    //     //             <p className={classes.cardCategory}>{item.dept_desc}</p>
-    //     //           </CardBody>
-    //     //           <CardFooter>
-    //     //             <Button
-    //     //               round
-    //     //               color="success"
-    //     //               style={{ marginLeft: "auto" }}
-    //     //             >
-    //     //               Manage
-    //     //             </Button>
-    //     //           </CardFooter>
-    //     //         </Card>
-    //     //         <Spacing />
-    //     //       </GridItem>
-    //     //     </React.Fragment>
-    //     //   ))}
-    //     // </React.Fragment>
-    //     // <QuizManage />
-    //   );
-    // };
-
     return (
       <div>
-        {/* <GridItem xs={12} sm={2} md={2}>
-          <Link to="/faculty/questions/add_new_question">
-            <Button fullWidth color="primary" className={classes.button}>
-              Add a new Question
-            </Button>
-          </Link>
-        </GridItem> */}
         <TableDialog onRef={ref => (this.child = ref)} />
         <Spacing />
         <GridContainer>

@@ -9,47 +9,50 @@ import Card from "../../components/Card/Card.jsx";
 // import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "../../components/Card/CardBody.jsx";
 import CardFooter from "../../components/Card/CardFooter.jsx";
+
 // import TableDialog from "../../../components/Dialog/DialogQuizTable";
 
 import GridContainer from "../../components/Grid/GridContainer.jsx";
-import Button from "../../components/CustomButtons/Button";
-import Spacing from "material-ui/styles/spacing";
-
+import { Button, Divider } from "@material-ui/core";
 class QuizManage extends Component {
   render() {
     const { items } = this.props;
     console.log(items);
-    
+
     return (
-        <GridContainer>
-          {items.map(item => {
-              console.log("item");
-              console.log(item);
-              
-              
-           return(
+      <GridContainer>
+        {items.map(item => {
+          console.log("item");
+          console.log(item);
+
+          return (
             <GridItem xs={12} sm={12} md={12}>
-            <Card>
               <CardBody>
-                <h4>{item.dept_name}</h4>
-                <p>{item.dept_desc}</p> 
-                blah
+                <h4>
+                  <b>Q:</b> {item.question}
+                </h4>
+                <p>
+                  <b>Created By: </b>
+                  {item.createdBy}
+                  <b>Category/Subcategory:</b>
+                  {item.category} - {item.subcategory}
+                </p>
               </CardBody>
               <CardFooter>
                 <Button
                   round
-                  color="success"
+                  variant={"outlined"}
+                  color="primary"
                   style={{ marginLeft: "auto" }}
                 >
-                  Manage
+                  Manage Question
                 </Button>
               </CardFooter>
-            </Card>
-          </GridItem>
-           )
-          }    
-            )}
-        </GridContainer>
+              <Divider />
+            </GridItem>
+          );
+        })}
+      </GridContainer>
     );
   }
 }
