@@ -13,26 +13,22 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import Button from "components/CustomButtons/Button";
+
 import { Link } from "react-router-dom";
+import QuizManage from "../../General/QuizManage";
 
 class Dashboard extends React.Component {
   render() {
     const { classes } = this.props;
     let data = [
       {
-        dept_id: "124",
+        dept_id: "14",
         dept_name: "Question Question",
         dept_desc:
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        dept_id: "123",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
+        dept_id: "12",
         dept_name: "Question Question",
         dept_desc:
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
@@ -44,46 +40,53 @@ class Dashboard extends React.Component {
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        dept_id: "124",
+        dept_id: "1",
         dept_name: "Question Question",
         dept_desc:
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       },
       {
-        dept_id: "124",
+        dept_id: "13",
+        dept_name: "Question Question",
+        dept_desc:
+          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
+      },
+      {
+        dept_id: "24",
         dept_name: "Question Question",
         dept_desc:
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       }
     ];
-    const Frameworks = props => {
-      return (
-        <React.Fragment>
-          {props.items.map(item => (
-            <React.Fragment key={item.id}>
-              <GridItem xs={12} sm={12} md={12}>
-                <Card>
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>{item.dept_name}</h4>
-                    <p className={classes.cardCategory}>{item.dept_desc}</p>
-                  </CardBody>
-                  <CardFooter>
-                    <Button
-                      round
-                      color="success"
-                      style={{ marginLeft: "auto" }}
-                    >
-                      Manage
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Spacing />
-              </GridItem>
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      );
-    };
+    // const Frameworks = props => {
+    //   return (
+    //     // <React.Fragment>
+    //     //   {props.items.map(item => (
+    //     //     <React.Fragment key={item.id}>
+    //     //       <GridItem xs={12} sm={12} md={12}>
+    //     //         <Card>
+    //     //           <CardBody>
+    //     //             <h4 className={classes.cardTitle}>{item.dept_name}</h4>
+    //     //             <p className={classes.cardCategory}>{item.dept_desc}</p>
+    //     //           </CardBody>
+    //     //           <CardFooter>
+    //     //             <Button
+    //     //               round
+    //     //               color="success"
+    //     //               style={{ marginLeft: "auto" }}
+    //     //             >
+    //     //               Manage
+    //     //             </Button>
+    //     //           </CardFooter>
+    //     //         </Card>
+    //     //         <Spacing />
+    //     //       </GridItem>
+    //     //     </React.Fragment>
+    //     //   ))}
+    //     // </React.Fragment>
+    //     // <QuizManage />
+    //   );
+    // };
 
     return (
       <div>
@@ -103,7 +106,7 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
               <GridContainer style={{ padding: "2%" }}>
-                <Frameworks items={data} />
+                <QuizManage items={data} />
               </GridContainer>
             </Card>
           </GridItem>
