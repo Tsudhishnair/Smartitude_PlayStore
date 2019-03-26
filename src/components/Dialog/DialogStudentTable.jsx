@@ -1,25 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
 
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
+  Typography,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl
+} from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from "@material-ui/core/FormControl";
 
 import Spacing from "../Spacing/Spacing";
+
+// react apollo
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -67,6 +71,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
+// edit student query
 const EDIT_STUDENT = gql`
   mutation editStudent($_id: ID!, $studentEditInput: StudentEditInput!) {
     editStudent(_id: $_id, studentEditInput: $studentEditInput) {
@@ -75,6 +80,7 @@ const EDIT_STUDENT = gql`
   }
 `;
 
+// get departments query
 const FETCH_DEPARTMENTS = gql`
   {
     departments {
@@ -85,6 +91,7 @@ const FETCH_DEPARTMENTS = gql`
   }
 `;
 
+// delete students query
 const DELETE_STUDENT = gql`
   mutation deleteStudent($_id: ID!) {
     deleteStudent(_id: $_id) {
@@ -115,15 +122,18 @@ class StudentDialog extends React.Component {
     this.props.onRef(undefined);
   }
 
+  // manage state for opening dialog
   handleClickOpen = student => {
     this.setState({ open: true });
     this.setState({ ...student });
   };
 
+  // close dialog
   handleClose = () => {
     this.setState({ open: false });
   };
 
+  // handle value change for any field in student update field
   handleValueChange = event => {
     this.setState({
       ...this.state,
@@ -131,6 +141,7 @@ class StudentDialog extends React.Component {
     });
   };
 
+  // delete student
   handleDelete = deleteStudent => {
     deleteStudent({
       variables: {
