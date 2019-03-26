@@ -135,6 +135,7 @@ class AdminLogin extends Component {
         }
       })
       .catch(err => {
+        // set error message for snackbar
         this.setState({
           error: {
             message: !!err.graphQLErrors

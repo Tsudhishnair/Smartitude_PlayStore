@@ -67,21 +67,33 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-class StudentDialog extends React.Component {
-  handleClickOpen = student => {
-    this.setState({ open: true });
-    this.setState({ ...student });
-  };
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-  handleValueChange = event => {
-    this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value
-    });
-  };
+const EDIT_STUDENT = gql`
+  mutation editStudent($_id: ID!, $studentEditInput: StudentEditInput!) {
+    editStudent(_id: $_id, studentEditInput: $studentEditInput) {
+      _id
+    }
+  }
+`;
 
+const FETCH_DEPARTMENTS = gql`
+  {
+    departments {
+      _id
+      name
+      description
+    }
+  }
+`;
+
+const DELETE_STUDENT = gql`
+  mutation deleteStudent($_id: ID!) {
+    deleteStudent(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+class StudentDialog extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -103,24 +115,33 @@ class StudentDialog extends React.Component {
     this.props.onRef(undefined);
   }
 
+  handleClickOpen = student => {
+    this.setState({ open: true });
+    this.setState({ ...student });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  handleValueChange = event => {
+    this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleDelete = deleteStudent => {
+    deleteStudent({
+      variables: {
+        _id: this.state._id
+      }
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const EDIT_STUDENT = gql`
-      mutation editStudent($_id: ID!, $studentEditInput: StudentEditInput!) {
-        editStudent(_id: $_id, studentEditInput: $studentEditInput) {
-          _id
-        }
-      }
-    `;
-    const FETCH_DEPARTMENTS = gql`
-      {
-        departments {
-          _id
-          name
-          description
-        }
-      }
-    `;
+
     return (
       <Mutation mutation={EDIT_STUDENT} onCompleted={this.handleClose}>
         {editStudent => {
@@ -153,7 +174,6 @@ class StudentDialog extends React.Component {
                       >
                         <Typography>Rank</Typography>
                         <Typography>
-                          {" "}
                           <h4>
                             <strong>{this.state.rank}</strong>
                           </h4>
@@ -167,7 +187,6 @@ class StudentDialog extends React.Component {
                       >
                         <Typography>Score</Typography>
                         <Typography>
-                          {" "}
                           <h4>
                             <strong>{this.state.score}</strong>
                           </h4>
@@ -179,20 +198,26 @@ class StudentDialog extends React.Component {
                         md={3}
                         className={classes.elementPadding}
                       >
-                        <Button
-                          onClick={this.handleClose}
-                          fullWidth
-                          color="primary"
+                        <Mutation
+                          mutation={DELETE_STUDENT}
+                          onCompleted={this.handleClose}
                         >
-                          Delete Student
-                        </Button>
+                          {deleteStudent => (
+                            <Button
+                              onClick={e => this.handleDelete(deleteStudent)}
+                              fullWidth
+                              color="primary"
+                            >
+                              Delete Student
+                            </Button>
+                          )}
+                        </Mutation>
                       </GridItem>
                     </GridContainer>
                   </DialogContentText>
                   <div className={classes.root}>
                     <Spacing />
                     <Typography>
-                      {" "}
                       <strong>Basic Info</strong>
                     </Typography>
                     <GridContainer>
@@ -253,7 +278,6 @@ class StudentDialog extends React.Component {
                     </GridContainer>
                     <Spacing />
                     <Typography>
-                      {" "}
                       <strong>College Info</strong>
                     </Typography>
                     <GridContainer>
@@ -306,7 +330,10 @@ class StudentDialog extends React.Component {
                                   >
                                     {data.departments.map(department => {
                                       return (
-                                        <MenuItem value={department} key={department._id}>
+                                        <MenuItem
+                                          value={department}
+                                          key={department._id}
+                                        >
                                           {department.name}
                                         </MenuItem>
                                       );
