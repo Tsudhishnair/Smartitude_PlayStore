@@ -66,8 +66,8 @@ class Dashboard extends React.Component {
     };
   }
 
+  //-----------------------------------------------------------------
   // handle Category List
-
   handleCategorySelect = event => {
     const categoryDetail = event.target.value;
     console.log(categoryDetail);
@@ -85,9 +85,9 @@ class Dashboard extends React.Component {
       subcategories: [],
     });
   };
-
+ //------------------------------------------------------------- 
+//--------------------------------------------------------------
   // SubCategory Management
-
   getSelectedSubcategories = (selectedSubcategories) => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value
@@ -97,9 +97,12 @@ class Dashboard extends React.Component {
       subcategories,
     });    
   }
-  
+  //-------------------------------------------------------------
+
   render() {
     const { classes } = this.props;
+    //-----------------------------------------------------------
+    //Query To Fetch Category and its Coresponsding Sub-Categories 
     const FETCH_FORM_FIELDS = gql`
       {
         categoryDetailsList {
@@ -114,6 +117,8 @@ class Dashboard extends React.Component {
         }
       }
     `;
+    //------------------------------------------------------------
+    
     return (
       <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
