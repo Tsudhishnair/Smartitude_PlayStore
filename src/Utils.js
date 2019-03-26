@@ -8,13 +8,16 @@ export const loginHandler = {
       this.isLoggedIn = false;
     }
     this.userType = userType;
+
+    localStorage.setItem('userType', userType);
+
     return this.isLoggedIn;
   },
   logout: () => {
     // remove token from storage
     localStorage.removeItem("token");
   },
-  userType: ""
+  userType: localStorage.getItem('userType')
 };
 
 export const EXPANSION_QUIZ_FORM = 1;

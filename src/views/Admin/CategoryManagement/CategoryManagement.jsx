@@ -3,23 +3,31 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "components/Card/Card.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
+
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  Typography,
+  IconButton,
+  Avatar,
+  ListItemAvatar,
+  ListItemSecondaryAction
+} from "@material-ui/core";
+
+import { ExpandMore, ExpandLess, Edit } from "@material-ui/icons";
+
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
-import Avatar from "@material-ui/core/Avatar";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import EditIcon from "@material-ui/icons/Edit";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import { EXPANSION_CATEGORY_FORM, EXPANSION_SUBCATEGORY_FORM } from "../../../Utils";
+
+import {
+  EXPANSION_CATEGORY_FORM,
+  EXPANSION_SUBCATEGORY_FORM
+} from "../../../Utils";
+
+// react apollo
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-
 
 const styles = theme => ({
   form: {
@@ -44,52 +52,57 @@ const styles = theme => ({
   }
 });
 
+const FETCH_CATEGORY_DETAILS = gql`
+      {
+        categoryDetailsList {
+          category {
+            _id
+            name
+            description
+          }
+          subcategory {
+            _id
+            name
+            description
+          }
+        }
+      }
+    `;
+
 class MaxWidthDialog extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false
+    };
+  }
 
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
   };
-  handleCategoryDialogOpen = (data) => {
-      
+
+  handleCategoryDialogOpen = data => {
     // this.child.handleDialogOpen();
   };
 
   render() {
     const { classes } = this.props;
-    const FETCH_CATEGORY_DETAILS = gql`
-    {
-      categoryDetailsList {
-        category {
-          _id,
-          name,
-          description,
-        },
-        subcategory {
-          _id,
-          name,
-          description,
-        }
-      }
-    }
-  `;
 
     return (
       <Query query={FETCH_CATEGORY_DETAILS}>
         {({ data, loading, error }) => {
           if (loading) {
-            return (<Typography>Loading</Typography>)
-          }
-          else if (error) {
-            return (<Typography>Error occured while fetching data.</Typography>)
-          }
-          else {
-            const categoriesList = data.categoryDetailsList.map(categoryDetail => {
-              return categoryDetail.category;
-            });
-            
+            return <Typography>Loading</Typography>;
+          } else if (error) {
+            return <Typography>Error occured while fetching data.</Typography>;
+          } else {
+            const categoriesList = data.categoryDetailsList.map(
+              categoryDetail => {
+                return categoryDetail.category;
+              }
+            );
+
             return (
               <React.Fragment>
                 <Expansionpanel
@@ -98,60 +111,81 @@ class MaxWidthDialog extends React.Component {
                   directingValue={EXPANSION_CATEGORY_FORM}
                 />
                 <Expansionpanel
-                  categories = {categoriesList}
+                  categories={categoriesList}
                   headers="Sub-Category"
                   header="Add new subcategory"
                   directingValue={EXPANSION_SUBCATEGORY_FORM}
                 />
-                  <CategoryDialog onRef={ref => (this.child = ref)} />
-                  <Card>
-                    {data.categoryDetailsList.map(categoryDetail => (
-                      <React.Fragment>
-                        <List component="nav">
-                          <ListItem key={categoryDetail.category._id} button onClick={this.handleClick}>
-                            <ListItemAvatar>
-                              <Avatar
-                                alt="Category Icon"
-                                src="assets/img/faces/marc.jpg"
-                              />
-                            </ListItemAvatar>
-                            <ListItemText primary={categoryDetail.category.name} secondary={categoryDetail.category.description} />
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                aria-label="Edit"
-                                onClick={this.handleCategoryDialogOpen(categoryDetail.category)}
+                <CategoryDialog onRef={ref => (this.child = ref)} />
+                <Card>
+                  {data.categoryDetailsList.map(categoryDetail => (
+                    <React.Fragment>
+                      <List component="nav">
+                        <ListItem
+                          key={categoryDetail.category._id}
+                          button
+                          onClick={this.handleClick}
+                        >
+                          <ListItemAvatar>
+                            <Avatar
+                              alt="Category Icon"
+                              src="assets/img/faces/marc.jpg"
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={categoryDetail.category.name}
+                            secondary={categoryDetail.category.description}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              aria-label="Edit"
+                              onClick={this.handleCategoryDialogOpen(
+                                categoryDetail.category
+                              )}
+                            >
+                              <Edit />
+                            </IconButton>
+                            <IconButton
+                              aria-label="Expand"
+                              onClick={this.handleClick}
+                            >
+                              {this.state.open ? (
+                                <ExpandLess />
+                              ) : (
+                                <ExpandMore />
+                              )}
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Collapse
+                          in={this.state.open}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          {categoryDetail.subcategory.map(subcategory => (
+                            <List
+                              component="div"
+                              disablePadding
+                              key={subcategory._id}
+                            >
+                              <ListItem
+                                key={subcategory._id}
+                                button
+                                className={classes.nested}
+                                onClick={this.handleCategoryDialogOpen}
                               >
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton
-                                aria-label="Expand"
-                                onClick={this.handleClick}
-                              >
-                                {this.state.open ? <ExpandLess /> : <ExpandMore />}
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                          <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                            {categoryDetail.subcategory.map(subcategory => (
-                              <List component="div" disablePadding key={subcategory._id}>
-                                <ListItem
-                                  key={subcategory._id}
-                                  button
-                                  className={classes.nested}
-                                  onClick={this.handleCategoryDialogOpen}
-                                >
-                                  <ListItemText
-                                    primary={subcategory.name}
-                                    secondary={subcategory.description}
-                                  />
-                                </ListItem>
-                              </List>
-                            ))}
-                          </Collapse>
-                        </List>
-                      </React.Fragment>
-                    ))}
-                  </Card>
+                                <ListItemText
+                                  primary={subcategory.name}
+                                  secondary={subcategory.description}
+                                />
+                              </ListItem>
+                            </List>
+                          ))}
+                        </Collapse>
+                      </List>
+                    </React.Fragment>
+                  ))}
+                </Card>
               </React.Fragment>
             );
           }
