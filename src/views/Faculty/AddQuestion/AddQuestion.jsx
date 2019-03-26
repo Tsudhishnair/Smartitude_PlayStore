@@ -17,6 +17,9 @@ import {
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
 const styles = theme => ({
   formroot: {
@@ -48,16 +51,44 @@ const styles = theme => ({
 });
 
 class Dashboard extends React.Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //       Question:"",
-  //       Options:[],
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      Question: "",
+      Options: [],
+      DetailedAnswer: "",
+      CorrectOption: "",
+      Category: "",
+      SubCategory: "",
+      Difficulty: ""
+    };
+  }
 
-  //   };
-  // }
+  // handle Category List
+
+  // handleCategory = gql`
+
+  // `;
+
+  // SubCategory Management
+
   render() {
     const { classes } = this.props;
+    const FETCH_FORM_FIELDS = gql`
+      {
+        categoryDetailsList {
+          category {
+            _id
+            name
+          }
+          subcategory {
+            _id
+            name
+          }
+        }
+      }
+    `;
     return (
       <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
@@ -103,7 +134,7 @@ class Dashboard extends React.Component {
                 margin="normal"
                 fullWidth
               />
-            </GridItem>     
+            </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
                 id="option3"
@@ -150,7 +181,6 @@ class Dashboard extends React.Component {
           </Typography>
           <GridContainer>
             <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl} > */}
               <InputLabel fullWidth>Correct Option</InputLabel>
               <Select
                 inputProps={{
@@ -165,10 +195,12 @@ class Dashboard extends React.Component {
                 <MenuItem value={30}>Option 3</MenuItem>
                 <MenuItem value={30}>Option 4</MenuItem>
               </Select>
-              {/* </FormControl> */}
             </GridItem>
+
+            {/* Category and SubCategory 
+            ------------------------------------------------------------------------------- */}
+
             <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl}> */}
               <InputLabel htmlFor="age-simple" fullWidth>
                 Category
               </InputLabel>
@@ -187,10 +219,8 @@ class Dashboard extends React.Component {
                 <MenuItem value={20}>Category 2</MenuItem>
                 <MenuItem value={30}>Category 3</MenuItem>
               </Select>
-              {/* </FormControl> */}
             </GridItem>
             <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl}> */}
               <InputLabel htmlFor="age-simple" fullWidth>
                 Sub Category
               </InputLabel>
@@ -208,17 +238,14 @@ class Dashboard extends React.Component {
                 <MenuItem value={20}>Category 2</MenuItem>
                 <MenuItem value={30}>Category 3</MenuItem>
               </Select>
-              {/* </FormControl> */}
             </GridItem>
+            
+            {/* ------------------------------------------------------------------------------- */}
+
             <GridItem xs={12} sm={3} md={3}>
               <InputLabel htmlFor="age-simple" fullWidth>
                 Difficulty
-                <TextField
-                  id="standard-number"
-                  type="number"
-                  fullWidth
-                  // margin="normal"
-                />
+                <TextField id="standard-number" type="number" fullWidth />
               </InputLabel>
             </GridItem>
           </GridContainer>
