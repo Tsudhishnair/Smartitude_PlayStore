@@ -61,6 +61,14 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
+const DELETE_FACULTY = gql`
+  mutation deleteFaculty($_id: ID!) {
+    deleteFaculty(_id: $_id) {
+      _id
+    }
+  }
+`;
+
 class DialogFacultyTable extends React.Component {
   initialSubcategories = [];
   initialInChargeSubcategories = [];
@@ -213,13 +221,15 @@ class DialogFacultyTable extends React.Component {
       }
     });
   };
-  handleDeleteClickOpen = () => {
-    // this.setState({ open: false });
-    this.setState({ delopen: true });
-  };
-
-  handleDeleteClose = () => {
-    this.setState({ delopen: false });
+  // delete student
+  handleDelete = (e, deleteFaculty) => {
+    e.preventDefault();
+    deleteFaculty({
+      variables: {
+        _id: this.state._id
+      }
+    });
+    this.handleClose();
   };
 
   renderCategoryDropdown = () => {
@@ -306,34 +316,6 @@ class DialogFacultyTable extends React.Component {
           return (
             <div>
               <Dialog
-                open={this.state.delopen}
-                onClose={this.handleDeleteClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  {"Are you sure you want to delete?"}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    This action once done cannot be undone. Please continue with
-                    caution.
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleDeleteClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={this.handleDeleteClose}
-                    color="primary"
-                    autoFocus
-                  >
-                    Delete
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Dialog
                 open={this.state.open}
                 onClose={this.handleClose}
                 aria-labelledby="form-dialog-title"
@@ -371,13 +353,20 @@ class DialogFacultyTable extends React.Component {
                         md={4}
                         className={classes.elementPadding}
                       >
-                        <Button
-                          onClick={this.handleDeleteClickOpen}
-                          fullWidth
-                          color="primary"
+                        <Mutation
+                          mutation={DELETE_FACULTY}
+                          onCompleted={this.handleClose}
                         >
-                          Delete Faculty
-                        </Button>
+                          {deleteFaculty => (
+                            <Button
+                              onClick={e => this.handleDelete(e, deleteFaculty)}
+                              fullWidth
+                              color="primary"
+                            >
+                              Delete Faculty
+                            </Button>
+                          )}
+                        </Mutation>
                       </GridItem>
                     </GridContainer>
                   </DialogContentText>

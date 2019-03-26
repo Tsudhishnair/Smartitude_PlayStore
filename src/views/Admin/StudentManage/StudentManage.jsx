@@ -25,6 +25,9 @@ const styles = theme => ({
 });
 class Dashboard extends React.Component {
   students = [];
+
+  rowSelected = false;
+
   render() {
     const { classes } = this.props;
     const header1 = "Student";
@@ -113,10 +116,17 @@ class Dashboard extends React.Component {
       rowsPerPage: 20,
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
-
+      onRowsSelect: (currentRowsSelected, allRowsSelected) => {
+        console.log("onRowSelect");
+        console.log(allRowsSelected);
+        this.rowSelected = allRowsSelected.length > 0;
+      },
       onRowClick: (rowData, rowMeta) => {
-        const clickedRowIndex = rowMeta.rowIndex;
-        this.child.handleClickOpen(this.students[clickedRowIndex]);
+        console.log("onRowClick");
+        if (!this.rowSelected) {
+          const clickedRowIndex = rowMeta.rowIndex;
+          this.child.handleClickOpen(this.students[clickedRowIndex]);
+        }
       }
     };
 

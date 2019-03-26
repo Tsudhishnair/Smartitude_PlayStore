@@ -9,10 +9,9 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
-import { Query } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { ExpansionPanelActions, Button, Divider } from "@material-ui/core";
-import { Mutation } from "react-apollo";
+import { Button, Divider, ExpansionPanelActions } from "@material-ui/core";
 
 const styles = theme => ({
   formControl: {
@@ -363,6 +362,7 @@ class FormAddStudent extends Component {
                           }
                         }
                       });
+                      this.handleReset(e);
                     }}
                   >
                     Assign
