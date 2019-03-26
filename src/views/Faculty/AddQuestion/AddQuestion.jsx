@@ -8,11 +8,12 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Button,
   Select,
+  ExpansionPanelActions,
   TextField,
   Typography
 } from "@material-ui/core";
-import Button from "components/CustomButtons/Button";
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -118,7 +119,7 @@ class Dashboard extends React.Component {
               />
             </GridItem>
           </GridContainer>
-          <Spacing/>
+          <Spacing />
           <Typography>
             <strong>Other Info</strong>
           </Typography>
@@ -196,16 +197,13 @@ class Dashboard extends React.Component {
               </InputLabel>
             </GridItem>
           </GridContainer>
-          <Spacing/>
-          <GridContainer>
-            <GridItem xs={12} sm={6} md={6} />
-            <GridItem xs={12} sm={3} md={3}>
-              <Button fullWidth={true} type="reset">Clear</Button>
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              <Button fullWidth={true} type="submit">Submit</Button>
-            </GridItem>
-          </GridContainer>
+          <Spacing />
+            <ExpansionPanelActions>
+              <Button type="reset">Clear</Button>
+              <Button color={"primary"} variant={"outlined"} type="submit">
+                Submit
+              </Button>
+            </ExpansionPanelActions>
         </form>
       </div>
     );
