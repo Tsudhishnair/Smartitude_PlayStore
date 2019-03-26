@@ -52,8 +52,9 @@ class MaxWidthDialog extends React.Component {
   handleClick = () => {
     this.setState(state => ({ open: !state.open }));
   };
-  handleCategoryDialogOpen = () => {
-    this.child.handleDialogOpen();
+  handleCategoryDialogOpen = (data) => {
+      
+    // this.child.handleDialogOpen();
   };
 
   render() {
@@ -118,7 +119,7 @@ class MaxWidthDialog extends React.Component {
                             <ListItemSecondaryAction>
                               <IconButton
                                 aria-label="Edit"
-                                onClick={this.handleCategoryDialogOpen}
+                                onClick={this.handleCategoryDialogOpen(categoryDetail.category)}
                               >
                                 <EditIcon />
                               </IconButton>
