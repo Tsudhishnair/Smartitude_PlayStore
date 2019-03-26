@@ -48,6 +48,14 @@ const styles = theme => ({
 });
 
 class Dashboard extends React.Component {
+  // constructor(props){
+  //   super(props);
+  //   this.state = {
+  //       Question:"",
+  //       Options:[],
+
+  //   };
+  // }
   render() {
     const { classes } = this.props;
     return (
@@ -95,7 +103,7 @@ class Dashboard extends React.Component {
                 margin="normal"
                 fullWidth
               />
-            </GridItem>
+            </GridItem>     
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
                 id="option3"
@@ -118,20 +126,23 @@ class Dashboard extends React.Component {
                 fullWidth
               />
             </GridItem>
+            <Typography>
+              <strong>Detailed Answer</strong>
+            </Typography>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
-            <TextField
-              placeholder="Type in your detailed answer"
-              multiline={true}
-              rows={2}
-              label="AnswerDetailed"
-              rowsMax={10}
-              type="input"
-              margin="normal"
-              fullWidth
-            />
-          </GridItem>
+              <TextField
+                placeholder="Type in your detailed answer"
+                multiline={true}
+                rows={2}
+                label="AnswerDetailed"
+                rowsMax={10}
+                type="input"
+                margin="normal"
+                fullWidth
+              />
+            </GridItem>
           </GridContainer>
-      
+
           <Spacing />
 
           <Typography>
