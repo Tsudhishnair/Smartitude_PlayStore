@@ -23,6 +23,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 
 import Spacing from "../Spacing/Spacing";
+import QuizManage from "../../views/General/QuizManage";
 
 const styles = theme => ({
   appBar: {
@@ -125,34 +126,34 @@ class DialogQuizTable extends React.Component {
           "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
       }
     ];
-    const Frameworks = props => {
-      return (
-        <React.Fragment>
-          {props.items.map(item => (
-            <React.Fragment key={item.id}>
-              <GridItem xs={12} sm={12} md={12}>
-                <Card>
-                  <CardBody>
-                    <h4 className={classes.cardTitle}>{item.dept_name}</h4>
-                    <p className={classes.cardCategory}>{item.dept_desc}</p>
-                  </CardBody>
-                  <CardFooter>
-                    <Button
-                      round
-                      color="success"
-                      style={{ marginLeft: "auto" }}
-                    >
-                      Manage
-                    </Button>
-                  </CardFooter>
-                </Card>
-                <Spacing />
-              </GridItem>
-            </React.Fragment>
-          ))}
-        </React.Fragment>
-      );
-    };
+    // const Frameworks = props => {
+    //   return (
+    //     <React.Fragment>
+    //       {props.items.map(item => (
+    //         <React.Fragment key={item.id}>
+    //           <GridItem xs={12} sm={12} md={12}>
+    //             <Card>
+    //               <CardBody>
+    //                 <h4 className={classes.cardTitle}>{item.dept_name}</h4>
+    //                 <p className={classes.cardCategory}>{item.dept_desc}</p>
+    //               </CardBody>
+    //               <CardFooter>
+    //                 <Button
+    //                   round
+    //                   color="success"
+    //                   style={{ marginLeft: "auto" }}
+    //                 >
+    //                   Manage
+    //                 </Button>
+    //               </CardFooter>
+    //             </Card>
+    //             <Spacing />
+    //           </GridItem>
+    //         </React.Fragment>
+    //       ))}
+    //     </React.Fragment>
+    //   );
+    // };
     return (
       <div>
         <Dialog
@@ -233,10 +234,9 @@ class DialogQuizTable extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <Spacing />
-          <Spacing />
+       
           <GridContainer style={{ padding: "2%" }}>
-            <Frameworks items={data} />
+            <QuizManage items={data} />
           </GridContainer>
         </Dialog>
       </div>
