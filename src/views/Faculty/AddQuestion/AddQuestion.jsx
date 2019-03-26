@@ -5,7 +5,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import {
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -13,10 +12,8 @@ import {
   TextField,
   Typography
 } from "@material-ui/core";
-import { DatePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import moment from "../QuestionManage/QuizForm";
-
+import Button from "components/CustomButtons/Button";
+import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
@@ -30,12 +27,6 @@ const styles = theme => ({
     flexGrow: 1
   },
   root: {
-    display: "flex",
-    flexWrap: "nowrap",
-    autoWidth: true
-  },
-  date_root: {
-    marginTop: theme.spacing.unit * 2,
     display: "flex",
     flexWrap: "nowrap",
     autoWidth: true
@@ -127,6 +118,7 @@ class Dashboard extends React.Component {
               />
             </GridItem>
           </GridContainer>
+          <Spacing/>
           <Typography>
             <strong>Other Info</strong>
           </Typography>
@@ -204,9 +196,15 @@ class Dashboard extends React.Component {
               </InputLabel>
             </GridItem>
           </GridContainer>
+          <Spacing/>
           <GridContainer>
-            <Button>Clear</Button>
-            <Button >Add</Button>
+            <GridItem xs={12} sm={6} md={6} />
+            <GridItem xs={12} sm={3} md={3}>
+              <Button fullWidth={true} type="reset">Clear</Button>
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3}>
+              <Button fullWidth={true} type="submit">Submit</Button>
+            </GridItem>
           </GridContainer>
         </form>
       </div>
