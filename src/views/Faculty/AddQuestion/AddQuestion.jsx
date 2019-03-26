@@ -118,8 +118,22 @@ class Dashboard extends React.Component {
                 fullWidth
               />
             </GridItem>
+            <GridItem xs={12} sm={12} md={12} className={classes.container}>
+            <TextField
+              placeholder="Type in your detailed answer"
+              multiline={true}
+              rows={2}
+              label="AnswerDetailed"
+              rowsMax={10}
+              type="input"
+              margin="normal"
+              fullWidth
+            />
+          </GridItem>
           </GridContainer>
+      
           <Spacing />
+
           <Typography>
             <strong>Other Info</strong>
           </Typography>
@@ -198,12 +212,12 @@ class Dashboard extends React.Component {
             </GridItem>
           </GridContainer>
           <Spacing />
-            <ExpansionPanelActions>
-              <Button type="reset">Clear</Button>
-              <Button color={"primary"} variant={"outlined"} type="submit">
-                Submit
-              </Button>
-            </ExpansionPanelActions>
+          <ExpansionPanelActions>
+            <Button type="reset">Clear</Button>
+            <Button color={"primary"} variant={"outlined"} type="submit">
+              Submit
+            </Button>
+          </ExpansionPanelActions>
         </form>
       </div>
     );
