@@ -18,13 +18,6 @@ const dashboardRoutes = [
     component: DashboardPage
   },
   {
-    path: "/faculty/manage_faculty",
-    sidebarName: "Manage Faculty",
-    navbarName: "Manage Faculty",
-    icon: Person,
-    component: FacultyManage
-  },
-  {
     path: "/faculty/questions",
     sidebarName: "Manage Questions",
     navbarName: "Manage Questions",
@@ -33,8 +26,8 @@ const dashboardRoutes = [
   },
   {
     path: "/faculty/add_new_question",
-    sidebarName: "Add_Question",
-    navbarName: "Add_Question",
+    sidebarName: "Add Question",
+    navbarName: "Add Question",
     icon: NotificationIcon,
     component: AddQues
   },

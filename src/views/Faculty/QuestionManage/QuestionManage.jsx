@@ -87,13 +87,13 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <GridItem xs={12} sm={2} md={2}>
-          <Link to="/faculty/questions/add">
+        {/* <GridItem xs={12} sm={2} md={2}>
+          <Link to="/faculty/questions/add_new_question">
             <Button fullWidth color="primary" className={classes.button}>
               Add a new Question
             </Button>
           </Link>
-        </GridItem>
+        </GridItem> */}
         <TableDialog onRef={ref => (this.child = ref)} />
         <Spacing />
         <GridContainer>
