@@ -155,8 +155,6 @@ class Dashboard extends React.Component {
               </CardHeader>
               <Query query={FETCH_STUDENTS}>
                 {({ data, loading, error }) => {
-                  console.log("test");
-
                   if (loading) {
                     return "Loading...";
                   } else if (error) {

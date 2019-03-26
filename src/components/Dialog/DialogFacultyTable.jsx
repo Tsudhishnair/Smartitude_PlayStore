@@ -289,8 +289,6 @@ class DialogFacultyTable extends React.Component {
         subcategory: this.state.subcategory
       };
     }
-    console.log("faculty input");
-    console.log(facultyEditInput);
     editFaculty({
       variables: {
         _id: this.state._id,
