@@ -15,13 +15,20 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
+import {
+  EXPANSION_STUDENT_BATCH,
+  EXPANSION_STUDENT_FORM
+} from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
     width: "100%",
     marginTop: theme.spacing.unit * 6
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginLeft: theme.spacing.unit * 20
   }
 });
 class Dashboard extends React.Component {
@@ -46,7 +53,7 @@ class Dashboard extends React.Component {
         options: {
           filter: false,
           sort: true,
-          display: false,
+          display: false
         }
       },
       {
