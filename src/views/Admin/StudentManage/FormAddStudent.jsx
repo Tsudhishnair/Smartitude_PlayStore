@@ -13,12 +13,14 @@ import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import {
   Button,
+  CircularProgress,
   Divider,
   ExpansionPanelActions,
   Snackbar
 } from "@material-ui/core";
-import CustomSnackbar from "../../../layouts/Login/AdminLogin";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import { MuiThemeProvider } from "material-ui/styles";
+import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
   formControl: {
@@ -46,6 +48,18 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit * 4
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 
@@ -67,10 +81,16 @@ class FormAddStudent extends Component {
         phoneNumber: "",
         department: "",
         batch: ""
+      },
+      redirecter: false,
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: ""
       }
     };
   }
-
+  // handle changes in form fields
   handleDateChange = date => {
     this.setState({ selectedDate: date });
     this.setState({
@@ -80,7 +100,6 @@ class FormAddStudent extends Component {
       }
     });
   };
-
   handleOpen = () => {
     this.setState({ deptdrop: { open: true } });
   };
@@ -124,6 +143,7 @@ class FormAddStudent extends Component {
       }
     });
   };
+  // open snackbar
   openSnackbar = () => {
     this.setState({
       snackbar: {
@@ -132,7 +152,7 @@ class FormAddStudent extends Component {
       }
     });
   };
-
+  // close snackbar by changing open state
   closeSnackbar = () => {
     this.setState({
       snackbar: {
@@ -141,8 +161,85 @@ class FormAddStudent extends Component {
       }
     });
   };
+  handleClick = (addStudent, e) => {
+    e.preventDefault();
+    // check if fields are empty, if so, throw up snackbar and set msg accordingly
+    if (!this.state.assignval.username || !this.state.assignval.mname || !this.state.assignval.email || !this.state.assignval.phoneNumber || !this.state.assignval.batch) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Few fields are empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.deptdrop.department) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Please select a department!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.assignval.password) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Password field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else {
+      // set loading state and start mutation. upon completion, change loading states
+      this.setState({
+        loading: true
+      });
+      addStudent({
+        variables: {
+          studentInput: {
+            username: this.state.assignval.username,
+            name: this.state.assignval.mname,
+            email: this.state.assignval.email,
+            password: this.state.assignval.password,
+            phoneNumber: this.state.assignval.phoneNumber,
+            department: this.state.deptdrop.deptid,
+            batch: parseInt(this.state.assignval.batch.substring(0, 4))
+          }
+        }
+      })
+        .then(response => {
+          this.handleReset(e);
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "Student Added Successfully!"
+              }
+            },
+            () => this.openSnackbar()
+          );
+        })
+        .catch(err => {
+          this.setState({
+            loading: false
+          });
+          this.closeSnackbar();
+        });
+    }
+  };
+
   render() {
     const { classes } = this.props;
+    const { loading, snackbar } = this.state;
     const deptquery = gql`
       {
         departments {
@@ -376,10 +473,39 @@ class FormAddStudent extends Component {
                   >
                     Clear
                   </Button>
-                  <Button size="small" color="primary" type="submit">
-                    Assign
-                  </Button>
+                  <div className={classes.wrapper}>
+                    <Button
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      type={"submit"}
+                      onClick={e => this.handleClick(addStudent, e)}
+                      disabled={loading}
+                    >
+                      Assign
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
                 </ExpansionPanelActions>
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={snackbar.open}
+                  autoHideDuration={6000}
+                >
+                  <CustomSnackbar
+                    onClose={this.closeSnackbar}
+                    variant={snackbar.variant}
+                    message={snackbar.message}
+                  />
+                </Snackbar>
               </form>
             </div>
           );

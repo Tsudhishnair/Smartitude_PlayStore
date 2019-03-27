@@ -1109,7 +1109,7 @@ class StudentBatchAddition extends React.Component {
             <Mutation mutation={BATCH_ADD_STUDENTS}>
               {addStudents => (
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                   className={classes.button}
                   onClick={e => this.handleClick(addStudents, e)}
