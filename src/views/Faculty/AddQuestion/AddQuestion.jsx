@@ -55,14 +55,14 @@ class Dashboard extends React.Component {
     super(props);
     this.props = props;
     this.state = {
-      Question: "",
-      Options: [],
-      DetailedAnswer: "",
-      CorrectOption: "",
-      Category: "",
-      SubCategory: "",
+      question: "",
+      options: [],
+      solution: "",
+      correctOption: "",
+      category: "",
+      subCategory: "",
       subcategoryList:[],
-      Difficulty: ""
+      difficulty: ""
     };
   }
 
@@ -72,12 +72,7 @@ class Dashboard extends React.Component {
     const categoryDetail = event.target.value;
     console.log(categoryDetail);
 
-    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
-      return {
-        key: subcategory._id,
-        label: subcategory.name
-      };
-    });
+    let availableSubcategories = categoryDetail.subcategory;
     this.setState({
       ...this.state,
       [event.target.name]: categoryDetail.category,
@@ -118,7 +113,7 @@ class Dashboard extends React.Component {
       }
     `;
     //------------------------------------------------------------
-    
+
     return (
       <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
