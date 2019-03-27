@@ -50,7 +50,7 @@ const styles = theme => ({
   }
 });
 
-class Dashboard extends React.Component {
+class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -59,9 +59,7 @@ class Dashboard extends React.Component {
       options: [],
       solution: "",
       correctOption: "",
-      category: {
-        name: ""
-      },
+      category: "",
       subCategory: "",
       subcategoryList: [],
       difficulty: ""
@@ -78,17 +76,18 @@ class Dashboard extends React.Component {
       ...this.state,
       [event.target.name]: categoryDetail.category,
       subcategoryList: availableSubcategories,
-      subcategories: ""
+      subCategory: ""
     });
   };
   //-------------------------------------------------------------
   //--------------------------------------------------------------
   //Common State Management Function
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       ...this.state,
-      [event.target.name]:event.target.value,
+      [event.target.name]: event.target.value
     });
+    console.log(this.state.subCategory);
   };
 
   //-------------------------------------------------------------
@@ -122,10 +121,13 @@ class Dashboard extends React.Component {
           <GridContainer>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.question}
                 placeholder="Type in your question here"
                 multiline={true}
                 rows={2}
                 label="Question"
+                name="question"
                 rowsMax={10}
                 type="input"
                 margin="normal"
@@ -139,7 +141,10 @@ class Dashboard extends React.Component {
           <GridContainer>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.options}
                 id="option1"
+                name="options"
                 label="Option 1"
                 multiline={true}
                 type="number"
@@ -150,6 +155,9 @@ class Dashboard extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.options}
+                name="options"
                 id="option2"
                 label="Option 2"
                 multiline={true}
@@ -277,7 +285,6 @@ class Dashboard extends React.Component {
                             return (
                               <MenuItem value={subcategory}>
                                 {subcategory.name}
-                                {console.log(subcategory.name)}
                               </MenuItem>
                             );
                           })}
@@ -310,8 +317,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+AddQuestion.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(dashboardStyle)(AddQuestion);
