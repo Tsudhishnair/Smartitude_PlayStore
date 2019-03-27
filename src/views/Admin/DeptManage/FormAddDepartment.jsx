@@ -5,7 +5,12 @@ import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -76,6 +81,7 @@ class FormAddDepartment extends React.Component {
       // maintaining snackbar states
       snackbar: {
         open: false,
+        variant: "error",
         message: ""
       }
     };
@@ -138,10 +144,17 @@ class FormAddDepartment extends React.Component {
         }
       })
         .then(response => {
-          this.setState({
-            loading: false
-          });
-          this.closeSnackbar();
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "Entry Added"
+              }
+            },
+            () => this.openSnackbar()
+          );
         })
         .catch(err => {
           this.setState({
@@ -187,77 +200,79 @@ class FormAddDepartment extends React.Component {
     const { loading, snackbar } = this.state;
 
     return (
-      <Mutation mutation={ADD_DEPARTMENT}
-      onCompleted={this.clearFields}>
+      <Mutation mutation={ADD_DEPARTMENT} onCompleted={this.clearFields}>
         {(addDepartment, data) => (
           <div className={classes.root}>
-            <GridContainer>
-              <GridItem xs={6} md={6}>
-                <TextField
-                  autoFocus
-                  margin="normal"
-                  id="name"
-                  label="Department Name"
-                  type="name"
-                  value={this.state.form.name}
-                  onChange={this.handleName}
-                  fullWidth
-                  required
-                />
-              </GridItem>
-            </GridContainer>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={12}>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Description"
-                  type="name"
-                  value={this.state.form.description}
-                  onChange={this.handleDescription}
-                  multiline
-                  fullWidth
-                  required
-                />
-              </GridItem>
-            </GridContainer>
-            <ExpansionPanelActions>
-              <Button size="small" onClick={e => this.clearFields(e)}>
-                Clear
-              </Button>
-              <div className={classes.wrapper}>
-                <Button
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  disabled={loading}
-                  onClick={e => this.handleClick(addDepartment, e)}
-                >
-                  Assign
-                </Button>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
+            <form>
+              <GridContainer>
+                <GridItem xs={6} md={6}>
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="name"
+                    label="Department Name"
+                    type="name"
+                    value={this.state.form.name}
+                    onChange={this.handleName}
+                    fullWidth
+                    required
                   />
-                )}
-              </div>
-            </ExpansionPanelActions>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
-              open={snackbar.open}
-              autoHideDuration={6000}
-            >
-              <CustomSnackbar
-                onClose={this.closeSnackbar}
-                variant="error"
-                message={snackbar.message}
-              />
-            </Snackbar>
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Description"
+                    type="name"
+                    value={this.state.form.description}
+                    onChange={this.handleDescription}
+                    multiline
+                    fullWidth
+                    required
+                  />
+                </GridItem>
+              </GridContainer>
+              <ExpansionPanelActions>
+                <Button size="small" onClick={e => this.clearFields(e)}>
+                  Clear
+                </Button>
+                <div className={classes.wrapper}>
+                  <Button
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    disabled={loading}
+                    type="submit"
+                    onClick={e => this.handleClick(addDepartment, e)}
+                  >
+                    Assign
+                  </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+              </ExpansionPanelActions>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={snackbar.open}
+                autoHideDuration={6000}
+              >
+                <CustomSnackbar
+                  onClose={this.closeSnackbar}
+                  variant={snackbar.variant}
+                  message={snackbar.message}
+                />
+              </Snackbar>
+            </form>
           </div>
         )}
       </Mutation>

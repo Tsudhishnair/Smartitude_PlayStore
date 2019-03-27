@@ -6,6 +6,7 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 import Person from "@material-ui/icons/Person";
 import School from "@material-ui/icons/School";
 import Report from "@material-ui/icons/Assignment";
+import Account from "@material-ui/icons/AccountBalance"
 
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
@@ -59,7 +60,7 @@ const dashboardRoutes = [
     path: "/admin/dept_management",
     sidebarName: "Department",
     navbarName: "Department",
-    icon: Person,
+    icon: Account,
     component: DeptManage
   },
   // Hiden only for evaluation purpose required to do the work after evaluation
