@@ -74,6 +74,9 @@ class CategoryManagement extends React.Component {
     super(props);
 
     // categories maintains a list of state regarding its expansion
+    // editDialog maintains boolean state of edit dialog open state
+    // selectedItem contains the item that was clicked
+    // clickedType specifies whether the item clicked was category or subcategory
     this.state = {
       categories: {},
       editDialog: false,
