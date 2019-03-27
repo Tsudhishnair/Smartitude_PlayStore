@@ -160,7 +160,7 @@ class CreateNewFacultyForm extends Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
@@ -182,254 +182,270 @@ class CreateNewFacultyForm extends Component {
               <Typography>
                 <strong>Basic Info</strong>
               </Typography>
-              <GridContainer>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="name"
-                    label="Name"
-                    type="name"
-                    name="name"
-                    onChange={this.handleValueChange}
-                    value={this.state.name}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="email"
-                    label="Email Address"
-                    type="email"
-                    name="email"
-                    onChange={this.handleValueChange}
-                    value={this.state.email}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="username"
-                    label="Username"
-                    type="text"
-                    name="username"
-                    onChange={this.handleValueChange}
-                    value={this.state.username}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="phone"
-                    required
-                    label="Phone Number"
-                    type="phone"
-                    name="phoneNumber"
-                    onChange={this.handleValueChange}
-                    value={this.state.phoneNumber}
-                    fullWidth
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={4}
-                  md={4}
-                  className={classes.elementPadding}
-                >
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="password"
-                    label="Password"
-                    type="password"
-                    name="password"
-                    onChange={this.handleValueChange}
-                    value={this.state.password}
-                    fullWidth
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="department">Department</InputLabel>
-                    <Select
+              <form
+                method={"POST"}
+                onSubmit={e => {
+                  e.preventDefault();
+                  if (this.state.isInCharge) {
+                    addFaculty({
+                      variables: {
+                        facultyInput: {
+                          username: this.state.username,
+                          name: this.state.name,
+                          email: this.state.email,
+                          password: this.state.password,
+                          phoneNumber: this.state.phoneNumber,
+                          department: this.state.department._id,
+                          category: this.state.category._id,
+                          subcategory: this.state.subcategories,
+                          isInCharge: this.state.isInCharge,
+                          inChargeSubcategories: this.state
+                            .inChargeSubcategories
+                        }
+                      }
+                    });
+                  } else {
+                    addFaculty({
+                      variables: {
+                        facultyInput: {
+                          username: this.state.username,
+                          name: this.state.name,
+                          email: this.state.email,
+                          password: this.state.password,
+                          phoneNumber: this.state.phoneNumber,
+                          department: this.state.department._id,
+                          category: this.state.category._id,
+                          subcategory: this.state.subcategories,
+                          isInCharge: this.state.isInCharge
+                        }
+                      }
+                    });
+                  }
+                }}
+              >
+                <GridContainer>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
                       required
+                      margin="dense"
+                      id="name"
+                      label="Name"
+                      type="name"
+                      name="name"
                       onChange={this.handleValueChange}
-                      value={this.state.department.name}
-                      renderValue={department => {
-                        return department;
-                      }}
-                      inputProps={{
-                        name: "department",
-                        id: "department"
-                      }}
+                      value={this.state.name}
                       fullWidth
-                    >
-                      {this.props.departments.map(department => {
-                        return (
-                          <MenuItem key={department._id} value={department}>
-                            {department.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem xs={12} sm={6} md={6} className={classes.formControl}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        name="isInCharge"
-                        checked={this.state.isInCharge}
-                        onChange={this.toggleInChargeSwitch}
-                        value={this.state.isInCharge}
-                        color="primary"
-                      />
-                    }
-                    label="In-charge"
-                  />
-                </GridItem>
-              </GridContainer>
-              <Spacing/>
-              <GridContainer>
-                <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-                  <FormControl fullWidth>
-                    <InputLabel htmlFor="category">Category</InputLabel>
-                    <Select
-                      onChange={this.handleCategorySelect}
-                      value={this.state.category.name}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "category",
-                        id: "category"
-                      }}
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="email"
+                      label="Email Address"
+                      type="email"
+                      name="email"
+                      onChange={this.handleValueChange}
+                      value={this.state.email}
                       fullWidth
-                    >
-                      {this.renderCategoryDropdown()}
-                    </Select>
-                  </FormControl>
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={8}
-                  md={8}
-                  className={classes.elementPadding}
-                >
-                  <ReactChipInput
-                    style={{ zIndex: 0 }}
-                    data={this.state.subcategoryList}
-                    label="Sub-Categories"
-                    hintText="Select sub-categories"
-                    getSelectedObjects={this.getSelectedSubcategories}
-                    clearChips={this.state.clearSubcategoryChips}
-                    onChipsCleared={this.chipsCleared}
-                  />
-                </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={8}
-                  md={8}
-                  className={classes.elementPadding}
-                >
-                  <ReactChipInput
-                    style={{ zIndex: 0 }}
-                    label="In-charge Sub-Categories"
-                    hintText="Select in-charge sub-categories"
-                    data={this.state.subcategoryList}
-                    getSelectedObjects={this.getSelectedInchargeSubcategories}
-                    clearChips={this.state.clearInchargeSubcategoryChips}
-                    onChipsCleared={this.chipsCleared}
-                  />
-                </GridItem>
-              </GridContainer>
-              <ExpansionPanelActions>
-                <Button
-                  size="small"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.handleReset();
-                  }}
-                >
-                  Clear
-                </Button>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={e => {
-                    e.preventDefault();
-                    if (this.state.isInCharge) {
-                      addFaculty({
-                        variables: {
-                          facultyInput: {
-                            username: this.state.username,
-                            name: this.state.name,
-                            email: this.state.email,
-                            password: this.state.password,
-                            phoneNumber: this.state.phoneNumber,
-                            department: this.state.department._id,
-                            category: this.state.category._id,
-                            subcategory: this.state.subcategories,
-                            isInCharge: this.state.isInCharge,
-                            inChargeSubcategories: this.state
-                              .inChargeSubcategories
-                          }
-                        }
-                      });
-                    } else {
-                      addFaculty({
-                        variables: {
-                          facultyInput: {
-                            username: this.state.username,
-                            name: this.state.name,
-                            email: this.state.email,
-                            password: this.state.password,
-                            phoneNumber: this.state.phoneNumber,
-                            department: this.state.department._id,
-                            category: this.state.category._id,
-                            subcategory: this.state.subcategories,
-                            isInCharge: this.state.isInCharge
-                          }
-                        }
-                      });
-                    }
-                  }}
-                >
-                  Assign
-                </Button>
-              </ExpansionPanelActions>
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="username"
+                      label="Username"
+                      type="text"
+                      name="username"
+                      onChange={this.handleValueChange}
+                      value={this.state.username}
+                      fullWidth
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="phone"
+                      required
+                      label="Phone Number"
+                      type="phone"
+                      name="phoneNumber"
+                      onChange={this.handleValueChange}
+                      value={this.state.phoneNumber}
+                      fullWidth
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.elementPadding}
+                  >
+                    <TextField
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="password"
+                      label="Password"
+                      type="password"
+                      name="password"
+                      onChange={this.handleValueChange}
+                      value={this.state.password}
+                      fullWidth
+                    />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    className={classes.formControl}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="department">Department</InputLabel>
+                      <Select
+                        required
+                        onChange={this.handleValueChange}
+                        value={this.state.department.name}
+                        renderValue={department => {
+                          return department;
+                        }}
+                        inputProps={{
+                          name: "department",
+                          id: "department"
+                        }}
+                        fullWidth
+                      >
+                        {this.props.departments.map(department => {
+                          return (
+                            <MenuItem key={department._id} value={department}>
+                              {department.name}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    className={classes.formControl}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          name="isInCharge"
+                          checked={this.state.isInCharge}
+                          onChange={this.toggleInChargeSwitch}
+                          value={this.state.isInCharge}
+                          color="primary"
+                        />
+                      }
+                      label="In-charge"
+                    />
+                  </GridItem>
+                </GridContainer>
+                <Spacing />
+                <GridContainer>
+                  <GridItem
+                    xs={12}
+                    sm={4}
+                    md={4}
+                    className={classes.formControl}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="category">Category</InputLabel>
+                      <Select
+                        onChange={this.handleCategorySelect}
+                        value={this.state.category.name}
+                        renderValue={value => {
+                          return value;
+                        }}
+                        inputProps={{
+                          name: "category",
+                          id: "category"
+                        }}
+                        fullWidth
+                      >
+                        {this.renderCategoryDropdown()}
+                      </Select>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={8}
+                    md={8}
+                    className={classes.elementPadding}
+                  >
+                    <ReactChipInput
+                      style={{ zIndex: 0 }}
+                      data={this.state.subcategoryList}
+                      label="Sub-Categories"
+                      hintText="Select sub-categories"
+                      getSelectedObjects={this.getSelectedSubcategories}
+                      clearChips={this.state.clearSubcategoryChips}
+                      onChipsCleared={this.chipsCleared}
+                    />
+                  </GridItem>
+                  <GridItem
+                    xs={12}
+                    sm={8}
+                    md={8}
+                    className={classes.elementPadding}
+                  >
+                    <ReactChipInput
+                      style={{ zIndex: 0 }}
+                      label="In-charge Sub-Categories"
+                      hintText="Select in-charge sub-categories"
+                      data={this.state.subcategoryList}
+                      getSelectedObjects={this.getSelectedInchargeSubcategories}
+                      clearChips={this.state.clearInchargeSubcategoryChips}
+                      onChipsCleared={this.chipsCleared}
+                    />
+                  </GridItem>
+                </GridContainer>
+                <ExpansionPanelActions>
+                  <Button
+                    size="small"
+                    onClick={e => {
+                      e.preventDefault();
+                      this.handleReset();
+                    }}
+                  >
+                    Clear
+                  </Button>
+                  <Button size="small" color="primary" type={"submit"}>
+                    Assign
+                  </Button>
+                </ExpansionPanelActions>
+              </form>
             </div>
           );
         }}

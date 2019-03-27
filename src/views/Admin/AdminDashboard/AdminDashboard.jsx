@@ -42,14 +42,7 @@ class AdminDashboard extends React.Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              {/* <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Choose your desired test type below
-            </p>
-              </CardHeader> */}
               <CardBody>
-                {/* <h3 className={classes.cardTitle}>Dashboard</h3> */}
                 <p className={classes.cardCategory}>
                   Choose your desired settings from below
                 </p>

@@ -56,7 +56,6 @@ class AddQuestion extends React.Component {
     this.props = props;
     this.state = {
       question: "",
-      options: [],
       option1: "",
       option2: "",
       option3: "",
@@ -70,7 +69,7 @@ class AddQuestion extends React.Component {
     };
   }
 
-  //-----------------------------------------------------------------
+ //-----------------------------------------------------------------
   // handle Category List
   handleCategorySelect = event => {
     const categoryDetail = event.target.value;
@@ -94,28 +93,29 @@ class AddQuestion extends React.Component {
   };
 
   //-------------------------------------------------------------
+
+  //This array is to store the option in the backend
+  optionArray = []
+
   //-------------------------------------------------------------
   // Setting Option into Options Array and correct option
   handleOption = (event) => {
+    this.optionArray = [this.state.option1, this.state.option2, this.state.option3, this.state.option4]
+    console.log(this.optionArray);
     this.setState({
       ...this.state,
-      option: [
-        this.state.option1,
-        this.state.option2,
-        this.state.option3,
-        this.state.option4,
-      ],
       correctOption: event.target.value,
     });
   };
   //-------------------------------------------------------------
+
   //-------------------------------------------------------------
   //Handling State reset
 
   handleReset = e => {
     this.setState({
       question: "",
-      options: [],
+
       option1: "",
       option2: "",
       option3: "",
@@ -148,6 +148,12 @@ class AddQuestion extends React.Component {
         }
       }
     `;
+    //------------------------------------------------------------
+    //------------------------------------------------------------
+    //Mutation for Adding Questions
+    //  const AddQuestion = gql`
+    //   mutation addQuestion 
+    //  `;
     //------------------------------------------------------------
 
     return (
@@ -262,7 +268,7 @@ class AddQuestion extends React.Component {
             <GridItem xs={12} sm={3} md={3}>
               <InputLabel fullWidth>Correct Option</InputLabel>
               <Select
-                onChange={this.handleChange}
+                onChange={this.handleOption}
                 value={this.state.correctOption}
                 renderValue={value => {
                   return value;
@@ -362,7 +368,10 @@ class AddQuestion extends React.Component {
           <Spacing />
           <ExpansionPanelActions>
             <Button type="reset" onClick={this.handleReset}>Clear</Button>
-            <Button color={"primary"} variant={"outlined"} type="submit">
+            <Button color={"primary"} variant={"outlined"} type="submit" 
+            
+            
+            >
               Submit
             </Button>
           </ExpansionPanelActions>
