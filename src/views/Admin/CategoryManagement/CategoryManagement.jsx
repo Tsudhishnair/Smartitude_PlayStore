@@ -122,6 +122,7 @@ class CategoryManagement extends React.Component {
         <CategoryDialog
           type={this.state.clickedType}
           object={this.state.selectedItem}
+          parentCategory={this.state.parentCategory}
           positiveAction="Confirm"
           negativeAction="Cancel"
           onClose={this.toggleEditDialogVisibility}
@@ -143,14 +144,17 @@ class CategoryManagement extends React.Component {
   };
 
   // used to manage dialog for subcategory
-  openSubcategoryEditDialog = selectedItem => {
+  openSubcategoryEditDialog = (selectedItem, parentCategory) => {
     this.toggleEditDialogVisibility();
 
     this.setState({
       selectedItem: {
         ...selectedItem
       },
-      clickedType: "subcategory"
+      clickedType: "subcategory",
+      parentCategory: {
+        ...parentCategory
+      }
     });
   };
 
@@ -294,7 +298,8 @@ class CategoryManagement extends React.Component {
                                       aria-label="Edit"
                                       onClick={e =>
                                         this.openSubcategoryEditDialog(
-                                          subcategory
+                                          subcategory,
+                                          categoryDetail.category
                                         )
                                       }
                                     >
