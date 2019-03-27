@@ -151,7 +151,9 @@ class AddQuestion extends React.Component {
     //------------------------------------------------------------
     //------------------------------------------------------------
     //Mutation for Adding Questions
-    //  cdc
+    //  const AddQuestion = gql`
+    //   mutation addQuestion 
+    //  `;
     //------------------------------------------------------------
 
     return (
