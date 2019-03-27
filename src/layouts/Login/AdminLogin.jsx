@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import {
   Avatar,
-  Button,
   CssBaseline,
   FormControl,
   Input,
@@ -24,6 +23,9 @@ import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
+import GridContainer from "../../components/Grid/GridContainer";
+import Button from "../../components/CustomButtons/Button";
+import Spacing from "../../components/Spacing/Spacing";
 
 // login mutation query
 const ADMIN_LOGIN = gql`
@@ -36,7 +38,7 @@ const styles = theme => ({
   "@global": {
     body: {
       // backgroundColor: theme.palette.common.white,
-      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
   root: {
@@ -137,7 +139,7 @@ class AdminLogin extends Component {
         // set error message for snackbar
         this.setState({
           error: {
-            message: !!err.graphQLErrors
+            message: err.graphQLErrors
               ? err.graphQLErrors[0].message
               : err.networkError
           }
@@ -204,7 +206,7 @@ class AdminLogin extends Component {
                     onSubmit={e => e.preventDefault()}
                   >
                     <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="email">Email Address</InputLabel>
+                      <InputLabel htmlFor="email">Username</InputLabel>
                       <Input
                         id="email"
                         name="email"
@@ -237,7 +239,16 @@ class AdminLogin extends Component {
                     </Button>
                   </form>
                 </Paper>
-                <img width="400dp" src={lock} alt="..." />
+                <Spacing />
+                <GridContainer
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ marginTop: "5vh" }}
+                >
+                  <img width="200dp" src={lock} alt="..." />
+                </GridContainer>
               </main>
             </div>
             <Snackbar

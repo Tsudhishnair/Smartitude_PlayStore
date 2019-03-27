@@ -7,6 +7,7 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import DashboardPage from "../views/Faculty/Dashboard/Dashboard.jsx";
 
 import QuestionManage from "../views/Faculty/QuestionManage/QuestionManage";
+import ApproveQuestion from "../views/Faculty/ApproveQuestion/ApproveQuestion";
 import AddQues from "../views/Faculty/AddQuestion/AddQuestion";
 const dashboardRoutes = [
   {
@@ -28,7 +29,7 @@ const dashboardRoutes = [
     sidebarName: "Approve Questions",
     navbarName: "Approve Questions",
     icon: PlaylistAdd,
-    component: QuestionManage
+    component: ApproveQuestion
   },
   {
     path: "/faculty/add_new_question",
