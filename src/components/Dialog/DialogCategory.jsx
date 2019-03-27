@@ -73,6 +73,18 @@ class DialogCategory extends React.Component {
     this.props.onClose();
   };
 
+  handleNameChange = event => {
+    this.setState({
+      categoryName: event.target.value
+    });
+  };
+
+  handleDescChange = event => {
+    this.setState({
+      categoryDesc: event.target.value
+    });
+  };
+
   render() {
     const { type, object, positiveAction, negativeAction, action } = this.props;
 
@@ -97,6 +109,7 @@ class DialogCategory extends React.Component {
                     fullWidth
                     required
                     value={this.state.categoryName}
+                    onChange={this.handleNameChange}
                   />
                 </GridItem>
               </GridContainer>
@@ -110,6 +123,7 @@ class DialogCategory extends React.Component {
                     fullWidth
                     required
                     value={this.state.categoryDesc}
+                    onChange={this.handleDescChange}
                   />
                 </GridItem>
               </GridContainer>

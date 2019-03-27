@@ -69,8 +69,6 @@ const FETCH_CATEGORY_DETAILS = gql`
   }
 `;
 
-let categoryList = [];
-
 class CategoryManagement extends React.Component {
   constructor(props) {
     super(props);
@@ -86,10 +84,14 @@ class CategoryManagement extends React.Component {
     this.firstLoad = true;
   }
 
+  // called when a row or the expand buttons are clicked
   handleClick = _id => {
+
+    // iterate through the categories in state
     for (let index in this.state.categories) {
+      // if index matches with clicked index
       if (_id in this.state.categories[index]) {
-        // let dynamicStateLocation = `${index}.${_id}`;
+        // change state of row to opposite of what it was before: expanded or collapsed
         this.setState(prevState => {
           return {
             categories: {
@@ -100,17 +102,20 @@ class CategoryManagement extends React.Component {
             }
           };
         });
+        // stop execution of for loop when the index is found
         return;
       }
     }
   };
 
+  // toggle the visibility of the dialog
   toggleEditDialogVisibility = () => {
     this.setState(prevState => ({
       editDialog: !prevState.editDialog
     }));
   };
 
+  // render edit dialog depending on the item that was selected. this relies on the re-render that is initiated whenever the selectedItem is changed. Mutations are called inside the dialog component
   renderEditDialog = isVisible => {
     if (isVisible) {
       return (
@@ -125,6 +130,7 @@ class CategoryManagement extends React.Component {
     }
   };
 
+  // opens edit dialog by toggling visibility state and setting state to the item that was selected
   openEditDialog = selectedItem => {
     this.toggleEditDialogVisibility();
 
@@ -135,9 +141,12 @@ class CategoryManagement extends React.Component {
     });
   };
 
+  // initialise the states of category list. this is only called in the first load
   initCollapseStates = categoriesList => {
     let states = [];
     let i = 0;
+
+    // get the category list and store it in a temp array 'states'
     while (i < categoriesList.length) {
       states.push({
         [categoriesList[i]._id]: false
@@ -145,6 +154,7 @@ class CategoryManagement extends React.Component {
       i++;
     }
 
+    // spread state array among category state
     this.setState(
       {
         categories: {
@@ -152,6 +162,7 @@ class CategoryManagement extends React.Component {
         }
       },
       () => {
+        // after setState is completed, change firstLoad to false
         this.firstLoad = false;
       }
     );
@@ -175,6 +186,7 @@ class CategoryManagement extends React.Component {
             );
 
             if (this.firstLoad) {
+              // only initialise on first load
               this.initCollapseStates(categoriesList);
               return <div />;
             } else {
