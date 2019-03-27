@@ -73,10 +73,9 @@ class DialogCategory extends React.Component {
 
     this.state = {
       open: true,
-      categoryName: this.props.object.name,
-      categoryDesc: this.props.object.description,
-      subCategoryName: "",
-      subCategoryDesc: ""
+      type: this.props.type,
+      nameField: this.props.object.name,
+      descField: this.props.object.description
     };
   }
 
@@ -133,13 +132,25 @@ class DialogCategory extends React.Component {
               <GridContainer>
                 <GridItem xs={12} md={12}>
                   <TextField
-                    id="categoryName"
-                    name="categoryName"
-                    label="Category Name"
+                    id={
+                      this.state.type === "category"
+                        ? "categoryName"
+                        : "subcategoryName"
+                    }
+                    name={
+                      this.state.type === "category"
+                        ? "categoryName"
+                        : "subcategoryName"
+                    }
+                    label={
+                      this.state.type === "category"
+                        ? "Category Name"
+                        : "Subcategory Name"
+                    }
                     type="text"
                     fullWidth
                     required
-                    value={this.state.categoryName}
+                    value={this.state.nameField}
                     onChange={this.handleNameChange}
                   />
                 </GridItem>
@@ -147,13 +158,25 @@ class DialogCategory extends React.Component {
               <GridContainer>
                 <GridItem xs={12} md={12} lg={12}>
                   <TextField
-                    id="categoryDesc"
-                    name="categoryDesc"
-                    label="Category Description"
+                    id={
+                      this.state.type === "category"
+                        ? "categoryDesc"
+                        : "subcategoryDesc"
+                    }
+                    name={
+                      this.state.type === "category"
+                        ? "categoryDesc"
+                        : "subcategoryDesc"
+                    }
+                    label={
+                      this.state.type === "category"
+                        ? "Category Description"
+                        : "Subcategory Description"
+                    }
                     type="text"
                     fullWidth
                     required
-                    value={this.state.categoryDesc}
+                    value={this.state.descField}
                     onChange={this.handleDescChange}
                   />
                 </GridItem>

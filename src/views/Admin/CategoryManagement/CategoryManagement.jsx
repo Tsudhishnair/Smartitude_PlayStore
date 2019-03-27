@@ -77,7 +77,8 @@ class CategoryManagement extends React.Component {
     this.state = {
       categories: {},
       editDialog: false,
-      selectedItem: {}
+      selectedItem: {},
+      clickedType: ""
     };
 
     // used to check if its the first render
@@ -86,7 +87,6 @@ class CategoryManagement extends React.Component {
 
   // called when a row or the expand buttons are clicked
   handleClick = _id => {
-
     // iterate through the categories in state
     for (let index in this.state.categories) {
       // if index matches with clicked index
@@ -120,7 +120,7 @@ class CategoryManagement extends React.Component {
     if (isVisible) {
       return (
         <CategoryDialog
-          type="category"
+          type={this.state.clickedType}
           object={this.state.selectedItem}
           positiveAction="Confirm"
           negativeAction="Cancel"
@@ -137,7 +137,20 @@ class CategoryManagement extends React.Component {
     this.setState({
       selectedItem: {
         ...selectedItem
-      }
+      },
+      clickedType: "category"
+    });
+  };
+
+  // used to manage dialog for subcategory
+  openSubcategoryEditDialog = selectedItem => {
+    this.toggleEditDialogVisibility();
+
+    this.setState({
+      selectedItem: {
+        ...selectedItem
+      },
+      clickedType: "subcategory"
     });
   };
 
@@ -277,6 +290,16 @@ class CategoryManagement extends React.Component {
                                       primary={subcategory.name}
                                       secondary={subcategory.description}
                                     />
+                                    <IconButton
+                                      aria-label="Edit"
+                                      onClick={e =>
+                                        this.openSubcategoryEditDialog(
+                                          subcategory
+                                        )
+                                      }
+                                    >
+                                      <Edit />
+                                    </IconButton>
                                   </ListItem>
                                 </List>
                               ))}
