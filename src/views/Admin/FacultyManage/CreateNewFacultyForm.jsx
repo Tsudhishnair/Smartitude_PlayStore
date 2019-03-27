@@ -15,8 +15,14 @@ import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import Spacing from "../../../components/Spacing/Spacing";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-
-import { Button, ExpansionPanelActions } from "@material-ui/core";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
+import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
   formControl: {
@@ -44,6 +50,18 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit * 4
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 class CreateNewFacultyForm extends Component {
@@ -68,7 +86,13 @@ class CreateNewFacultyForm extends Component {
       inChargeSubcategories: [],
       subcategoryList: [],
       clearSubcategoryChips: false,
-      clearInchargeSubcategoryChips: false
+      clearInchargeSubcategoryChips: false,
+      redirecter: false,
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: ""
+      }
     };
   }
 
@@ -163,9 +187,134 @@ class CreateNewFacultyForm extends Component {
       return <Fragment />;
     }
   };
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  handleClick = (addFaculty, e) => {
+    e.preventDefault();
+    // check if name or desc fields are empty, if so, throw up snackbar and set msg accordingly
+    if (!this.state.name || !this.state.username || !this.state.email || !this.state.password) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Fields are left empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.department.name) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Department is not selected!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else {
+      // set loading state and start mutation. upon completion, change loading states
+      this.setState({
+        loading: true
+      });
+      if (this.state.isInCharge) {
+        addFaculty({
+          variables: {
+            facultyInput: {
+              username: this.state.username,
+              name: this.state.name,
+              email: this.state.email,
+              password: this.state.password,
+              phoneNumber: this.state.phoneNumber,
+              department: this.state.department._id,
+              category: this.state.category._id,
+              subcategory: this.state.subcategories,
+              isInCharge: this.state.isInCharge,
+              inChargeSubcategories: this.state.inChargeSubcategories
+            }
+          }
+        })
+          .then(response => {
+            this.setState(
+              {
+                loading: false,
+                snackbar: {
+                  ...this.state.snackbar,
+                  variant: "success",
+                  message: "New Faculty Added!"
+                }
+              },
+              () => this.openSnackbar()
+            );
+          })
+          .catch(err => {
+            this.setState({
+              loading: false
+            });
+            this.closeSnackbar();
+          });
+      } else {
+        addFaculty({
+          variables: {
+            facultyInput: {
+              username: this.state.username,
+              name: this.state.name,
+              email: this.state.email,
+              password: this.state.password,
+              phoneNumber: this.state.phoneNumber,
+              department: this.state.department._id,
+              category: this.state.category._id,
+              subcategory: this.state.subcategories,
+              isInCharge: this.state.isInCharge
+            }
+          }
+        })
+          .then(response => {
+            this.setState(
+              {
+                loading: false,
+                snackbar: {
+                  ...this.state.snackbar,
+                  variant: "success",
+                  message: "New Faculty In-charge Added!"
+                }
+              },
+              () => this.openSnackbar()
+            );
+          })
+          .catch(err => {
+            this.setState({
+              loading: false
+            });
+            this.closeSnackbar();
+          });
+      }
+    }
+  };
 
   render() {
     const { classes } = this.props;
+    const { loading, snackbar } = this.state;
     const ADD_FACULTY = gql`
       mutation addFaculty($facultyInput: FacultyInput!) {
         addFaculty(facultyInput: $facultyInput) {
@@ -441,10 +590,39 @@ class CreateNewFacultyForm extends Component {
                   >
                     Clear
                   </Button>
-                  <Button size="small" color="primary" type={"submit"}>
-                    Assign
-                  </Button>
+                  <div className={classes.wrapper}>
+                    <Button
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      type={"submit"}
+                      onClick={e => this.handleClick(addFaculty, e)}
+                      disabled={loading}
+                    >
+                      Assign
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
                 </ExpansionPanelActions>
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={snackbar.open}
+                  autoHideDuration={6000}
+                >
+                  <CustomSnackbar
+                    onClose={this.closeSnackbar}
+                    variant={snackbar.variant}
+                    message={snackbar.message}
+                  />
+                </Snackbar>
               </form>
             </div>
           );

@@ -116,6 +116,7 @@ class FormAddSubcategory extends Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Subcategory name/description field empty!"
           }
         },
@@ -126,6 +127,7 @@ class FormAddSubcategory extends Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Please choose a category!"
           }
         },

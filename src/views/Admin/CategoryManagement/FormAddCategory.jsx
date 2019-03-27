@@ -82,6 +82,7 @@ class FormAddCategory extends Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Category name field empty!"
           }
         },
@@ -92,6 +93,7 @@ class FormAddCategory extends Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Category description field empty!"
           }
         },
