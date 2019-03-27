@@ -69,7 +69,7 @@ class AddQuestion extends React.Component {
     };
   }
 
-  //-----------------------------------------------------------------
+ //-----------------------------------------------------------------
   // handle Category List
   handleCategorySelect = event => {
     const categoryDetail = event.target.value;
