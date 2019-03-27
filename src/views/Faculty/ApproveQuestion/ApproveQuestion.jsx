@@ -9,11 +9,12 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
+import { CardContent, Typography } from "@material-ui/core";
 import QuizManage from "../../General/QuizManage";
+import CardBody from "../../../components/Card/CardBody";
 
 class Dashboard extends React.Component {
   render() {
-    const { classes } = this.props;
     let data = [
       {
         question:
@@ -65,8 +66,16 @@ class Dashboard extends React.Component {
         correctOption: "4"
       }
     ];
+    const { classes } = this.props;
     return (
       <div>
+        <Card className={classes.card}>
+          <CardBody>
+            <p>
+              <b>Questions yet to approve:</b> XX
+            </p>
+          </CardBody>
+        </Card>
         <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>

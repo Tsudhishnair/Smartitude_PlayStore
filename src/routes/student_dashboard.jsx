@@ -32,13 +32,6 @@ const dashboardRoutes = [
     component: NotificationsPage
   },
   {
-    path: "/student/upgrade-to-pro",
-    sidebarName: "Log Out",
-    navbarName: "Log Out",
-    icon: LogOutIcon,
-    component: NotificationsPage
-  },
-  {
     redirect: true,
     path: "/student",
     to: "/student/dashboard",
