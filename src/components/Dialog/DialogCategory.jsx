@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
+
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide
+} from "@material-ui/core";
+
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
+
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
 const styles = theme => ({
   appBar: {
@@ -50,6 +57,15 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
+// edit category mutation query
+const EDIT_CATEGORY = gql`
+  mutation editCategory($_id: ID!, $categoryInput: CategoryInput!) {
+    editCategory(_id: $_id, categoryInput: $categoryInput) {
+      _id
+    }
+  }
+`;
+
 class DialogCategory extends React.Component {
   constructor(props) {
     super(props);
@@ -85,6 +101,21 @@ class DialogCategory extends React.Component {
     });
   };
 
+  handleCategoryEdit = editCategory => {
+    editCategory({
+      variables: {
+        _id: this.props.object._id,
+        categoryInput: {
+          name: this.state.categoryName,
+          description: this.state.categoryDesc
+        }
+      }
+    }).then(res => {
+      // TODO: handle errors
+      this.handleDialogClose();
+    });
+  };
+
   render() {
     const { type, object, positiveAction, negativeAction, action } = this.props;
 
@@ -96,7 +127,7 @@ class DialogCategory extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="form-dialog-title">Category </DialogTitle>
+          <DialogTitle id="form-dialog-title">Category</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
@@ -133,9 +164,17 @@ class DialogCategory extends React.Component {
             <Button onClick={this.handleDialogClose} color="primary">
               {negativeAction ? negativeAction : "CANCEL"}
             </Button>
-            <Button onClick={action} color="primary" autoFocus>
-              {positiveAction ? positiveAction : "OK"}
-            </Button>
+            <Mutation mutation={EDIT_CATEGORY}>
+              {editCategory => (
+                <Button
+                  onClick={e => this.handleCategoryEdit(editCategory)}
+                  color="primary"
+                  autoFocus
+                >
+                  {positiveAction ? positiveAction : "OK"}
+                </Button>
+              )}
+            </Mutation>
           </DialogActions>
         </Dialog>
       </div>
