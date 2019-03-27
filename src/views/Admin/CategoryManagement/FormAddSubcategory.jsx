@@ -13,7 +13,7 @@ import gql from "graphql-tag";
 
 const styles = themes => ({
   root: {
-    dispaly: "felx",
+    // display: "flex",
     flexGrow: 1
   }
 });

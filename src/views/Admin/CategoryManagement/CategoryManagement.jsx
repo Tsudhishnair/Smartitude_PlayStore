@@ -77,7 +77,9 @@ class CategoryManagement extends React.Component {
 
     // categories maintains a list of state regarding its expansion
     this.state = {
-      categories: {}
+      categories: {},
+      editDialog: false,
+      selectedItem: {}
     };
 
     // used to check if its the first render
@@ -103,8 +105,34 @@ class CategoryManagement extends React.Component {
     }
   };
 
-  handleCategoryDialogOpen = data => {
-    // this.child.handleDialogOpen();
+  toggleEditDialogVisibility = () => {
+    this.setState(prevState => ({
+      editDialog: !prevState.editDialog
+    }));
+  };
+
+  renderEditDialog = isVisible => {
+    if (isVisible) {
+      return (
+        <CategoryDialog
+          type="category"
+          object={this.state.selectedItem}
+          positiveAction="Confirm"
+          negativeAction="Cancel"
+          onClose={this.toggleEditDialogVisibility}
+        />
+      );
+    }
+  };
+
+  openEditDialog = selectedItem => {
+    this.toggleEditDialogVisibility();
+
+    this.setState({
+      selectedItem: {
+        ...selectedItem
+      }
+    });
   };
 
   initCollapseStates = categoriesList => {
@@ -152,6 +180,7 @@ class CategoryManagement extends React.Component {
             } else {
               return (
                 <React.Fragment>
+                  {this.renderEditDialog(this.state.editDialog)}
                   <Expansionpanel
                     headers="Category"
                     header="Add new category"
@@ -163,7 +192,6 @@ class CategoryManagement extends React.Component {
                     header="Add new subcategory"
                     directingValue={EXPANSION_SUBCATEGORY_FORM}
                   />
-                  <CategoryDialog onRef={ref => (this.child = ref)} />
                   <Card>
                     <List component="nav">
                       {data.categoryDetailsList.map((categoryDetail, index) => {
@@ -188,9 +216,9 @@ class CategoryManagement extends React.Component {
                               <ListItemSecondaryAction>
                                 <IconButton
                                   aria-label="Edit"
-                                  onClick={this.handleCategoryDialogOpen(
-                                    categoryDetail.category
-                                  )}
+                                  onClick={e =>
+                                    this.openEditDialog(categoryDetail.category)
+                                  }
                                 >
                                   <Edit />
                                 </IconButton>

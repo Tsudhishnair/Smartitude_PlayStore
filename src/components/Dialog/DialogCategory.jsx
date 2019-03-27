@@ -54,19 +54,14 @@ class DialogCategory extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
+
     this.state = {
-      open: false,
-      CategoryName: "",
-      CategoryDesc: "",
-      SubCategoryName: "",
-      SubCategoryDesc: ""
+      open: true,
+      categoryName: this.props.object.name,
+      categoryDesc: this.props.object.description,
+      subCategoryName: "",
+      subCategoryDesc: ""
     };
-  }
-  componentDidMount() {
-    this.props.onRef(this);
-  }
-  componentWillUnmount() {
-    this.props.onRef(undefined);
   }
 
   handleDialogOpen = () => {
@@ -75,17 +70,12 @@ class DialogCategory extends React.Component {
 
   handleDialogClose = () => {
     this.setState({ open: false });
+    this.props.onClose();
   };
 
   render() {
-    const {
-      classes,
-      title,
-      content,
-      positiveAction,
-      negativeAction,
-      action
-    } = this.props;
+    const { type, object, positiveAction, negativeAction, action } = this.props;
+
     return (
       <div>
         <Dialog
@@ -98,26 +88,28 @@ class DialogCategory extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
-                <GridItem xs={6} md={6}>
+                <GridItem xs={12} md={12}>
                   <TextField
-                    id="CategoryName"
-                    name="CategoryName"
+                    id="categoryName"
+                    name="categoryName"
                     label="Category Name"
                     type="text"
                     fullWidth
                     required
+                    value={this.state.categoryName}
                   />
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} md={12} lg={12}>
                   <TextField
-                    id="CategoryName"
-                    name="CategoryName"
-                    label="Category Name"
+                    id="categoryDesc"
+                    name="categoryDesc"
+                    label="Category Description"
                     type="text"
                     fullWidth
                     required
+                    value={this.state.categoryDesc}
                   />
                 </GridItem>
               </GridContainer>
@@ -138,9 +130,6 @@ class DialogCategory extends React.Component {
 }
 
 DialogCategory.propTypes = {
-  classes: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
   positiveAction: PropTypes.string,
   negativeAction: PropTypes.string,
   action: PropTypes.func.isRequired,
