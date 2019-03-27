@@ -53,37 +53,80 @@ const styles = theme => ({
 });
 
 const FETCH_CATEGORY_DETAILS = gql`
-      {
-        categoryDetailsList {
-          category {
-            _id
-            name
-            description
-          }
-          subcategory {
-            _id
-            name
-            description
-          }
-        }
+  {
+    categoryDetailsList {
+      category {
+        _id
+        name
+        description
       }
-    `;
+      subcategory {
+        _id
+        name
+        description
+      }
+    }
+  }
+`;
 
-class MaxWidthDialog extends React.Component {
+let categoryList = [];
+
+class CategoryManagement extends React.Component {
   constructor(props) {
     super(props);
 
+    // categories maintains a list of state regarding its expansion
     this.state = {
-      open: false
+      categories: {}
     };
+
+    // used to check if its the first render
+    this.firstLoad = true;
   }
 
-  handleClick = () => {
-    this.setState(state => ({ open: !state.open }));
+  handleClick = _id => {
+    for (let index in this.state.categories) {
+      if (_id in this.state.categories[index]) {
+        // let dynamicStateLocation = `${index}.${_id}`;
+        this.setState(prevState => {
+          return {
+            categories: {
+              ...this.state.categories,
+              [index]: {
+                [_id]: !prevState.categories[index][_id]
+              }
+            }
+          };
+        });
+        return;
+      }
+    }
   };
 
   handleCategoryDialogOpen = data => {
     // this.child.handleDialogOpen();
+  };
+
+  initCollapseStates = categoriesList => {
+    let states = [];
+    let i = 0;
+    while (i < categoriesList.length) {
+      states.push({
+        [categoriesList[i]._id]: false
+      });
+      i++;
+    }
+
+    this.setState(
+      {
+        categories: {
+          ...states
+        }
+      },
+      () => {
+        this.firstLoad = false;
+      }
+    );
   };
 
   render() {
@@ -103,91 +146,109 @@ class MaxWidthDialog extends React.Component {
               }
             );
 
-            return (
-              <React.Fragment>
-                <Expansionpanel
-                  headers="Category"
-                  header="Add new category"
-                  directingValue={EXPANSION_CATEGORY_FORM}
-                />
-                <Expansionpanel
-                  categories={categoriesList}
-                  headers="Sub-Category"
-                  header="Add new subcategory"
-                  directingValue={EXPANSION_SUBCATEGORY_FORM}
-                />
-                <CategoryDialog onRef={ref => (this.child = ref)} />
-                <Card>
-                  {data.categoryDetailsList.map(categoryDetail => (
-                    <React.Fragment>
-                      <List component="nav">
-                        <ListItem
-                          key={categoryDetail.category._id}
-                          button
-                          onClick={this.handleClick}
-                        >
-                          <ListItemAvatar>
-                            <Avatar
-                              alt="Category Icon"
-                              src="assets/img/faces/marc.jpg"
-                            />
-                          </ListItemAvatar>
-                          <ListItemText
-                            primary={categoryDetail.category.name}
-                            secondary={categoryDetail.category.description}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label="Edit"
-                              onClick={this.handleCategoryDialogOpen(
-                                categoryDetail.category
-                              )}
+            if (this.firstLoad) {
+              this.initCollapseStates(categoriesList);
+              return <div />;
+            } else {
+              return (
+                <React.Fragment>
+                  <Expansionpanel
+                    headers="Category"
+                    header="Add new category"
+                    directingValue={EXPANSION_CATEGORY_FORM}
+                  />
+                  <Expansionpanel
+                    categories={categoriesList}
+                    headers="Sub-Category"
+                    header="Add new subcategory"
+                    directingValue={EXPANSION_SUBCATEGORY_FORM}
+                  />
+                  <CategoryDialog onRef={ref => (this.child = ref)} />
+                  <Card>
+                    <List component="nav">
+                      {data.categoryDetailsList.map((categoryDetail, index) => {
+                        return (
+                          <React.Fragment key={categoryDetail.category._id}>
+                            <ListItem
+                              button
+                              onClick={e =>
+                                this.handleClick(categoryDetail.category._id)
+                              }
                             >
-                              <Edit />
-                            </IconButton>
-                            <IconButton
-                              aria-label="Expand"
-                              onClick={this.handleClick}
-                            >
-                              {this.state.open ? (
-                                <ExpandLess />
-                              ) : (
-                                <ExpandMore />
-                              )}
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Collapse
-                          in={this.state.open}
-                          timeout="auto"
-                          unmountOnExit
-                        >
-                          {categoryDetail.subcategory.map(subcategory => (
-                            <List
-                              component="div"
-                              disablePadding
-                              key={subcategory._id}
-                            >
-                              <ListItem
-                                key={subcategory._id}
-                                button
-                                className={classes.nested}
-                                onClick={this.handleCategoryDialogOpen}
-                              >
-                                <ListItemText
-                                  primary={subcategory.name}
-                                  secondary={subcategory.description}
+                              <ListItemAvatar>
+                                <Avatar
+                                  alt="Category Icon"
+                                  src="assets/img/faces/marc.jpg"
                                 />
-                              </ListItem>
-                            </List>
-                          ))}
-                        </Collapse>
-                      </List>
-                    </React.Fragment>
-                  ))}
-                </Card>
-              </React.Fragment>
-            );
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={categoryDetail.category.name}
+                                secondary={categoryDetail.category.description}
+                              />
+                              <ListItemSecondaryAction>
+                                <IconButton
+                                  aria-label="Edit"
+                                  onClick={this.handleCategoryDialogOpen(
+                                    categoryDetail.category
+                                  )}
+                                >
+                                  <Edit />
+                                </IconButton>
+                                <IconButton
+                                  aria-label="Expand"
+                                  onClick={e =>
+                                    this.handleClick(
+                                      categoryDetail.category._id
+                                    )
+                                  }
+                                >
+                                  {this.state.categories[index][
+                                    categoryDetail.category._id
+                                  ] ? (
+                                    <ExpandLess />
+                                  ) : (
+                                    <ExpandMore />
+                                  )}
+                                </IconButton>
+                              </ListItemSecondaryAction>
+                            </ListItem>
+                            <Collapse
+                              in={
+                                this.state.categories[index][
+                                  categoryDetail.category._id
+                                ]
+                              }
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              {categoryDetail.subcategory.map(subcategory => (
+                                <List
+                                  component="div"
+                                  disablePadding
+                                  key={subcategory._id}
+                                >
+                                  <ListItem
+                                    key={subcategory._id}
+                                    button
+                                    className={classes.nested}
+                                    onClick={this.handleCategoryDialogOpen}
+                                  >
+                                    <ListItemText
+                                      primary={subcategory.name}
+                                      secondary={subcategory.description}
+                                    />
+                                  </ListItem>
+                                </List>
+                              ))}
+                            </Collapse>
+                          </React.Fragment>
+                        );
+                      })}
+                    </List>
+                  </Card>
+                </React.Fragment>
+              );
+            }
           }
         }}
       </Query>
@@ -195,8 +256,8 @@ class MaxWidthDialog extends React.Component {
   }
 }
 
-MaxWidthDialog.propTypes = {
+CategoryManagement.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MaxWidthDialog);
+export default withStyles(styles)(CategoryManagement);

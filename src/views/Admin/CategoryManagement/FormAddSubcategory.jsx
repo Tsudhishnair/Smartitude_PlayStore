@@ -11,15 +11,22 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import gql from "graphql-tag";
 
-
 const styles = themes => ({
   root: {
     dispaly: "felx",
     flexGrow: 1
   }
 });
-class FormAddSubcategory extends Component {
 
+const ADD_SUBCATEGORY = gql`
+  mutation addSubcategory($subcategoryInput: SubcategoryInput!) {
+    addSubcategory(subcategoryInput: $subcategoryInput) {
+      _id
+    }
+  }
+`;
+
+class FormAddSubcategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +42,7 @@ class FormAddSubcategory extends Component {
   handleChange = event => {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   };
 
@@ -50,22 +57,11 @@ class FormAddSubcategory extends Component {
     });
   };
 
-
   render() {
-    const ADD_SUBCATEGORY = gql`
-    mutation addSubcategory($subcategoryInput: SubcategoryInput!) {
-      addSubcategory(subcategoryInput: $subcategoryInput) {
-          _id
-        }
-      }
-  `;
     const { classes, categories } = this.props;
-    console.log(categories);
 
     return (
-      <Mutation
-        mutation={ADD_SUBCATEGORY}
-        onCompleted={this.clearForm}>
+      <Mutation mutation={ADD_SUBCATEGORY} onCompleted={this.clearForm}>
         {addSubcategory => {
           return (
             <div className={classes.root}>
@@ -117,32 +113,27 @@ class FormAddSubcategory extends Component {
                       }}
                       fullWidth
                     >
-                      {
-                        categories.map(categoryItem => {
-                          const category = {
-                            _id: categoryItem._id,
-                            name: categoryItem.name,
-                            description: categoryItem.description
-                          };
-                          return (
-                            <MenuItem
-                            key={category._id}
-                            value={category}>
+                      {categories.map(categoryItem => {
+                        const category = {
+                          _id: categoryItem._id,
+                          name: categoryItem.name,
+                          description: categoryItem.description
+                        };
+                        return (
+                          <MenuItem key={category._id} value={category}>
                             {category.name}
                           </MenuItem>
-                          )
-                        })
-                      }
+                        );
+                      })}
                     </Select>
                   </FormControl>
                 </GridItem>
               </GridContainer>
 
               <ExpansionPanelActions>
-                <Button
-                  size="small"
-                  onClick={this.clearForm}
-                >Clear</Button>
+                <Button size="small" onClick={this.clearForm}>
+                  Clear
+                </Button>
                 <Button
                   size="small"
                   color="primary"
@@ -161,7 +152,7 @@ class FormAddSubcategory extends Component {
                   }}
                 >
                   Create
-          </Button>
+                </Button>
               </ExpansionPanelActions>
             </div>
           );
