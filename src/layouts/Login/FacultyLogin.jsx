@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import {
   Avatar,
-  Button,
   CssBaseline,
   FormControl,
   Input,
   InputLabel,
   Typography,
   Paper,
+  Button,
   Snackbar
 } from "@material-ui/core";
 
@@ -24,6 +24,10 @@ import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
+import GridContainer from "../../components/Grid/GridContainer";
+import Spacing from "../../components/Spacing/Spacing";
+import green from "@material-ui/core/colors/green";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const FACULTY_LOGIN = gql`
   mutation facultyLogin($username: String!, $password: String!) {
@@ -35,7 +39,7 @@ const styles = theme => ({
   "@global": {
     body: {
       // backgroundColor: theme.palette.common.white,
-      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
   root: {
@@ -44,7 +48,21 @@ const styles = theme => ({
     secondary: "orange",
     backgroundSize: "cover",
     padding: theme.spacing.unit * 8,
-    margin: "0"
+    margin: "0",
+    display: "flex",
+    alignItems: "center"
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -1,
+    marginLeft: -12
   },
   main: {
     width: "auto",
@@ -79,6 +97,7 @@ const styles = theme => ({
 
 class FacultyLogin extends Component {
   constructor(props) {
+    loading: false,
     super(props);
     this.state = {
       form: {
@@ -115,6 +134,7 @@ class FacultyLogin extends Component {
   };
   // handle submit button click
   handleClick = (facultyLogin, e) => {
+    this.setState({ ...this.state, loading: true });
     facultyLogin({
       variables: {
         username: this.state.form.username,
@@ -141,6 +161,7 @@ class FacultyLogin extends Component {
           }
         });
         this.openSnackbar();
+        this.setState({ ...this.state, loading: false });
         console.log(err.graphQLErrors);
         console.log(err.networkError);
       });
@@ -174,6 +195,7 @@ class FacultyLogin extends Component {
   }
 
   render() {
+    const { loading } = this.state;
     const { classes } = this.props;
     const { redirecter, snackbar, error } = this.state;
 
@@ -223,19 +245,37 @@ class FacultyLogin extends Component {
                         value={this.state.form.password}
                       />
                     </FormControl>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={e => this.handleClick(facultyLogin, e)}
-                    >
-                      Login
-                    </Button>
+                    <div className={classes.wrapper}>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={loading}
+                        className={classes.submit}
+                        onClick={e => this.handleClick(facultyLogin, e)}
+                      >
+                        Login
+                      </Button>
+                      {loading && (
+                        <CircularProgress
+                          size={26}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </div>
                   </form>
                 </Paper>
-                <img width="400dp" src={lock} alt="..." />
+                <Spacing />
+                <GridContainer
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ marginTop: "5vh" }}
+                >
+                  <img width="200dp" src={lock} alt="..." />
+                </GridContainer>
               </main>
             </div>
             <Snackbar

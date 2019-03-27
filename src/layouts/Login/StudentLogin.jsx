@@ -22,6 +22,8 @@ import { MuiThemeProvider } from "material-ui/styles";
 import { orange100 } from "material-ui/styles/colors";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+import Spacing from "./AdminLogin";
+import GridContainer from "../../components/Grid/GridContainer";
 
 const STUDENT_LOGIN = gql`
   mutation studentLogin($username: String!, $password: String!) {
@@ -40,7 +42,7 @@ const styles = theme => ({
   "@global": {
     body: {
       // backgroundColor: theme.palette.common.white,
-      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
   root: {
@@ -192,7 +194,16 @@ class StudentLogin extends Component {
                     </Button>
                   </form>
                 </Paper>
-                <img width="400dp" src={lock} alt="..." />
+                <Spacing />
+                <GridContainer
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ marginTop: "5vh" }}
+                >
+                  <img width="200dp" src={lock} alt="..." />
+                </GridContainer>
               </main>
             </div>
             {this.routing(data)}

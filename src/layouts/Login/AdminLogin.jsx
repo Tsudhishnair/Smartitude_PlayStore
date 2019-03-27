@@ -3,27 +3,30 @@ import PropTypes from "prop-types";
 
 import {
   Avatar,
-  Button,
   CssBaseline,
   FormControl,
   Input,
   InputLabel,
   Typography,
   Paper,
-  Snackbar
+  Snackbar,
+  Button
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
-
+import green from "@material-ui/core/colors/green";
 import lock from "assets/img/drawable/smart_logo.png";
 import { MuiThemeProvider } from "material-ui/styles";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
+import GridContainer from "../../components/Grid/GridContainer";
+import Spacing from "../../components/Spacing/Spacing";
 
 // login mutation query
 const ADMIN_LOGIN = gql`
@@ -36,16 +39,31 @@ const styles = theme => ({
   "@global": {
     body: {
       // backgroundColor: theme.palette.common.white,
-      background: "linear-gradient(80deg,#ffa726,#fb8c00)"
+      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
+
   root: {
     height: "100vh",
     primary: "orange",
     secondary: "orange",
     backgroundSize: "cover",
     padding: theme.spacing.unit * 8,
-    margin: "0"
+    margin: "0",
+    display: "flex",
+    alignItems: "center"
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -1,
+    marginLeft: -12
   },
   main: {
     width: "auto",
@@ -82,6 +100,7 @@ class AdminLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       form: {
         username: "",
         password: ""
@@ -116,6 +135,7 @@ class AdminLogin extends Component {
   };
   // handle submit button click
   handleClick = (adminLogin, e) => {
+    this.setState({ ...this.state, loading: true });
     adminLogin({
       variables: {
         username: this.state.form.username,
@@ -124,8 +144,8 @@ class AdminLogin extends Component {
     })
       .then(response => {
         // set token to the auth token received
-        localStorage.setItem("token", response.data.adminLogin);
 
+        localStorage.setItem("token", response.data.adminLogin);
         // check for the value in local storage & update local state accordingly
         if (loginHandler.authenticated("admin")) {
           this.setState(() => ({
@@ -137,11 +157,12 @@ class AdminLogin extends Component {
         // set error message for snackbar
         this.setState({
           error: {
-            message: !!err.graphQLErrors
+            message: err.graphQLErrors
               ? err.graphQLErrors[0].message
               : err.networkError
           }
         });
+        this.setState({ ...this.state, loading: false });
         this.openSnackbar();
         console.log(err.graphQLErrors);
         console.log(err.networkError);
@@ -176,6 +197,7 @@ class AdminLogin extends Component {
   }
 
   render() {
+    const { loading } = this.state;
     const { classes } = this.props;
     const { redirecter, snackbar, error } = this.state;
 
@@ -204,7 +226,7 @@ class AdminLogin extends Component {
                     onSubmit={e => e.preventDefault()}
                   >
                     <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="email">Email Address</InputLabel>
+                      <InputLabel htmlFor="email">Username</InputLabel>
                       <Input
                         id="email"
                         name="email"
@@ -225,19 +247,37 @@ class AdminLogin extends Component {
                         value={this.state.form.password}
                       />
                     </FormControl>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={e => this.handleClick(adminLogin, e)}
-                    >
-                      Login
-                    </Button>
+                    <div className={classes.wrapper}>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={loading}
+                        className={classes.submit}
+                        onClick={e => this.handleClick(adminLogin, e)}
+                      >
+                        Login
+                      </Button>
+                      {loading && (
+                        <CircularProgress
+                          size={26}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </div>
                   </form>
                 </Paper>
-                <img width="400dp" src={lock} alt="..." />
+                <Spacing />
+                <GridContainer
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  style={{ marginTop: "5vh" }}
+                >
+                  <img width="200dp" src={lock} alt="..." />
+                </GridContainer>
               </main>
             </div>
             <Snackbar
