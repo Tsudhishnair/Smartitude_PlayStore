@@ -16,6 +16,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -44,7 +45,8 @@ class Dashboard extends React.Component {
         name: "Username",
         options: {
           filter: false,
-          sort: true
+          sort: true,
+          display: false,
         }
       },
       {
@@ -86,6 +88,7 @@ class Dashboard extends React.Component {
         name: "Score",
         options: {
           filter: false,
+          display: false,
           sort: true
         }
       }
@@ -156,7 +159,7 @@ class Dashboard extends React.Component {
               <Query query={FETCH_STUDENTS}>
                 {({ data, loading, error }) => {
                   if (loading) {
-                    return "Loading...";
+                    return <CircularProgress className={classes.progress} />;
                   } else if (error) {
                     return "Error occured!";
                   } else {

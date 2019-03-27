@@ -11,7 +11,14 @@ import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { Button, Divider, ExpansionPanelActions } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
+import CustomSnackbar from "../../../layouts/Login/AdminLogin";
+import { MuiThemeProvider } from "material-ui/styles";
 
 const styles = theme => ({
   formControl: {
@@ -117,6 +124,23 @@ class FormAddStudent extends Component {
       }
     });
   };
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
   render() {
     const { classes } = this.props;
     const deptquery = gql`
@@ -130,16 +154,37 @@ class FormAddStudent extends Component {
     const Add_Student = gql`
       mutation addStudent($studentInput: StudentInput!) {
         addStudent(studentInput: $studentInput) {
-        _id
+          _id
         }
       }
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {(addStudent) => {
+        {addStudent => {
           return (
             <div className={classes.root}>
-              <form onSubmit={e => e.preventDefault()}>
+              <form
+                method="POST"
+                onSubmit={e => {
+                  e.preventDefault();
+                  addStudent({
+                    variables: {
+                      studentInput: {
+                        username: this.state.assignval.username,
+                        name: this.state.assignval.mname,
+                        email: this.state.assignval.email,
+                        password: this.state.assignval.password,
+                        phoneNumber: this.state.assignval.phoneNumber,
+                        department: this.state.deptdrop.deptid,
+                        batch: parseInt(
+                          this.state.assignval.batch.substring(0, 4)
+                        )
+                      }
+                    }
+                  });
+                  this.handleReset(e);
+                }}
+              >
                 <Typography>
                   <strong>Basic Info</strong>
                 </Typography>
@@ -155,6 +200,7 @@ class FormAddStudent extends Component {
                       margin="dense"
                       id="name"
                       label="Name"
+                      required
                       type="text"
                       name="mname"
                       onChange={this.handleValueChange}
@@ -173,6 +219,7 @@ class FormAddStudent extends Component {
                       margin="dense"
                       id="username"
                       label="Username"
+                      required
                       type="text"
                       name="username"
                       onChange={this.handleValueChange}
@@ -193,6 +240,7 @@ class FormAddStudent extends Component {
                       label="Email Address"
                       type="email"
                       name="email"
+                      required
                       onChange={this.handleValueChange}
                       value={this.state.assignval.email}
                       fullWidth
@@ -212,6 +260,7 @@ class FormAddStudent extends Component {
                       label="Password"
                       type="password"
                       name="password"
+                      required
                       onChange={this.handleValueChange}
                       value={this.state.assignval.password}
                       fullWidth
@@ -236,6 +285,7 @@ class FormAddStudent extends Component {
                       label="Phone Number"
                       type="phone"
                       name="phoneNumber"
+                      required
                       onChange={this.handleValueChange}
                       value={this.state.assignval.phoneNumber}
                       fullWidth
@@ -254,6 +304,7 @@ class FormAddStudent extends Component {
                         onClose={this.handleClose}
                         onOpen={this.handleOpen}
                         onChange={this.handleChange}
+                        required
                         value={this.state.deptdrop.department}
                         renderValue={value => {
                           return value;
@@ -293,27 +344,6 @@ class FormAddStudent extends Component {
                       </Select>
                     </FormControl>
                   </GridItem>
-                  {/* <GridItem
-                    xs={12}
-                    sm={4}
-                    md={4}
-                    className={classes.elementPadding}
-                  >
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <DatePicker
-                        className={classes.date_root}
-                        minDate={this.state.selectedDate}
-                        views={["year"]}
-                        label="Batch"
-                        value={this.state.selectedDate}
-                        onChange={this.handleDateChange}
-                        
-                        disableFuture="true"
-                        animateYearScrolling
-                      />
-                      {console.log(this.state.selectedDate)}
-                    </MuiPickersUtilsProvider>
-                  </GridItem> */}
                   <GridItem
                     xs={12}
                     sm={4}
@@ -325,6 +355,8 @@ class FormAddStudent extends Component {
                       margin="dense"
                       id="phone"
                       label="batch"
+                      required
+                      placeholder="20XX"
                       type="number"
                       name="batch"
                       onChange={this.handleValueChange}
@@ -344,27 +376,7 @@ class FormAddStudent extends Component {
                   >
                     Clear
                   </Button>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={e => {
-                      e.preventDefault();
-                      addStudent({
-                        variables: {
-                          studentInput: {
-                            username: this.state.assignval.username,
-                            name: this.state.assignval.mname,
-                            email: this.state.assignval.email,
-                            password: this.state.assignval.password,
-                            phoneNumber: this.state.assignval.phoneNumber,
-                            department: this.state.deptdrop.deptid,
-                            batch: parseInt(this.state.assignval.batch.substring(0, 4))
-                          }
-                        }
-                      });
-                      this.handleReset(e);
-                    }}
-                  >
+                  <Button size="small" color="primary" type="submit">
                     Assign
                   </Button>
                 </ExpansionPanelActions>
