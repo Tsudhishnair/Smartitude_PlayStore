@@ -85,7 +85,10 @@ class Dashboard extends React.Component {
   //--------------------------------------------------------------
   //Common State Management Function
   handleChange = (event) => {
-
+    this.setState({
+      ...this.state,
+      [event.target.name]:event.target.value,
+    });
   };
 
   //-------------------------------------------------------------
