@@ -1,12 +1,11 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import Person from "@material-ui/icons/Person";
+import AddComment from "@material-ui/icons/AddComment";
+import PlaylistAdd from "@material-ui/icons/PlaylistAddCheck";
 import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 // core components/views
 import DashboardPage from "../views/Faculty/Dashboard/Dashboard.jsx";
 
-import FacultyManage from "../views/Faculty/FacultyManage/FacultyManage";
-import QuizManage from "../views/Faculty/QuestionManage/QuestionManage";
 import QuestionManage from "../views/Faculty/QuestionManage/QuestionManage";
 import AddQues from "../views/Faculty/AddQuestion/AddQuestion";
 const dashboardRoutes = [
@@ -25,10 +24,17 @@ const dashboardRoutes = [
     component: QuestionManage
   },
   {
+    path: "/faculty/approve_questions",
+    sidebarName: "Approve Questions",
+    navbarName: "Approve Questions",
+    icon: PlaylistAdd,
+    component: QuestionManage
+  },
+  {
     path: "/faculty/add_new_question",
     sidebarName: "Add Question",
     navbarName: "Add Question",
-    icon: NotificationIcon,
+    icon: AddComment,
     component: AddQues
   },
   {

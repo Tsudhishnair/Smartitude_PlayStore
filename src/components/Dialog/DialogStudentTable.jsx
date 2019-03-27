@@ -4,25 +4,24 @@ import { withStyles } from "@material-ui/core/styles";
 
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
-  Typography,
+  FormControl,
   InputLabel,
   MenuItem,
   Select,
-  FormControl
+  Slide,
+  TextField,
+  Typography
 } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
 import Spacing from "../Spacing/Spacing";
-
 // react apollo
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -402,6 +401,7 @@ class StudentDialog extends React.Component {
                           }
                         }
                       });
+                      this.handleClose();
                     }}
                   >
                     Save
