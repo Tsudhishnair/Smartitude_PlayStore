@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -17,6 +17,9 @@ import {
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
 
 const styles = theme => ({
   formroot: {
@@ -48,16 +51,74 @@ const styles = theme => ({
 });
 
 class Dashboard extends React.Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //       Question:"",
-  //       Options:[],
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      Question: "",
+      Options: [],
+      DetailedAnswer: "",
+      CorrectOption: "",
+      Category: "",
+      SubCategory: "",
+      subcategoryList:[],
+      Difficulty: ""
+    };
+  }
 
-  //   };
-  // }
+  //-----------------------------------------------------------------
+  // handle Category List
+  handleCategorySelect = event => {
+    const categoryDetail = event.target.value;
+    console.log(categoryDetail);
+
+    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
+      return {
+        key: subcategory._id,
+        label: subcategory.name
+      };
+    });
+    this.setState({
+      ...this.state,
+      [event.target.name]: categoryDetail.category,
+      subcategoryList: availableSubcategories,
+      subcategories: [],
+    });
+  };
+ //------------------------------------------------------------- 
+//--------------------------------------------------------------
+  // SubCategory Management
+  getSelectedSubcategories = (selectedSubcategories) => {
+    const subcategories = selectedSubcategories.map(selectedSubcategory => {
+      return selectedSubcategory.value
+    })
+    this.setState({
+      ...this.state,
+      subcategories,
+    });    
+  }
+  //-------------------------------------------------------------
+
   render() {
     const { classes } = this.props;
+    //-----------------------------------------------------------
+    //Query To Fetch Category and its Coresponsding Sub-Categories 
+    const FETCH_FORM_FIELDS = gql`
+      {
+        categoryDetailsList {
+          category {
+            _id
+            name
+          }
+          subcategory {
+            _id
+            name
+          }
+        }
+      }
+    `;
+    //------------------------------------------------------------
+    
     return (
       <div className={classes.root}>
         <form autoComplete="off" autoWidth={true}>
@@ -103,7 +164,7 @@ class Dashboard extends React.Component {
                 margin="normal"
                 fullWidth
               />
-            </GridItem>     
+            </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
                 id="option3"
@@ -150,7 +211,6 @@ class Dashboard extends React.Component {
           </Typography>
           <GridContainer>
             <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl} > */}
               <InputLabel fullWidth>Correct Option</InputLabel>
               <Select
                 inputProps={{
@@ -165,60 +225,68 @@ class Dashboard extends React.Component {
                 <MenuItem value={30}>Option 3</MenuItem>
                 <MenuItem value={30}>Option 4</MenuItem>
               </Select>
-              {/* </FormControl> */}
             </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl}> */}
-              <InputLabel htmlFor="age-simple" fullWidth>
-                Category
-              </InputLabel>
-              <Select
-                inputProps={{
-                  name: "age",
-                  id: "age-simple"
-                }}
-                fullWidth
-                autoWidth={true}
-              >
-                <MenuItem value="">
-                  <em>All Category</em>
-                </MenuItem>
-                <MenuItem value={10}>Category 1</MenuItem>
-                <MenuItem value={20}>Category 2</MenuItem>
-                <MenuItem value={30}>Category 3</MenuItem>
-              </Select>
-              {/* </FormControl> */}
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              {/* <FormControl className={classes.formControl}> */}
-              <InputLabel htmlFor="age-simple" fullWidth>
-                Sub Category
-              </InputLabel>
-              <Select
-                inputProps={{
-                  name: "age",
-                  id: "age-simple"
-                }}
-                fullWidth
-              >
-                <MenuItem value="">
-                  <em>All Category</em>
-                </MenuItem>
-                <MenuItem value={10}>Category 1</MenuItem>
-                <MenuItem value={20}>Category 2</MenuItem>
-                <MenuItem value={30}>Category 3</MenuItem>
-              </Select>
-              {/* </FormControl> */}
-            </GridItem>
+
+            {/* Category and SubCategory 
+            ------------------------------------------------------------------------------- */}
+            <Query query={FETCH_FORM_FIELDS}>
+              {({ data, loading, error }) => {
+                return (
+                  <GridContainer>
+                    <GridItem xs={12} sm={3} md={3}>
+                      <InputLabel htmlFor="age-simple" fullWidth>
+                        Category
+                      </InputLabel>
+                      <Select
+                        onChange={this.handleCategorySelect}
+                        value={this.state.Category}
+                        renderValue={value => {
+                          return value;
+                        }}
+                        inputProps={{
+                          name: "age",
+                          id: "age-simple"
+                        }}
+                        fullWidth
+                        autoWidth={true}
+                      >
+                        <MenuItem value="">
+                          <em>All Category</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Category 1</MenuItem>
+                        <MenuItem value={20}>Category 2</MenuItem>
+                        <MenuItem value={30}>Category 3</MenuItem>
+                      </Select>
+                    </GridItem>
+                    <GridItem xs={12} sm={3} md={3}>
+                      <InputLabel htmlFor="age-simple" fullWidth>
+                        Sub Category
+                      </InputLabel>
+                      <Select
+                        inputProps={{
+                          name: "age",
+                          id: "age-simple"
+                        }}
+                        fullWidth
+                      >
+                        <MenuItem value="">
+                          <em>All Category</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Category 1</MenuItem>
+                        <MenuItem value={20}>Category 2</MenuItem>
+                        <MenuItem value={30}>Category 3</MenuItem>
+                      </Select>
+                    </GridItem>
+                  </GridContainer>
+                );
+              }}
+            </Query>
+            {/* ------------------------------------------------------------------------------- */}
+
             <GridItem xs={12} sm={3} md={3}>
               <InputLabel htmlFor="age-simple" fullWidth>
                 Difficulty
-                <TextField
-                  id="standard-number"
-                  type="number"
-                  fullWidth
-                  // margin="normal"
-                />
+                <TextField id="standard-number" type="number" fullWidth />
               </InputLabel>
             </GridItem>
           </GridContainer>
