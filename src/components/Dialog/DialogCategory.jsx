@@ -92,27 +92,32 @@ class DialogCategory extends React.Component {
     };
   }
 
+  // opens dialog box
   handleDialogOpen = () => {
     this.setState({ open: true });
   };
 
+  // close dialogbox, also call close in parent
   handleDialogClose = () => {
     this.setState({ open: false });
     this.props.onClose();
   };
 
+  // handle name field
   handleNameChange = event => {
     this.setState({
       nameField: event.target.value
     });
   };
 
+  // handle desc field
   handleDescChange = event => {
     this.setState({
       descField: event.target.value
     });
   };
 
+  // called on click of category edit confirmation
   handleCategoryEdit = editCategory => {
     editCategory({
       variables: {
@@ -128,6 +133,7 @@ class DialogCategory extends React.Component {
     });
   };
 
+  // called on cick of subcategory edit confirmatin
   handleSubcategoryEdit = editSubcategory => {
     editSubcategory({
       variables: {
@@ -155,6 +161,7 @@ class DialogCategory extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
+        {/* assign labels depending on type */}
           <DialogTitle id="form-dialog-title">Category</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -217,6 +224,7 @@ class DialogCategory extends React.Component {
               {negativeAction ? negativeAction : "CANCEL"}
             </Button>
             {this.state.type === "category" ? (
+              // render for edit category
               <Mutation mutation={EDIT_CATEGORY}>
                 {editCategory => (
                   <Button
@@ -229,6 +237,7 @@ class DialogCategory extends React.Component {
                 )}
               </Mutation>
             ) : (
+              // render for subcategory
               <Mutation mutation={EDIT_SUBCATEGORY}>
                 {editSubcategory => (
                   <Button
