@@ -162,10 +162,13 @@ class AdminLogin extends Component {
               : err.networkError
           }
         });
-        this.setState({ ...this.state, loading: false });
+
         this.openSnackbar();
         console.log(err.graphQLErrors);
         console.log(err.networkError);
+      })
+      .finally(() => {
+        this.setState({ ...this.state, loading: false });
       });
   };
 
