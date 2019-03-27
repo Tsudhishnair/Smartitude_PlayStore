@@ -3,14 +3,28 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import { Button, ExpansionPanelActions } from "@material-ui/core";
+import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import green from "@material-ui/core/colors/green";
 
-const styles = themes => ({
+const styles = theme => ({
   root: {
     dispaly: "felx",
     flexGrow: 1
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 class FormAddCategory extends Component {
@@ -18,7 +32,13 @@ class FormAddCategory extends Component {
     super(props);
     this.state = {
       name: "",
-      description: ""
+      description: "",
+      redirecter: false,
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: ""
+      }
     };
   }
   // handle changes in form fields
@@ -35,6 +55,83 @@ class FormAddCategory extends Component {
       description: ""
     });
   };
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+  handleClick = (addCategory, e) => {
+    e.preventDefault();
+    // check if name or desc fields are empty, if so, throw up snackbar and set msg accordingly
+    if (!this.state.name) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Category name field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.description) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Category description field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else {
+      // set loading state and start mutation. upon completion, change loading states
+      this.setState({
+        loading: true
+      });
+      addCategory({
+        variables: {
+          categoryInput: {
+            name: this.state.name,
+            description: this.state.description
+          }
+        }
+      })
+        .then(response => {
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "New Category Added!"
+              }
+            },
+            () => this.openSnackbar()
+          );
+        })
+        .catch(err => {
+          this.setState({
+            loading: false
+          });
+          this.closeSnackbar();
+        });
+    }
+  };
+
 
   render() {
     const ADD_CATEGORY = gql`
@@ -45,6 +142,7 @@ class FormAddCategory extends Component {
       }
     `;
     const { classes } = this.props;
+    const { loading, snackbar } = this.state;
     return (
       <Mutation mutation={ADD_CATEGORY} onCompleted={this.clearForm}>
         {addCategory => {
@@ -99,18 +197,39 @@ class FormAddCategory extends Component {
                   </GridItem>
                 </GridContainer>
                 <ExpansionPanelActions>
-                  <Button size="small" onClick={this.clearForm}>
-                    Clear
-                  </Button>
-                  <Button
-                    size="small"
-                    color="primary"
-                    variant="outlined"
-                    type="submit"
-                  >
-                    Create
-                  </Button>
+                  <div className={classes.wrapper}>
+                    <Button
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      type={"submit"}
+                      onClick={e => this.handleClick(addCategory, e)}
+                      disabled={loading}
+                    >
+                      Create
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
                 </ExpansionPanelActions>
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                  }}
+                  open={snackbar.open}
+                  autoHideDuration={6000}
+                >
+                  <CustomSnackbar
+                    onClose={this.closeSnackbar}
+                    variant={snackbar.variant}
+                    message={snackbar.message}
+                  />
+                </Snackbar>
               </form>
             </div>
           );

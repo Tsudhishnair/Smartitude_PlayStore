@@ -110,13 +110,13 @@ class FormAddSubcategory extends Component {
   };
   handleClick = (addSubcategory, e) => {
     e.preventDefault();
-    // check if name or dept fields are empty, if so, throw up snackbar and set msg accordingly
-    if (!this.state.name) {
+    // check if name or desc fields are empty, if so, throw up snackbar and set msg accordingly
+    if (!this.state.name || !this.state.description) {
       this.setState(
         {
           snackbar: {
             ...this.state.snackbar,
-            message: "Name field empty!"
+            message: "Subcategory name/description field empty!"
           }
         },
         () => this.openSnackbar()

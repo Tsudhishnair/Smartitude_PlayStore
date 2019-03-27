@@ -229,7 +229,7 @@ class DeptManage extends React.Component {
                                 </Mutation>
                                 <Button
                                   size={"small"}
-                                  color=""
+                                  color="primary"
                                   variant={"outlined"}
                                   style={{ marginLeft: "auto" }}
                                   onClick={e => this.handleUpdate(department)}
