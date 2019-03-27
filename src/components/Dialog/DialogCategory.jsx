@@ -66,6 +66,18 @@ const EDIT_CATEGORY = gql`
   }
 `;
 
+// edit subcategory mutation query
+const EDIT_SUBCATEGORY = gql`
+  mutation editSubcategory(
+    $_id: ID!
+    $subcategoryEditInput: SubcategoryEditInput!
+  ) {
+    editSubcategory(_id: $_id, subcategoryEditInput: $subcategoryEditInput) {
+      _id
+    }
+  }
+`;
+
 class DialogCategory extends React.Component {
   constructor(props) {
     super(props);
@@ -74,39 +86,62 @@ class DialogCategory extends React.Component {
     this.state = {
       open: true,
       type: this.props.type,
+      parentCategory: this.props.parentCategory,
       nameField: this.props.object.name,
       descField: this.props.object.description
     };
   }
 
+  // opens dialog box
   handleDialogOpen = () => {
     this.setState({ open: true });
   };
 
+  // close dialogbox, also call close in parent
   handleDialogClose = () => {
     this.setState({ open: false });
     this.props.onClose();
   };
 
+  // handle name field
   handleNameChange = event => {
     this.setState({
-      categoryName: event.target.value
+      nameField: event.target.value
     });
   };
 
+  // handle desc field
   handleDescChange = event => {
     this.setState({
-      categoryDesc: event.target.value
+      descField: event.target.value
     });
   };
 
+  // called on click of category edit confirmation
   handleCategoryEdit = editCategory => {
     editCategory({
       variables: {
         _id: this.props.object._id,
         categoryInput: {
-          name: this.state.categoryName,
-          description: this.state.categoryDesc
+          name: this.state.nameField,
+          description: this.state.descField
+        }
+      }
+    }).then(res => {
+      // TODO: handle errors
+      this.handleDialogClose();
+    });
+  };
+
+  // called on cick of subcategory edit confirmatin
+  handleSubcategoryEdit = editSubcategory => {
+    editSubcategory({
+      variables: {
+        _id: this.props.object._id,
+        subcategoryEditInput: {
+          name: this.state.nameField,
+          description: this.state.descField,
+          category: this.state.parentCategory._id
         }
       }
     }).then(res => {
@@ -126,6 +161,7 @@ class DialogCategory extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
+        {/* assign labels depending on type */}
           <DialogTitle id="form-dialog-title">Category</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -187,17 +223,33 @@ class DialogCategory extends React.Component {
             <Button onClick={this.handleDialogClose} color="primary">
               {negativeAction ? negativeAction : "CANCEL"}
             </Button>
-            <Mutation mutation={EDIT_CATEGORY}>
-              {editCategory => (
-                <Button
-                  onClick={e => this.handleCategoryEdit(editCategory)}
-                  color="primary"
-                  autoFocus
-                >
-                  {positiveAction ? positiveAction : "OK"}
-                </Button>
-              )}
-            </Mutation>
+            {this.state.type === "category" ? (
+              // render for edit category
+              <Mutation mutation={EDIT_CATEGORY}>
+                {editCategory => (
+                  <Button
+                    onClick={e => this.handleCategoryEdit(editCategory)}
+                    color="primary"
+                    autoFocus
+                  >
+                    {positiveAction ? positiveAction : "OK"}
+                  </Button>
+                )}
+              </Mutation>
+            ) : (
+              // render for subcategory
+              <Mutation mutation={EDIT_SUBCATEGORY}>
+                {editSubcategory => (
+                  <Button
+                    onClick={e => this.handleSubcategoryEdit(editSubcategory)}
+                    color="primary"
+                    autoFocus
+                  >
+                    {positiveAction ? positiveAction : "OK"}
+                  </Button>
+                )}
+              </Mutation>
+            )}
           </DialogActions>
         </Dialog>
       </div>
