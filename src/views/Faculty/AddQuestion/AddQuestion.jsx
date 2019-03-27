@@ -57,6 +57,10 @@ class AddQuestion extends React.Component {
     this.state = {
       question: "",
       options: [],
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: "",
       solution: "",
       correctOption: "",
       category: "",
@@ -87,11 +91,45 @@ class AddQuestion extends React.Component {
       ...this.state,
       [event.target.name]: event.target.value
     });
-    console.log(this.state.subCategory);
   };
 
   //-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Setting Option into Options Array and correct option
+  handleOption = (event) => {
+    this.setState({
+      ...this.state,
+      option: [
+        this.state.option1,
+        this.state.option2,
+        this.state.option3,
+        this.state.option4,
+      ],
+      correctOption: event.target.value,
+    });
+  };
+  //-------------------------------------------------------------
+  //-------------------------------------------------------------
+  //Handling State reset
 
+  handleReset = e => {
+    this.setState({
+      question: "",
+      options: [],
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: "",
+      solution: "",
+      correctOption: "",
+      category: "",
+      subCategory: "",
+      subcategoryList: [],
+      difficulty: ""
+    });
+  }
+
+  //-------------------------------------------------------------
   render() {
     const { classes } = this.props;
     //-----------------------------------------------------------
@@ -142,9 +180,9 @@ class AddQuestion extends React.Component {
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
                 onChange={this.handleChange}
-                value={this.state.options}
+                value={this.state.option1}
                 id="option1"
-                name="options"
+                name="option1"
                 label="Option 1"
                 multiline={true}
                 type="number"
@@ -156,8 +194,8 @@ class AddQuestion extends React.Component {
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
                 onChange={this.handleChange}
-                value={this.state.options}
-                name="options"
+                value={this.state.option2}
+                name="option2"
                 id="option2"
                 label="Option 2"
                 multiline={true}
@@ -169,7 +207,10 @@ class AddQuestion extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.option3}
                 id="option3"
+                name="option3"
                 label="Option 3"
                 multiline={true}
                 type="number"
@@ -180,7 +221,10 @@ class AddQuestion extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.option4}
                 id="option4"
+                name="option4"
                 label="Option 4"
                 multiline={true}
                 type="number"
@@ -194,6 +238,9 @@ class AddQuestion extends React.Component {
             </Typography>
             <GridItem xs={12} sm={12} md={12} className={classes.container}>
               <TextField
+                onChange={this.handleChange}
+                value={this.state.solution}
+                name="solution"
                 placeholder="Type in your detailed answer"
                 multiline={true}
                 rows={2}
@@ -215,17 +262,24 @@ class AddQuestion extends React.Component {
             <GridItem xs={12} sm={3} md={3}>
               <InputLabel fullWidth>Correct Option</InputLabel>
               <Select
+                onChange={this.handleChange}
+                value={this.state.correctOption}
+                renderValue={value => {
+                  return value;
+                }}
                 inputProps={{
-                  name: "age",
-                  id: "age-simple"
+                  name: "correctOption",
+                  id: "correctOption"
                 }}
                 fullWidth
                 autoWidth={true}
               >
-                <MenuItem value={10}>Option 1</MenuItem>
-                <MenuItem value={20}>Option 2</MenuItem>
-                <MenuItem value={30}>Option 3</MenuItem>
-                <MenuItem value={30}>Option 4</MenuItem>
+                <MenuItem value={1}>Option 1</MenuItem>
+                <MenuItem value={2}>Option 2</MenuItem>
+                <MenuItem value={3}>Option 3</MenuItem>
+                <MenuItem value={4}>Option 4</MenuItem>
+                );
+              })}
               </Select>
             </GridItem>
 
@@ -271,7 +325,7 @@ class AddQuestion extends React.Component {
                         </InputLabel>
                         <Select
                           onChange={this.handleChange}
-                          value={this.state.subCategory}
+                          value={this.state.subCategory.name}
                           renderValue={value => {
                             return value;
                           }}
@@ -300,13 +354,14 @@ class AddQuestion extends React.Component {
             <GridItem xs={12} sm={3} md={3}>
               <InputLabel htmlFor="age-simple" fullWidth>
                 Difficulty
-                <TextField id="standard-number" type="number" fullWidth />
+                <TextField id="standard-number" type="number" name="difficulty" fullWidth onChange={this.handleChange}
+                  value={this.state.difficulty} />
               </InputLabel>
             </GridItem>
           </GridContainer>
           <Spacing />
           <ExpansionPanelActions>
-            <Button type="reset">Clear</Button>
+            <Button type="reset" onClick={this.handleReset}>Clear</Button>
             <Button color={"primary"} variant={"outlined"} type="submit">
               Submit
             </Button>
