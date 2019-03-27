@@ -4,11 +4,10 @@ import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { IconButton, Snackbar } from "@material-ui/core";
+import { Button, IconButton, Snackbar } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 
 // core components
 import Card from "components/Card/Card.jsx";
@@ -200,7 +199,7 @@ class DeptManage extends React.Component {
                       return (
                         <React.Fragment key={department._id}>
                           <GridItem xs={12} sm={6} md={4}>
-                            <Card>
+                            <Card style={{ height: "280dp" }}>
                               <CardBody>
                                 <h4 className={classes.cardTitle}>
                                   {department.name}
@@ -229,8 +228,9 @@ class DeptManage extends React.Component {
                                   }}
                                 </Mutation>
                                 <Button
-                                  round
-                                  color="success"
+                                  size={"small"}
+                                  color=""
+                                  variant={"outlined"}
                                   style={{ marginLeft: "auto" }}
                                   onClick={e => this.handleUpdate(department)}
                                 >
