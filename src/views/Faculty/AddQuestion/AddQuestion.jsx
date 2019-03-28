@@ -329,7 +329,7 @@ class AddQuestion extends React.Component {
                       } else {
                         return (
                           <GridContainer>
-                            <GridItem xs={12} sm={3} md={3}>
+                            <GridItem xs={12} sm={6} md={6}>
                               <InputLabel htmlFor="category" fullWidth>
                                 Category
                         </InputLabel>
@@ -354,7 +354,7 @@ class AddQuestion extends React.Component {
                                 })}
                               </Select>
                             </GridItem>
-                            <GridItem xs={12} sm={3} md={3}>
+                            <GridItem xs={12} sm={6} md={6}>
                               <InputLabel htmlFor="subCategory" fullWidth>
                                 Sub Category
                         </InputLabel>
