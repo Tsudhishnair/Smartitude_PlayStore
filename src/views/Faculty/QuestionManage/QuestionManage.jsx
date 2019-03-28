@@ -11,7 +11,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import QuizManage from "../../General/QuizManage";
 
-class Dashboard extends React.Component {
+class ManageQuestion extends React.Component {
   render() {
     const { classes } = this.props;
     let data = [
@@ -75,7 +75,7 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
               <GridContainer style={{ padding: "2%" }}>
-                <QuizManage items={data} />
+                <QuizManage items={data} button={"Manage Question"}/>
               </GridContainer>
             </Card>
           </GridItem>
@@ -85,8 +85,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+ManageQuestion.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(dashboardStyle)(ManageQuestion);
