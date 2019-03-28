@@ -8,6 +8,7 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import DashboardPage from "../views/Student/Dashboard/Dashboard.jsx";
 import NotificationsPage from "../views/Student/Notifications/Notifications.jsx";
 import Results from "../views/Student/Results/Results.jsx";
+import Test from "../views/QuizPanel/StartQuiz";
 
 const dashboardRoutes = [
   {
@@ -30,6 +31,13 @@ const dashboardRoutes = [
     navbarName: "Notifications",
     icon: NotificationIcon,
     component: NotificationsPage
+  },
+  {
+    path: "/student/testing",
+    sidebarName: "TestingQuiz",
+    navbarName: "TestingQuiz",
+    icon: NotificationIcon,
+    component: Test
   },
   {
     redirect: true,

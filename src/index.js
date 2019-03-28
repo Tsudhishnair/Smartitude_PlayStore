@@ -20,6 +20,7 @@ import AdminPanel from "./layouts/AdminPanel/AdminPanel";
 import StudentPanel from "./layouts/StudentPanel/StudentPanel";
 import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
 import Landing from "./layouts/Landing/Landing";
+import QuizPanel from "./views/QuizPanel/StartQuiz";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
 import AddQues from "./views/Faculty/AddQuestion/AddQuestion";
@@ -62,11 +63,14 @@ ReactDOM.render(
         <Switch>
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/faculty/login" component={FacultyLogin} />
-          <Route path="/stud/login" component={StudentLogin} />
+          <Route path="/student/login" component={StudentLogin} />
+          <Route path="/student/quiz" component={QuizPanel} />
           <PrivateRoute path="/admin/" component={AdminPanel} />
           <PrivateRoute path="/faculty/" component={FacultyPanel} />
           <PrivateRoute path="/faculty/questions/add" component={AddQues} />
           <Route path="/student/" component={StudentPanel} />
+
+
           <Route path="/" component={Landing} />
         </Switch>
       </Router>
