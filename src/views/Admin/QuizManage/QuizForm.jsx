@@ -14,7 +14,8 @@ import {
   Button,
   Typography,
   TextField,
-  withStyles
+  withStyles,
+  ExpansionPanelActions
 } from "@material-ui/core";
 
 import moment from "moment";
@@ -51,13 +52,24 @@ const styles = theme => ({
   }
 });
 class QuizForm extends React.Component {
+  //selectedDate --> state to store date
   state = {
     selectedDate: new Date()
   };
-
+  // -----------------------------------------------------------
+  //Set the date in the state of Qiz Expiry from Quiz Form
   handleDateChange = date => {
     this.setState({ selectedDate: date });
   };
+  //--------------------------------------------------------------
+  //--------------------------------------------------------------
+  //handleClick function is to add more options into the quiz 
+
+    handleClick = event => {
+      
+    };
+  //--------------------------------------------------------------
+
   render() {
     const { classes } = this.props;
     return (
@@ -182,7 +194,9 @@ class QuizForm extends React.Component {
               />
             </GridItem>
             <GridItem xs={12} sm={2} md={2}>
-              <Button fullWidth color="primary" className={classes.button}>
+              <Button fullWidth
+                color="primary"
+                className={classes.button} onClick={this.handleClick}>
                 Add More
               </Button>
             </GridItem>
