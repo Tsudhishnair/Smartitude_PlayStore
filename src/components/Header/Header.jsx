@@ -70,6 +70,7 @@ function Header({ ...props }) {
                       className={classes.subtitle}
                     >
                       {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
+
                     </Button>
                   );
                 }}
@@ -80,6 +81,10 @@ function Header({ ...props }) {
             {loginHandler.userType === "faculty" ? (
               <Query query={facultyInfo}>
                 {({ data, loading, error }) => {
+                  // if(!loading)
+                  // {
+                  //   localStorage.setItem('faculty',(data._id))
+                  // }
                   return (
                     <Button
                       color="transparent"
@@ -87,6 +92,7 @@ function Header({ ...props }) {
                       className={classes.subtitle}
                     >
                       {!loading ? `Logged in as: ${data.meFaculty.name}`  : ""}
+                     
                     </Button>
                   );
                 }}
