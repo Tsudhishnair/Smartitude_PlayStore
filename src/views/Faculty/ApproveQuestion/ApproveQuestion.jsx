@@ -9,7 +9,6 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { CardContent, Typography } from "@material-ui/core";
 import QuizManage from "../../General/QuizManage";
 import CardBody from "../../../components/Card/CardBody";
 
@@ -84,7 +83,7 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
               <GridContainer style={{ padding: "2%" }}>
-                <QuizManage items={data} />
+                <QuizManage items={data} button={"Approve Question"}/>
               </GridContainer>
             </Card>
           </GridItem>
