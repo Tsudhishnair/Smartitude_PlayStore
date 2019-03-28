@@ -31,7 +31,7 @@ const styles = theme => ({
     display: "flex",
     margin: "10",
     paddingLeft: "20",
-    marginLeft: theme.spacing.unit * 6
+    marginLeft: theme.spacing.unit *1
   },
   formControl: {
     margin: theme.spacing.unit * 4,
@@ -148,4 +148,4 @@ StartQuiz.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(StartQuiz);
+export default withStyles(styles)(StartQuiz);
