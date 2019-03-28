@@ -16,9 +16,10 @@ import {
   ListItemSecondaryAction
 } from "@material-ui/core";
 
-import { ExpandMore, ExpandLess, Edit } from "@material-ui/icons";
+import { ExpandMore, ExpandLess, Edit, Delete } from "@material-ui/icons";
 
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import {
   EXPANSION_CATEGORY_FORM,
@@ -27,7 +28,7 @@ import {
 
 // react apollo
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 
 const styles = theme => ({
   form: {
@@ -69,6 +70,22 @@ const FETCH_CATEGORY_DETAILS = gql`
   }
 `;
 
+const DELETE_CATEGORY = gql`
+  mutation deleteCategory($_id: ID!) {
+    deleteCategory(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+const DELETE_SUBCATEGORY = gql`
+  mutation deleteCategory($_id: ID!) {
+    deleteCategory(_id: $_id) {
+      _id
+    }
+  }
+`;
+
 class CategoryManagement extends React.Component {
   constructor(props) {
     super(props);
@@ -80,6 +97,7 @@ class CategoryManagement extends React.Component {
     this.state = {
       categories: {},
       editDialog: false,
+      deleteDialog: false,
       selectedItem: {},
       clickedType: ""
     };
@@ -133,6 +151,50 @@ class CategoryManagement extends React.Component {
       );
     }
   };
+
+  toggleDeleteDialogVisibility = () => {
+    this.setState(prevState => ({
+      deleteDialog: !prevState.deleteDialog
+    }));
+  };
+
+  renderDeleteDialog = isVisible => {
+    if (isVisible) {
+      if (this.state.clickedType === "category")
+        return (
+          <MessageDialog
+            title="Delete Category"
+            content="Are you sure you want to delete this category?"
+            positiveAction="Confirm"
+            negativeAction="Cancel"
+            action={this.deleteCategory}
+            onClose={this.toggleDeleteDialogVisibility}
+          />
+        );
+      else if (this.state.clickedType === "subcategory")
+        return (
+          <MessageDialog
+            title="Delete Subcategory"
+            content="Are you sure you want to delete this subcategory?"
+            positiveAction="Confirm"
+            negativeAction="Cancel"
+            action={this.deleteSubcategory}
+            onClose={this.toggleDeleteDialogVisibility}
+          />
+        );
+      else return <div />;
+    }
+  };
+
+  handleDeleteCategoryClick = (selectedItem, mutation) => {
+    // this.setState({})
+  };
+
+  handleDeleteSubcategoryClick = (selectedItem, mutation) => {};
+
+  deleteCategory = () => {};
+
+  deleteSubcategory = () => {};
 
   // opens edit dialog by toggling visibility state and setting state to the item that was selected
   openEditDialog = selectedItem => {
@@ -213,6 +275,7 @@ class CategoryManagement extends React.Component {
               return (
                 <React.Fragment>
                   {this.renderEditDialog(this.state.editDialog)}
+                  {this.renderDeleteDialog(this.state.deleteDialog)}
                   <Expansionpanel
                     headers="Category"
                     header="Add new category"
@@ -254,6 +317,21 @@ class CategoryManagement extends React.Component {
                                 >
                                   <Edit />
                                 </IconButton>
+                                <Mutation mutation={DELETE_CATEGORY}>
+                                  {deleteCategory => (
+                                    <IconButton
+                                      aria-label="Delete"
+                                      onClick={e =>
+                                        this.handleDeleteCategoryClick(
+                                          categoryDetail.category._id,
+                                          deleteCategory
+                                        )
+                                      }
+                                    >
+                                      <Delete />
+                                    </IconButton>
+                                  )}
+                                </Mutation>
                                 <IconButton
                                   aria-label="Expand"
                                   onClick={e =>
@@ -308,6 +386,21 @@ class CategoryManagement extends React.Component {
                                     >
                                       <Edit />
                                     </IconButton>
+                                    <Mutation mutation={DELETE_SUBCATEGORY}>
+                                      {deleteSubcategory => (
+                                        <IconButton
+                                          aria-label="Delete"
+                                          onClick={e =>
+                                            this.handleDeleteSubcategoryClick(
+                                              subcategory,
+                                              deleteSubcategory
+                                            )
+                                          }
+                                        >
+                                          <Delete />
+                                        </IconButton>
+                                      )}
+                                    </Mutation>
                                   </ListItem>
                                 </List>
                               ))}

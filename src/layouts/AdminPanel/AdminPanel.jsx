@@ -37,6 +37,7 @@ class AdminPanel extends React.Component {
       isLogoutDialogVisible: false,
     };
     this.resizeFunction = this.resizeFunction.bind(this);
+    
     if (this.props.logout) {
       this.child.handleClickOpen();
     }
