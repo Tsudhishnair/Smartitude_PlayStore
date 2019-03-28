@@ -9,8 +9,6 @@ import { Button, Divider } from "@material-ui/core";
 class QuizManage extends Component {
   render() {
     const { items, button } = this.props;
-    console.log(items);
-
     return (
       <GridContainer>
         {items.map(item => {
