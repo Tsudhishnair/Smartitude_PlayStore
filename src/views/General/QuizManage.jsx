@@ -8,7 +8,7 @@ import GridContainer from "../../components/Grid/GridContainer.jsx";
 import { Button, Divider } from "@material-ui/core";
 class QuizManage extends Component {
   render() {
-    const { items,button } = this.props;
+    const { items, button } = this.props;
     console.log(items);
 
     return (
@@ -39,7 +39,7 @@ class QuizManage extends Component {
                 <Button
                   round
                   variant={"outlined"}
-                
+                  color="primary"
                 >
                   {button}
                 </Button>
