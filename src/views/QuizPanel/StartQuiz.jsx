@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Grid from "@material-ui/core/Grid";
@@ -15,7 +13,8 @@ import {
   Button,
   CardContent,
   Typography,
-  Divider
+  Divider,
+  Fab
 } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -25,20 +24,29 @@ import FormLabel from "@material-ui/core/FormLabel";
 import Spacing from "../../components/Spacing/Spacing";
 import CardFooter from "../../components/Card/CardFooter";
 import CardBody from "../../components/Card/CardBody";
+import Timer from "react-compound-timer";
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    margin: "10",
-    paddingLeft: "20",
-    marginLeft: theme.spacing.unit *1
+    display: "block",
+    margin: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit * 5,
+    marginRight: theme.spacing.unit * 5
+  },
+  timer: {
+    color: "green"
   },
   formControl: {
-    margin: theme.spacing.unit * 4,
-    marginLeft: theme.spacing.unit * 6
+    margin: theme.spacing.unit * 1,
+    marginLeft: theme.spacing.unit * 3
   },
   group: {
     margin: `${theme.spacing.unit}px 0`
+  },
+  fab: {
+    margin: theme.spacing.unit,
+    elevation: 0,
+    boxShadow: "none"
   }
 });
 
@@ -55,15 +63,22 @@ class StartQuiz extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography>
-          <h4>Quiz Name</h4>
-        </Typography>
         <GridContainer>
+          <Typography>
+            <h4>Quiz Name</h4>
+          </Typography>
           <GridItem>
+          <Button variant={"outlined"} size={"small"}>Finish & Exit</Button>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={8}>
             <Card>
               <form>
                 <CardContent>
-                  <Typography>Question Number: XX</Typography>
+                  <Typography>
+                    Question Number: <b>XX</b>
+                  </Typography>
                   <p>
                     A train 125 m long passes a man, running at 5 km/hr in the
                     same direction in which the train is going, in 10 seconds.
@@ -109,26 +124,31 @@ class StartQuiz extends React.Component {
                     </RadioGroup>
                   </FormControl>
                 </CardBody>
-                <Spacing />
+                <CardFooter>
+                  <Button
+                    variant="outlined"
+                    size={"small"}
+                    type={"reset"}
+                    className={classes.button}
+                  >
+                    Clear Selection
+                  </Button>
+                </CardFooter>
                 <Divider />
                 <CardFooter>
                   <Button
                     variant="outlined"
                     color={"secondary"}
+                    size={"small"}
                     className={classes.button}
                   >
                     Previous
                   </Button>
-                  <Button
-                    variant="outlined"
-                    type={"reset"}
-                    className={classes.button}
-                  >
-                    Clear
-                  </Button>
+
                   <Button
                     variant="outlined"
                     color="primary"
+                    size={"small"}
                     type={"submit"}
                     className={classes.button}
                   >
@@ -136,6 +156,62 @@ class StartQuiz extends React.Component {
                   </Button>
                 </CardFooter>
               </form>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Card>
+              <CardContent>
+                <p>
+                  Time Remaining:{" "}
+                  <h4 className={classes.timer}>
+                    <b>
+                      {" "}
+                      <Timer
+                        initialTime={60000 * 10 + 60}
+                        direction="backward"
+                        onStop={() => console.log("onStop hook")}
+                      >
+                        {() => (
+                          <React.Fragment>
+                            <Timer.Minutes /> minutes <Timer.Seconds /> seconds
+                          </React.Fragment>
+                        )}
+                      </Timer>
+                    </b>
+                  </h4>
+                </p>
+                <Spacing />
+                <p>
+                  <b>Questions:</b>
+                </p>
+                <Fab
+                  size="small"
+                  variant={"outlined"}
+                  color="primary"
+                  aria-label="Add"
+                  className={classes.fab}
+                >
+                  1
+                </Fab>
+                <Fab
+                  size="small"
+                  variant={"outlined"}
+                  color="white"
+                  aria-label="Add"
+                  className={classes.fab}
+                >
+                  2
+                </Fab>
+                <Fab
+                  size="small"
+                  variant={"outlined"}
+                  color="white"
+                  aria-label="Add"
+                  className={classes.fab}
+                >
+                  3
+                </Fab>
+              </CardContent>
             </Card>
           </GridItem>
         </GridContainer>
