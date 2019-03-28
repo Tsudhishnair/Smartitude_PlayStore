@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { AppBar, Toolbar, IconButton, Hidden } from "@material-ui/core";
+import { AppBar, Hidden, IconButton, Toolbar, Typography } from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
@@ -70,7 +70,6 @@ function Header({ ...props }) {
                       className={classes.subtitle}
                     >
                       {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
-
                     </Button>
                   );
                 }}
@@ -81,20 +80,22 @@ function Header({ ...props }) {
             {loginHandler.userType === "faculty" ? (
               <Query query={facultyInfo}>
                 {({ data, loading, error }) => {
-                  // if(!loading)
-                  // {
-                  //   localStorage.setItem('faculty',(data._id))
-                  // }
-                  return (
-                    <Button
-                      color="transparent"
-                      href="#"
-                      className={classes.subtitle}
-                    >
-                      {!loading ? `Logged in as: ${data.meFaculty.name}`  : ""}
-                     
-                    </Button>
-                  );
+                  if (loading) {
+                    return <Typography>Loading...</Typography>;
+                  } else if (error) {
+                    return <Typography>Error occured!</Typography>;
+                  } else {
+                    localStorage.setItem("faculty", data.meFaculty._id);
+                    return (
+                      <Button
+                        color="transparent"
+                        href="#"
+                        className={classes.subtitle}
+                      >
+                        {!loading ? `Logged in as: ${data.meFaculty.name}` : ""}
+                      </Button>
+                    );
+                  }
                 }}
               </Query>
             ) : (
