@@ -98,6 +98,7 @@ class AddQuestion extends React.Component {
   optionArray = []
 
   //-------------------------------------------------------------
+  
   // Setting Option into Options Array and correct option
   handleOption = (event) => {
     this.optionArray = [this.state.option1, this.state.option2, this.state.option3, this.state.option4]
