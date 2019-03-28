@@ -2,19 +2,52 @@ import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-// core components
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import QuizManage from "../../General/QuizManage";
+import QuestionDetails from "../../General/QuestionDetails";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
+import CardHeader from "../../../components/Card/CardHeader";
+import Card from "../../../components/Card/Card";
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle";
+import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 
-class ManageQuestion extends React.Component {
+// core components
+
+class QuestionManage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false
+    };
+  }
+
+  showQuestionManageDialog = isOpen => {
+    if (isOpen) {
+      console.log("render dialog called");
+      return (<DialogQuestion question={this.state.question} onClose={this.hideQuestionManageDialog}/>);
+    }
+  };
+  hideQuestionManageDialog = isOpen => {
+    console.log("close dialog called");
+    this.setState({
+      open: false
+    });
+  };
+  triggerQuestionManageDialog = (question) => {
+    this.setState({
+      ...this.state,
+      question,
+      open: true
+    });
+  };
+
+  deleteQuestion = (question) => {
+    return "";
+  };
   render() {
     const { classes } = this.props;
-    let data = [
+    let questions = [
       {
         question:
           "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
@@ -67,6 +100,7 @@ class ManageQuestion extends React.Component {
     ];
     return (
       <div>
+        {this.showQuestionManageDialog(this.state.open)}
         <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -75,7 +109,19 @@ class ManageQuestion extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
               <GridContainer style={{ padding: "2%" }}>
-                <QuizManage items={data} button={"Manage Question"}/>
+                {questions.map(question => {
+                  return (
+                    <QuestionDetails
+                      key={question._id}
+                      question={question}
+                      showActions={true}
+                      actionButtonText={"Manage Question"}
+                      actionFunction={this.triggerQuestionManageDialog}
+                      showDeleteIcon={true}
+                      deleteFunction={this.deleteQuestion}
+                    />
+                  );
+                })}
               </GridContainer>
             </Card>
           </GridItem>
@@ -85,8 +131,8 @@ class ManageQuestion extends React.Component {
   }
 }
 
-ManageQuestion.propTypes = {
+QuestionManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(ManageQuestion);
+export default withStyles(dashboardStyle)(QuestionManage);

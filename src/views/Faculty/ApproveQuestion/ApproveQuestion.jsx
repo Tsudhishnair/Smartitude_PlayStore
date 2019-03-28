@@ -9,12 +9,32 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import QuizManage from "../../General/QuizManage";
 import CardBody from "../../../components/Card/CardBody";
+import QuestionDetails from "../../General/QuestionDetails";
 
 class Dashboard extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+
+  }
+
+  openManageQuestionDialog = (question) => {
+    // this.setState({
+    //   ...this.state,
+    //   question,
+    //   showQuestionManageDialog: true
+    // });
+    return "";
+  };
+
+  deleteQuestion = (question) => {
+    return "";
+  };
+
   render() {
-    let data = [
+    let questions = [
       {
         question:
           "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
@@ -65,6 +85,8 @@ class Dashboard extends React.Component {
         correctOption: "4"
       }
     ];
+
+
     const { classes } = this.props;
     return (
       <div>
@@ -83,7 +105,17 @@ class Dashboard extends React.Component {
                 <h4 className={classes.cardTitleWhite}>Questions</h4>
               </CardHeader>
               <GridContainer style={{ padding: "2%" }}>
-                <QuizManage items={data} button={"Approve Question"}/>
+                {questions.map(question => {
+                  return (
+                    <QuestionDetails
+                      question={question}
+                      actionButtonText={"Manage Question"}
+                      actionFunction={this.openManageQuestionDialog(question)}
+                      showDeleteIcon={true}
+                      deleteFunction={this.deleteQuestion(question)}
+                    />
+                  );
+                })}
               </GridContainer>
             </Card>
           </GridItem>

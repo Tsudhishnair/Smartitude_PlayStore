@@ -1,12 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 import Dialog from "@material-ui/core/Dialog";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -108,18 +116,14 @@ let questions = [
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
+class DialogQuestion extends React.Component {
 
-class DialogQuizTable extends React.Component {
-  state = {
-    open: false
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.props.onRef(this);
-  }
-
-  componentWillUnmount() {
-    this.props.onRef(undefined);
+    this.state = {
+      open: true
+    };
   }
 
   handleClickOpen = () => {
@@ -128,49 +132,13 @@ class DialogQuizTable extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.onClose();
   };
 
   render() {
     const { classes } = this.props;
     const bull = <span className={classes.bullet}>•</span>;
-    let data = [
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "123",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      }
-    ];
+
     // const Frameworks = props => {
     //   return (
     //     <React.Fragment>
@@ -216,7 +184,7 @@ class DialogQuizTable extends React.Component {
                 onClick={this.handleClose}
                 aria-label="Close"
               >
-                <CloseIcon />
+                <CloseIcon/>
               </IconButton>
               <Typography variant="h7" color="inherit" className={classes.flex}>
                 Quiz
@@ -226,7 +194,7 @@ class DialogQuizTable extends React.Component {
               {/*</Button>*/}
             </Toolbar>
           </AppBar>
-          <Spacing />
+          <Spacing/>
           <GridContainer style={{ padding: "1%" }}>
             <GridItem xs={12} sm={12} md={12}>
               <Card className={classes.card}>
@@ -245,7 +213,7 @@ class DialogQuizTable extends React.Component {
                     description description description description description
                     description description description description
                   </Typography>
-                  <Spacing />
+                  <Spacing/>
                   <GridContainer>
                     <GridItem xs={12} sm={3} md={3}>
                       <Typography component="p">
@@ -280,27 +248,26 @@ class DialogQuizTable extends React.Component {
             </GridItem>
           </GridContainer>
 
-          <GridContainer style={{ padding: "2%" }}>
-            {questions.map(question => {
-              return (
-                <QuestionDetails
-                  question={question}
-                  actionButtonText={"Manage Question"}
-                  actionFunction={this.openManageQuestionDialog(question)}
-                  showDeleteIcon={true}
-                  deleteFunction={this.deleteQuestion(question)}
-                />
-              );
-            })}
-          </GridContainer>
+          {/*<GridContainer style={{ padding: "2%" }}>*/}
+            {/*{questions.map(question => {*/}
+              {/*return (*/}
+                {/*<QuestionDetails*/}
+                  {/*question={question}*/}
+                  {/*showActions={false}*/}
+                {/*/>*/}
+              {/*);*/}
+            {/*})}*/}
+          {/*</GridContainer>*/}
         </Dialog>
       </div>
     );
   }
 }
 
-DialogQuizTable.propTypes = {
-  classes: PropTypes.object.isRequired
+DialogQuestion.propTypes = {
+  classes: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  question: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DialogQuizTable);
+export default withStyles(styles)(DialogQuestion);
