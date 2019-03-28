@@ -210,22 +210,20 @@ class DeptManage extends React.Component {
                               </CardBody>
                               <CardFooter>
                                 <Mutation mutation={deletedept}>
-                                  {deleteDepartment => {
-                                    return (
-                                      <IconButton
-                                        onClick={e =>
-                                          this.handleDelete(
-                                            deleteDepartment,
-                                            department
-                                          )
-                                        }
-                                      >
-                                        <DeleteForeverIcon
-                                          className={classes.icon}
-                                        />
-                                      </IconButton>
-                                    );
-                                  }}
+                                  {deleteDepartment => (
+                                    <IconButton
+                                      onClick={e =>
+                                        this.handleDelete(
+                                          deleteDepartment,
+                                          department
+                                        )
+                                      }
+                                    >
+                                      <DeleteForeverIcon
+                                        className={classes.icon}
+                                      />
+                                    </IconButton>
+                                  )}
                                 </Mutation>
                                 <Button
                                   size={"small"}

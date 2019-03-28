@@ -1,14 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
+  Slide
+} from "@material-ui/core";
 
 const styles = theme => ({
   appBar: {
@@ -50,7 +52,7 @@ function Transition(props) {
 
 class MessageDialog extends React.Component {
   state = {
-    open: true,
+    open: true
   };
 
   handleDialogOpen = () => {
@@ -63,7 +65,14 @@ class MessageDialog extends React.Component {
   };
 
   render() {
-    const { classes, title, content, positiveAction, negativeAction, action } = this.props;
+    const {
+      classes,
+      title,
+      content,
+      positiveAction,
+      negativeAction,
+      action
+    } = this.props;
     return (
       <div>
         <Dialog
@@ -72,9 +81,7 @@ class MessageDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">
-            {title}
-          </DialogTitle>
+          <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               {content}
@@ -101,7 +108,7 @@ MessageDialog.propTypes = {
   positiveAction: PropTypes.string,
   negativeAction: PropTypes.string,
   action: PropTypes.func.isRequired,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func
 };
 
 export default withStyles(styles)(MessageDialog);
