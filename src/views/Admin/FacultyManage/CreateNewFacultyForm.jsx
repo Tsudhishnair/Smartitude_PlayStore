@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -16,12 +18,7 @@ import Spacing from "../../../components/Spacing/Spacing";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import {
-  Button,
-  CircularProgress,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
@@ -210,7 +207,12 @@ class CreateNewFacultyForm extends Component {
   handleClick = (addFaculty, e) => {
     e.preventDefault();
     // check if name or desc fields are empty, if so, throw up snackbar and set msg accordingly
-    if (!this.state.name || !this.state.username || !this.state.email || !this.state.password) {
+    if (
+      !this.state.name ||
+      !this.state.username ||
+      !this.state.email ||
+      !this.state.password
+    ) {
       this.setState(
         {
           snackbar: {
@@ -237,78 +239,69 @@ class CreateNewFacultyForm extends Component {
       this.setState({
         loading: true
       });
+
+      let variables;
       if (this.state.isInCharge) {
-        addFaculty({
-          variables: {
-            facultyInput: {
-              username: this.state.username,
-              name: this.state.name,
-              email: this.state.email,
-              password: this.state.password,
-              phoneNumber: this.state.phoneNumber,
-              department: this.state.department._id,
-              category: this.state.category._id,
-              subcategory: this.state.subcategories,
-              isInCharge: this.state.isInCharge,
-              inChargeSubcategories: this.state.inChargeSubcategories
-            }
+        variables = {
+          facultyInput: {
+            username: this.state.username,
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            phoneNumber: this.state.phoneNumber,
+            department: this.state.department._id,
+            category: this.state.category._id,
+            subcategory: this.state.subcategories,
+            isInCharge: this.state.isInCharge,
+            inChargeSubcategories: this.state.inChargeSubcategories
           }
-        })
-          .then(response => {
-            this.setState(
-              {
-                loading: false,
-                snackbar: {
-                  ...this.state.snackbar,
-                  variant: "success",
-                  message: "New Faculty Added!"
-                }
-              },
-              () => this.openSnackbar()
-            );
-          })
-          .catch(err => {
-            this.setState({
-              loading: false
-            });
-            this.closeSnackbar();
-          });
+        };
       } else {
-        addFaculty({
-          variables: {
-            facultyInput: {
-              username: this.state.username,
-              name: this.state.name,
-              email: this.state.email,
-              password: this.state.password,
-              phoneNumber: this.state.phoneNumber,
-              department: this.state.department._id,
-              category: this.state.category._id,
-              subcategory: this.state.subcategories,
-              isInCharge: this.state.isInCharge
-            }
+        variables = {
+          facultyInput: {
+            username: this.state.username,
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            phoneNumber: this.state.phoneNumber,
+            department: this.state.department._id,
+            category: this.state.category._id,
+            subcategory: this.state.subcategories,
+            isInCharge: this.state.isInCharge
+          }
+        };
+      }
+      addFaculty({
+        variables: variables
+      })
+        .then(response => {
+          console.log("then called");
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "New Faculty Added!"
+              }
+            },
+            () => this.openSnackbar()
+          );
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
           }
         })
-          .then(response => {
-            this.setState(
-              {
-                loading: false,
-                snackbar: {
-                  ...this.state.snackbar,
-                  variant: "success",
-                  message: "New Faculty In-charge Added!"
-                }
-              },
-              () => this.openSnackbar()
-            );
-          })
-          .catch(err => {
-            this.setState({
-              loading: false
-            });
-            this.closeSnackbar();
+        .catch(err => {
+          this.setState({
+            loading: false
           });
-      }
+          this.closeSnackbar();
+          console.log("catch called");
+          console.log(err);
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
+          }
+        });
     }
   };
 
@@ -331,47 +324,7 @@ class CreateNewFacultyForm extends Component {
               <Typography>
                 <strong>Basic Info</strong>
               </Typography>
-              <form
-                method={"POST"}
-                onSubmit={e => {
-                  e.preventDefault();
-                  if (this.state.isInCharge) {
-                    addFaculty({
-                      variables: {
-                        facultyInput: {
-                          username: this.state.username,
-                          name: this.state.name,
-                          email: this.state.email,
-                          password: this.state.password,
-                          phoneNumber: this.state.phoneNumber,
-                          department: this.state.department._id,
-                          category: this.state.category._id,
-                          subcategory: this.state.subcategories,
-                          isInCharge: this.state.isInCharge,
-                          inChargeSubcategories: this.state
-                            .inChargeSubcategories
-                        }
-                      }
-                    });
-                  } else {
-                    addFaculty({
-                      variables: {
-                        facultyInput: {
-                          username: this.state.username,
-                          name: this.state.name,
-                          email: this.state.email,
-                          password: this.state.password,
-                          phoneNumber: this.state.phoneNumber,
-                          department: this.state.department._id,
-                          category: this.state.category._id,
-                          subcategory: this.state.subcategories,
-                          isInCharge: this.state.isInCharge
-                        }
-                      }
-                    });
-                  }
-                }}
-              >
+              <form>
                 <GridContainer>
                   <GridItem
                     xs={12}
@@ -631,4 +584,11 @@ class CreateNewFacultyForm extends Component {
     );
   }
 }
+
+CreateNewFacultyForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+  categoryDetails: PropTypes.object.isRequired,
+  departments: PropTypes.object.isRequired,
+  reloadFacultiesList: PropTypes.func.isRequired
+};
 export default withStyles(styles)(CreateNewFacultyForm);

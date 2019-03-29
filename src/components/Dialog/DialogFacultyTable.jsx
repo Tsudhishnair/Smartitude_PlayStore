@@ -72,6 +72,7 @@ const DELETE_FACULTY = gql`
 class DialogFacultyTable extends React.Component {
   initialSubcategories = [];
   initialInChargeSubcategories = [];
+  reloadFacultiesList = null;
 
   constructor(props) {
     super(props);
@@ -125,7 +126,8 @@ class DialogFacultyTable extends React.Component {
     });
   };
 
-  handleClickOpen = faculty => {
+  handleClickOpen = (faculty, reloadFacultiesList) => {
+    this.reloadFacultiesList = reloadFacultiesList;
     this.initialSubcategories = faculty.subcategory.map(subcategory => {
       return {
         label: subcategory.name,
@@ -221,15 +223,31 @@ class DialogFacultyTable extends React.Component {
       }
     });
   };
-  // delete student
+  // delete faculty
   handleDelete = (e, deleteFaculty) => {
     e.preventDefault();
     deleteFaculty({
       variables: {
         _id: this.state._id
       }
-    });
-    this.handleClose();
+    })
+      .then(response => {
+        console.log("then called");
+        // TODO: Set snackbar for edit here
+        if (this.reloadFacultiesList !== null) {
+          this.reloadFacultiesList();
+        }
+        this.handleClose();
+      })
+      .catch(err => {
+        // TODO: Set snackbar for edit error here
+        console.log("catch called");
+        console.log(err);
+        if (this.reloadFacultiesList !== null) {
+          this.reloadFacultiesList();
+        }
+        this.handleClose();
+      });
   };
 
   renderCategoryDropdown = () => {
@@ -294,8 +312,24 @@ class DialogFacultyTable extends React.Component {
         _id: this.state._id,
         facultyEditInput: facultyEditInput
       }
-    });
-    this.handleClose();
+    })
+      .then(response => {
+        console.log("then called");
+        // TODO: Set snackbar for edit here
+        if (this.reloadFacultiesList !== null) {
+          this.reloadFacultiesList();
+        }
+        this.handleClose();
+      })
+      .catch(err => {
+        // TODO: Set snackbar for edit error here
+        console.log("catch called");
+        console.log(err);
+        if (this.reloadFacultiesList !== null) {
+          this.reloadFacultiesList();
+        }
+        this.handleClose();
+      });
   };
 
   render() {

@@ -17,6 +17,7 @@ import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
+import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
   root: {
@@ -31,7 +32,13 @@ class Dashboard extends React.Component {
   categories = [];
   subcategories = [];
   categoryDetails = [];
-
+  refetchFacultiesList = null;
+  reloadFacultiesList = () => {
+    console.log("reloadFacultiesList called");
+    if (this.refetchFacultiesList !== null) {
+      this.refetchFacultiesList();
+    }
+  };
   render() {
     const { classes } = this.props;
     const header1 = "Faculty";
@@ -100,6 +107,10 @@ class Dashboard extends React.Component {
             description
           }
         }
+      }
+    `;
+    const FETCH_FACULTIES_LIST = gql`
+      {
         faculties {
           _id
           username
@@ -135,12 +146,14 @@ class Dashboard extends React.Component {
 
       onRowClick: (rowData, rowMeta) => {
         const clickedRowIndex = rowMeta.rowIndex;
-        this.child.handleClickOpen(this.faculties[clickedRowIndex]);
+        this.child.handleClickOpen(
+          this.faculties[clickedRowIndex],
+          this.reloadFacultiesList
+        );
       }
     };
 
     return (
-
       <Query query={FETCH_DATA}>
         {({ data, loading, error }) => {
           if (loading) {
@@ -148,20 +161,6 @@ class Dashboard extends React.Component {
           } else if (error) {
             return "Error occured!";
           } else {
-            let facultiesList = [];
-            facultiesList = data.faculties.map(faculty => {
-              let facultyData = [];
-              facultyData.push(faculty.name);
-              facultyData.push(faculty.username);
-              facultyData.push(faculty.department.name);
-              facultyData.push(faculty.email);
-              facultyData.push(faculty.phoneNumber);
-              if (faculty.category) {
-                facultyData.push(faculty.category.name);
-              }
-              return facultyData;
-            });
-            this.faculties = data.faculties;
             this.departments = data.departments;
             if (data.categoryDetailsList) {
               this.categoryDetails = data.categoryDetailsList;
@@ -175,8 +174,10 @@ class Dashboard extends React.Component {
                         departments={this.departments}
                         categoryDetails={this.categoryDetails}
                         directingValue={EXPANSION_FACULTY_FORM}
+                        reloadList={this.reloadFacultiesList}
                       />
                       <ExpansionPanel
+                        reloadList={this.reloadFacultiesList}
                         headers={"Multiple Faculty"}
                         header={"Add groups of faculty"}
                         directingValue={EXPANSION_FACULTY_BATCH}
@@ -188,21 +189,52 @@ class Dashboard extends React.Component {
                     <GridItem xs={12} sm={12} md={12}>
                       <Card className={classes.root}>
                         <CardHeader color="warning">
-                          <h4 className={classes.cardTitleWhite}>Faculty List</h4>
+                          <h4 className={classes.cardTitleWhite}>
+                            Faculty List
+                          </h4>
                         </CardHeader>
-                        <Fragment>
-                          <TableDialog
-                            onRef={ref => (this.child = ref)}
-                            categoryDetails={this.categoryDetails}
-                            departments={this.departments}
-                          />
-                          <MUIDataTable
-                            title={""}
-                            data={facultiesList}
-                            columns={columns}
-                            options={options}
-                          />
-                        </Fragment>
+                        <CardBody>
+                          <Query query={FETCH_FACULTIES_LIST}>
+                            {({ data, loading, error, refetch }) => {
+                              if (loading) {
+                                return "Loading faculty list...";
+                              } else if (error) {
+                                return "Error occured!";
+                              } else {
+                                this.refetchFacultiesList = refetch;
+                                let facultiesList = [];
+                                facultiesList = data.faculties.map(faculty => {
+                                  let facultyData = [];
+                                  facultyData.push(faculty.name);
+                                  facultyData.push(faculty.username);
+                                  facultyData.push(faculty.department.name);
+                                  facultyData.push(faculty.email);
+                                  facultyData.push(faculty.phoneNumber);
+                                  if (faculty.category) {
+                                    facultyData.push(faculty.category.name);
+                                  }
+                                  return facultyData;
+                                });
+                                this.faculties = data.faculties;
+                                return (
+                                  <Fragment>
+                                    <TableDialog
+                                      onRef={ref => (this.child = ref)}
+                                      categoryDetails={this.categoryDetails}
+                                      departments={this.departments}
+                                    />
+                                    <MUIDataTable
+                                      title={""}
+                                      data={facultiesList}
+                                      columns={columns}
+                                      options={options}
+                                    />
+                                  </Fragment>
+                                );
+                              }
+                            }}
+                          </Query>
+                        </CardBody>
                       </Card>
                     </GridItem>
                   </GridContainer>

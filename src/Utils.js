@@ -9,7 +9,7 @@ export const loginHandler = {
     }
     this.userType = userType;
 
-    localStorage.setItem('userType', userType);
+    localStorage.setItem("userType", userType);
 
     return this.isLoggedIn;
   },
@@ -17,7 +17,7 @@ export const loginHandler = {
     // remove token from storage
     localStorage.removeItem("token");
   },
-  userType: localStorage.getItem('userType')
+  userType: localStorage.getItem("userType")
 };
 
 export const EXPANSION_QUIZ_FORM = 1;

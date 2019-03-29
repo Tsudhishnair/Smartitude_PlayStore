@@ -4,13 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography } from "@material-ui/core";
 
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 import QuizForm from "../../views/Admin/QuizManage/QuizForm";
-import CreateFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
+import CreateNewFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
 import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
-import AddDeptForm from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
-import StudentGroupManagement from "../../views/Admin/StudentManage/FormAddStudentBatch";
-import FacultyGroupManagement from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
+import FormAddDepartment from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
+import FormAddStudentBatch from "../../views/Admin/StudentManage/FormAddStudentBatch";
+import FormAddFacultyBatch from "../../views/Admin/FacultyManage/FormAddFacultyBatch";
 import FormAddCategory from "../../views/Admin/CategoryManagement/FormAddCategory";
 import FormAddSubcategory from "../../views/Admin/CategoryManagement/FormAddSubcategory";
 import {
@@ -63,25 +63,26 @@ class Expansionpanel extends Component {
       layout = <QuizForm />;
     } else if (directingValue === EXPANSION_FACULTY_FORM) {
       layout = (
-        <CreateFacultyForm
+        <CreateNewFacultyForm
           categoryDetails={this.props.categoryDetails}
           departments={this.props.departments}
+          reloadFacultiesList={this.props.reloadList}
         />
       );
     } else if (directingValue === EXPANSION_STUDENT_BATCH) {
       layout = (
-        <StudentGroupManagement
-          reloadStudentsList={this.props.reloadStudentsList}
+        <FormAddStudentBatch
+          reloadStudentsList={this.props.reloadList}
         />
       );
     } else if (directingValue === EXPANSION_STUDENT_FORM) {
       layout = (
-        <FormAddStudent reloadStudentsList={this.props.reloadStudentsList}/>
+        <FormAddStudent reloadStudentsList={this.props.reloadList}/>
       );
     } else if (directingValue === EXPANSION_DEPARTMENT_FORM) {
-      layout = <AddDeptForm />;
+      layout = <FormAddDepartment/>;
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
-      layout = <FacultyGroupManagement />;
+      layout = <FormAddFacultyBatch/>;
     } else if (directingValue === EXPANSION_CATEGORY_FORM) {
       layout = <FormAddCategory/>;
     } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
@@ -91,7 +92,7 @@ class Expansionpanel extends Component {
     return (
       <div className={classes.root}>
         <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
             <div className={classes.column}>
               <Typography className={classes.heading}>{headers}</Typography>
             </div>
@@ -120,7 +121,7 @@ Expansionpanel.propTypes = {
   categories: PropTypes.object,
   categoryDetails: PropTypes.object,
   departments: PropTypes.object,
-  reloadStudentsList: PropTypes.func
+  reloadList: PropTypes.func
 };
 
 export default withStyles(styles)(Expansionpanel);

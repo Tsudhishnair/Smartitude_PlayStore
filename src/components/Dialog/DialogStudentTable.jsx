@@ -72,8 +72,8 @@ function Transition(props) {
 
 // edit student query
 const EDIT_STUDENT = gql`
-  mutation editStudent($_id: ID!, $studentEditInput: StudentEditInput!) {
-    editStudent(_id: $_id, studentEditInput: $studentEditInput) {
+  mutation editStudent( $studentEditInput: StudentEditInput!) {
+    editStudent( studentEditInput: $studentEditInput) {
       _id
     }
   }
@@ -151,6 +151,7 @@ class StudentDialog extends React.Component {
     })
       .then(response => {
         console.log("then called");
+        // TODO: Set snackbar
         // this.setState(
         //   {
         //     loading: false,
@@ -173,9 +174,11 @@ class StudentDialog extends React.Component {
       })
       .catch(err => {
         console.log("catch called");
+        // TODO: Set snackbar
         console.log(err);
-
-
+        if (this.reloadStudentsList !== null) {
+          this.reloadStudentsList();
+        }
         // this.setState({
         //   loading: false
         // });
@@ -423,9 +426,8 @@ class StudentDialog extends React.Component {
                       e.preventDefault();
                       editStudent({
                         variables: {
-                          _id: this.state._id,
-
                           studentEditInput: {
+                            _id: this.state._id,
                             username: this.state.username,
                             name: this.state.name,
                             email: this.state.email,
@@ -434,8 +436,22 @@ class StudentDialog extends React.Component {
                             batch: this.state.batch
                           }
                         }
-                      });
-                      this.handleClose();
+                      })
+                        .then(response => {
+                          // TODO: Set snackbar
+                          if (this.reloadStudentsList !== null) {
+                            this.reloadStudentsList();
+                          }
+                          this.handleClose();
+                        })
+                        .catch(err => {
+                          // TODO: Set snackbar
+                          console.log(err);
+                          if (this.reloadStudentsList !== null) {
+                            this.reloadStudentsList();
+                          }
+                          this.handleClose();
+                        });
                     }}
                   >
                     Save

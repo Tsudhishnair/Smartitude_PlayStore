@@ -158,11 +158,11 @@ class StudentManage extends React.Component {
             <ExpansionPanel
               headers={header1}
               header={header2}
-              reloadStudentsList={this.reloadStudentsList}
+              reloadList={this.reloadStudentsList}
               directingValue={EXPANSION_STUDENT_FORM}
             />
             <ExpansionPanel
-              reloadStudentsList={this.reloadStudentsList}
+              reloadList={this.reloadStudentsList}
               headers={"Multiple Student"}
               header={"Add groups of students"}
               directingValue={EXPANSION_STUDENT_BATCH}
