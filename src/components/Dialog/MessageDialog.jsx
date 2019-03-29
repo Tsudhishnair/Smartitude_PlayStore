@@ -2,15 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-  DialogTitle,
-  Slide
-} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide } from "@material-ui/core";
 
 const styles = theme => ({
   appBar: {
@@ -91,7 +83,14 @@ class MessageDialog extends React.Component {
             <Button onClick={this.handleDialogClose} color="primary">
               {negativeAction ? negativeAction : "CANCEL"}
             </Button>
-            <Button onClick={action} color="primary" autoFocus>
+            <Button
+              onClick={() => {
+                action();
+                this.handleDialogClose();
+              }}
+              color="primary"
+              autoFocus
+            >
               {positiveAction ? positiveAction : "OK"}
             </Button>
           </DialogActions>

@@ -8,6 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
 export default class DeptDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +58,7 @@ export default class DeptDialog extends React.Component {
   };
   render() {
     const { department } = this.props;
-    const UpdateDepartmentQuery = gql`
+    const UPDATE_DEPARTMENT = gql`
       mutation editDepartment($_id: ID!, $departmentInput: DepartmentInput!) {
         editDepartment(_id: $_id, departmentInput: $departmentInput) {
           _id
@@ -66,7 +67,7 @@ export default class DeptDialog extends React.Component {
     `;
 
     return (
-      <Mutation mutation={UpdateDepartmentQuery}>
+      <Mutation mutation={UPDATE_DEPARTMENT}>
         {editDepartment => {
           return (
             <div>

@@ -11,45 +11,134 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import CardBody from "../../../components/Card/CardBody";
 import QuestionDetails from "../../General/QuestionDetails";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
+const APPROVE_QUESTION = gql`
+  mutation approveQuestion($_id: ID!) {
+    approveQuestion(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+const DELETE_QUESTION = gql`
+  mutation deleteQuestion($_id: ID!) {
+    deleteQuestion(_id: $_id) {
+      _id
+    }
+  }
+`;
 
 class Dashboard extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      approve: false,
+      reject: false
     };
   }
+
+  setQuestionToApprove = question => {
+    this.setState({
+      ...this.state,
+      question,
+      open: true,
+      approve: true,
+      reject: false
+    });
+  };
+
+  setQuestionToReject = question => {
+    this.setState({
+      ...this.state,
+      question,
+      open: true,
+      approve: false,
+      reject: true
+    });
+  };
 
   renderConfirmationDialog = isOpen => {
     if (isOpen) {
       if (this.state.approve) {
-        // return (<MessageDialog title="Confirm Approval" positiveAction="Approve Question" action={this.}/>);
+        // TODO: Set mutation to approve
+        return (
+          <Mutation mutation={APPROVE_QUESTION}>
+            {approveQuestion => {
+              return (
+                <MessageDialog
+                  title="Confirm Approval"
+                  positiveAction="Yes"
+                  negativeAction="No"
+                  content="Are you sure to approve this question?"
+                  onClose={this.closeDialog}
+                  action={() => {
+                    this.performApproval(approveQuestion);
+                  }}
+                />
+              );
+            }}
+          </Mutation>
+        );
+      } else if (this.state.reject) {
+        // TODO: Set mutation to reject
+        return (
+          <Mutation mutation={DELETE_QUESTION}>
+            {deleteQuestion => {
+              return (
+                <MessageDialog
+                  title="Confirm Rejection"
+                  positiveAction="Yes"
+                  negativeAction="No"
+                  content="Rejecting the question will delete this question permanently. Are you sure you want to continue?"
+                  onClose={this.closeDialog}
+                  action={() => {
+                    this.performRejection(deleteQuestion);
+                  }}
+                />
+              );
+            }}
+          </Mutation>
+        );
       } else {
         return "";
       }
+    } else {
+      return "";
     }
   };
-  hideQuestionManageDialog = isOpen => {
-    console.log("close dialog called");
+
+  closeDialog = () => {
     this.setState({
-      open: false
-    });
-  };
-  triggerQuestionManageDialog = (question) => {
-    this.setState({
-      ...this.state,
-      question,
-      open: true
+      open: false,
+      approve: false,
+      reject: false
     });
   };
 
-  rejectQuestion = (question) => {
-    return "";
+  performRejection = deleteQuestion => {
+    console.log("performRejection called");
+    // TODO: perform mutation here
+    // deleteQuestion({
+    //   variables: {
+    //     _id: this.state.question._id
+    //   }
+    // });
+    this.closeDialog;
   };
 
-  acceptQuestion = (question) => {
-    return "";
+  performApproval = approveQuestion => {
+    console.log("performApproval called");
+    // TODO: Perform mutation here
+    // approveQuestion({
+    //   variables: {
+    //     _id: this.state.question._id
+    //   }
+    // });
+    this.closeDialog;
   };
 
   render() {
@@ -105,7 +194,6 @@ class Dashboard extends React.Component {
       }
     ];
 
-
     const { classes } = this.props;
     return (
       <div>
@@ -134,8 +222,8 @@ class Dashboard extends React.Component {
                       actionButtonText={"Approve Question"}
                       secondaryActionButtonText={"Reject Question"}
                       showSecondaryAction={true}
-                      actionFunction={this.approveQuestion}
-                      actionSecondaryFunction={this.rejectQuestion}
+                      actionFunction={this.setQuestionToApprove}
+                      actionSecondaryFunction={this.setQuestionToReject}
                       showDeleteIcon={false}
                     />
                   );
