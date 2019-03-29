@@ -6,10 +6,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
-import Grid from "@material-ui/core/Grid";
 import {
   Card,
-  CardHeader,
   Button,
   CardContent,
   Typography,
@@ -64,12 +62,12 @@ class StartQuiz extends React.Component {
     return (
       <div className={classes.root}>
         <GridContainer>
-          <Typography>
-            <h4>Quiz Name</h4>
-          </Typography>
           <GridItem>
-          <Button variant={"outlined"} size={"small"}>Finish & Exit</Button>
+            <Typography>
+              <h4>Quiz Name</h4>
+            </Typography>
           </GridItem>
+          <GridItem />
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
@@ -124,16 +122,6 @@ class StartQuiz extends React.Component {
                     </RadioGroup>
                   </FormControl>
                 </CardBody>
-                <CardFooter>
-                  <Button
-                    variant="outlined"
-                    size={"small"}
-                    type={"reset"}
-                    className={classes.button}
-                  >
-                    Clear Selection
-                  </Button>
-                </CardFooter>
                 <Divider />
                 <CardFooter>
                   <Button
@@ -144,7 +132,14 @@ class StartQuiz extends React.Component {
                   >
                     Previous
                   </Button>
-
+                  <Button
+                    variant="outlined"
+                    size={"small"}
+                    type={"reset"}
+                    className={classes.button}
+                  >
+                    Clear Selection
+                  </Button>
                   <Button
                     variant="outlined"
                     color="primary"
@@ -152,7 +147,7 @@ class StartQuiz extends React.Component {
                     type={"submit"}
                     className={classes.button}
                   >
-                    Submit & Next
+                    Next
                   </Button>
                 </CardFooter>
               </form>
@@ -212,6 +207,17 @@ class StartQuiz extends React.Component {
                   3
                 </Fab>
               </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size={"small"}
+                  type={"submit"}
+                  className={classes.button}
+                >
+                  Finish Quiz
+                </Button>
+              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>

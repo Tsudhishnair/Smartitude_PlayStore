@@ -3,13 +3,24 @@ import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 // core components
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import { Button, ExpansionPanelActions, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
   formroot: {
@@ -37,21 +48,32 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit * 4
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 //----------------------------------------------------------------
 // Mutation for AddQuestion
 const ADD_QUESTION = gql`
-      mutation addQuestion($questionInput:QuestionInput!){
-        addQuestion(questionInput:$questionInput){
-          _id
-        }
-        
-      }
-    `;
+  mutation addQuestion($questionInput: QuestionInput!) {
+    addQuestion(questionInput: $questionInput) {
+      _id
+    }
+  }
+`;
 //----------------------------------------------------------------
 // Faculty Details from local storage
-const facultyId = localStorage.getItem('faculty');
+const facultyId = localStorage.getItem("faculty");
 
 //------------------------------------------------------------------
 //This array is to store the option in the backend
@@ -73,28 +95,133 @@ class AddQuestion extends React.Component {
       subCategory: "",
       subcategoryList: [],
       difficulty: "",
-      dataLoaded: false
+      dataLoaded: false,
+      // used to handle loading state
+      loading: false,
+      // maintaining snackbar states
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: ""
+      }
     };
   }
+  //Handle Snackbar Controls
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
 
   //----------------------------------------------------------------
   //Handle Mutation Function
   handleClick = (addQuestion, event) => {
     event.preventDefault();
-    addQuestion({
-      variables: {
-        questionInput: {
-          question: this.state.question,
-          createdBy: facultyId,
-          category: this.state.category._id,
-          subcategory: this.state.subCategory._id,
-          difficulty: parseInt(this.state.difficulty),
-          options: optionArray,
-          correctOption: this.state.correctOption,
-          solution: this.state.solution
+    if (!this.state.question) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Question field empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (
+      !this.state.option1 ||
+      !this.state.option2 ||
+      !this.state.option3 ||
+      !this.state.option4
+    ) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Option fields are not fully filled!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (!this.state.correctOption) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Correct Option not selected!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else if (
+      !this.state.difficulty ||
+      !this.state.difficulty ||
+      !this.state.solution ||
+      !this.state.category
+    ) {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            variant: "error",
+            message: "Fields and options are empty!"
+          }
+        },
+        () => this.openSnackbar()
+      );
+    } else {
+      // set loading state and start mutation. upon completion, change loading states
+      this.setState({
+        loading: true
+      });
+      addQuestion({
+        variables: {
+          questionInput: {
+            question: this.state.question,
+            createdBy: facultyId,
+            category: this.state.category._id,
+            subcategory: this.state.subCategory._id,
+            difficulty: parseInt(this.state.difficulty),
+            options: optionArray,
+            correctOption: this.state.correctOption,
+            solution: this.state.solution
+          }
         }
-      }
-    })
+      })
+        .then(response => {
+          this.handleReset();
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "Question Added Successfully!"
+              }
+            },
+            () => this.openSnackbar()
+          );
+        })
+        .catch(err => {
+          this.setState({
+            loading: false
+          });
+          this.closeSnackbar();
+        });
+    }
   };
 
   //-----------------------------------------------------------------
@@ -122,12 +249,17 @@ class AddQuestion extends React.Component {
   };
   //-------------------------------------------------------------
   // Setting Option into Options Array and correct option
-  handleOption = (event) => {
-    this.optionArray = [this.state.option1, this.state.option2, this.state.option3, this.state.option4];
+  handleOption = event => {
+    this.optionArray = [
+      this.state.option1,
+      this.state.option2,
+      this.state.option3,
+      this.state.option4
+    ];
     console.log(this.optionArray);
     this.setState({
       ...this.state,
-      correctOption: event.target.value,
+      correctOption: event.target.value
     });
   };
   //-------------------------------------------------------------
@@ -164,7 +296,6 @@ class AddQuestion extends React.Component {
       option2: question.options[1],
       option3: question.options[2],
       option4: question.options[3]
-
     };
     this.setState({
       ...this.state,
@@ -175,6 +306,7 @@ class AddQuestion extends React.Component {
   //-------------------------------------------------------------
   render() {
     const { classes, question } = this.props;
+    const { loading, snackbar } = this.state;
     if (question && !this.state.dataLoaded) {
       this.setQuestions(question);
     }
@@ -197,7 +329,7 @@ class AddQuestion extends React.Component {
     //------------------------------------------------------------
 
     return (
-      <Mutation mutation={ADD_QUESTION} onCompleted={this.clearForm}>
+      <Mutation mutation={ADD_QUESTION} onCompleted={this.handleReset}>
         {addQuestion => {
           return (
             <div className={classes.root}>
@@ -206,7 +338,12 @@ class AddQuestion extends React.Component {
                   <strong>Enter Question Below:</strong>
                 </Typography>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.question}
@@ -226,7 +363,12 @@ class AddQuestion extends React.Component {
                   <strong>Options: </strong>
                 </Typography>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.option1}
@@ -240,7 +382,12 @@ class AddQuestion extends React.Component {
                       fullWidth
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.option2}
@@ -254,7 +401,12 @@ class AddQuestion extends React.Component {
                       fullWidth
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.option3}
@@ -268,7 +420,12 @@ class AddQuestion extends React.Component {
                       fullWidth
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.option4}
@@ -285,7 +442,12 @@ class AddQuestion extends React.Component {
                   <Typography>
                     <strong>Detailed Answer</strong>
                   </Typography>
-                  <GridItem xs={12} sm={12} md={12} className={classes.container}>
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    className={classes.container}
+                  >
                     <TextField
                       onChange={this.handleChange}
                       value={this.state.solution}
@@ -321,15 +483,13 @@ class AddQuestion extends React.Component {
                         id: "correctOption"
                       }}
                       fullWidth
-                      autoWidth={true}
                     >
                       <MenuItem value={1}>Option 1</MenuItem>
                       <MenuItem value={2}>Option 2</MenuItem>
                       <MenuItem value={3}>Option 3</MenuItem>
                       <MenuItem value={4}>Option 4</MenuItem>
-                      );
-                    })}
-              </Select>
+                      ); })}
+                    </Select>
                   </GridItem>
 
                   {/* Category and SubCategory 
@@ -346,7 +506,7 @@ class AddQuestion extends React.Component {
                             <GridItem xs={12} sm={6} md={6}>
                               <InputLabel htmlFor="category" fullWidth>
                                 Category
-                        </InputLabel>
+                              </InputLabel>
                               <Select
                                 onChange={this.handleCategorySelect}
                                 value={this.state.category.name}
@@ -359,19 +519,21 @@ class AddQuestion extends React.Component {
                                 }}
                                 fullWidth
                               >
-                                {data.categoryDetailsList.map(categoryDetail => {
-                                  return (
-                                    <MenuItem value={categoryDetail}>
-                                      {categoryDetail.category.name}
-                                    </MenuItem>
-                                  );
-                                })}
+                                {data.categoryDetailsList.map(
+                                  categoryDetail => {
+                                    return (
+                                      <MenuItem value={categoryDetail}>
+                                        {categoryDetail.category.name}
+                                      </MenuItem>
+                                    );
+                                  }
+                                )}
                               </Select>
                             </GridItem>
                             <GridItem xs={12} sm={6} md={6}>
                               <InputLabel htmlFor="subCategory" fullWidth>
                                 Sub Category
-                        </InputLabel>
+                              </InputLabel>
                               <Select
                                 onChange={this.handleChange}
                                 value={this.state.subCategory.name}
@@ -403,23 +565,59 @@ class AddQuestion extends React.Component {
                   <GridItem xs={12} sm={3} md={3}>
                     <InputLabel htmlFor="age-simple" fullWidth>
                       Difficulty
-                <TextField id="standard-number" type="number" name="difficulty" fullWidth onChange={this.handleChange}
-                        value={this.state.difficulty} />
+                      <TextField
+                        id="standard-number"
+                        type="number"
+                        name="difficulty"
+                        fullWidth
+                        onChange={this.handleChange}
+                        value={this.state.difficulty}
+                      />
                     </InputLabel>
                   </GridItem>
                 </GridContainer>
                 <Spacing />
                 <ExpansionPanelActions>
-                  <Button type="reset" onClick={this.handleReset}>Clear</Button>
-                  <Button color={"primary"}
+                  <Button
+                    type="reset"
                     variant={"outlined"}
-                    type="submit"
-                    onClick={e => this.handleClick(addQuestion, e)}
+                    onClick={this.handleReset}
                   >
-                    Submit
-            </Button>
+                    Clear
+                  </Button>
+                  <div className={classes.wrapper}>
+                    <Button
+                      color={"primary"}
+                      variant={"outlined"}
+                      type="submit"
+                      disabled={loading}
+                      onClick={e => this.handleClick(addQuestion, e)}
+                    >
+                      Submit
+                    </Button>
+                    {loading && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />
+                    )}
+                  </div>
                 </ExpansionPanelActions>
               </form>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={snackbar.open}
+                autoHideDuration={6000}
+              >
+                <CustomSnackbar
+                  onClose={this.closeSnackbar}
+                  variant={snackbar.variant}
+                  message={snackbar.message}
+                />
+              </Snackbar>
             </div>
           );
         }}
@@ -433,4 +631,4 @@ AddQuestion.propTypes = {
   question: PropTypes.object
 };
 
-export default withStyles(dashboardStyle)(AddQuestion);
+export default withStyles(styles)(AddQuestion);
