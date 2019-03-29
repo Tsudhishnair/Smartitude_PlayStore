@@ -15,7 +15,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 
 import Spacing from "../Spacing/Spacing";
-import QuestionDetails from "../../views/Faculty/ApproveQuestion/ApproveQuestion";
+import QuestionDetails from "../../views/General/QuestionDetails";
+import DialogQuestion from "./DialogQuestion";
 
 const styles = theme => ({
   appBar: {
@@ -111,7 +112,8 @@ function Transition(props) {
 
 class DialogQuizTable extends React.Component {
   state = {
-    open: false
+    open: false,
+    openQuestionDialog: false
   };
 
   componentDidMount() {
@@ -126,6 +128,26 @@ class DialogQuizTable extends React.Component {
     this.setState({ open: true });
   };
 
+  showQuestionManageDialog = isOpen => {
+    if (isOpen) {
+      console.log("render dialog called");
+      return (<DialogQuestion question={this.state.question} onClose={this.hideQuestionManageDialog}/>);
+    }
+  };
+  hideQuestionManageDialog = isOpen => {
+    console.log("close dialog called");
+    this.setState({
+      openQuestionDialog: false
+    });
+  };
+  triggerQuestionManageDialog = (question) => {
+    this.setState({
+      ...this.state,
+      question,
+      openQuestionDialog: true
+    });
+  };
+
   handleClose = () => {
     this.setState({ open: false });
   };
@@ -133,44 +155,6 @@ class DialogQuizTable extends React.Component {
   render() {
     const { classes } = this.props;
     const bull = <span className={classes.bullet}>•</span>;
-    let data = [
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "123",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      },
-      {
-        dept_id: "124",
-        dept_name: "Question Question",
-        dept_desc:
-          "Division of Computing Sciences laid its foundation stone in the year 2001 with the commencement of a B. Tech. programme in Computer Science & Engineering."
-      }
-    ];
     // const Frameworks = props => {
     //   return (
     //     <React.Fragment>
@@ -201,6 +185,7 @@ class DialogQuizTable extends React.Component {
     // };
     return (
       <div>
+        {this.showQuestionManageDialog(this.state.openQuestionDialog)}
         <Dialog
           fullScreen
           open={this.state.open}
@@ -286,9 +271,9 @@ class DialogQuizTable extends React.Component {
                 <QuestionDetails
                   question={question}
                   actionButtonText={"Manage Question"}
-                  actionFunction={this.openManageQuestionDialog(question)}
-                  showDeleteIcon={true}
-                  deleteFunction={this.deleteQuestion(question)}
+                  showActions={true}
+                  actionFunction={this.triggerQuestionManageDialog}
+                  showDeleteIcon={false}
                 />
               );
             })}

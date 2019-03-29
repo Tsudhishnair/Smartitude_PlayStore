@@ -1,20 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 
 import Dialog from "@material-ui/core/Dialog";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -23,7 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 
 import Spacing from "../Spacing/Spacing";
-import QuestionDetails from "../../views/Faculty/ApproveQuestion/ApproveQuestion";
+import AddQuestion from "../../views/Faculty/AddQuestion/AddQuestion";
 
 const styles = theme => ({
   appBar: {
@@ -136,7 +128,7 @@ class DialogQuestion extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, question } = this.props;
     const bull = <span className={classes.bullet}>•</span>;
 
     // const Frameworks = props => {
@@ -248,16 +240,10 @@ class DialogQuestion extends React.Component {
             </GridItem>
           </GridContainer>
 
-          {/*<GridContainer style={{ padding: "2%" }}>*/}
-            {/*{questions.map(question => {*/}
-              {/*return (*/}
-                {/*<QuestionDetails*/}
-                  {/*question={question}*/}
-                  {/*showActions={false}*/}
-                {/*/>*/}
-              {/*);*/}
-            {/*})}*/}
-          {/*</GridContainer>*/}
+
+          <GridContainer style={{ padding: "2%" }}>
+            <AddQuestion question={question}/>
+          </GridContainer>
         </Dialog>
       </div>
     );

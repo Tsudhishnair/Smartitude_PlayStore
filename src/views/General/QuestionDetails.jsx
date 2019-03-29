@@ -19,6 +19,9 @@ class QuestionDetails extends Component {
       showActions,
       actionButtonText,
       actionFunction,
+      showSecondaryAction,
+      actionSecondaryFunction,
+      secondaryActionButtonText,
       showDeleteIcon,
       deleteFunction
     } = this.props;
@@ -65,6 +68,20 @@ class QuestionDetails extends Component {
             >
               {actionButtonText}
             </Button>
+            {showSecondaryAction ? (
+              <Button
+                round
+                variant={"outlined"}
+                color="default"
+                onClick={() => {
+                  actionSecondaryFunction(question);
+                }}
+              >
+                {secondaryActionButtonText}
+              </Button>
+            ) : (
+              ""
+            )}
           </CardFooter>
         ) : (
           ""
@@ -79,7 +96,10 @@ QuestionDetails.propTypes = {
   question: PropTypes.object.isRequired,
   showActions: PropTypes.func.isRequired,
   actionButtonText: PropTypes.string,
+  secondaryActionButtonText: PropTypes.string,
   actionFunction: PropTypes.func,
+  showSecondaryAction: PropTypes.bool,
+  actionSecondaryFunction: PropTypes.func,
   showDeleteIcon: PropTypes.bool,
   deleteFunction: PropTypes.func
 };

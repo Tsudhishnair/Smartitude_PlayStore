@@ -1,25 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Button,
-  Select,
-  ExpansionPanelActions,
-  TextField,
-  Typography
-} from "@material-ui/core";
+import { Button, ExpansionPanelActions, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { Query } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
 
 const styles = theme => ({
   formroot: {
@@ -82,7 +72,8 @@ class AddQuestion extends React.Component {
       category: "",
       subCategory: "",
       subcategoryList: [],
-      difficulty: ""
+      difficulty: "",
+      dataLoaded: false
     };
   }
 
@@ -132,7 +123,7 @@ class AddQuestion extends React.Component {
   //-------------------------------------------------------------
   // Setting Option into Options Array and correct option
   handleOption = (event) => {
-    this.optionArray = [this.state.option1, this.state.option2, this.state.option3, this.state.option4]
+    this.optionArray = [this.state.option1, this.state.option2, this.state.option3, this.state.option4];
     console.log(this.optionArray);
     this.setState({
       ...this.state,
@@ -159,11 +150,34 @@ class AddQuestion extends React.Component {
       subcategoryList: [],
       difficulty: ""
     });
-  }
+  };
 
+  setQuestions(question) {
+    const questionDetail = {
+      question: question.question,
+      solution: question.solution,
+      correctOption: question.correctOption,
+      category: question.category,
+      subcategory: question.subcategory,
+      difficulty: question.difficulty,
+      option1: question.options[0],
+      option2: question.options[1],
+      option3: question.options[2],
+      option4: question.options[3]
+
+    };
+    this.setState({
+      ...this.state,
+      ...questionDetail,
+      dataLoaded: true
+    });
+  }
   //-------------------------------------------------------------
   render() {
-    const { classes } = this.props;
+    const { classes, question } = this.props;
+    if (question && !this.state.dataLoaded) {
+      this.setQuestions(question);
+    }
     //-----------------------------------------------------------
     //Query To Fetch Category and its Coresponsding Sub-Categories
     const FETCH_FORM_FIELDS = gql`
@@ -415,7 +429,8 @@ class AddQuestion extends React.Component {
 }
 
 AddQuestion.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  question: PropTypes.object
 };
 
 export default withStyles(dashboardStyle)(AddQuestion);

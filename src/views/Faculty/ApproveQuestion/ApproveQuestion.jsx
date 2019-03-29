@@ -16,20 +16,39 @@ class Dashboard extends React.Component {
 
   constructor(props) {
     super(props);
-
-
+    this.state = {
+      open: false
+    };
   }
 
-  openManageQuestionDialog = (question) => {
-    // this.setState({
-    //   ...this.state,
-    //   question,
-    //   showQuestionManageDialog: true
-    // });
+  renderConfirmationDialog = isOpen => {
+    if (isOpen) {
+      if (this.state.approve) {
+        // return (<MessageDialog title="Confirm Approval" positiveAction="Approve Question" action={this.}/>);
+      } else {
+        return "";
+      }
+    }
+  };
+  hideQuestionManageDialog = isOpen => {
+    console.log("close dialog called");
+    this.setState({
+      open: false
+    });
+  };
+  triggerQuestionManageDialog = (question) => {
+    this.setState({
+      ...this.state,
+      question,
+      open: true
+    });
+  };
+
+  rejectQuestion = (question) => {
     return "";
   };
 
-  deleteQuestion = (question) => {
+  acceptQuestion = (question) => {
     return "";
   };
 
@@ -90,6 +109,8 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
       <div>
+        {this.renderConfirmationDialog(this.state.open)}
+
         <Card className={classes.card}>
           <CardBody>
             <p>
@@ -109,10 +130,13 @@ class Dashboard extends React.Component {
                   return (
                     <QuestionDetails
                       question={question}
-                      actionButtonText={"Manage Question"}
-                      actionFunction={this.openManageQuestionDialog(question)}
-                      showDeleteIcon={true}
-                      deleteFunction={this.deleteQuestion(question)}
+                      showActions={true}
+                      actionButtonText={"Approve Question"}
+                      secondaryActionButtonText={"Reject Question"}
+                      showSecondaryAction={true}
+                      actionFunction={this.approveQuestion}
+                      actionSecondaryFunction={this.rejectQuestion}
+                      showDeleteIcon={false}
                     />
                   );
                 })}
