@@ -5,7 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import approveQuestionStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
@@ -31,7 +31,7 @@ const DELETE_QUESTION = gql`
   }
 `;
 
-class Dashboard extends React.Component {
+class ApproveQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -237,8 +237,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+ApproveQuestion.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(approveQuestionStyle)(ApproveQuestion);

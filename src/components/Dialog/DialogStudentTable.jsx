@@ -100,6 +100,7 @@ const DELETE_STUDENT = gql`
 `;
 
 class StudentDialog extends React.Component {
+  reloadStudentsList = null;
   constructor(props) {
     super(props);
     this.props = props;
@@ -122,9 +123,10 @@ class StudentDialog extends React.Component {
   }
 
   // manage state for opening dialog
-  handleClickOpen = student => {
+  handleClickOpen = (student, reloadStudentList) => {
     this.setState({ open: true });
     this.setState({ ...student });
+    this.reloadStudentsList = reloadStudentList;
   };
 
   // close dialog
@@ -146,7 +148,39 @@ class StudentDialog extends React.Component {
       variables: {
         _id: this.state._id
       }
-    });
+    })
+      .then(response => {
+        console.log("then called");
+        // this.setState(
+        //   {
+        //     loading: false,
+        //     snackbar: {
+        //       ...this.state.snackbar,
+        //       variant: "success",
+        //       message: "Student Deleted Successfully!"
+        //     }
+        //   },
+        //   () => {
+        //     this.openSnackbar();
+        //     this.props.reloadStudentsList();
+        //     console.log("response");
+        //     console.log(response);
+        //   }
+        // );
+        if (this.reloadStudentsList !== null) {
+          this.reloadStudentsList();
+        }
+      })
+      .catch(err => {
+        console.log("catch called");
+        console.log(err);
+
+
+        // this.setState({
+        //   loading: false
+        // });
+        // this.closeSnackbar();
+      });
   };
 
   render() {

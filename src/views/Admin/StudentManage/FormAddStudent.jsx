@@ -11,15 +11,10 @@ import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  Button,
-  CircularProgress,
-  Divider,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import PropTypes from "prop-types";
+
+import { Button, CircularProgress, Divider, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import { MuiThemeProvider } from "material-ui/styles";
 import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
@@ -164,7 +159,13 @@ class FormAddStudent extends Component {
   handleClick = (addStudent, e) => {
     e.preventDefault();
     // check if fields are empty, if so, throw up snackbar and set msg accordingly
-    if (!this.state.assignval.username || !this.state.assignval.mname || !this.state.assignval.email || !this.state.assignval.phoneNumber || !this.state.assignval.batch) {
+    if (
+      !this.state.assignval.username ||
+      !this.state.assignval.mname ||
+      !this.state.assignval.email ||
+      !this.state.assignval.phoneNumber ||
+      !this.state.assignval.batch
+    ) {
       this.setState(
         {
           snackbar: {
@@ -225,7 +226,12 @@ class FormAddStudent extends Component {
                 message: "Student Added Successfully!"
               }
             },
-            () => this.openSnackbar()
+            () => {
+              this.openSnackbar();
+              this.props.reloadStudentsList();
+              console.log("response");
+              console.log(response);
+            }
           );
         })
         .catch(err => {
@@ -515,4 +521,8 @@ class FormAddStudent extends Component {
   }
 }
 
+FormAddStudent.propTypes = {
+  classes: PropTypes.object.isRequired,
+  reloadStudentsList: PropTypes.func.isRequired
+};
 export default withStyles(styles)(FormAddStudent);

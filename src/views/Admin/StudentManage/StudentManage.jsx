@@ -10,16 +10,14 @@ import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 
-import Exp from "../../../components/ExpansionPanel/Expansionpanel";
+import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
-} from "../../../Utils";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
+import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
   root: {
@@ -31,126 +29,140 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 20
   }
 });
-class Dashboard extends React.Component {
-  students = [];
 
+const FETCH_STUDENTS = gql`
+  {
+    students {
+      _id
+      username
+      name
+      email
+      password
+      phoneNumber
+      department {
+        _id
+        name
+      }
+      batch
+      attemptedAdminQuizzes
+      attemptedCustomQuizzes
+    }
+  }
+`;
+
+const columns = [
+  {
+    name: "Name",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "Username",
+    options: {
+      filter: false,
+      sort: true,
+      display: false
+    }
+  },
+  {
+    name: "Email",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "Department",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Batch",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Phone",
+    options: {
+      filter: false,
+      sort: false
+    }
+  },
+  {
+    name: "Rank",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "Score",
+    options: {
+      filter: false,
+      display: false,
+      sort: true
+    }
+  }
+];
+
+class StudentManage extends React.Component {
+  students = [];
   rowSelected = false;
+  refetchStudentsList = null;
+
+  reloadStudentsList = () => {
+    console.log("reloadStudentsList called");
+    if (this.refetchStudentsList !== null) {
+      this.refetchStudentsList();
+    }
+  };
+
+  tableOptions = {
+    filterType: "checkbox",
+    rowsPerPage: 20,
+    elevation: 0,
+    rowsPerPageOptions: [20, 30, 100, 200],
+    onRowsSelect: (currentRowsSelected, allRowsSelected) => {
+      console.log("onRowSelect");
+      console.log(allRowsSelected);
+      this.rowSelected = allRowsSelected.length > 0;
+    },
+    onRowClick: (rowData, rowMeta) => {
+      console.log("onRowClick");
+      if (!this.rowSelected) {
+        const clickedRowIndex = rowMeta.rowIndex;
+        this.child.handleClickOpen(
+          this.students[clickedRowIndex],
+          this.reloadStudentsList
+        );
+      }
+    }
+  };
 
   render() {
     const { classes } = this.props;
     const header1 = "Student";
     const header2 = "Add a new student";
-    const columns = [
-      {
-        name: "Name",
-        options: {
-          filter: false,
-          sort: true
-        }
-      },
-      {
-        name: "Username",
-        options: {
-          filter: false,
-          sort: true,
-          display: false
-        }
-      },
-      {
-        name: "Email",
-        options: {
-          filter: false,
-          sort: true
-        }
-      },
-      {
-        name: "Department",
-        options: {
-          filter: true,
-          sort: true
-        }
-      },
-      {
-        name: "Batch",
-        options: {
-          filter: true,
-          sort: true
-        }
-      },
-      {
-        name: "Phone",
-        options: {
-          filter: false,
-          sort: false
-        }
-      },
-      {
-        name: "Rank",
-        options: {
-          filter: false,
-          sort: true
-        }
-      },
-      {
-        name: "Score",
-        options: {
-          filter: false,
-          display: false,
-          sort: true
-        }
-      }
-    ];
-
-    const FETCH_STUDENTS = gql`
-      {
-        students {
-          _id
-          username
-          name
-          email
-          password
-          phoneNumber
-          department {
-            _id
-            name
-          }
-          batch
-          attemptedAdminQuizzes
-          attemptedCustomQuizzes
-        }
-      }
-    `;
-
-    const options = {
-      filterType: "checkbox",
-      rowsPerPage: 20,
-      elevation: 0,
-      rowsPerPageOptions: [20, 30, 100, 200],
-      onRowsSelect: (currentRowsSelected, allRowsSelected) => {
-        console.log("onRowSelect");
-        console.log(allRowsSelected);
-        this.rowSelected = allRowsSelected.length > 0;
-      },
-      onRowClick: (rowData, rowMeta) => {
-        console.log("onRowClick");
-        if (!this.rowSelected) {
-          const clickedRowIndex = rowMeta.rowIndex;
-          this.child.handleClickOpen(this.students[clickedRowIndex]);
-        }
-      }
-    };
 
     return (
       <Fragment>
         <TableDialog onRef={ref => (this.child = ref)} />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <Exp
+            <ExpansionPanel
               headers={header1}
               header={header2}
+              reloadStudentsList={this.reloadStudentsList}
               directingValue={EXPANSION_STUDENT_FORM}
             />
-            <Exp
+            <ExpansionPanel
+              reloadStudentsList={this.reloadStudentsList}
               headers={"Multiple Student"}
               header={"Add groups of students"}
               directingValue={EXPANSION_STUDENT_BATCH}
@@ -163,37 +175,40 @@ class Dashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Student List</h4>
               </CardHeader>
-              <Query query={FETCH_STUDENTS}>
-                {({ data, loading, error }) => {
-                  if (loading) {
-                    return <CircularProgress className={classes.progress} />;
-                  } else if (error) {
-                    return "Error occured!";
-                  } else {
-                    let studentsList = [];
-                    studentsList = data.students.map(student => {
-                      let studentData = [];
-                      studentData.push(student.name);
-                      studentData.push(student.username);
-                      studentData.push(student.email);
-                      studentData.push(student.department.name);
-                      studentData.push(student.batch.toString());
-                      studentData.push(student.phoneNumber);
-                      studentData.push(student.phoneNumber);
-                      return studentData;
-                    });
-                    this.students = data.students;
-                    return (
-                      <MUIDataTable
-                        title={""}
-                        data={studentsList}
-                        columns={columns}
-                        options={options}
-                      />
-                    );
-                  }
-                }}
-              </Query>
+              <CardBody>
+                <Query query={FETCH_STUDENTS}>
+                  {({ data, loading, error, refetch }) => {
+                    if (loading) {
+                      return <CircularProgress className={classes.progress}/>;
+                    } else if (error) {
+                      return "Error occured!";
+                    } else {
+                      this.refetchStudentsList = refetch;
+                      let studentsList = [];
+                      studentsList = data.students.map(student => {
+                        let studentData = [];
+                        studentData.push(student.name);
+                        studentData.push(student.username);
+                        studentData.push(student.email);
+                        studentData.push(student.department.name);
+                        studentData.push(student.batch.toString());
+                        studentData.push(student.phoneNumber);
+                        studentData.push(student.phoneNumber);
+                        return studentData;
+                      });
+                      this.students = data.students;
+                      return (
+                        <MUIDataTable
+                          title={""}
+                          data={studentsList}
+                          columns={columns}
+                          options={this.tableOptions}
+                        />
+                      );
+                    }
+                  }}
+                </Query>
+              </CardBody>{" "}
             </Card>
           </GridItem>
         </GridContainer>
@@ -202,8 +217,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+StudentManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(StudentManage);

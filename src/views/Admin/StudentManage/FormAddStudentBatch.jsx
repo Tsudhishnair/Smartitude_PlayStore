@@ -10,8 +10,7 @@ import "react-datasheet/lib/react-datasheet.css";
 
 import { Button, Typography } from "../../../../node_modules/@material-ui/core";
 
-import { Query } from "react-apollo";
-import { Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const styles = theme => ({
@@ -1042,7 +1041,12 @@ class StudentBatchAddition extends React.Component {
           studentInputs: this.uploadData
         }
       })
-        .then(response => console.log(response))
+        .then(response => {
+          console.log(response);
+          if (this.props.reloadStudentsList !== null) {
+            this.props.reloadStudentsList();
+          }
+        })
         .catch(err => console.log(err));
     }
   };
@@ -1126,7 +1130,8 @@ class StudentBatchAddition extends React.Component {
 }
 
 StudentBatchAddition.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  reloadStudentsList: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(StudentBatchAddition);

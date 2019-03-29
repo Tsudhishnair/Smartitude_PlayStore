@@ -59,20 +59,26 @@ class Expansionpanel extends Component {
     const { classes, directingValue, header, headers } = this.props;
     let layout;
 
-    if (directingValue == EXPANSION_QUIZ_FORM) {
+    if (directingValue === EXPANSION_QUIZ_FORM) {
       layout = <QuizForm />;
-    } else if (directingValue == EXPANSION_FACULTY_FORM) {
+    } else if (directingValue === EXPANSION_FACULTY_FORM) {
       layout = (
         <CreateFacultyForm
           categoryDetails={this.props.categoryDetails}
           departments={this.props.departments}
         />
       );
-    } else if (directingValue == EXPANSION_STUDENT_BATCH) {
-      layout = <StudentGroupManagement />;
-    } else if (directingValue == EXPANSION_STUDENT_FORM) {
-      layout = <FormAddStudent />;
-    } else if (directingValue == EXPANSION_DEPARTMENT_FORM) {
+    } else if (directingValue === EXPANSION_STUDENT_BATCH) {
+      layout = (
+        <StudentGroupManagement
+          reloadStudentsList={this.props.reloadStudentsList}
+        />
+      );
+    } else if (directingValue === EXPANSION_STUDENT_FORM) {
+      layout = (
+        <FormAddStudent reloadStudentsList={this.props.reloadStudentsList}/>
+      );
+    } else if (directingValue === EXPANSION_DEPARTMENT_FORM) {
       layout = <AddDeptForm />;
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
       layout = <FacultyGroupManagement />;
@@ -110,7 +116,11 @@ Expansionpanel.propTypes = {
   header: PropTypes.object.isRequired,
   headers: PropTypes.object.isRequired,
   Footer1: PropTypes.object.isRequired,
-  Footer2: PropTypes.object.isRequired
+  Footer2: PropTypes.object.isRequired,
+  categories: PropTypes.object,
+  categoryDetails: PropTypes.object,
+  departments: PropTypes.object,
+  reloadStudentsList: PropTypes.func
 };
 
 export default withStyles(styles)(Expansionpanel);
