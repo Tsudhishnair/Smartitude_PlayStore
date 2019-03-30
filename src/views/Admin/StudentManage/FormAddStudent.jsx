@@ -13,7 +13,13 @@ import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 
-import { Button, CircularProgress, Divider, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
 
@@ -138,6 +144,7 @@ class FormAddStudent extends Component {
       }
     });
   };
+
   // open snackbar
   openSnackbar = () => {
     this.setState({
@@ -146,7 +153,16 @@ class FormAddStudent extends Component {
         open: true
       }
     });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
   };
+
   // close snackbar by changing open state
   closeSnackbar = () => {
     this.setState({
@@ -483,6 +499,7 @@ class FormAddStudent extends Component {
                     horizontal: "right"
                   }}
                   open={snackbar.open}
+                  auto
                   autoHideDuration={6000}
                 >
                   <CustomSnackbar

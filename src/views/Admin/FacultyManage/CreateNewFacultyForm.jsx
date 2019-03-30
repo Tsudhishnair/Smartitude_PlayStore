@@ -192,6 +192,14 @@ class CreateNewFacultyForm extends Component {
         open: true
       }
     });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
   };
 
   // close snackbar by changing open state

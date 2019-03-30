@@ -4,13 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 
 import {
   Button,
+  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
-  TextField
+  Slide, FormControl
 } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
@@ -33,6 +33,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 2,
     backgroundColor: "#9ee",
+    minWidth: theme.spacing.unit * 5,
     wrap: "nowrap"
   },
   elementPadding: {
@@ -189,6 +190,7 @@ class DialogCategory extends React.Component {
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
                 <GridItem xs={12} md={12}>
+                  <FormControl>
                   <TextField
                     id={
                       this.state.type === "category"
@@ -211,10 +213,12 @@ class DialogCategory extends React.Component {
                     value={this.state.nameField}
                     onChange={this.handleNameChange}
                   />
+                  </FormControl>
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} md={12} lg={12}>
+                  <FormControl>
                   <TextField
                     id={
                       this.state.type === "category"
@@ -237,6 +241,7 @@ class DialogCategory extends React.Component {
                     value={this.state.descField}
                     onChange={this.handleDescChange}
                   />
+                  </FormControl>
                 </GridItem>
               </GridContainer>
             </DialogContentText>
