@@ -4,13 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide
+  Slide,
+  TextField
 } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
@@ -127,10 +127,21 @@ class DialogCategory extends React.Component {
           description: this.state.descField
         }
       }
-    }).then(res => {
-      // TODO: handle errors
-      this.handleDialogClose();
-    });
+    })
+      .then(res => {
+        // TODO: handle errors
+        if (this.props.reloadList !== null) {
+          this.props.reloadList();
+        }
+        this.handleDialogClose();
+      })
+      .catch(err => {
+        console.log("Error occured while editing category");
+        console.log(err);
+        if (this.props.reloadList !== null) {
+          this.props.reloadList();
+        }
+      });
   };
 
   // called on cick of subcategory edit confirmatin
@@ -144,10 +155,21 @@ class DialogCategory extends React.Component {
           category: this.state.parentCategory._id
         }
       }
-    }).then(res => {
-      // TODO: handle errors
-      this.handleDialogClose();
-    });
+    })
+      .then(res => {
+        // TODO: handle errors
+        if (this.props.reloadList !== null) {
+          this.props.reloadList();
+        }
+        this.handleDialogClose();
+      })
+      .catch(err => {
+        console.log("Error occured while editing subcategory");
+        console.log(err);
+        if (this.props.reloadList !== null) {
+          this.props.reloadList();
+        }
+      });
   };
 
   render() {
@@ -161,7 +183,7 @@ class DialogCategory extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-        {/* assign labels depending on type */}
+          {/* assign labels depending on type */}
           <DialogTitle id="form-dialog-title">Category</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -261,7 +283,8 @@ DialogCategory.propTypes = {
   positiveAction: PropTypes.string,
   negativeAction: PropTypes.string,
   action: PropTypes.func.isRequired,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  reloadList: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(DialogCategory);

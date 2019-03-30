@@ -8,6 +8,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
+import PropTypes from "prop-types";
 
 const styles = theme => ({
   root: {
@@ -124,12 +125,18 @@ class FormAddCategory extends Component {
             },
             () => this.openSnackbar()
           );
+          if (this.props.reloadList !== null) {
+            this.props.reloadList();
+          }
         })
         .catch(err => {
           this.setState({
             loading: false
           });
           this.closeSnackbar();
+          if (this.props.reloadList !== null) {
+            this.props.reloadList();
+          }
         });
     }
   };
@@ -240,4 +247,9 @@ class FormAddCategory extends Component {
     );
   }
 }
+
+FormAddCategory.propTypes = {
+  classes: PropTypes.object.isRequired,
+  reloadList: PropTypes.func.isRequired
+};
 export default withStyles(styles)(FormAddCategory);

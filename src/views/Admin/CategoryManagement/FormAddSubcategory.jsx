@@ -3,18 +3,14 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import {
-  Button,
-  CircularProgress,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import gql from "graphql-tag";
+import PropTypes from "prop-types";
 import green from "@material-ui/core/colors/green";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -159,12 +155,18 @@ class FormAddSubcategory extends Component {
             },
             () => this.openSnackbar()
           );
+          if (this.props.reloadList !== null) {
+            this.props.reloadList();
+          }
         })
         .catch(err => {
           this.setState({
             loading: false
           });
           this.closeSnackbar();
+          if (this.props.reloadList !== null) {
+            this.props.reloadList();
+          }
         });
     }
   };
@@ -297,4 +299,10 @@ class FormAddSubcategory extends Component {
     );
   }
 }
+
+FormAddSubcategory.propTypes = {
+  classes: PropTypes.object.isRequired,
+  categories: PropTypes.object.isRequired,
+  reloadList: PropTypes.func.isRequired
+};
 export default withStyles(styles)(FormAddSubcategory);

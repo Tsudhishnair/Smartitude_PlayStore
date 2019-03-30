@@ -84,9 +84,9 @@ class Expansionpanel extends Component {
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
       layout = <FormAddFacultyBatch reloadFacultiesList={this.props.reloadList}/>;
     } else if (directingValue === EXPANSION_CATEGORY_FORM) {
-      layout = <FormAddCategory/>;
+      layout = <FormAddCategory reloadList={this.props.reloadList}/>;
     } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
-      layout = <FormAddSubcategory categories={this.props.categories}/>;
+      layout = <FormAddSubcategory categories={this.props.categories} reloadList={this.props.reloadList}/>;
     }
 
     return (

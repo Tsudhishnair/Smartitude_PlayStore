@@ -5,32 +5,26 @@ import Card from "components/Card/Card.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 import {
+  Collapse,
+  IconButton,
   List,
   ListItem,
-  ListItemText,
-  Collapse,
-  Typography,
-  IconButton,
-  Avatar,
-  ListItemAvatar,
   ListItemSecondaryAction,
-  Snackbar
+  ListItemText,
+  Snackbar,
+  Typography
 } from "@material-ui/core";
 
-import { ExpandMore, ExpandLess, Edit, Delete } from "@material-ui/icons";
+import { Delete, Edit, ExpandLess, ExpandMore } from "@material-ui/icons";
 
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
-import {
-  EXPANSION_CATEGORY_FORM,
-  EXPANSION_SUBCATEGORY_FORM
-} from "../../../Utils";
-
+import { EXPANSION_CATEGORY_FORM, EXPANSION_SUBCATEGORY_FORM } from "../../../Utils";
 // react apollo
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 
 const styles = theme => ({
   form: {
@@ -89,6 +83,12 @@ const DELETE_SUBCATEGORY = gql`
 `;
 
 class CategoryManagement extends React.Component {
+  reloadList = null;
+  reloadCategoryDetailsList = () => {
+    if (this.reloadList !== null) {
+      this.reloadList();
+    }
+  };
   constructor(props) {
     super(props);
 
@@ -169,6 +169,7 @@ class CategoryManagement extends React.Component {
     if (isVisible) {
       return (
         <CategoryDialog
+          reloadList={this.reloadCategoryDetailsList}
           type={this.state.clickedType}
           object={this.state.selectedItem}
           parentCategory={this.state.parentCategory}
@@ -255,6 +256,7 @@ class CategoryManagement extends React.Component {
           },
           () => this.openSnackbar()
         );
+        this.reloadCategoryDetailsList();
       })
       .catch(err => {
         this.setState(
@@ -269,8 +271,8 @@ class CategoryManagement extends React.Component {
           () => this.openSnackbar()
         );
         console.log(err);
+        this.reloadCategoryDetailsList();
       })
-      .finally(this.toggleDeleteDialogVisibility());
   };
 
   // opens edit dialog by toggling visibility state and setting state to the item that was selected
@@ -331,7 +333,8 @@ class CategoryManagement extends React.Component {
 
     return (
       <Query query={FETCH_CATEGORY_DETAILS}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
+          this.reloadList = refetch;
           if (loading) {
             return <Typography>Loading</Typography>;
           } else if (error) {
@@ -355,9 +358,11 @@ class CategoryManagement extends React.Component {
                   <Expansionpanel
                     headers="Category"
                     header="Add new category"
+                    reloadList={this.reloadCategoryDetailsList}
                     directingValue={EXPANSION_CATEGORY_FORM}
                   />
                   <Expansionpanel
+                    reloadList={this.reloadCategoryDetailsList}
                     categories={categoriesList}
                     headers="Sub-Category"
                     header="Add new subcategory"
