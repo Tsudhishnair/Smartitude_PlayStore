@@ -10,8 +10,7 @@ import "react-datasheet/lib/react-datasheet.css";
 
 import { Button, Typography } from "../../../../node_modules/@material-ui/core";
 
-import { Query } from "react-apollo";
-import { Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const styles = theme => ({
@@ -538,8 +537,18 @@ class FacultyBatchAddition extends React.Component {
           facultyInputs: this.uploadData
         }
       })
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
+        .then(response => {
+          console.log(response);
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
+          }
+        });
     }
   };
 
@@ -622,7 +631,8 @@ class FacultyBatchAddition extends React.Component {
 }
 
 FacultyBatchAddition.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  reloadFacultiesList: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FacultyBatchAddition);

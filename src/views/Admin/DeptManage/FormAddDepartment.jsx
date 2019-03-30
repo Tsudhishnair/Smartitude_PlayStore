@@ -5,12 +5,7 @@ import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import {
-  Button,
-  CircularProgress,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -155,12 +150,18 @@ class FormAddDepartment extends React.Component {
             },
             () => this.openSnackbar()
           );
+          if (this.props.reloadDepartmentsList !== null) {
+            this.props.reloadDepartmentsList();
+          }
         })
         .catch(err => {
           this.setState({
             loading: false
           });
           this.closeSnackbar();
+          if (this.props.reloadDepartmentsList !== null) {
+            this.props.reloadDepartmentsList();
+          }
         });
     }
   };
@@ -285,7 +286,8 @@ class FormAddDepartment extends React.Component {
 }
 
 FormAddDepartment.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  reloadDepartmentsList: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(FormAddDepartment);

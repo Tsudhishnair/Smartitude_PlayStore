@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -8,7 +7,6 @@ import { Button, IconButton, Snackbar } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-
 // core components
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
@@ -17,22 +15,27 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-
 // apollo client
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-
 // dialog boxes
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import DeptDialog from "./DeptDialog";
-
 // constant
 import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
-
 // snackbar
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 class DeptManage extends React.Component {
+  refetchDepartmentsList = null;
+
+  reloadDepartmentsList = () => {
+    console.log("reloadDepartmentsList called");
+    if (this.refetchDepartmentsList !== null) {
+      this.refetchDepartmentsList();
+    }
+  };
+
   constructor(props) {
     super(props);
     //state to manage department dialog
@@ -99,18 +102,25 @@ class DeptManage extends React.Component {
         _id: this.deptToBeDeleted._id
       }
     })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        if (this.reloadDepartmentsList !== null) {
+          this.reloadDepartmentsList();
+        }
+      })
       .catch(err => {
         this.setState({
           // set error message of snackbar
           error: {
-            message: !!err.graphQLErrors
+            message: err.graphQLErrors
               ? err.graphQLErrors[0].message
               : err.networkError
           }
         });
-
         this.openSnackbar();
+        if (this.reloadDepartmentsList !== null) {
+          this.reloadDepartmentsList();
+        }
       })
       // close snackbar after resolution of request
       .finally(this.toggleDeleteDialogVisibility());
@@ -134,6 +144,7 @@ class DeptManage extends React.Component {
     if (isVisible) {
       return (
         <DeptDialog
+          reloadDepartmentsList={this.reloadDepartmentsList}
           department={this.state.deptData}
           onClose={this.toggleUpdateDialogVisibility}
         />
@@ -188,10 +199,13 @@ class DeptManage extends React.Component {
           headers={header1}
           header={header2}
           directingValue={EXPANSION_DEPARTMENT_FORM}
+          reloadList={this.reloadDepartmentsList}
         />
 
         <Query query={deptList}>
-          {({ data, loading, error }) => {
+          {({ data, loading, error, refetch }) => {
+            this.refetchDepartmentsList = refetch;
+
             return (
               <GridContainer>
                 {!loading

@@ -8,6 +8,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import PropTypes from "prop-types";
+
 
 export default class DeptDialog extends React.Component {
   constructor(props) {
@@ -52,7 +54,17 @@ export default class DeptDialog extends React.Component {
           description: this.state.department.description
         }
       }
-    });
+    })
+      .then(response => {
+        if (this.props.reloadDepartmentsList !== null) {
+          this.props.reloadDepartmentsList();
+        }
+      })
+      .catch(err => {
+        if (this.props.reloadDepartmentsList !== null) {
+          this.props.reloadDepartmentsList();
+        }
+      });
     this.setState({ open: false });
     this.props.onClose();
   };
@@ -132,3 +144,9 @@ export default class DeptDialog extends React.Component {
     );
   }
 }
+
+DeptDialog.propTypes = {
+  department: PropTypes.object.isRequired,
+  reloadDepartmentsList: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired
+};
