@@ -1,27 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Avatar from "@material-ui/core/Avatar";
-import Button from "../../components/CustomButtons/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Input from "@material-ui/core/Input";
-// import Input from '../../components';
-import InputLabel from "@material-ui/core/InputLabel";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+  Input,
+  InputLabel,
+  Paper,
+  Typography,
+  createMuiTheme
+} from "@material-ui/core";
+
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
 
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import lock from "assets/img/drawable/smart_logo.png";
-import { createMuiTheme } from "@material-ui/core";
 import { MuiThemeProvider } from "material-ui/styles";
 import { orange100 } from "material-ui/styles/colors";
+
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+
+import { loginHandler } from "../../Utils";
+
 import Spacing from "./AdminLogin";
 import GridContainer from "../../components/Grid/GridContainer";
 
@@ -91,6 +97,13 @@ class StudentLogin extends Component {
       form: {
         username: "",
         password: ""
+      },
+      redirecter: false,
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
       }
     };
   }
@@ -112,32 +125,79 @@ class StudentLogin extends Component {
     });
   };
   handleClick = (studentLogin, e) => {
+    this.setState({ ...this.state, loading: true });
+
     studentLogin({
       variables: {
         username: this.state.form.username,
         password: this.state.form.password
       }
     })
-      .then(response =>
-        localStorage.setItem("token", response.data.studentLogin)
-      )
-      .catch(err => console.log(err));
+      .then(response => {
+        localStorage.setItem("token", response.data.studentLogin);
+
+        // check for the value in local storage & update local state accordingly
+        if (loginHandler.authenticated("student")) {
+          this.setState(() => ({
+            redirecter: true
+          }));
+        }
+      })
+      .catch(err => {
+        // set error message for snackbar
+        this.setState({
+          error: {
+            message: err.graphQLErrors
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+
+        this.openSnackbar();
+        console.log(err.graphQLErrors);
+        console.log(err.networkError);
+      })
+      .finally(() => {
+        this.setState({ ...this.state, loading: false });
+      });
   };
 
-  routing(data) {
-    if (data.data !== undefined && data.data.studentLogin) {
-      return <Redirect to="/student" />;
-    }
-  }
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
 
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  // when component mounts, check for authentication state for redirection
   componentDidMount() {
-    if (localStorage.getItem("token")) {
-      this.props.history.push("/student/dashboard");
+    if (loginHandler.authenticated()) {
+      this.setState(() => ({
+        redirecter: true
+      }));
     }
   }
 
   render() {
     const { classes } = this.props;
+    const { redirecter, snackbar, error } = this.state;
+
+    // if auth token is present in storage, redirect to dashboard
+    if (redirecter === true) {
+      return <Redirect to="/admin/dashboard" />;
+    }
+
     return (
       <Mutation mutation={STUDENT_LOGIN}>
         {(studentLogin, data) => (
@@ -206,7 +266,6 @@ class StudentLogin extends Component {
                 </GridContainer>
               </main>
             </div>
-            {this.routing(data)}
           </MuiThemeProvider>
         )}
       </Mutation>
