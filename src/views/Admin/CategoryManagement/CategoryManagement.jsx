@@ -13,13 +13,15 @@ import {
   IconButton,
   Avatar,
   ListItemAvatar,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Snackbar
 } from "@material-ui/core";
 
 import { ExpandMore, ExpandLess, Edit, Delete } from "@material-ui/icons";
 
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 import {
   EXPANSION_CATEGORY_FORM,
@@ -99,7 +101,12 @@ class CategoryManagement extends React.Component {
       editDialog: false,
       deleteDialog: false,
       selectedItem: {},
-      clickedType: ""
+      clickedType: "",
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: ""
+      }
     };
 
     // used to check if its the first render
@@ -129,6 +136,25 @@ class CategoryManagement extends React.Component {
         return;
       }
     }
+  };
+
+  //Handle Snackbar Controls
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
   };
 
   // toggle the visibility of the dialog
@@ -216,8 +242,34 @@ class CategoryManagement extends React.Component {
         _id: this.state.selectedItem._id
       }
     })
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      .then(res => {
+        console.log(res);
+        this.setState(
+          {
+            loading: false,
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "success",
+              message: "Deletion Successfull!"
+            }
+          },
+          () => this.openSnackbar()
+        );
+      })
+      .catch(err => {
+        this.setState(
+          {
+            loading: false,
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "error",
+              message: "Could not perform delete request!"
+            }
+          },
+          () => this.openSnackbar()
+        );
+        console.log(err);
+      })
       .finally(this.toggleDeleteDialogVisibility());
   };
 
@@ -275,6 +327,7 @@ class CategoryManagement extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { snackbar } = this.state;
 
     return (
       <Query query={FETCH_CATEGORY_DETAILS}>
@@ -396,6 +449,7 @@ class CategoryManagement extends React.Component {
                                   >
                                     <ListItemText
                                       primary={subcategory.name}
+                                      color={"grey"}
                                       secondary={subcategory.description}
                                     />
                                     <IconButton
@@ -433,6 +487,20 @@ class CategoryManagement extends React.Component {
                       })}
                     </List>
                   </Card>
+                  <Snackbar
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    open={snackbar.open}
+                    autoHideDuration={6000}
+                  >
+                    <CustomSnackbar
+                      onClose={this.closeSnackbar}
+                      variant={snackbar.variant}
+                      message={snackbar.message}
+                    />
+                  </Snackbar>
                 </React.Fragment>
               );
             }

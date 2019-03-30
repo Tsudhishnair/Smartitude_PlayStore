@@ -115,7 +115,7 @@ class FormAddDepartment extends React.Component {
         {
           snackbar: {
             ...this.state.snackbar,
-            message: "Name field empty!"
+            message: "Dept. Code field empty!"
           }
         },
         () => this.openSnackbar()
@@ -125,7 +125,7 @@ class FormAddDepartment extends React.Component {
         {
           snackbar: {
             ...this.state.snackbar,
-            message: "Description field empty!"
+            message: "Department Name field empty!"
           }
         },
         () => this.openSnackbar()
@@ -210,8 +210,11 @@ class FormAddDepartment extends React.Component {
                     autoFocus
                     margin="normal"
                     id="name"
-                    label="Department Name"
+                    label="Department Code"
                     type="name"
+                    placeholder={
+                      "Enter department code as in IT for Information Technology"
+                    }
                     value={this.state.form.name}
                     onChange={this.handleName}
                     fullWidth
@@ -225,8 +228,9 @@ class FormAddDepartment extends React.Component {
                     autoFocus
                     margin="dense"
                     id="name"
-                    label="Description"
+                    label="Department Name"
                     type="name"
+                    placeholder={"Enter the full department name here"}
                     value={this.state.form.description}
                     onChange={this.handleDescription}
                     multiline
