@@ -87,6 +87,7 @@ class CategoryManagement extends React.Component {
   reloadCategoryDetailsList = () => {
     if (this.reloadList !== null) {
       this.reloadList();
+      this.firstLoad = true;
     }
   };
   constructor(props) {
