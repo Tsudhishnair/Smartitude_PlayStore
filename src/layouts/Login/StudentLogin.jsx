@@ -27,9 +27,8 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
 import { loginHandler } from "../../Utils";
-
-import Spacing from "./AdminLogin";
 import GridContainer from "../../components/Grid/GridContainer";
+import Spacing from "../../components/Spacing/Spacing";
 
 const STUDENT_LOGIN = gql`
   mutation studentLogin($username: String!, $password: String!) {
@@ -254,7 +253,7 @@ class StudentLogin extends Component {
                     </Button>
                   </form>
                 </Paper>
-                <Spacing />
+                <Spacing/>
                 <GridContainer
                   spacing={0}
                   direction="column"

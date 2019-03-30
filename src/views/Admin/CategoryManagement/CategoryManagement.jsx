@@ -321,12 +321,12 @@ class CategoryManagement extends React.Component {
                                 this.handleClick(categoryDetail.category._id)
                               }
                             >
-                              <ListItemAvatar>
-                                <Avatar
-                                  alt="Category Icon"
-                                  src="assets/img/faces/marc.jpg"
-                                />
-                              </ListItemAvatar>
+                              {/*<ListItemAvatar>*/}
+                              {/*<Avatar*/}
+                              {/*alt="Category Icon"*/}
+                              {/*src="assets/img/faces/marc.jpg"*/}
+                              {/*/>*/}
+                              {/*</ListItemAvatar>*/}
                               <ListItemText
                                 primary={categoryDetail.category.name}
                                 secondary={categoryDetail.category.description}
