@@ -79,8 +79,8 @@ const DELETE_CATEGORY = gql`
 `;
 
 const DELETE_SUBCATEGORY = gql`
-  mutation deleteCategory($_id: ID!) {
-    deleteCategory(_id: $_id) {
+  mutation deleteSubcategory($_id: ID!) {
+    deleteSubcategory(_id: $_id) {
       _id
     }
   }
@@ -104,6 +104,8 @@ class CategoryManagement extends React.Component {
 
     // used to check if its the first render
     this.firstLoad = true;
+
+    this.mutation;
   }
 
   // called when a row or the expand buttons are clicked
@@ -167,7 +169,7 @@ class CategoryManagement extends React.Component {
             content="Are you sure you want to delete this category?"
             positiveAction="Confirm"
             negativeAction="Cancel"
-            action={this.deleteCategory}
+            action={this.deleteItem}
             onClose={this.toggleDeleteDialogVisibility}
           />
         );
@@ -178,7 +180,7 @@ class CategoryManagement extends React.Component {
             content="Are you sure you want to delete this subcategory?"
             positiveAction="Confirm"
             negativeAction="Cancel"
-            action={this.deleteSubcategory}
+            action={this.deleteItem}
             onClose={this.toggleDeleteDialogVisibility}
           />
         );
@@ -187,23 +189,44 @@ class CategoryManagement extends React.Component {
   };
 
   handleDeleteCategoryClick = (selectedItem, mutation) => {
-    // this.setState({})
+    this.toggleDeleteDialogVisibility();
+
+    this.mutation = mutation;
+
+    this.setState({
+      selectedItem,
+      clickedType: "category"
+    });
   };
 
-  handleDeleteSubcategoryClick = (selectedItem, mutation) => {};
+  handleDeleteSubcategoryClick = (selectedItem, mutation) => {
+    this.toggleDeleteDialogVisibility();
 
-  deleteCategory = () => {};
+    this.mutation = mutation;
 
-  deleteSubcategory = () => {};
+    this.setState({
+      selectedItem,
+      clickedType: "subcategory"
+    });
+  };
+
+  deleteItem = () => {
+    this.mutation({
+      variables: {
+        _id: this.state.selectedItem._id
+      }
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+      .finally(this.toggleDeleteDialogVisibility());
+  };
 
   // opens edit dialog by toggling visibility state and setting state to the item that was selected
   openEditDialog = selectedItem => {
     this.toggleEditDialogVisibility();
 
     this.setState({
-      selectedItem: {
-        ...selectedItem
-      },
+      selectedItem,
       clickedType: "category"
     });
   };
@@ -323,7 +346,7 @@ class CategoryManagement extends React.Component {
                                       aria-label="Delete"
                                       onClick={e =>
                                         this.handleDeleteCategoryClick(
-                                          categoryDetail.category._id,
+                                          categoryDetail.category,
                                           deleteCategory
                                         )
                                       }
