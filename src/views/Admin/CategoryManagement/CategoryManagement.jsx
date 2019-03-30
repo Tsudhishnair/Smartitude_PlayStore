@@ -139,6 +139,7 @@ class CategoryManagement extends React.Component {
   };
 
   //Handle Snackbar Controls
+  // open snackbar
   openSnackbar = () => {
     this.setState({
       snackbar: {
@@ -146,6 +147,14 @@ class CategoryManagement extends React.Component {
         open: true
       }
     });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
   };
 
   closeSnackbar = () => {
@@ -493,12 +502,13 @@ class CategoryManagement extends React.Component {
                       horizontal: "right"
                     }}
                     open={snackbar.open}
-                    autoHideDuration={6000}
+                    autoHideDuration={5000}
                   >
                     <CustomSnackbar
                       onClose={this.closeSnackbar}
                       variant={snackbar.variant}
                       message={snackbar.message}
+                      autoHideDuration={5000}
                     />
                   </Snackbar>
                 </React.Fragment>

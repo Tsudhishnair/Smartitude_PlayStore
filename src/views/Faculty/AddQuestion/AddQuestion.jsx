@@ -107,6 +107,7 @@ class AddQuestion extends React.Component {
     };
   }
   //Handle Snackbar Controls
+  // open snackbar
   openSnackbar = () => {
     this.setState({
       snackbar: {
@@ -114,6 +115,14 @@ class AddQuestion extends React.Component {
         open: true
       }
     });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
   };
 
   closeSnackbar = () => {
