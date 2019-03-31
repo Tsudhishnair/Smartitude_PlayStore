@@ -142,7 +142,6 @@ class QuestionManage extends React.Component {
           } else {
             return (
               <div>
-                {console.log(data)}
                 {this.showQuestionManageDialog(this.state.open)}
                 <Spacing />
                 <GridContainer>
