@@ -204,7 +204,7 @@ class AddQuestion extends React.Component {
             category: this.state.category._id,
             subcategory: this.state.subCategory._id,
             difficulty: parseInt(this.state.difficulty),
-            options: optionArray,
+            options: this.optionArray,
             correctOption: this.state.correctOption,
             solution: this.state.solution
           }
