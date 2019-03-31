@@ -21,7 +21,10 @@ import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
-import { EXPANSION_CATEGORY_FORM, EXPANSION_SUBCATEGORY_FORM } from "../../../Utils";
+import {
+  EXPANSION_CATEGORY_FORM,
+  EXPANSION_SUBCATEGORY_FORM
+} from "../../../Utils";
 // react apollo
 import gql from "graphql-tag";
 import { Mutation, Query } from "react-apollo";
@@ -282,7 +285,7 @@ class CategoryManagement extends React.Component {
         );
         console.log(err);
         this.reloadCategoryDetailsList();
-      })
+      });
   };
 
   // opens edit dialog by toggling visibility state and setting state to the item that was selected

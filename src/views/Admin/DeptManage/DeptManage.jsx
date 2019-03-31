@@ -11,10 +11,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
+import DeleteForeverIcon from "@material-ui/icons/Delete";
 // apollo client
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -25,6 +23,12 @@ import DeptDialog from "./DeptDialog";
 import { EXPANSION_DEPARTMENT_FORM } from "../../../Utils";
 // snackbar
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+
+const styles = theme => ({
+  root: {
+    margin: 0
+  }
+});
 
 class DeptManage extends React.Component {
   refetchDepartmentsList = null;
@@ -44,9 +48,8 @@ class DeptManage extends React.Component {
       deleteDialogOpen: false,
       deptData: {},
       snackbar: {
-        open: false
-      },
-      error: {
+        open: false,
+        variant: "error",
         message: ""
       }
     };
@@ -58,7 +61,7 @@ class DeptManage extends React.Component {
     this.deptDeleteMutation;
   }
 
-  // open snackbar
+  // open snackbar with timer
   openSnackbar = () => {
     this.setState({
       snackbar: {
@@ -112,6 +115,17 @@ class DeptManage extends React.Component {
       }
     })
       .then(res => {
+        this.setState(
+          {
+            loading: false,
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "success",
+              message: this.deptToBeDeleted.name + " deleted successfully!"
+            }
+          },
+          () => this.openSnackbar()
+        );
         console.log(res);
         if (this.reloadDepartmentsList !== null) {
           this.reloadDepartmentsList();
@@ -126,7 +140,6 @@ class DeptManage extends React.Component {
               : err.networkError
           }
         });
-        this.openSnackbar();
         if (this.reloadDepartmentsList !== null) {
           this.reloadDepartmentsList();
         }
@@ -178,6 +191,7 @@ class DeptManage extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { snackbar } = this.state;
 
     // initialise query to get list of all departments
     const deptList = gql`
@@ -204,7 +218,7 @@ class DeptManage extends React.Component {
       <div>
         {this.renderUpdateDialog(this.state.updateDialogOpen)}
         {this.renderDeleteDialog(this.state.deleteDialogOpen)}
-        <Expansionpanel
+        <ExpansionPanel
           headers={header1}
           header={header2}
           directingValue={EXPANSION_DEPARTMENT_FORM}
@@ -222,7 +236,7 @@ class DeptManage extends React.Component {
                       return (
                         <React.Fragment key={department._id}>
                           <GridItem xs={12} sm={6} md={4}>
-                            <Card style={{ height: "280dp" }}>
+                            <Card className={classes.card}>
                               <CardBody>
                                 <h4 className={classes.cardTitle}>
                                   {department.name}
@@ -273,13 +287,13 @@ class DeptManage extends React.Component {
             vertical: "top",
             horizontal: "right"
           }}
-          open={this.state.snackbar.open}
+          open={snackbar.open}
           autoHideDuration={6000}
         >
           <CustomSnackbar
             onClose={this.closeSnackbar}
-            variant="error"
-            message={this.state.error.message}
+            variant={snackbar.variant}
+            message={snackbar.message}
           />
         </Snackbar>
       </div>
@@ -291,4 +305,4 @@ DeptManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(DeptManage);
+export default withStyles(styles)(DeptManage);

@@ -90,6 +90,14 @@ class FormAddDepartment extends React.Component {
         open: true
       }
     });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
   };
 
   // close snackbar by changing open state
@@ -110,6 +118,7 @@ class FormAddDepartment extends React.Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Dept. Code field empty!"
           }
         },
@@ -120,6 +129,7 @@ class FormAddDepartment extends React.Component {
         {
           snackbar: {
             ...this.state.snackbar,
+            variant: "error",
             message: "Department Name field empty!"
           }
         },
@@ -145,7 +155,7 @@ class FormAddDepartment extends React.Component {
               snackbar: {
                 ...this.state.snackbar,
                 variant: "success",
-                message: "Entry Added"
+                message: this.state.form.name + "department added successfully!"
               }
             },
             () => this.openSnackbar()
