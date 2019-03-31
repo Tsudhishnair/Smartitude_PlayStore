@@ -14,8 +14,7 @@ import {
   Button,
   Typography,
   TextField,
-  withStyles,
-  ExpansionPanelActions
+  withStyles
 } from "@material-ui/core";
 
 import moment from "moment";
@@ -54,6 +53,9 @@ const styles = theme => ({
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
   state = {
+    form: {
+      quizName: ""
+    },
     selectedDate: new Date()
   };
   // -----------------------------------------------------------
@@ -63,12 +65,22 @@ class QuizForm extends React.Component {
   };
   //--------------------------------------------------------------
   //--------------------------------------------------------------
-  //handleClick function is to add more options into the quiz 
+  //handleClick function is to add more options into the quiz
 
-    handleClick = event => {
-      
-    };
+  handleClick = event => {};
   //--------------------------------------------------------------
+
+  handleFieldChanges = event => {
+    if (event.target.value < 0) {
+      event.target.value = 0;
+    }
+    this.setState({
+      form: {
+        ...this.state.form,
+        [event.target.name]: event.target.value
+      }
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -85,6 +97,9 @@ class QuizForm extends React.Component {
                 label="Quiz Name"
                 type="input"
                 margin="normal"
+                name="quizName"
+                value={this.state.form.quizName}
+                onChange={this.handleFieldChanges}
                 fullWidth
               />
             </GridItem>
@@ -92,8 +107,11 @@ class QuizForm extends React.Component {
               <TextField
                 id="standard-number"
                 label="Number Of Questions"
-                type="number"
                 margin="normal"
+                type="number"
+                name="numberOfQns"
+                value={this.state.numberOfQns}
+                onChange={this.handleFieldChanges}
                 fullWidth
               />
             </GridItem>
@@ -194,9 +212,12 @@ class QuizForm extends React.Component {
               />
             </GridItem>
             <GridItem xs={12} sm={2} md={2}>
-              <Button fullWidth
+              <Button
+                fullWidth
                 color="primary"
-                className={classes.button} onClick={this.handleClick}>
+                className={classes.button}
+                onClick={this.handleClick}
+              >
                 Add More
               </Button>
             </GridItem>
@@ -207,6 +228,6 @@ class QuizForm extends React.Component {
   }
 }
 
-// QuizForm.propTypes = 
+// QuizForm.propTypes =
 
 export default withStyles(styles)(QuizForm);

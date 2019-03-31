@@ -10,7 +10,8 @@ import {
   Typography,
   Paper,
   Snackbar,
-  Button
+  Button,
+  CircularProgress
 } from "@material-ui/core";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -22,7 +23,6 @@ import { MuiThemeProvider } from "material-ui/styles";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
 import GridContainer from "../../components/Grid/GridContainer";
@@ -157,7 +157,7 @@ class AdminLogin extends Component {
         // set error message for snackbar
         this.setState({
           error: {
-            message: err.graphQLErrors
+            message: err.graphQLErrors[0]
               ? err.graphQLErrors[0].message
               : err.networkError
           }

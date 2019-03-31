@@ -12,7 +12,8 @@ import {
   InputLabel,
   Paper,
   Typography,
-  createMuiTheme
+  createMuiTheme,
+  Snackbar
 } from "@material-ui/core";
 
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -25,6 +26,9 @@ import { orange100 } from "material-ui/styles/colors";
 
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+
+import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
+
 
 import { loginHandler } from "../../Utils";
 import GridContainer from "../../components/Grid/GridContainer";
@@ -265,6 +269,20 @@ class StudentLogin extends Component {
                 </GridContainer>
               </main>
             </div>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={snackbar.open}
+              autoHideDuration={6000}
+            >
+              <CustomSnackbar
+                onClose={this.closeSnackbar}
+                variant="error"
+                message={error.message}
+              />
+            </Snackbar>
           </MuiThemeProvider>
         )}
       </Mutation>
