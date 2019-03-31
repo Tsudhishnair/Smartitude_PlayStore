@@ -10,7 +10,9 @@ import CardHeader from "../../../components/Card/CardHeader";
 import Card from "../../../components/Card/Card";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
-
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
+import Typography from "@material-ui/core/Typography";
 // core components
 
 class QuestionManage extends React.Component {
@@ -25,7 +27,12 @@ class QuestionManage extends React.Component {
   showQuestionManageDialog = isOpen => {
     if (isOpen) {
       console.log("render dialog called");
-      return (<DialogQuestion question={this.state.question} onClose={this.hideQuestionManageDialog}/>);
+      return (
+        <DialogQuestion
+          question={this.state.question}
+          onClose={this.hideQuestionManageDialog}
+        />
+      );
     }
   };
   hideQuestionManageDialog = isOpen => {
@@ -34,7 +41,7 @@ class QuestionManage extends React.Component {
       open: false
     });
   };
-  triggerQuestionManageDialog = (question) => {
+  triggerQuestionManageDialog = question => {
     this.setState({
       ...this.state,
       question,
@@ -42,11 +49,38 @@ class QuestionManage extends React.Component {
     });
   };
 
-  deleteQuestion = (question) => {
+  deleteQuestion = question => {
     return "";
   };
+
   render() {
     const { classes } = this.props;
+
+    //----------------------------------------------------------------
+    //Query to fetch question from database
+    const RETRIVE_QUESTIONS = gql`
+      {
+        questions {
+            _id
+            question
+            category{
+              _id
+              name
+            }
+            subcategory{
+              _id
+              name
+            }
+            difficulty
+            timesAttempted
+            timesSolved
+            options
+            correctOption
+            solution
+        }
+      }
+    `;
+    //------------------------------------------------------------------------
     let questions = [
       {
         question:
@@ -99,34 +133,47 @@ class QuestionManage extends React.Component {
       }
     ];
     return (
-      <div>
-        {this.showQuestionManageDialog(this.state.open)}
-        <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card className={classes.root}>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Questions</h4>
-              </CardHeader>
-              <GridContainer style={{ padding: "2%" }}>
-                {questions.map(question => {
-                  return (
-                    <QuestionDetails
-                      key={question._id}
-                      question={question}
-                      showActions={true}
-                      actionButtonText={"Manage Question"}
-                      actionFunction={this.triggerQuestionManageDialog}
-                      showDeleteIcon={true}
-                      deleteFunction={this.deleteQuestion}
-                    />
-                  );
-                })}
-              </GridContainer>
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
+      <Query query={RETRIVE_QUESTIONS}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return <Typography>Loading...</Typography>;
+          } else if (error) {
+            return <Typography>Error occured!!!</Typography>;
+          } else {
+            return (
+              <div>
+                {console.log(data)}
+                {this.showQuestionManageDialog(this.state.open)}
+                <Spacing />
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Card className={classes.root}>
+                      <CardHeader color="warning">
+                        <h4 className={classes.cardTitleWhite}>Questions</h4>
+                      </CardHeader>
+                      <GridContainer style={{ padding: "2%" }}>
+                        {questions.map(question => {
+                          return (
+                            <QuestionDetails
+                              key={question._id}
+                              question={question}
+                              showActions={true}
+                              actionButtonText={"Manage Question"}
+                              actionFunction={this.triggerQuestionManageDialog}
+                              showDeleteIcon={true}
+                              deleteFunction={this.deleteQuestion}
+                            />
+                          );
+                        })}
+                      </GridContainer>
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </div>
+            );
+          }
+        }}
+      </Query>
     );
   }
 }
