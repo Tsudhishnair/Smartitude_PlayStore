@@ -94,7 +94,7 @@ class QuestionManage extends React.Component {
           } else if (error) {
             return <Typography>Error occured!!!</Typography>;
           } else {
-            console.log(data);
+           
             
             return (
               <div>

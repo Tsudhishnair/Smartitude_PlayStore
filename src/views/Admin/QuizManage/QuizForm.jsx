@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
 import { DatePicker } from "material-ui-pickers";
@@ -6,6 +6,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
+import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
   FormControl,
   InputLabel,
@@ -18,6 +19,8 @@ import {
 } from "@material-ui/core";
 
 import moment from "moment";
+import gql from "graphql-tag";
+import { Query } from "react-apollo";
 
 const styles = theme => ({
   formroot: {
@@ -50,12 +53,24 @@ const styles = theme => ({
     margin: theme.spacing.unit * 4
   }
 });
+
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
+  categoryDetails=[];
   state = {
     form: {
       quizName: ""
     },
+    subcategories: [],
+    department: {
+      name: ""
+    },
+    category: {
+      name: ""
+    },
+    batches: "",
+    subcategoryList: [],
+    clearSubcategoryChips: false,
     selectedDate: new Date()
   };
   // -----------------------------------------------------------
@@ -69,7 +84,7 @@ class QuizForm extends React.Component {
 
   handleClick = event => {};
   //--------------------------------------------------------------
-
+  //handle All the function state addition
   handleFieldChanges = event => {
     if (event.target.value < 0) {
       event.target.value = 0;
@@ -81,149 +96,248 @@ class QuizForm extends React.Component {
       }
     });
   };
-
+  //----------------------------------------------------------------------
+  // Category dropdown funciton
+  renderCategoryDropdown = () => {
+    if (this.categoryDetails) {
+      return this.categoryDetails.map(categoryDetail => {
+        return (
+          <MenuItem value={categoryDetail} key={categoryDetail.category._id}>
+            {categoryDetail.category.name}
+          </MenuItem>
+        );
+      });
+    } else {
+      return <Fragment />;
+    }
+  };
+  //-----------------------------------------------------------------------------
+  //For Displaying the selected subcategories
+  getSelectedSubcategories = selectedSubcategories => {
+    const subcategories = selectedSubcategories.map(selectedSubcategory => {
+      return selectedSubcategory.value;
+    });
+    this.setState({
+      ...this.state,
+      subcategories
+    });
+  };
+  //-------------------------------------------------------------------------------
+  //Function is for clearing the chips 
+  chipsCleared = () => {
+    this.setState({
+      ...this.state,
+      clearInchargeSubcategoryChips: false,
+      clearSubcategoryChips: false
+    });
+  };
+  //---------------------------------------------------------------------------------
+  //Function is for obtaining subcategory corresponding to selected category
+  handleCategorySelect = event => {
+    const categoryDetail = event.target.value;
+    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
+      return {
+        key: subcategory._id,
+        label: subcategory.name
+      };
+    });
+    this.setState({
+      ...this.state,
+      [event.target.name]: categoryDetail.category,
+      subcategoryList: availableSubcategories,
+      subcategories: [],
+      clearSubcategoryChips: true,
+    });
+  };
+  //----------------------------------------------------------------------------------
   render() {
     const { classes } = this.props;
+    //Query to access Batch Category and SubCategory details
+    const ALL_QUERY = gql`
+      {
+        batches
+        categoryDetailsList {
+          subcategory {
+            _id
+            name
+          }
+          category {
+            _id
+            name
+          }
+        }
+      }
+    `;
+
     return (
-      <div className={classes.root}>
-        <form autoComplete="off" autoWidth={true}>
-          <Typography>
-            <strong>Basic Info</strong>
-          </Typography>
-          <GridContainer>
-            <GridItem xs={12} sm={3} md={3} className={classes.container}>
-              <TextField
-                id="standard-search"
-                label="Quiz Name"
-                type="input"
-                margin="normal"
-                name="quizName"
-                value={this.state.form.quizName}
-                onChange={this.handleFieldChanges}
-                fullWidth
-              />
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3} className={classes.container}>
-              <TextField
-                id="standard-number"
-                label="Number Of Questions"
-                margin="normal"
-                type="number"
-                name="numberOfQns"
-                value={this.state.numberOfQns}
-                onChange={this.handleFieldChanges}
-                fullWidth
-              />
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DatePicker
-                  className={classes.date_root}
-                  minDate={this.state.selectedDate}
-                  label="Quiz Expiry"
-                  clearable
-                  formatDate={date => moment(date).format("YYYY-MM-DD")}
-                  value={this.state.selectedDate}
-                  format="dd/MMM/yyyy"
-                  onChange={this.handleDateChange}
-                />
-              </MuiPickersUtilsProvider>
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3} className={classes.formroot}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple">Batch</InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                  autoWidth={true}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-          </GridContainer>
-          <Typography>
-            <strong>Other Info</strong>
-          </Typography>
-          <GridContainer>
-            <GridItem xs={12} sm={3} md={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth>
-                  Category
-                </InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                >
-                  <MenuItem value="">
-                    <em>All Category</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Category 1</MenuItem>
-                  <MenuItem value={20}>Category 2</MenuItem>
-                  <MenuItem value={30}>Category 3</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={3} md={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple" fullWidth>
-                  Sub Category
-                </InputLabel>
-                <Select
-                  inputProps={{
-                    name: "age",
-                    id: "age-simple"
-                  }}
-                  fullWidth
-                >
-                  <MenuItem value="">
-                    <em>All Category</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Category 1</MenuItem>
-                  <MenuItem value={20}>Category 2</MenuItem>
-                  <MenuItem value={30}>Category 3</MenuItem>
-                </Select>
-              </FormControl>
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2}>
-              <TextField
-                id="standard-number"
-                label="No. Of Quest."
-                type="number"
-                fullWidth
-                margin="normal"
-              />
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2}>
-              <TextField
-                id="standard-number"
-                label="Time Limit (min)"
-                type="number"
-                fullWidth
-                margin="normal"
-              />
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2}>
-              <Button
-                fullWidth
-                color="primary"
-                className={classes.button}
-                onClick={this.handleClick}
-              >
-                Add More
-              </Button>
-            </GridItem>
-          </GridContainer>
-        </form>
-      </div>
+      <Query query={ALL_QUERY}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return <Typography>Loading...</Typography>;
+          } else if (error) {
+            return <Typography>Error occured!!!</Typography>;
+          } else {
+            console.log(data);
+            this.categoryDetails = data.categoryDetailsList;
+            return (
+              <div className={classes.root}>
+                <form autoComplete="off" autoWidth={true}>
+                  <Typography>
+                    <strong>Basic Info</strong>
+                  </Typography>
+                  <GridContainer>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.container}
+                    >
+                      <TextField
+                        id="standard-search"
+                        label="Quiz Name"
+                        type="input"
+                        margin="normal"
+                        name="quizName"
+                        value={this.state.form.quizName}
+                        onChange={this.handleFieldChanges}
+                        fullWidth
+                      />
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.container}
+                    >
+                      <TextField
+                        id="standard-number"
+                        label="Number Of Questions"
+                        margin="normal"
+                        type="number"
+                        name="numberOfQns"
+                        value={this.state.numberOfQns}
+                        onChange={this.handleFieldChanges}
+                        fullWidth
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={3} md={3}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          className={classes.date_root}
+                          minDate={this.state.selectedDate}
+                          label="Quiz Expiry"
+                          clearable
+                          formatDate={date => moment(date).format("YYYY-MM-DD")}
+                          value={this.state.selectedDate}
+                          format="dd/MMM/yyyy"
+                          onChange={this.handleDateChange}
+                        />
+                      </MuiPickersUtilsProvider>
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.formroot}
+                    >
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="age-simple">Batch</InputLabel>
+                        <Select
+                          inputProps={{
+                            name: "age",
+                            id: "age-simple"
+                          }}
+                          value={this.state.batches}
+                          onChange={this.handleFieldChanges}
+                          fullWidth
+                          autoWidth={true}
+                        >
+                          {data.batches.map(batch => {
+                            return <MenuItem>{batch}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </GridItem>
+                  </GridContainer>
+                  <Typography>
+                    <strong>Other Info</strong>
+                  </Typography>
+                  <GridContainer>
+                    <GridItem
+                      xs={12}
+                      sm={4}
+                      md={4}
+                      className={classes.formControl}
+                    >
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="category">Category</InputLabel>
+                        <Select
+                          onChange={this.handleCategorySelect}
+                          value={this.state.category.name}
+                          renderValue={value => {
+                            return value;
+                          }}
+                          inputProps={{
+                            name: "category",
+                            id: "category"
+                          }}
+                          fullWidth
+                        >
+                          {this.renderCategoryDropdown()}
+                        </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={8}
+                      md={8}
+                      className={classes.elementPadding}
+                    >
+                      <ReactChipInput
+                        style={{ zIndex: 0 }}
+                        data={this.state.subcategoryList}
+                        label="Sub-Categories"
+                        hintText="Select sub-categories"
+                        getSelectedObjects={this.getSelectedSubcategories}
+                        clearChips={this.state.clearSubcategoryChips}
+                        onChipsCleared={this.chipsCleared}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <TextField
+                        id="standard-number"
+                        label="No. Of Quest."
+                        type="number"
+                        fullWidth
+                        margin="normal"
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <TextField
+                        id="standard-number"
+                        label="Time Limit (min)"
+                        type="number"
+                        fullWidth
+                        margin="normal"
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <Button
+                        fullWidth
+                        color="primary"
+                        className={classes.button}
+                        onClick={this.handleClick}
+                      >
+                        Add More
+                      </Button>
+                    </GridItem>
+                  </GridContainer>
+                </form>
+              </div>
+            );
+          }
+        }}
+      </Query>
     );
   }
 }
