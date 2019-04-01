@@ -74,7 +74,7 @@ class QuestionManage extends React.Component {
           }
           difficulty
           timesAttempted
-          approvalSatus
+          approvalStatus
           timesSolved
           options
           correctOption
