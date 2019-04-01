@@ -332,7 +332,7 @@ class CreateNewFacultyForm extends Component {
               <Typography>
                 <strong>Basic Info</strong>
               </Typography>
-              <form>
+              <form onSubmit={e => this.handleClick(addFaculty, e)}>
                 <GridContainer>
                   <GridItem
                     xs={12}
@@ -524,6 +524,7 @@ class CreateNewFacultyForm extends Component {
                       onChipsCleared={this.chipsCleared}
                     />
                   </GridItem>
+                  <Spacing />
                   <GridItem
                     xs={12}
                     sm={8}
@@ -537,6 +538,7 @@ class CreateNewFacultyForm extends Component {
                       data={this.state.subcategoryList}
                       getSelectedObjects={this.getSelectedInchargeSubcategories}
                       clearChips={this.state.clearInchargeSubcategoryChips}
+                      isDisabled={!this.state.isInCharge}
                       onChipsCleared={this.chipsCleared}
                     />
                   </GridItem>
@@ -557,7 +559,6 @@ class CreateNewFacultyForm extends Component {
                       color="primary"
                       variant="outlined"
                       type={"submit"}
-                      onClick={e => this.handleClick(addFaculty, e)}
                       disabled={loading}
                     >
                       Assign

@@ -13,6 +13,7 @@ import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Typography from "@material-ui/core/Typography";
+
 // core components
 
 class QuestionManage extends React.Component {
@@ -61,31 +62,32 @@ class QuestionManage extends React.Component {
     const RETRIVE_QUESTIONS = gql`
       {
         questions {
+          _id
+          question
+          category {
             _id
-            question
-            category{
-              _id
-              name
-            }
-            subcategory{
-              _id
-              name
-            }
-            difficulty
-            timesAttempted
-            timesSolved
-            options
-            correctOption
-            createdBy{
-              _id
-              name
-            }
-            solution
+            name
+          }
+          subcategory {
+            _id
+            name
+          }
+          difficulty
+          timesAttempted
+          timesSolved
+          options
+          correctOption
+          createdBy {
+            _id
+            name
+          }
+          solution
+          createdAt
         }
       }
     `;
     //------------------------------------------------------------------------
-    
+
     return (
       <Query query={RETRIVE_QUESTIONS}>
         {({ data, loading, error }) => {
@@ -94,8 +96,6 @@ class QuestionManage extends React.Component {
           } else if (error) {
             return <Typography>Error occured!!!</Typography>;
           } else {
-           
-            
             return (
               <div>
                 {this.showQuestionManageDialog(this.state.open)}

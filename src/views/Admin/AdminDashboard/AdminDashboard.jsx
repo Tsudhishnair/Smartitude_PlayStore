@@ -70,7 +70,9 @@ class AdminDashboard extends React.Component {
                             <Button
                               round
                               color="success"
-                              style={{ marginLeft: "auto" }}
+                              style={{
+                                background: "transparent",
+                                marginLeft: "auto" }}
                             >
                               Manage
                             </Button>

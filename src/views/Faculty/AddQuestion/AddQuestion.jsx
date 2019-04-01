@@ -92,7 +92,7 @@ class AddQuestion extends React.Component {
       solution: "",
       correctOption: "",
       category: "",
-      subCategory: "",
+      subcategory: "",
       subcategoryList: [],
       difficulty: "",
       dataLoaded: false,
@@ -202,7 +202,7 @@ class AddQuestion extends React.Component {
             question: this.state.question,
             createdBy: facultyId,
             category: this.state.category._id,
-            subcategory: this.state.subCategory._id,
+            subcategory: this.state.subcategory._id,
             difficulty: parseInt(this.state.difficulty),
             options: this.optionArray,
             correctOption: this.state.correctOption,
@@ -243,7 +243,7 @@ class AddQuestion extends React.Component {
       ...this.state,
       [event.target.name]: categoryDetail.category,
       subcategoryList: availableSubcategories,
-      subCategory: ""
+      subcategory: ""
     });
   };
   //-------------------------------------------------------------
@@ -287,7 +287,7 @@ class AddQuestion extends React.Component {
       solution: "",
       correctOption: "",
       category: "",
-      subCategory: "",
+      subcategory: "",
       subcategoryList: [],
       difficulty: ""
     });
@@ -336,7 +336,7 @@ class AddQuestion extends React.Component {
       }
     `;
     //------------------------------------------------------------
-
+    console.log(this.state);
     return (
       <Mutation mutation={ADD_QUESTION} onCompleted={this.handleReset}>
         {addQuestion => {
@@ -540,18 +540,18 @@ class AddQuestion extends React.Component {
                               </Select>
                             </GridItem>
                             <GridItem xs={12} sm={6} md={6}>
-                              <InputLabel htmlFor="subCategory" fullWidth>
+                              <InputLabel htmlFor="subcategory" fullWidth>
                                 Sub Category
                               </InputLabel>
                               <Select
                                 onChange={this.handleChange}
-                                value={this.state.subCategory.name}
+                                value={this.state.subcategory.name}
                                 renderValue={value => {
                                   return value;
                                 }}
                                 inputProps={{
-                                  name: "subCategory",
-                                  id: "subCategory"
+                                  name: "subcategory",
+                                  id: "subcategory"
                                 }}
                                 fullWidth
                               >
