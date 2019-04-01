@@ -47,10 +47,14 @@ class DeptManage extends React.Component {
       updateDialogOpen: false,
       deleteDialogOpen: false,
       deptData: {},
+      error: {
+        message: ""
+      },
       snackbar: {
         open: false,
         variant: "error",
-        message: ""
+        message: "",
+        duration: 4000
       }
     };
 
@@ -76,7 +80,7 @@ class DeptManage extends React.Component {
           open: false
         }
       });
-    }, 4000);
+    }, this.state.snackbar.duration);
   };
 
   closeSnackbar = () => {
@@ -132,14 +136,32 @@ class DeptManage extends React.Component {
         }
       })
       .catch(err => {
+
         this.setState({
           // set error message of snackbar
           error: {
+            ...this.state.error,
             message: err.graphQLErrors
               ? err.graphQLErrors[0].message
               : err.networkError
           }
         });
+        console.log(err.graphQLErrors[0].message);
+        this.setState(
+          {
+            loading: false,
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "error",
+              duration: 10000,
+              message:
+                this.deptToBeDeleted.name +
+                " could not be deleted!" +
+                err.graphQLErrors[0].message
+            }
+          },
+          () => this.openSnackbar()
+        );
         if (this.reloadDepartmentsList !== null) {
           this.reloadDepartmentsList();
         }

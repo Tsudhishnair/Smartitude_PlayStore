@@ -197,7 +197,7 @@ class ReactChipSelect extends React.Component {
 
 
   render() {
-    const { classes, theme, getSelectedObjects, clearChips, onChipsCleared } = this.props;
+    const { classes, theme, getSelectedObjects, clearChips, isDisabled, onChipsCleared } = this.props;
     if(clearChips) {
       this.setState({
         ...this.state,
@@ -245,6 +245,7 @@ class ReactChipSelect extends React.Component {
             onChange={this.handleChange("multi")}
             placeholder={this.props.hintText}
             isMulti
+            isDisabled={isDisabled}
             zIndex="9999"
             fullWidth
           />
@@ -259,6 +260,7 @@ ReactChipSelect.propTypes = {
   theme: PropTypes.object.isRequired,
   getSelectedObjects: PropTypes.func.isRequired,
   clearChips: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
   onChipsCleared: PropTypes.func.isRequired,
   initialValues: PropTypes.func
 };

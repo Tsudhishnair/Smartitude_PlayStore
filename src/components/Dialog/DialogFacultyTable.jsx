@@ -599,6 +599,7 @@ class DialogFacultyTable extends React.Component {
                           style={{ zIndex: 0 }}
                           label="In-charge Sub-Categories"
                           hintText="Select in-charge sub-categories"
+                          isDisabled={!this.state.isInCharge}
                           data={this.state.subcategoryList}
                           getSelectedObjects={
                             this.getSelectedInchargeSubcategories

@@ -158,7 +158,7 @@ class Dashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>build</Icon>
-                        <Button round color="success" style={{ marginLeft: 'auto', }}>Take Quiz</Button>
+                        <Button round color="success" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
                       </CardFooter>
                
                     </Card>

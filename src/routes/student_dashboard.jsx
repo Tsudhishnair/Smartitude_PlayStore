@@ -33,13 +33,6 @@ const dashboardRoutes = [
     component: NotificationsPage
   },
   {
-    path: "/student/testing",
-    sidebarName: "TestingQuiz",
-    navbarName: "TestingQuiz",
-    icon: NotificationIcon,
-    component: Test
-  },
-  {
     redirect: true,
     path: "/student",
     to: "/student/dashboard",
