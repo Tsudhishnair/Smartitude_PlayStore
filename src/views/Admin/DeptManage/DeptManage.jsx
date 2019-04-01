@@ -211,7 +211,7 @@ class DeptManage extends React.Component {
       }
     `;
 
-    const header1 = "Dept";
+    const header1 = "Department";
     const header2 = "Add new department";
 
     return (
