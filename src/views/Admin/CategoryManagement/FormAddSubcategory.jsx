@@ -184,13 +184,13 @@ class FormAddSubcategory extends Component {
                 <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={6}
-                    md={6}
-                    className={classes.formControl}
+                    sm={4}
+                    md={4}
+                    // className={classes.formControl}
                   >
-                    <FormControl fullWidth>
+                  
                       <InputLabel htmlFor="category">
-                        Choose the Category for which the subcategory belongs to
+                        Choose the Category 
                       </InputLabel>
                       <Select
                         required
@@ -218,9 +218,10 @@ class FormAddSubcategory extends Component {
                           );
                         })}
                       </Select>
-                    </FormControl>
+               
                   </GridItem>
-                  <GridItem xs={6} md={6}>
+                  <GridItem xs={12} md={12} sm={12}  className={classes.formControl}>
+
                     <TextField
                       autoFocus
                       margin="normal"
