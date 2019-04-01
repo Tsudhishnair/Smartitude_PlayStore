@@ -76,62 +76,16 @@ class QuestionManage extends React.Component {
             timesSolved
             options
             correctOption
+            createdBy{
+              _id
+              name
+            }
             solution
         }
       }
     `;
     //------------------------------------------------------------------------
-    let questions = [
-      {
-        question:
-          "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        createdBy: "Django",
-        correctOption: "",
-        category: "Speed and Distance",
-        subcategory: "Problems on Trains"
-      },
-      {
-        question:
-          "The length of the bridge, which a train 130 metres long and travelling at 45 km/hr can cross in 30 seconds, is:",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        correctOption: "4"
-      },
-      {
-        question:
-          "In the first 10 overs of a cricket game, the run rate was only 3.2. What should be the run rate in the remaining 40 overs to reach the target of 282 runs?",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        correctOption: "4"
-      },
-      {
-        question:
-          "A family consists of two grandparents, two parents and three grandchildren. The average age of the grandparents is 67 years, that of the parents is 35 years and that of the grandchildren is 6 years. What is the average age of the family?",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        correctOption: "4"
-      },
-      {
-        question: "Question Question",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        correctOption: "4"
-      },
-      {
-        question: "Question Question",
-        options: ["120 metres", "180 metres", "324 metres", "150 metres"],
-        timesAttempted: "2",
-        timesSolved: "1",
-        correctOption: "4"
-      }
-    ];
+    
     return (
       <Query query={RETRIVE_QUESTIONS}>
         {({ data, loading, error }) => {
@@ -140,6 +94,8 @@ class QuestionManage extends React.Component {
           } else if (error) {
             return <Typography>Error occured!!!</Typography>;
           } else {
+            console.log(data);
+            
             return (
               <div>
                 {this.showQuestionManageDialog(this.state.open)}
@@ -151,7 +107,7 @@ class QuestionManage extends React.Component {
                         <h4 className={classes.cardTitleWhite}>Questions</h4>
                       </CardHeader>
                       <GridContainer style={{ padding: "2%" }}>
-                        {questions.map(question => {
+                        {data.questions.map(question => {
                           return (
                             <QuestionDetails
                               key={question._id}

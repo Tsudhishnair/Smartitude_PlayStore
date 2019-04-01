@@ -33,10 +33,10 @@ class QuestionDetails extends Component {
           </h4>
           <p>
             <b>Created By: </b>
-            {question.createdBy}
+            {question.createdBy.name}
             <br />
             <b>Category/Subcategory: </b>
-            {question.category} - {question.subcategory}
+            {question.category.name} - {question.subcategory.name}
             <br />
             <b>Times Attempted: </b>
             {question.timesAttempted}
