@@ -7,7 +7,6 @@ import List from "@material-ui/core/List";
 // core components
 import footerStyle from "assets/jss/material-dashboard-react/components/footerStyle.jsx";
 import Link from "react-router-dom/es/Link";
-import Toolbar from "../../layouts/Landing/Landing";
 
 function Footer({ ...props }) {
   const { classes } = props;
@@ -30,9 +29,9 @@ function Footer({ ...props }) {
         </div>
         <div className={classes.right}>
           <List className={classes.list}>
-            <Link to="/student/login">
+            <Link to="/admin/login">
               <ListItem className={classes.inlineBlock}>
-                <a className={classes.block}>Student Login</a>
+                <a className={classes.block}>Admin Login</a>
               </ListItem>
             </Link>
             <Link to="/faculty/login">

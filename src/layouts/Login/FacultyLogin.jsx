@@ -25,6 +25,7 @@ import { loginHandler } from "../../Utils";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
 import GridContainer from "../../components/Grid/GridContainer";
+import Footer from "../../components/Footer/FacultyLoginFooter";
 import Spacing from "../../components/Spacing/Spacing";
 import green from "@material-ui/core/colors/green";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -43,11 +44,11 @@ const styles = theme => ({
     }
   },
   root: {
-    height: "100vh",
+    height: "88vh",
     primary: "orange",
     secondary: "orange",
     backgroundSize: "cover",
-    padding: theme.spacing.unit * 8,
+    padding: theme.spacing.unit * 7,
     margin: "0",
     display: "flex",
     alignItems: "center"
@@ -278,6 +279,7 @@ class FacultyLogin extends Component {
                 </GridContainer>
               </main>
             </div>
+            <Footer />
             <Snackbar
               anchorOrigin={{
                 vertical: "top",

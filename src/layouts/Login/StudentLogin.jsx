@@ -22,6 +22,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import lock from "assets/img/drawable/smart_logo.png";
 import { MuiThemeProvider } from "material-ui/styles";
+import Footer from "../../components/Footer/StudentLoginFooter";
 import { orange100 } from "material-ui/styles/colors";
 
 import gql from "graphql-tag";
@@ -55,11 +56,11 @@ const styles = theme => ({
     }
   },
   root: {
-    height: "100vh",
+    height: "88vh",
     primary: "orange",
     secondary: "orange",
     backgroundSize: "cover",
-    padding: theme.spacing.unit * 8,
+    padding: theme.spacing.unit * 7,
     margin: "0"
   },
   main: {
@@ -269,6 +270,7 @@ class StudentLogin extends Component {
                 </GridContainer>
               </main>
             </div>
+            <Footer />
             <Snackbar
               anchorOrigin={{
                 vertical: "top",
