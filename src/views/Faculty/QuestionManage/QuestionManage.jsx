@@ -11,8 +11,8 @@ import Card from "../../../components/Card/Card";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
 import Typography from "@material-ui/core/Typography";
+import { Mutation, Query } from "react-apollo";
 
 // core components
 
@@ -50,13 +50,9 @@ class QuestionManage extends React.Component {
     });
   };
 
-  deleteQuestion = question => {
-    return "";
-  };
-
   render() {
     const { classes } = this.props;
-
+ 
     //----------------------------------------------------------------
     //Query to fetch question from database
     const RETRIVE_QUESTIONS = gql`
@@ -90,46 +86,52 @@ class QuestionManage extends React.Component {
     //------------------------------------------------------------------------
 
     return (
-      <Query query={RETRIVE_QUESTIONS}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <Typography>Loading...</Typography>;
-          } else if (error) {
-            return <Typography>Error occured!!!</Typography>;
-          } else {
-            return (
-              <div>
-                {this.showQuestionManageDialog(this.state.open)}
-                <Spacing />
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Card className={classes.root}>
-                      <CardHeader color="warning">
-                        <h4 className={classes.cardTitleWhite}>Questions</h4>
-                      </CardHeader>
-                      <GridContainer style={{ padding: "2%" }}>
-                        {data.questions.map(question => {
-                          return (
-                            <QuestionDetails
-                              key={question._id}
-                              question={question}
-                              showActions={true}
-                              actionButtonText={"Manage Question"}
-                              actionFunction={this.triggerQuestionManageDialog}
-                              showDeleteIcon={true}
-                              deleteFunction={this.deleteQuestion}
-                            />
-                          );
-                        })}
+
+            <Query query={RETRIVE_QUESTIONS}>
+              {({ data, loading, error }) => {
+                if (loading) {
+                  return <Typography>Loading...</Typography>;
+                } else if (error) {
+                  return <Typography>Error occured!!!</Typography>;
+                } else {
+                  return (
+                    <div>
+                      {this.showQuestionManageDialog(this.state.open)}
+                      <Spacing />
+                      <GridContainer>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <Card className={classes.root}>
+                            <CardHeader color="warning">
+                              <h4 className={classes.cardTitleWhite}>
+                                Questions
+                              </h4>
+                            </CardHeader>
+                            <GridContainer style={{ padding: "2%" }}>
+                              {data.questions.map(question => {
+                                return (
+                                  <QuestionDetails
+                                    key={question._id}
+                                    question={question}
+                                    showActions={true}
+                                    actionButtonText={"Manage Question"}
+                                    actionFunction={
+                                      this.triggerQuestionManageDialog
+                                    }
+                                    showDeleteIcon={true}
+                                    // deleteFunction={this.deleteQuestion}
+                                  />
+                                );
+                              })}
+                            </GridContainer>
+                          </Card>
+                        </GridItem>
                       </GridContainer>
-                    </Card>
-                  </GridItem>
-                </GridContainer>
-              </div>
-            );
-          }
-        }}
-      </Query>
+                    </div>
+                  );
+                }
+              }}
+            </Query>
+          
     );
   }
 }

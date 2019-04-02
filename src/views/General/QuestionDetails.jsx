@@ -7,13 +7,32 @@ import GridItem from "../../components/Grid/GridItem";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { Mutation} from "react-apollo";
+import gql from "graphql-tag";
 
 class QuestionDetails extends Component {
   constructor(props) {
     super(props);
   }
-
+  deleteQuestion = (func,data) => {
+    func({
+      variables:{
+        _id:data
+      }
+    })
+  }
   render() {
+    //---------------------------------------------------------------
+    //Mutation to delete questions
+    const DELETE_QUESTION = gql`
+    mutation deleteQuestion($_id:ID!)
+    {
+      deleteQuestion(_id:$_id){
+        _id
+      }
+    }
+    `;
+
     const {
       question,
       showActions,
@@ -23,7 +42,6 @@ class QuestionDetails extends Component {
       actionSecondaryFunction,
       secondaryActionButtonText,
       showDeleteIcon,
-      deleteFunction
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
@@ -48,13 +66,19 @@ class QuestionDetails extends Component {
         {showActions ? (
           <CardFooter>
             {showDeleteIcon ? (
-              <IconButton
-                onClick={() => {
-                  deleteFunction(question);
+              <Mutation mutation={DELETE_QUESTION}>
+                {deleteQuestion => {
+                  return (
+                    <IconButton
+                      onClick={() => {
+                        this.deleteQuestion(deleteQuestion,question._id);
+                      }}
+                    >
+                      <DeleteForeverIcon />
+                    </IconButton>
+                  );
                 }}
-              >
-                <DeleteForeverIcon />
-              </IconButton>
+              </Mutation>
             ) : (
               ""
             )}
