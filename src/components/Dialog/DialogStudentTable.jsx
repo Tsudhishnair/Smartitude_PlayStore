@@ -433,7 +433,7 @@ class StudentDialog extends React.Component {
                             email: this.state.email,
                             phoneNumber: this.state.phoneNumber,
                             department: this.state.department._id,
-                            batch: this.state.batch
+                            batch: parseInt(this.state.batch)
                           }
                         }
                       })
