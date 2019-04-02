@@ -20,6 +20,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import green from "@material-ui/core/colors/green";
 import lock from "assets/img/drawable/smart_logo.png";
 import { MuiThemeProvider } from "material-ui/styles";
+import Footer from "../../components/Footer/AdminLoginFooter";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { loginHandler } from "../../Utils";
@@ -44,11 +45,11 @@ const styles = theme => ({
   },
 
   root: {
-    height: "100vh",
+    height: "88vh",
     primary: "orange",
     secondary: "orange",
     backgroundSize: "cover",
-    padding: theme.spacing.unit * 8,
+    padding: theme.spacing.unit * 7,
     margin: "0",
     display: "flex",
     alignItems: "center"
@@ -281,8 +282,10 @@ class AdminLogin extends Component {
                 >
                   <img width="200dp" src={lock} alt="..." />
                 </GridContainer>
+
               </main>
             </div>
+            <Footer />
             <Snackbar
               anchorOrigin={{
                 vertical: "top",
