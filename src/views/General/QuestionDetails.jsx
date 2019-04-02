@@ -42,7 +42,6 @@ class QuestionDetails extends Component {
       actionSecondaryFunction,
       secondaryActionButtonText,
       showDeleteIcon,
-      deleteFunction
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
