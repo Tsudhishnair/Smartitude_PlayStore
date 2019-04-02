@@ -175,7 +175,7 @@ class DialogQuestion extends React.Component {
 
 
           <GridContainer style={{ padding: "2%" }}>
-            <AddQuestion question={question}/>
+            <AddQuestion question={question} isEdit={true}/>
           </GridContainer>
         </Dialog>
       </div>

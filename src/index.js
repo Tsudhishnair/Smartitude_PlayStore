@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 
 import "assets/css/material-dashboard-react.css?v=1.5.0";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { orange700 } from "material-ui/styles/colors";
 
 import { ApolloClient } from "apollo-client";
@@ -23,7 +23,7 @@ import Landing from "./layouts/Landing/Landing";
 import QuizPanel from "./views/QuizPanel/StartQuiz";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
-import AddQues from "./views/Faculty/AddQuestion/AddQuestion";
+import AddQuestion from "./views/Faculty/AddQuestion/AddQuestion";
 
 const theme = createMuiTheme({
   palette: {
@@ -67,9 +67,11 @@ ReactDOM.render(
           <Route path="/student/quiz" component={QuizPanel} />
           <PrivateRoute path="/admin/" component={AdminPanel} />
           <PrivateRoute path="/faculty/" component={FacultyPanel} />
-          <PrivateRoute path="/faculty/questions/add" component={AddQues} />
+          <PrivateRoute
+            path="/faculty/questions/add"
+            component={<AddQuestion isEdit={false}/>}
+          />
           <Route path="/student/" component={StudentPanel} />
-
 
           <Route path="/" component={Landing} />
         </Switch>

@@ -71,6 +71,14 @@ const ADD_QUESTION = gql`
     }
   }
 `;
+
+const EDIT_QUESTION = gql`
+  mutation editQuestion($questionEditInput: QuestionEditInput!) {
+    editQuestion(questionEditInput: $questionEditInput) {
+      _id
+    }
+  }
+`;
 //----------------------------------------------------------------
 // Faculty Details from local storage
 const facultyId = localStorage.getItem("faculty");
@@ -84,6 +92,7 @@ class AddQuestion extends React.Component {
     super(props);
     this.props = props;
     this.state = {
+      _id: "",
       question: "",
       option1: "",
       option2: "",
@@ -136,7 +145,7 @@ class AddQuestion extends React.Component {
 
   //----------------------------------------------------------------
   //Handle Mutation Function
-  handleClick = (addQuestion, event) => {
+  handleClick = (performAction, event) => {
     event.preventDefault();
     if (!this.state.question) {
       this.setState(
@@ -196,8 +205,9 @@ class AddQuestion extends React.Component {
       this.setState({
         loading: true
       });
-      addQuestion({
-        variables: {
+      let variables = {};
+      if (!this.props.isEdit) {
+        variables = {
           questionInput: {
             question: this.state.question,
             createdBy: facultyId,
@@ -208,7 +218,25 @@ class AddQuestion extends React.Component {
             correctOption: this.state.correctOption,
             solution: this.state.solution
           }
-        }
+        };
+      } else {
+        console.log("Options array:");
+        console.log(this.optionArray);
+        variables = {
+          questionEditInput: {
+            _id: this.state._id,
+            question: this.state.question,
+            category: this.state.category._id,
+            subcategory: this.state.subcategory._id,
+            difficulty: parseInt(this.state.difficulty),
+            options: this.optionArray,
+            correctOption: this.state.correctOption,
+            solution: this.state.solution
+          }
+        };
+      }
+      performAction({
+        variables: variables
       })
         .then(response => {
           this.handleReset();
@@ -218,7 +246,9 @@ class AddQuestion extends React.Component {
               snackbar: {
                 ...this.state.snackbar,
                 variant: "success",
-                message: "Question Added Successfully!"
+                message: this.props.isEdit
+                  ? "Question Edited Successfully!"
+                  : "Question Added Successfully!"
               }
             },
             () => this.openSnackbar()
@@ -265,7 +295,6 @@ class AddQuestion extends React.Component {
       this.state.option3,
       this.state.option4
     ];
-    console.log(this.optionArray);
     this.setState({
       ...this.state,
       correctOption: event.target.value
@@ -295,6 +324,7 @@ class AddQuestion extends React.Component {
 
   setQuestions(question) {
     const questionDetail = {
+      _id: question._id,
       question: question.question,
       solution: question.solution,
       correctOption: question.correctOption,
@@ -306,6 +336,7 @@ class AddQuestion extends React.Component {
       option3: question.options[2],
       option4: question.options[3]
     };
+    this.optionArray = this.props.isEdit ? question.options : [];
     this.setState({
       ...this.state,
       ...questionDetail,
@@ -314,7 +345,7 @@ class AddQuestion extends React.Component {
   }
   //-------------------------------------------------------------
   render() {
-    const { classes, question } = this.props;
+    const { classes, question, isEdit } = this.props;
     const { loading, snackbar } = this.state;
     if (question && !this.state.dataLoaded) {
       this.setQuestions(question);
@@ -338,8 +369,11 @@ class AddQuestion extends React.Component {
     //------------------------------------------------------------
     console.log(this.state);
     return (
-      <Mutation mutation={ADD_QUESTION} onCompleted={this.handleReset}>
-        {addQuestion => {
+      <Mutation
+        mutation={isEdit ? EDIT_QUESTION : ADD_QUESTION}
+        onCompleted={this.handleReset}
+      >
+        {performAction => {
           return (
             <div className={classes.root}>
               <form autoComplete="off" autoWidth={true}>
@@ -501,7 +535,7 @@ class AddQuestion extends React.Component {
                     </Select>
                   </GridItem>
 
-                  {/* Category and SubCategory 
+                  {/* Category and SubCategory
             ------------------------------------------------------------------------------- */}
                   <Query query={FETCH_FORM_FIELDS}>
                     {({ data, loading, error }) => {
@@ -600,7 +634,7 @@ class AddQuestion extends React.Component {
                       variant={"outlined"}
                       type="submit"
                       disabled={loading}
-                      onClick={e => this.handleClick(addQuestion, e)}
+                      onClick={e => this.handleClick(performAction, e)}
                     >
                       Submit
                     </Button>
@@ -637,7 +671,8 @@ class AddQuestion extends React.Component {
 
 AddQuestion.propTypes = {
   classes: PropTypes.object.isRequired,
-  question: PropTypes.object
+  question: PropTypes.object,
+  isEdit: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AddQuestion);
