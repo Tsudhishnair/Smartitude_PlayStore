@@ -5,7 +5,12 @@ import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -77,7 +82,8 @@ class FormAddDepartment extends React.Component {
       snackbar: {
         open: false,
         variant: "error",
-        message: ""
+        message: "",
+        duration: 4000
       }
     };
   }
@@ -97,7 +103,7 @@ class FormAddDepartment extends React.Component {
           open: false
         }
       });
-    }, 4000);
+    }, this.state.snackbar.duration);
   };
 
   // close snackbar by changing open state
@@ -143,7 +149,7 @@ class FormAddDepartment extends React.Component {
       addDepartment({
         variables: {
           departmentInput: {
-            name: this.state.form.name,
+            name: this.state.form.name.toUpperCase(),
             description: this.state.form.description
           }
         }
@@ -166,9 +172,29 @@ class FormAddDepartment extends React.Component {
         })
         .catch(err => {
           this.setState({
-            loading: false
+            // set error message of snackbar
+            error: {
+              ...this.state.error,
+              message: err.graphQLErrors
+                ? err.graphQLErrors[0].message
+                : err.networkError
+            }
           });
-          this.closeSnackbar();
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "error",
+                duration: 10000,
+                message:
+                  "Could not add department!" +
+                  " " +
+                  err.graphQLErrors[0].message
+              }
+            },
+            () => this.openSnackbar()
+          );
           if (this.props.reloadDepartmentsList !== null) {
             this.props.reloadDepartmentsList();
           }

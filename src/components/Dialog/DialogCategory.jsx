@@ -10,7 +10,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide, FormControl
+  Slide,
+  FormControl
 } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
@@ -32,7 +33,6 @@ const styles = theme => ({
     fullWidth: true,
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
     minWidth: theme.spacing.unit * 5,
     wrap: "nowrap"
   },
@@ -174,6 +174,7 @@ class DialogCategory extends React.Component {
   };
 
   render() {
+    const { classes } = this.props;
     const { type, object, positiveAction, negativeAction, action } = this.props;
 
     return (
@@ -183,6 +184,8 @@ class DialogCategory extends React.Component {
           onClose={this.handleDialogClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          fullWidth={true}
+          maxWidth={"xs"}
         >
           {/* assign labels depending on type */}
           <DialogTitle id="form-dialog-title">Category</DialogTitle>
@@ -190,57 +193,57 @@ class DialogCategory extends React.Component {
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
                 <GridItem xs={12} md={12}>
-                  <FormControl>
-                  <TextField
-                    id={
-                      this.state.type === "category"
-                        ? "categoryName"
-                        : "subcategoryName"
-                    }
-                    name={
-                      this.state.type === "category"
-                        ? "categoryName"
-                        : "subcategoryName"
-                    }
-                    label={
-                      this.state.type === "category"
-                        ? "Category Name"
-                        : "Subcategory Name"
-                    }
-                    type="text"
-                    fullWidth
-                    required
-                    value={this.state.nameField}
-                    onChange={this.handleNameChange}
-                  />
+                  <FormControl  className={classes.form}>
+                    <TextField
+                      id={
+                        this.state.type === "category"
+                          ? "categoryName"
+                          : "subcategoryName"
+                      }
+                      name={
+                        this.state.type === "category"
+                          ? "categoryName"
+                          : "subcategoryName"
+                      }
+                      label={
+                        this.state.type === "category"
+                          ? "Category Name"
+                          : "Subcategory Name"
+                      }
+                      type="text"
+                      fullWidth
+                      required
+                      value={this.state.nameField}
+                      onChange={this.handleNameChange}
+                    />
                   </FormControl>
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} md={12} lg={12}>
                   <FormControl>
-                  <TextField
-                    id={
-                      this.state.type === "category"
-                        ? "categoryDesc"
-                        : "subcategoryDesc"
-                    }
-                    name={
-                      this.state.type === "category"
-                        ? "categoryDesc"
-                        : "subcategoryDesc"
-                    }
-                    label={
-                      this.state.type === "category"
-                        ? "Category Description"
-                        : "Subcategory Description"
-                    }
-                    type="text"
-                    fullWidth
-                    required
-                    value={this.state.descField}
-                    onChange={this.handleDescChange}
-                  />
+                    <TextField
+                      id={
+                        this.state.type === "category"
+                          ? "categoryDesc"
+                          : "subcategoryDesc"
+                      }
+                      name={
+                        this.state.type === "category"
+                          ? "categoryDesc"
+                          : "subcategoryDesc"
+                      }
+                      label={
+                        this.state.type === "category"
+                          ? "Category Description"
+                          : "Subcategory Description"
+                      }
+                      type="text"
+                      fullWidth
+                      required
+                      value={this.state.descField}
+                      onChange={this.handleDescChange}
+                    />
                   </FormControl>
                 </GridItem>
               </GridContainer>

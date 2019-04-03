@@ -3,7 +3,12 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -188,40 +193,42 @@ class FormAddSubcategory extends Component {
                     md={4}
                     // className={classes.formControl}
                   >
-                  
-                      <InputLabel htmlFor="category">
-                        Choose the Category 
-                      </InputLabel>
-                      <Select
-                        required
-                        onChange={this.handleChange}
-                        value={this.state.category}
-                        renderValue={value => {
-                          return value.name;
-                        }}
-                        inputProps={{
-                          name: "category",
-                          id: "category"
-                        }}
-                        fullWidth
-                      >
-                        {categories.map(categoryItem => {
-                          const category = {
-                            _id: categoryItem._id,
-                            name: categoryItem.name,
-                            description: categoryItem.description
-                          };
-                          return (
-                            <MenuItem key={category._id} value={category}>
-                              {category.name}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-               
+                    <InputLabel htmlFor="category">
+                      Choose the Category
+                    </InputLabel>
+                    <Select
+                      required
+                      onChange={this.handleChange}
+                      value={this.state.category}
+                      renderValue={value => {
+                        return value.name;
+                      }}
+                      inputProps={{
+                        name: "category",
+                        id: "category"
+                      }}
+                      fullWidth
+                    >
+                      {categories.map(categoryItem => {
+                        const category = {
+                          _id: categoryItem._id,
+                          name: categoryItem.name,
+                          description: categoryItem.description
+                        };
+                        return (
+                          <MenuItem key={category._id} value={category}>
+                            {category.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
                   </GridItem>
-                  <GridItem xs={12} md={12} sm={12}  className={classes.formControl}>
-
+                  <GridItem
+                    xs={12}
+                    md={12}
+                    sm={12}
+                    className={classes.formControl}
+                  >
                     <TextField
                       autoFocus
                       margin="normal"

@@ -202,7 +202,7 @@ class DeptManage extends React.Component {
         <MessageDialog
           title="Delete Department"
           content="Are you sure you want to delete this department?"
-          positiveAction="Confirm"
+          positiveAction="Delete"
           negativeAction="Cancel"
           action={this.deleteDepartment}
           onClose={this.toggleDeleteDialogVisibility}
