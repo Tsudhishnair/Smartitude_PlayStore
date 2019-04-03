@@ -54,46 +54,110 @@ const styles = theme => ({
   }
 });
 
+//Query to access Batch Category and SubCategory details
+const ALL_QUERY = gql`
+  {
+    batches
+    categoryDetailsList {
+      subcategory {
+        _id
+        name
+      }
+      category {
+        _id
+        name
+      }
+    }
+  }
+`;
+
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
-  categoryDetails = [];
-  state = {
-    quizName: "",
-    subcategories: [],
-    category: {
-      name: ""
-    },
-    batch:"",
-    subcategoryList: [],
-    clearSubcategoryChips: false,
-    selectedDate: new Date()
-  };
-  // -----------------------------------------------------------
+  constructor(props) {
+    super(props);
+
+    this.props = props;
+
+    this.categories = [];
+
+    this.batches = [];
+
+    this.lengthOfSection = 1;
+
+    this.state = {
+      quizCommon: {
+        quizName: "",
+        numberOfQns: 0,
+        batch: "",
+        selectedDate: new Date()
+      },
+      quizSectionWise: [
+        {
+          category: {
+            name: ""
+          },
+          subcategories: [],
+          subcategoryList: [],
+          clearSubcategoryChips: false
+        }
+      ],
+      subcategories: [],
+      category: {
+        name: ""
+      },
+      subcategoryList: [],
+      clearSubcategoryChips: false
+    };
+  }
+
   //Set the date in the state of Qiz Expiry from Quiz Form
   handleDateChange = date => {
-    this.setState({ selectedDate: date });
+    this.setState({
+      quizCommon: {
+        ...this.state.quizCommon,
+        selectedDate: date
+      }
+    });
   };
-  //--------------------------------------------------------------
-  //--------------------------------------------------------------
+
   //handleClick function is to add more options into the quiz
 
-  handleClick = event => {};
-  //--------------------------------------------------------------
+  handleClick = event => {
+
+    this.lengthOfSection++;
+
+    this.setState({
+      quizSectionWise: [
+        ...this.state.quizSectionWise,
+        {
+          category: {
+            name: ""
+          },
+          subcategories: [],
+          subcategoryList: [],
+          clearSubcategoryChips: false
+        }
+      ]
+    });
+  };
+
   //handle All the function state addition
-  handleFieldChanges = event => {
+  handleCommonFieldChanges = event => {
     if (event.target.value < 0) {
       event.target.value = 0;
     }
     this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value
+      quizCommon: {
+        ...this.state.quizCommon,
+        [event.target.name]: event.target.value
+      }
     });
   };
-  //----------------------------------------------------------------------
+
   // Category dropdown funciton
   renderCategoryDropdown = () => {
-    if (this.categoryDetails) {
-      return this.categoryDetails.map(categoryDetail => {
+    if (this.categories) {
+      return this.categories.map(categoryDetail => {
         return (
           <MenuItem value={categoryDetail} key={categoryDetail.category._id}>
             {categoryDetail.category.name}
@@ -104,7 +168,21 @@ class QuizForm extends React.Component {
       return <Fragment />;
     }
   };
-  //-----------------------------------------------------------------------------
+
+  renderBatchDropdown = () => {
+    if (this.batches) {
+      return this.batches.map(batch => {
+        return (
+          <MenuItem value={batch} key={batch}>
+            {batch}
+          </MenuItem>
+        );
+      });
+    } else {
+      return <Fragment />;
+    }
+  };
+
   //For Displaying the selected subcategories
   getSelectedSubcategories = selectedSubcategories => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
@@ -115,16 +193,15 @@ class QuizForm extends React.Component {
       subcategories
     });
   };
-  //-------------------------------------------------------------------------------
+
   //Function is for clearing the chips
   chipsCleared = () => {
     this.setState({
       ...this.state,
-      clearInchargeSubcategoryChips: false,
       clearSubcategoryChips: false
     });
   };
-  //---------------------------------------------------------------------------------
+
   //Function is for obtaining subcategory corresponding to selected category
   handleCategorySelect = event => {
     const categoryDetail = event.target.value;
@@ -142,25 +219,9 @@ class QuizForm extends React.Component {
       clearSubcategoryChips: true
     });
   };
-  //----------------------------------------------------------------------------------
+
   render() {
     const { classes } = this.props;
-    //Query to access Batch Category and SubCategory details
-    const ALL_QUERY = gql`
-      {
-        batches
-        categoryDetailsList {
-          subcategory {
-            _id
-            name
-          }
-          category {
-            _id
-            name
-          }
-        }
-      }
-    `;
 
     return (
       <Query query={ALL_QUERY}>
@@ -171,7 +232,11 @@ class QuizForm extends React.Component {
             return <Typography>Error occured!!!</Typography>;
           } else {
             console.log(data);
-            this.categoryDetails = data.categoryDetailsList;
+
+            // assign value of common values to lists
+            this.categories = data.categoryDetailsList;
+            this.batches = data.batches;
+
             return (
               <div className={classes.root}>
                 <form autoComplete="off" autoWidth={true}>
@@ -191,8 +256,8 @@ class QuizForm extends React.Component {
                         type="input"
                         margin="normal"
                         name="quizName"
-                        value={this.state.quizName}
-                        onChange={this.handleFieldChanges}
+                        value={this.state.quizCommon.quizName}
+                        onChange={this.handleCommonFieldChanges}
                         fullWidth
                       />
                     </GridItem>
@@ -208,8 +273,8 @@ class QuizForm extends React.Component {
                         margin="normal"
                         type="number"
                         name="numberOfQns"
-                        value={this.state.numberOfQns}
-                        onChange={this.handleFieldChanges}
+                        value={this.state.quizCommon.numberOfQns}
+                        onChange={this.handleCommonFieldChanges}
                         fullWidth
                       />
                     </GridItem>
@@ -217,11 +282,11 @@ class QuizForm extends React.Component {
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
                           className={classes.date_root}
-                          minDate={this.state.selectedDate}
+                          minDate={this.state.quizCommon.selectedDate}
                           label="Quiz Expiry"
                           clearable
                           formatDate={date => moment(date).format("YYYY-MM-DD")}
-                          value={this.state.selectedDate}
+                          value={this.state.quizCommon.selectedDate}
                           format="dd/MMM/yyyy"
                           onChange={this.handleDateChange}
                         />
@@ -236,8 +301,8 @@ class QuizForm extends React.Component {
                       <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="batch">Batch</InputLabel>
                         <Select
-                          onChange={this.handleFieldChanges}
-                          value={this.state.batch}
+                          onChange={this.handleCommonFieldChanges}
+                          value={this.state.quizCommon.batch}
                           renderValue={value => {
                             return value;
                           }}
@@ -247,9 +312,7 @@ class QuizForm extends React.Component {
                           }}
                           fullWidth
                         >
-                          {data.batches.map(batch => {
-                            return <MenuItem>{batch}</MenuItem>;
-                          })}
+                          {this.renderBatchDropdown()}
                         </Select>
                       </FormControl>
                     </GridItem>
