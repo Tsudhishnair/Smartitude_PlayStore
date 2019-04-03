@@ -56,19 +56,14 @@ const styles = theme => ({
 
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
-  categoryDetails=[];
+  categoryDetails = [];
   state = {
-    form: {
-      quizName: ""
-    },
+    quizName: "",
     subcategories: [],
-    department: {
-      name: ""
-    },
     category: {
       name: ""
     },
-    batches: "",
+    batch:"",
     subcategoryList: [],
     clearSubcategoryChips: false,
     selectedDate: new Date()
@@ -90,10 +85,8 @@ class QuizForm extends React.Component {
       event.target.value = 0;
     }
     this.setState({
-      form: {
-        ...this.state.form,
-        [event.target.name]: event.target.value
-      }
+      ...this.state,
+      [event.target.name]: event.target.value
     });
   };
   //----------------------------------------------------------------------
@@ -123,7 +116,7 @@ class QuizForm extends React.Component {
     });
   };
   //-------------------------------------------------------------------------------
-  //Function is for clearing the chips 
+  //Function is for clearing the chips
   chipsCleared = () => {
     this.setState({
       ...this.state,
@@ -146,7 +139,7 @@ class QuizForm extends React.Component {
       [event.target.name]: categoryDetail.category,
       subcategoryList: availableSubcategories,
       subcategories: [],
-      clearSubcategoryChips: true,
+      clearSubcategoryChips: true
     });
   };
   //----------------------------------------------------------------------------------
@@ -198,7 +191,7 @@ class QuizForm extends React.Component {
                         type="input"
                         margin="normal"
                         name="quizName"
-                        value={this.state.form.quizName}
+                        value={this.state.quizName}
                         onChange={this.handleFieldChanges}
                         fullWidth
                       />
@@ -241,16 +234,18 @@ class QuizForm extends React.Component {
                       className={classes.formroot}
                     >
                       <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="age-simple">Batch</InputLabel>
+                        <InputLabel htmlFor="batch">Batch</InputLabel>
                         <Select
-                          inputProps={{
-                            name: "age",
-                            id: "age-simple"
-                          }}
-                          value={this.state.batches}
                           onChange={this.handleFieldChanges}
+                          value={this.state.batch}
+                          renderValue={value => {
+                            return value;
+                          }}
+                          inputProps={{
+                            name: "batch",
+                            id: "batch"
+                          }}
                           fullWidth
-                          autoWidth={true}
                         >
                           {data.batches.map(batch => {
                             return <MenuItem>{batch}</MenuItem>;

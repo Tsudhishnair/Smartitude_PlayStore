@@ -3,34 +3,51 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Divider, IconButton } from "@material-ui/core";
-import GridItem from "../../components/Grid/GridItem";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { Mutation} from "react-apollo";
+import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../components/Grid/GridContainer";
 
 class QuestionDetails extends Component {
   constructor(props) {
     super(props);
   }
-  deleteQuestion = (func,data) => {
+  deleteQuestion = (func, data) => {
     func({
-      variables:{
-        _id:data
+      variables: {
+        _id: data
       }
-    })
+    });
+  };
+  approveQuestionOptions(ApproveQuestion, data) {
+    if (ApproveQuestion) {
+      return (
+        <GridContainer>
+          {data.map((opt, index) => {
+            return (
+              <GridItem>
+                <strong>Option {index+1}:</strong> {opt}
+              </GridItem>
+            );
+          })}
+          <Divider/>
+          <Divider/>
+        </GridContainer>
+      );
+    }
   }
   render() {
     //---------------------------------------------------------------
     //Mutation to delete questions
     const DELETE_QUESTION = gql`
-    mutation deleteQuestion($_id:ID!)
-    {
-      deleteQuestion(_id:$_id){
-        _id
+      mutation deleteQuestion($_id: ID!) {
+        deleteQuestion(_id: $_id) {
+          _id
+        }
       }
-    }
     `;
 
     const {
@@ -42,6 +59,7 @@ class QuestionDetails extends Component {
       actionSecondaryFunction,
       secondaryActionButtonText,
       showDeleteIcon,
+      ApproveQuestion
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
@@ -49,6 +67,7 @@ class QuestionDetails extends Component {
           <h4>
             <b>Q:</b> {question.question}
           </h4>
+          {this.approveQuestionOptions(ApproveQuestion, question.options)}
           <p>
             <b>Created By: </b>
             {question.createdBy.name}
@@ -71,7 +90,7 @@ class QuestionDetails extends Component {
                   return (
                     <IconButton
                       onClick={() => {
-                        this.deleteQuestion(deleteQuestion,question._id);
+                        this.deleteQuestion(deleteQuestion, question._id);
                       }}
                     >
                       <DeleteForeverIcon />

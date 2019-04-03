@@ -210,6 +210,7 @@ class ApproveQuestion extends React.Component {
                               actionFunction={this.setQuestionToApprove}
                               actionSecondaryFunction={this.setQuestionToReject}
                               showDeleteIcon={false}
+                              ApproveQuestion={true}
                             />
                           );
                         })}
