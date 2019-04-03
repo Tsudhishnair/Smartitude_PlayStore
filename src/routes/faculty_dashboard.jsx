@@ -18,13 +18,6 @@ const dashboardRoutes = [
     component: DashboardPage
   },
   {
-    path: "/faculty/questions",
-    sidebarName: "Manage Questions",
-    navbarName: "Manage Questions",
-    icon: NotificationIcon,
-    component: QuestionManage
-  },
-  {
     path: "/faculty/my_questions",
     sidebarName: "My Questions",
     navbarName: "My Questions",
@@ -32,9 +25,16 @@ const dashboardRoutes = [
     component: ApproveQuestion
   },
   {
-    path: "/faculty/approve_questions",
-    sidebarName: "Approve Questions",
-    navbarName: "Approve Questions",
+    path: "/faculty/approved_questions",
+    sidebarName: "Approved Questions",
+    navbarName: "Approved Questions",
+    icon: NotificationIcon,
+    component: QuestionManage
+  },
+  {
+    path: "/faculty/awaiting_questions",
+    sidebarName: "Awaiting Approval",
+    navbarName: "Awaiting Approval",
     icon: PlaylistAdd,
     component: ApproveQuestion
   },
