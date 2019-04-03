@@ -42,6 +42,7 @@ const FETCH_STUDENTS = gql`
       email
       password
       phoneNumber
+      score
       department {
         _id
         name
@@ -98,17 +99,10 @@ const columns = [
     }
   },
   {
-    name: "Rank",
-    options: {
-      filter: false,
-      sort: true
-    }
-  },
-  {
     name: "Score",
     options: {
       filter: false,
-      display: false,
+      display: true,
       sort: true
     }
   }
@@ -128,18 +122,18 @@ class StudentManage extends React.Component {
 
   tableOptions = {
     filterType: "checkbox",
-    rowsPerPage: 20,
+    rowsPerPage: 100,
     elevation: 0,
-    rowsPerPageOptions: [20, 30, 100, 200, 1000],
+    rowsPerPageOptions: [20, 30, 100, 200, 1000, 10000],
     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
       console.log("onRowSelect");
       console.log(allRowsSelected);
       this.rowSelected = allRowsSelected.length > 0;
     },
-    onRowClick: (rowData, rowMeta) => {
+    onRowClick: (rowData, rowState) => {
       console.log("onRowClick");
       if (!this.rowSelected) {
-        const clickedRowIndex = rowMeta.rowIndex;
+        const clickedRowIndex = rowState.rowIndex;
         this.child.handleClickOpen(
           this.students[clickedRowIndex],
           this.reloadStudentsList
@@ -196,7 +190,7 @@ class StudentManage extends React.Component {
                         studentData.push(student.department.name);
                         studentData.push(student.batch.toString());
                         studentData.push(student.phoneNumber);
-                        studentData.push(student.phoneNumber);
+                        studentData.push(student.score);
                         return studentData;
                       });
                       this.students = data.students;

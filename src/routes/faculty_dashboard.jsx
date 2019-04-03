@@ -25,6 +25,13 @@ const dashboardRoutes = [
     component: QuestionManage
   },
   {
+    path: "/faculty/my_questions",
+    sidebarName: "My Questions",
+    navbarName: "My Questions",
+    icon: PlaylistAdd,
+    component: ApproveQuestion
+  },
+  {
     path: "/faculty/approve_questions",
     sidebarName: "Approve Questions",
     navbarName: "Approve Questions",
