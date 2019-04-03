@@ -82,7 +82,7 @@ class QuizForm extends React.Component {
 
     this.batches = [];
 
-    this.lengthOfSection = 1;
+    this.numberOfSections = 1;
 
     this.state = {
       quizCommon: {
@@ -123,8 +123,7 @@ class QuizForm extends React.Component {
   //handleClick function is to add more options into the quiz
 
   handleClick = event => {
-
-    this.lengthOfSection++;
+    this.numberOfSections++;
 
     this.setState({
       quizSectionWise: [
@@ -181,6 +180,73 @@ class QuizForm extends React.Component {
     } else {
       return <Fragment />;
     }
+  };
+
+  renderSectionDetails = (classes) => {
+    let counter = 1;
+
+    let singlePiece = (
+      <Fragment>
+        <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="category">Category</InputLabel>
+            <Select
+              onChange={this.handleCategorySelect}
+              value={this.state.category.name}
+              renderValue={value => {
+                return value;
+              }}
+              inputProps={{
+                name: "category",
+                id: "category"
+              }}
+              fullWidth
+            >
+              {this.renderCategoryDropdown()}
+            </Select>
+          </FormControl>
+        </GridItem>
+        <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
+          <ReactChipInput
+            style={{ zIndex: 0 }}
+            data={this.state.subcategoryList}
+            label="Sub-Categories"
+            hintText="Select sub-categories"
+            getSelectedObjects={this.getSelectedSubcategories}
+            clearChips={this.state.clearSubcategoryChips}
+            onChipsCleared={this.chipsCleared}
+          />
+        </GridItem>
+        <GridItem xs={12} sm={2} md={6}>
+          <TextField
+            id="standard-number"
+            label="No. Of Quest."
+            type="number"
+            fullWidth
+            margin="normal"
+          />
+        </GridItem>
+        <GridItem xs={12} sm={2} md={6}>
+          <TextField
+            id="standard-number"
+            label="Time Limit (min)"
+            type="number"
+            fullWidth
+            margin="normal"
+          />
+        </GridItem>
+        <br />
+      </Fragment>
+    );
+
+    let sectionContainer = [];
+
+    while (counter <= this.numberOfSections) {
+      sectionContainer.push(singlePiece);
+      counter++;
+    }
+
+    return sectionContainer;
   };
 
   //For Displaying the selected subcategories
@@ -321,75 +387,19 @@ class QuizForm extends React.Component {
                     <strong>Other Info</strong>
                   </Typography>
                   <GridContainer>
-                    <GridItem
-                      xs={12}
-                      sm={4}
-                      md={4}
-                      className={classes.formControl}
-                    >
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="category">Category</InputLabel>
-                        <Select
-                          onChange={this.handleCategorySelect}
-                          value={this.state.category.name}
-                          renderValue={value => {
-                            return value;
-                          }}
-                          inputProps={{
-                            name: "category",
-                            id: "category"
-                          }}
-                          fullWidth
-                        >
-                          {this.renderCategoryDropdown()}
-                        </Select>
-                      </FormControl>
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={8}
-                      md={8}
-                      className={classes.elementPadding}
-                    >
-                      <ReactChipInput
-                        style={{ zIndex: 0 }}
-                        data={this.state.subcategoryList}
-                        label="Sub-Categories"
-                        hintText="Select sub-categories"
-                        getSelectedObjects={this.getSelectedSubcategories}
-                        clearChips={this.state.clearSubcategoryChips}
-                        onChipsCleared={this.chipsCleared}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={2} md={2}>
-                      <TextField
-                        id="standard-number"
-                        label="No. Of Quest."
-                        type="number"
-                        fullWidth
-                        margin="normal"
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={2} md={2}>
-                      <TextField
-                        id="standard-number"
-                        label="Time Limit (min)"
-                        type="number"
-                        fullWidth
-                        margin="normal"
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={2} md={2}>
-                      <Button
-                        fullWidth
-                        color="primary"
-                        className={classes.button}
-                        onClick={this.handleClick}
-                      >
-                        Add More
-                      </Button>
-                    </GridItem>
+                    {this.renderSectionDetails(classes)}
                   </GridContainer>
+
+                  <GridItem xs={12} sm={2} md={2}>
+                    <Button
+                      fullWidth
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.handleClick}
+                    >
+                      Add More
+                    </Button>
+                  </GridItem>
                 </form>
               </div>
             );
