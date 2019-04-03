@@ -22,20 +22,28 @@ class QuestionDetails extends Component {
       }
     });
   };
-  approveQuestionOptions(ApproveQuestion, data) {
+  approveQuestionOptions(ApproveQuestion, data, answer) {
     if (ApproveQuestion) {
       return (
-        <GridContainer>
-          {data.map((opt, index) => {
-            return (
-              <GridItem>
-                <strong>Option {index+1}:</strong> {opt}
-              </GridItem>
-            );
-          })}
-          <Divider/>
-          <Divider/>
-        </GridContainer>
+        <div>
+          <GridContainer>
+            {data.map((opt, index) => {
+              return (
+                <GridItem>
+                  <strong>Option {index + 1}:</strong> {opt}
+                </GridItem>
+              );
+            })}
+            
+          <Divider />
+          </GridContainer>
+          <GridContainer>
+            <GridItem>
+              <strong>Correct Option: </strong> {answer}
+            </GridItem>
+            <Divider />
+          </GridContainer>
+        </div>
       );
     }
   }
@@ -63,11 +71,16 @@ class QuestionDetails extends Component {
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
+        {console.log(question)}
         <CardBody>
           <h4>
             <b>Q:</b> {question.question}
           </h4>
-          {this.approveQuestionOptions(ApproveQuestion, question.options)}
+          {this.approveQuestionOptions(
+            ApproveQuestion,
+            question.options,
+            question.correctOption
+          )}
           <p>
             <b>Created By: </b>
             {question.createdBy.name}
