@@ -63,9 +63,9 @@ class StudentBatchAddition extends React.Component {
     this.state = {
       grid: [
         [
-          { value: "username", readOnly: true },
-          { value: "email", readOnly: true },
-          { value: "name", readOnly: true },
+          { value: "  username  ", readOnly: true },
+          { value: "  email   ", readOnly: true },
+          { value: "  name  ", readOnly: true },
           { value: "password", readOnly: true },
           { value: "phoneNumber", readOnly: true },
           { value: "department", readOnly: true },

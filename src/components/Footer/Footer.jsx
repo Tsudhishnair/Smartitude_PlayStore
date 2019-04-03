@@ -30,16 +30,6 @@ function Footer({ ...props }) {
         </div>
         <div className={classes.right}>
           <List className={classes.list}>
-            <Link to="/student/login">
-              <ListItem className={classes.inlineBlock}>
-                <a className={classes.block}>Student Login</a>
-              </ListItem>
-            </Link>
-            <Link to="/faculty/login">
-              <ListItem className={classes.inlineBlock}>
-                <a className={classes.block}>Faculty Login</a>
-              </ListItem>
-            </Link>
             <ListItem className={classes.inlineBlock}>
               <a className={classes.block}>
                 &copy; {1900 + new Date().getYear()} Smartitude

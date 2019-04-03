@@ -16,7 +16,10 @@ import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
+import {
+  EXPANSION_FACULTY_BATCH,
+  EXPANSION_FACULTY_FORM
+} from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
@@ -142,14 +145,21 @@ class Dashboard extends React.Component {
       filterType: "checkbox",
       rowsPerPage: 20,
       elevation: 0,
-      rowsPerPageOptions: [20, 30, 100, 200],
+      rowsPerPageOptions: [20, 30, 100, 200, 1000],
+      onRowsSelect: (currentRowsSelected, allRowsSelected) => {
+        console.log("onRowSelect");
+        console.log(allRowsSelected);
+        this.rowSelected = allRowsSelected.length > 0;
+      },
 
       onRowClick: (rowData, rowMeta) => {
-        const clickedRowIndex = rowMeta.rowIndex;
-        this.child.handleClickOpen(
-          this.faculties[clickedRowIndex],
-          this.reloadFacultiesList
-        );
+        if (!this.rowSelected) {
+          const clickedRowIndex = rowMeta.rowIndex;
+          this.child.handleClickOpen(
+            this.faculties[clickedRowIndex],
+            this.reloadFacultiesList
+          );
+        }
       }
     };
 
@@ -184,7 +194,7 @@ class Dashboard extends React.Component {
                       />
                     </GridItem>
                   </GridContainer>
-                  <Spacing/>
+                  <Spacing />
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <Card className={classes.root}>

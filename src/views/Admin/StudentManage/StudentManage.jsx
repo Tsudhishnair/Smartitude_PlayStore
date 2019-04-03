@@ -15,7 +15,10 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
+import {
+  EXPANSION_STUDENT_BATCH,
+  EXPANSION_STUDENT_FORM
+} from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 
@@ -127,7 +130,7 @@ class StudentManage extends React.Component {
     filterType: "checkbox",
     rowsPerPage: 20,
     elevation: 0,
-    rowsPerPageOptions: [20, 30, 100, 200],
+    rowsPerPageOptions: [20, 30, 100, 200, 1000],
     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
       console.log("onRowSelect");
       console.log(allRowsSelected);
@@ -179,7 +182,7 @@ class StudentManage extends React.Component {
                 <Query query={FETCH_STUDENTS}>
                   {({ data, loading, error, refetch }) => {
                     if (loading) {
-                      return <CircularProgress className={classes.progress}/>;
+                      return <CircularProgress className={classes.progress} />;
                     } else if (error) {
                       return "Error occured!";
                     } else {
