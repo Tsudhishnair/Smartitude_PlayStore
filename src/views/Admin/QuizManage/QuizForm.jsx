@@ -82,7 +82,7 @@ class QuizForm extends React.Component {
 
     this.batches = [];
 
-    this.numberOfSections = 1;
+    this.numberOfSections = 0;
 
     this.state = {
       quizCommon: {
@@ -98,7 +98,9 @@ class QuizForm extends React.Component {
           },
           subcategories: [],
           subcategoryList: [],
-          clearSubcategoryChips: false
+          clearSubcategoryChips: false,
+          numberOfQns: 0,
+          timeLimit: 0
         }
       ],
       subcategories: [],
@@ -120,26 +122,6 @@ class QuizForm extends React.Component {
     });
   };
 
-  //handleClick function is to add more options into the quiz
-
-  handleClick = event => {
-    this.numberOfSections++;
-
-    this.setState({
-      quizSectionWise: [
-        ...this.state.quizSectionWise,
-        {
-          category: {
-            name: ""
-          },
-          subcategories: [],
-          subcategoryList: [],
-          clearSubcategoryChips: false
-        }
-      ]
-    });
-  };
-
   //handle All the function state addition
   handleCommonFieldChanges = event => {
     if (event.target.value < 0) {
@@ -149,6 +131,62 @@ class QuizForm extends React.Component {
       quizCommon: {
         ...this.state.quizCommon,
         [event.target.name]: event.target.value
+      }
+    });
+  };
+
+  //Function is for obtaining subcategory corresponding to selected category
+  handleCategorySelect = event => {
+    const categoryDetail = event.target.value;
+    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
+      return {
+        key: subcategory._id,
+        label: subcategory.name
+      };
+    });
+    this.setState({
+      ...this.state,
+      [event.target.name]: categoryDetail.category,
+      subcategoryList: availableSubcategories,
+      subcategories: [],
+      clearSubcategoryChips: true
+    });
+  };
+
+  handleTimeLimitField = event => {};
+
+  handleNumberOfQnsField = (event, index) => {
+    this.setState({
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [index]: {
+          ...this.state.quizSectionWise[index],
+          numberOfQns: event.target.value
+        }
+      }
+    });
+  };
+
+  //handleClick function is to add more options into the quiz
+  handleClick = event => {
+    this.numberOfSections++;
+
+    let newState = this.state.quizSectionWise;
+    console.log(...newState);
+
+    this.setState({
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [this.numberOfSections]: {
+          category: {
+            name: ""
+          },
+          subcategories: [],
+          subcategoryList: [],
+          clearSubcategoryChips: false,
+          numberOfQns: 0,
+          timeLimit: 0
+        }
       }
     });
   };
@@ -182,66 +220,84 @@ class QuizForm extends React.Component {
     }
   };
 
-  renderSectionDetails = (classes) => {
-    let counter = 1;
+  createSectionPiece = (counter, classes) => {
+    let singlePiece;
+    let index = counter;
 
-    let singlePiece = (
-      <Fragment>
-        <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="category">Category</InputLabel>
-            <Select
-              onChange={this.handleCategorySelect}
-              value={this.state.category.name}
-              renderValue={value => {
-                return value;
-              }}
-              inputProps={{
-                name: "category",
-                id: "category"
-              }}
+    if (this.state.quizSectionWise[index]) {
+      singlePiece = (
+        <Fragment>
+          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="category">Category</InputLabel>
+              <Select
+                onChange={this.handleCategorySelect}
+                value={this.state.category.name}
+                renderValue={value => {
+                  return value;
+                }}
+                inputProps={{
+                  name: "category",
+                  id: "category"
+                }}
+                fullWidth
+              >
+                {this.renderCategoryDropdown()}
+              </Select>
+            </FormControl>
+          </GridItem>
+          <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
+            <ReactChipInput
+              style={{ zIndex: 0 }}
+              data={this.state.subcategoryList}
+              label="Sub-Categories"
+              hintText="Select sub-categories"
+              getSelectedObjects={this.getSelectedSubcategories}
+              clearChips={this.state.clearSubcategoryChips}
+              onChipsCleared={this.chipsCleared}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={2} md={6}>
+            <TextField
+              id="standard-number"
+              label="No. Of Quest."
+              type="number"
               fullWidth
-            >
-              {this.renderCategoryDropdown()}
-            </Select>
-          </FormControl>
-        </GridItem>
-        <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
-          <ReactChipInput
-            style={{ zIndex: 0 }}
-            data={this.state.subcategoryList}
-            label="Sub-Categories"
-            hintText="Select sub-categories"
-            getSelectedObjects={this.getSelectedSubcategories}
-            clearChips={this.state.clearSubcategoryChips}
-            onChipsCleared={this.chipsCleared}
-          />
-        </GridItem>
-        <GridItem xs={12} sm={2} md={6}>
-          <TextField
-            id="standard-number"
-            label="No. Of Quest."
-            type="number"
-            fullWidth
-            margin="normal"
-          />
-        </GridItem>
-        <GridItem xs={12} sm={2} md={6}>
-          <TextField
-            id="standard-number"
-            label="Time Limit (min)"
-            type="number"
-            fullWidth
-            margin="normal"
-          />
-        </GridItem>
-        <br />
-      </Fragment>
-    );
+              margin="normal"
+              value={this.state.quizSectionWise[index].numberOfQns}
+              onChange={e => this.handleNumberOfQnsField(e, index)}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={2} md={6}>
+            <TextField
+              id="standard-number"
+              label="Time Limit (min)"
+              type="number"
+              fullWidth
+              margin="normal"
+            />
+          </GridItem>
+          <br />
+        </Fragment>
+      );
+    } else {
+      singlePiece = <Fragment />;
+    }
+
+    return singlePiece;
+  };
+
+  renderSectionDetails = classes => {
+    let counter = 0;
 
     let sectionContainer = [];
+    console.log('section rendered');
 
     while (counter <= this.numberOfSections) {
+      let singlePiece = this.createSectionPiece(counter, classes);
+
+      console.log(`counter:${counter}, sectoinNum:${this.numberOfSections}`);
+
       sectionContainer.push(singlePiece);
       counter++;
     }
@@ -268,24 +324,6 @@ class QuizForm extends React.Component {
     });
   };
 
-  //Function is for obtaining subcategory corresponding to selected category
-  handleCategorySelect = event => {
-    const categoryDetail = event.target.value;
-    let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
-      return {
-        key: subcategory._id,
-        label: subcategory.name
-      };
-    });
-    this.setState({
-      ...this.state,
-      [event.target.name]: categoryDetail.category,
-      subcategoryList: availableSubcategories,
-      subcategories: [],
-      clearSubcategoryChips: true
-    });
-  };
-
   render() {
     const { classes } = this.props;
 
@@ -297,8 +335,6 @@ class QuizForm extends React.Component {
           } else if (error) {
             return <Typography>Error occured!!!</Typography>;
           } else {
-            console.log(data);
-
             // assign value of common values to lists
             this.categories = data.categoryDetailsList;
             this.batches = data.batches;
@@ -389,7 +425,6 @@ class QuizForm extends React.Component {
                   <GridContainer>
                     {this.renderSectionDetails(classes)}
                   </GridContainer>
-
                   <GridItem xs={12} sm={2} md={2}>
                     <Button
                       fullWidth
