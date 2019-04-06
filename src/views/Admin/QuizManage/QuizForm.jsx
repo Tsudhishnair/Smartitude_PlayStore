@@ -153,7 +153,17 @@ class QuizForm extends React.Component {
     });
   };
 
-  handleTimeLimitField = event => {};
+  handleTimeLimitField = (event, index) => {
+    this.setState({
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [index]: {
+          ...this.state.quizSectionWise[index],
+          timeLimit: event.target.value
+        }
+      }
+    });
+  };
 
   handleNumberOfQnsField = (event, index) => {
     this.setState({
@@ -275,6 +285,8 @@ class QuizForm extends React.Component {
               type="number"
               fullWidth
               margin="normal"
+              value={this.state.quizSectionWise[index].timeLimit}
+              onChange={e => this.handleTimeLimitField(e, index)}
             />
           </GridItem>
           <br />
