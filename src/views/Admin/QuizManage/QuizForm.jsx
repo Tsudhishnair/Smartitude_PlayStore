@@ -136,7 +136,7 @@ class QuizForm extends React.Component {
   };
 
   //Function is for obtaining subcategory corresponding to selected category
-  handleCategorySelect = event => {
+  handleCategorySelect = (event, index) => {
     const categoryDetail = event.target.value;
     let availableSubcategories = categoryDetail.subcategory.map(subcategory => {
       return {
@@ -145,12 +145,24 @@ class QuizForm extends React.Component {
       };
     });
     this.setState({
-      ...this.state,
-      [event.target.name]: categoryDetail.category,
-      subcategoryList: availableSubcategories,
-      subcategories: [],
-      clearSubcategoryChips: true
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [index]: {
+          ...this.state.quizSectionWise[index],
+          category: categoryDetail.category,
+          subcategoryList: availableSubcategories,
+          subcategories: [],
+          clearSubcategoryChips: true
+        }
+      }
     });
+    // this.setState({
+    //   ...this.state,
+    //   [event.target.name]: categoryDetail.category,
+    //   subcategoryList: availableSubcategories,
+    //   subcategories: [],
+    //   clearSubcategoryChips: true
+    // });
   };
 
   handleTimeLimitField = (event, index) => {
@@ -241,8 +253,8 @@ class QuizForm extends React.Component {
             <FormControl fullWidth>
               <InputLabel htmlFor="category">Category</InputLabel>
               <Select
-                onChange={this.handleCategorySelect}
-                value={this.state.category.name}
+                onChange={e => this.handleCategorySelect(e, index)}
+                value={this.state.quizSectionWise[index].category.name}
                 renderValue={value => {
                   return value;
                 }}
