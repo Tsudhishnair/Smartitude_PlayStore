@@ -232,13 +232,18 @@ class QuizForm extends React.Component {
 
   handleDeleteClick = index => {
     let tempObj = this.state.quizSectionWise;
-    delete tempObj[index];
 
-    this.setState({
-      quizSectionWise: {
-        ...tempObj
-      }
-    });
+    if (Object.keys(tempObj).length < 2) {
+      return;
+    } else {
+      delete tempObj[index];
+
+      this.setState({
+        quizSectionWise: {
+          ...tempObj
+        }
+      });
+    }
   };
 
   // Category dropdown funciton
@@ -252,7 +257,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment />;
+      return <Fragment/>;
     }
   };
 
@@ -266,7 +271,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment />;
+      return <Fragment/>;
     }
   };
 
@@ -279,7 +284,7 @@ class QuizForm extends React.Component {
         <Fragment>
           <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
             <IconButton onClick={() => this.handleDeleteClick(index)}>
-              <Delete />
+              <Delete/>
             </IconButton>
           </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
@@ -338,11 +343,11 @@ class QuizForm extends React.Component {
               onChange={e => this.handleTimeLimitField(e, index)}
             />
           </GridItem>
-          <br />
+          <br/>
         </Fragment>
       );
     } else {
-      singlePiece = <Fragment />;
+      singlePiece = <Fragment/>;
     }
 
     return singlePiece;
