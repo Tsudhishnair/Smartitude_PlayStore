@@ -16,7 +16,9 @@ import {
   Typography,
   TextField,
   withStyles,
-  IconButton
+  IconButton,
+  FormControlLabel,
+  Switch
 } from "@material-ui/core";
 
 import { Delete } from "@material-ui/icons";
@@ -95,8 +97,11 @@ class QuizForm extends React.Component {
         quizName: "",
         numberOfQns: 0,
         batch: "",
+        marksPerQn: 0,
+        negativeMarksPerQn: 0,
         activeFrom: new Date(),
-        activeTo: new Date()
+        activeTo: new Date(),
+        active: false
       },
       quizSectionWise: [
         {
@@ -132,17 +137,29 @@ class QuizForm extends React.Component {
     }
   };
 
+  handleActiveField = event => {
+    this.setState(prevState => ({
+      quizCommon: {
+        ...prevState.quizCommon,
+        active: !prevState.quizCommon.active
+      }
+    }));
+  };
+
   //handle All the function state addition
   handleCommonFieldChanges = event => {
+    event.persist();
+
     if (event.target.value < 0) {
       event.target.value = 0;
     }
-    this.setState({
+
+    this.setState(state => ({
       quizCommon: {
-        ...this.state.quizCommon,
+        ...state.quizCommon,
         [event.target.name]: event.target.value
       }
-    });
+    }));
   };
 
   //Function is for obtaining subcategory corresponding to selected category
@@ -425,6 +442,40 @@ class QuizForm extends React.Component {
                       className={classes.container}
                     >
                       <TextField
+                        id="standard-marks"
+                        label="+ Marks Per Question"
+                        margin="normal"
+                        type="number"
+                        name="marksPerQn"
+                        value={this.state.quizCommon.marksPerQn}
+                        onChange={this.handleCommonFieldChanges}
+                        fullWidth
+                      />
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.container}
+                    >
+                      <TextField
+                        id="standard-negative-marks"
+                        label="- Marks per Question"
+                        margin="normal"
+                        type="number"
+                        name="negativeMarksPerQn"
+                        value={this.state.quizCommon.negativeMarksPerQn}
+                        onChange={this.handleCommonFieldChanges}
+                        fullWidth
+                      />
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.container}
+                    >
+                      <TextField
                         id="standard-number"
                         label="Number Of Questions"
                         margin="normal"
@@ -490,6 +541,40 @@ class QuizForm extends React.Component {
                           {this.renderBatchDropdown()}
                         </Select>
                       </FormControl>
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={3}
+                      md={3}
+                      className={classes.container}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            name="active"
+                            checked={this.state.quizCommon.active}
+                            onChange={e => this.handleActiveField(e)}
+                          />
+                        }
+                        label="Active"
+                      />
+                    </GridItem>
+                    <GridItem
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      className={classes.container}
+                    >
+                      <TextField
+                        id="description"
+                        label="Quiz Description"
+                        margin="normal"
+                        type="text"
+                        name="description"
+                        value={this.state.quizCommon.description}
+                        onChange={this.handleCommonFieldChanges}
+                        fullWidth
+                      />
                     </GridItem>
                   </GridContainer>
                   <Typography>
