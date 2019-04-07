@@ -15,8 +15,11 @@ import {
   Button,
   Typography,
   TextField,
-  withStyles
+  withStyles,
+  IconButton
 } from "@material-ui/core";
+
+import { Delete } from "@material-ui/icons";
 
 import moment from "moment";
 import gql from "graphql-tag";
@@ -71,6 +74,9 @@ const ALL_QUERY = gql`
   }
 `;
 
+const DATE_FROM = 1;
+const DATE_TO = 2;
+
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
   constructor(props) {
@@ -89,7 +95,8 @@ class QuizForm extends React.Component {
         quizName: "",
         numberOfQns: 0,
         batch: "",
-        selectedDate: new Date()
+        activeFrom: new Date(),
+        activeTo: new Date()
       },
       quizSectionWise: [
         {
@@ -107,13 +114,22 @@ class QuizForm extends React.Component {
   }
 
   //Set the date in the state of Qiz Expiry from Quiz Form
-  handleDateChange = date => {
-    this.setState({
-      quizCommon: {
-        ...this.state.quizCommon,
-        selectedDate: date
-      }
-    });
+  handleDateChange = (date, type) => {
+    if (type === DATE_FROM) {
+      this.setState({
+        quizCommon: {
+          ...this.state.quizCommon,
+          activeFrom: date
+        }
+      });
+    } else if (type === DATE_TO) {
+      this.setState({
+        quizCommon: {
+          ...this.state.quizCommon,
+          activeTo: date
+        }
+      });
+    }
   };
 
   //handle All the function state addition
@@ -197,6 +213,17 @@ class QuizForm extends React.Component {
     });
   };
 
+  handleDeleteClick = index => {
+    let tempObj = this.state.quizSectionWise;
+    delete tempObj[index];
+
+    this.setState({
+      quizSectionWise: {
+        ...tempObj
+      }
+    });
+  };
+
   // Category dropdown funciton
   renderCategoryDropdown = () => {
     if (this.categories) {
@@ -233,6 +260,11 @@ class QuizForm extends React.Component {
     if (this.state.quizSectionWise[index]) {
       singlePiece = (
         <Fragment>
+          <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
+            <IconButton onClick={() => this.handleDeleteClick(index)}>
+              <Delete />
+            </IconButton>
+          </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
             <FormControl fullWidth>
               <InputLabel htmlFor="category">Category</InputLabel>
@@ -407,13 +439,31 @@ class QuizForm extends React.Component {
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
                           className={classes.date_root}
-                          minDate={this.state.quizCommon.selectedDate}
-                          label="Quiz Expiry"
+                          minDate={this.state.quizCommon.activeFrom}
+                          label="Active From"
                           clearable
                           formatDate={date => moment(date).format("YYYY-MM-DD")}
-                          value={this.state.quizCommon.selectedDate}
+                          value={this.state.quizCommon.activeFrom}
                           format="dd/MMM/yyyy"
-                          onChange={this.handleDateChange}
+                          onChange={date =>
+                            this.handleDateChange(date, DATE_FROM)
+                          }
+                        />
+                      </MuiPickersUtilsProvider>
+                    </GridItem>
+                    <GridItem xs={12} sm={3} md={3}>
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          className={classes.date_root}
+                          minDate={this.state.quizCommon.activeTo}
+                          label="Active To"
+                          clearable
+                          formatDate={date => moment(date).format("YYYY-MM-DD")}
+                          value={this.state.quizCommon.activeTo}
+                          format="dd/MMM/yyyy"
+                          onChange={date =>
+                            this.handleDateChange(date, DATE_TO)
+                          }
                         />
                       </MuiPickersUtilsProvider>
                     </GridItem>
