@@ -92,13 +92,12 @@ class QuizForm extends React.Component {
 
     this.numberOfSections = 0;
 
+    this.currentDate = new Date();
+
     this.state = {
       quizCommon: {
         quizName: "",
-        numberOfQns: 0,
         batch: "",
-        marksPerQn: 0,
-        negativeMarksPerQn: 0,
         activeFrom: new Date(),
         activeTo: new Date(),
         active: false
@@ -114,26 +113,38 @@ class QuizForm extends React.Component {
           numberOfQns: 0,
           timeLimit: 0
         }
-      ]
+      ],
+      error: {
+        dates: {
+          status: false,
+          message: ""
+        }
+      }
     };
   }
 
   //Set the date in the state of Qiz Expiry from Quiz Form
   handleDateChange = (date, type) => {
     if (type === DATE_FROM) {
-      this.setState({
-        quizCommon: {
-          ...this.state.quizCommon,
-          activeFrom: date
-        }
-      });
+      this.setState(
+        prevState => ({
+          quizCommon: {
+            ...prevState.quizCommon,
+            activeFrom: date
+          }
+        }),
+        this.validateDates
+      );
     } else if (type === DATE_TO) {
-      this.setState({
-        quizCommon: {
-          ...this.state.quizCommon,
-          activeTo: date
-        }
-      });
+      this.setState(
+        prevState => ({
+          quizCommon: {
+            ...prevState.quizCommon,
+            activeTo: date
+          }
+        }),
+        this.validateDates
+      );
     }
   };
 
@@ -246,6 +257,32 @@ class QuizForm extends React.Component {
     }
   };
 
+  handleSubmit = () => {};
+
+  validateDates = () => {
+    if (this.state.quizCommon.activeTo < this.state.quizCommon.activeFrom) {
+      this.setState(prevState => ({
+        error: {
+          ...prevState.error,
+          dates: {
+            message: "From date is larger than To date",
+            status: true
+          }
+        }
+      }));
+    } else {
+      this.setState(prevState => ({
+        error: {
+          ...prevState.error,
+          dates: {
+            status: false,
+            message: ""
+          }
+        }
+      }));
+    }
+  };
+
   // Category dropdown funciton
   renderCategoryDropdown = () => {
     if (this.categories) {
@@ -257,7 +294,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
@@ -271,7 +308,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
@@ -284,7 +321,7 @@ class QuizForm extends React.Component {
         <Fragment>
           <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
             <IconButton onClick={() => this.handleDeleteClick(index)}>
-              <Delete/>
+              <Delete />
             </IconButton>
           </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
@@ -343,11 +380,11 @@ class QuizForm extends React.Component {
               onChange={e => this.handleTimeLimitField(e, index)}
             />
           </GridItem>
-          <br/>
+          <br />
         </Fragment>
       );
     } else {
-      singlePiece = <Fragment/>;
+      singlePiece = <Fragment />;
     }
 
     return singlePiece;
@@ -494,8 +531,10 @@ class QuizForm extends React.Component {
                     <GridItem xs={12} sm={3} md={3}>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
+                          error={this.state.error.dates.status}
+                          helperText={this.state.error.dates.message}
                           className={classes.date_root}
-                          minDate={this.state.quizCommon.activeFrom}
+                          minDate={this.currentDate}
                           label="Active From"
                           clearable
                           formatDate={date => moment(date).format("YYYY-MM-DD")}
@@ -511,8 +550,8 @@ class QuizForm extends React.Component {
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
                           className={classes.date_root}
-                          minDate={this.state.quizCommon.activeTo}
-                          label="Active To"
+                          minDate={this.currentDate}
+                          label="Active Till"
                           clearable
                           formatDate={date => moment(date).format("YYYY-MM-DD")}
                           value={this.state.quizCommon.activeTo}
@@ -596,6 +635,16 @@ class QuizForm extends React.Component {
                       onClick={this.handleClick}
                     >
                       Add More
+                    </Button>
+                  </GridItem>
+                  <GridItem xs={12} sm={2} md={2}>
+                    <Button
+                      fullWidth
+                      color="primary"
+                      className={classes.button}
+                      onClick={this.handleSubmit}
+                    >
+                      Create Quiz
                     </Button>
                   </GridItem>
                 </form>
