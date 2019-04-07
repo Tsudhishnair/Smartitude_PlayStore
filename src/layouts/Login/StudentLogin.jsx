@@ -199,7 +199,7 @@ class StudentLogin extends Component {
 
     // if auth token is present in storage, redirect to dashboard
     if (redirecter === true) {
-      return <Redirect to="/admin/dashboard" />;
+      return <Redirect to="/student/dashboard" />;
     }
 
     return (
