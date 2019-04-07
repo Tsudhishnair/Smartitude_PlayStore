@@ -102,13 +102,7 @@ class QuizForm extends React.Component {
           numberOfQns: 0,
           timeLimit: 0
         }
-      ],
-      subcategories: [],
-      category: {
-        name: ""
-      },
-      subcategoryList: [],
-      clearSubcategoryChips: false
+      ]
     };
   }
 
@@ -156,13 +150,6 @@ class QuizForm extends React.Component {
         }
       }
     });
-    // this.setState({
-    //   ...this.state,
-    //   [event.target.name]: categoryDetail.category,
-    //   subcategoryList: availableSubcategories,
-    //   subcategories: [],
-    //   clearSubcategoryChips: true
-    // });
   };
 
   handleTimeLimitField = (event, index) => {
@@ -190,11 +177,8 @@ class QuizForm extends React.Component {
   };
 
   //handleClick function is to add more options into the quiz
-  handleClick = event => {
+  handleClick = () => {
     this.numberOfSections++;
-
-    let newState = this.state.quizSectionWise;
-    console.log(...newState);
 
     this.setState({
       quizSectionWise: {
@@ -271,12 +255,16 @@ class QuizForm extends React.Component {
           <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
             <ReactChipInput
               style={{ zIndex: 0 }}
-              data={this.state.subcategoryList}
+              data={this.state.quizSectionWise[index].subcategoryList}
               label="Sub-Categories"
               hintText="Select sub-categories"
-              getSelectedObjects={this.getSelectedSubcategories}
-              clearChips={this.state.clearSubcategoryChips}
-              onChipsCleared={this.chipsCleared}
+              getSelectedObjects={selectedSubcategories =>
+                this.getSelectedSubcategories(selectedSubcategories, index)
+              }
+              clearChips={
+                this.state.quizSectionWise[index].clearSubcategoryChips
+              }
+              onChipsCleared={() => this.chipsCleared(index)}
             />
           </GridItem>
           <GridItem xs={12} sm={2} md={6}>
@@ -315,7 +303,7 @@ class QuizForm extends React.Component {
     let counter = 0;
 
     let sectionContainer = [];
-    console.log('section rendered');
+    console.log("section rendered");
 
     while (counter <= this.numberOfSections) {
       let singlePiece = this.createSectionPiece(counter, classes);
@@ -330,21 +318,32 @@ class QuizForm extends React.Component {
   };
 
   //For Displaying the selected subcategories
-  getSelectedSubcategories = selectedSubcategories => {
+  getSelectedSubcategories = (selectedSubcategories, index) => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value;
     });
+
     this.setState({
-      ...this.state,
-      subcategories
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [index]: {
+          ...this.state.quizSectionWise[index],
+          subcategories
+        }
+      }
     });
   };
 
   //Function is for clearing the chips
-  chipsCleared = () => {
+  chipsCleared = index => {
     this.setState({
-      ...this.state,
-      clearSubcategoryChips: false
+      quizSectionWise: {
+        ...this.state.quizSectionWise,
+        [index]: {
+          ...this.state.quizSectionWise[index],
+          clearSubcategoryChips: false
+        }
+      }
     });
   };
 
