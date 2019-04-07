@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
       {
         name: "Email",
         options: {
-          filter: true,
+          filter: false,
           sort: true
         }
       },
@@ -79,7 +79,8 @@ class Dashboard extends React.Component {
         name: "Department",
         options: {
           filter: true,
-          sort: true
+          sort: true,
+          display: false
         }
       },
       {
@@ -217,9 +218,11 @@ class Dashboard extends React.Component {
                                   let facultyData = [];
                                   facultyData.push(faculty.name);
                                   facultyData.push(faculty.username);
-                                  facultyData.push(faculty.department.name);
+                                  facultyData.push(
+                                    faculty.isInCharge ? "In-charge" : "Faculty"
+                                  );
                                   facultyData.push(faculty.email);
-                                  facultyData.push(faculty.phoneNumber);
+                                  facultyData.push(faculty.department.name);
                                   if (faculty.category) {
                                     facultyData.push(faculty.category.name);
                                   }
