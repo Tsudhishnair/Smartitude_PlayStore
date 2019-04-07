@@ -6,9 +6,11 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 // core components/views
 import DashboardPage from "../views/Faculty/Dashboard/Dashboard.jsx";
 
-import QuestionManage from "../views/Faculty/QuestionManage/QuestionManage";
+import QuestionManage from "../views/Faculty/ApprovedQuestionsManage/ApprovedQuestionsManage";
 import ApproveQuestion from "../views/Faculty/ApproveQuestion/ApproveQuestion";
 import AddQues from "../views/Faculty/AddQuestion/AddQuestion";
+import MyQuestionsManage from "../views/Faculty/MyQuestionsManage/MyQuestionsManage";
+
 const dashboardRoutes = [
   {
     path: "/faculty/dashboard",
@@ -22,7 +24,7 @@ const dashboardRoutes = [
     sidebarName: "My Questions",
     navbarName: "My Questions",
     icon: PlaylistAdd,
-    component: ApproveQuestion
+    component: MyQuestionsManage
   },
   {
     path: "/faculty/approved_questions",

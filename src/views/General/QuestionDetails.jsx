@@ -22,8 +22,9 @@ class QuestionDetails extends Component {
       }
     });
   };
-  approveQuestionOptions(ApproveQuestion, data, answer) {
-    if (ApproveQuestion) {
+
+  approveQuestionOptions(showAllDetails, data, answer) {
+    if (showAllDetails) {
       return (
         <div>
           <GridContainer>
@@ -67,7 +68,7 @@ class QuestionDetails extends Component {
       actionSecondaryFunction,
       secondaryActionButtonText,
       showDeleteIcon,
-      ApproveQuestion
+      showAllDetails
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
@@ -77,7 +78,7 @@ class QuestionDetails extends Component {
             <b>Q:</b> {question.question}
           </h4>
           {this.approveQuestionOptions(
-            ApproveQuestion,
+            showAllDetails,
             question.options,
             question.correctOption
           )}
@@ -157,6 +158,7 @@ QuestionDetails.propTypes = {
   showSecondaryAction: PropTypes.bool,
   actionSecondaryFunction: PropTypes.func,
   showDeleteIcon: PropTypes.bool,
-  deleteFunction: PropTypes.func
+  deleteFunction: PropTypes.func,
+  showAllDetails: PropTypes.bool
 };
 export default QuestionDetails;

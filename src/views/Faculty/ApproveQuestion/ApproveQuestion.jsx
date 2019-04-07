@@ -143,8 +143,8 @@ class ApproveQuestion extends React.Component {
     //----------------------------------------------------------------
     //Query to fetch question from database
     const RETRIVE_QUESTIONS = gql`
-      {
-        questions {
+      query questionsForIncharge($approvalStatus: Int!) {
+        questionsForIncharge(approvalStatus: $approvalStatus) {
           _id
           question
           category {
@@ -171,9 +171,8 @@ class ApproveQuestion extends React.Component {
       }
     `;
     //------------------------------------------------------------------------
-
     return (
-      <Query query={RETRIVE_QUESTIONS}>
+      <Query query={RETRIVE_QUESTIONS} variables={{ approvalStatus: 0 }}>
         {({ data, loading, error }) => {
           if (loading) {
             return <Typography>Loading...</Typography>;
@@ -199,7 +198,7 @@ class ApproveQuestion extends React.Component {
                         <h4 className={classes.cardTitleWhite}>Questions</h4>
                       </CardHeader>
                       <GridContainer style={{ padding: "2%" }}>
-                        {data.questions.map(question => {
+                        {data.questionsForIncharge.map(question => {
                           return (
                             <QuestionDetails
                               question={question}
@@ -210,7 +209,7 @@ class ApproveQuestion extends React.Component {
                               actionFunction={this.setQuestionToApprove}
                               actionSecondaryFunction={this.setQuestionToReject}
                               showDeleteIcon={false}
-                              ApproveQuestion={true}
+                              showAllDetails={true}
                             />
                           );
                         })}

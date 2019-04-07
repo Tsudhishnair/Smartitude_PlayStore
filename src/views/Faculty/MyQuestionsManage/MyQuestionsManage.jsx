@@ -12,11 +12,11 @@ import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/d
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
-import { Mutation, Query } from "react-apollo";
+import { Query } from "react-apollo";
 
 // core components
 
-class QuestionManage extends React.Component {
+class MyQuestionsManage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -52,12 +52,12 @@ class QuestionManage extends React.Component {
 
   render() {
     const { classes } = this.props;
- 
+
     //----------------------------------------------------------------
     //Query to fetch question from database
     const RETRIVE_QUESTIONS = gql`
       {
-        questions {
+        myQuestions {
           _id
           question
           category {
@@ -86,58 +86,52 @@ class QuestionManage extends React.Component {
     //------------------------------------------------------------------------
 
     return (
-
-            <Query query={RETRIVE_QUESTIONS}>
-              {({ data, loading, error }) => {
-                if (loading) {
-                  return <Typography>Loading...</Typography>;
-                } else if (error) {
-                  return <Typography>Error occured!!!</Typography>;
-                } else {
-                  return (
-                    <div>
-                      {this.showQuestionManageDialog(this.state.open)}
-                      <Spacing />
-                      <GridContainer>
-                        <GridItem xs={12} sm={12} md={12}>
-                          <Card className={classes.root}>
-                            <CardHeader color="warning">
-                              <h4 className={classes.cardTitleWhite}>
-                                Questions
-                              </h4>
-                            </CardHeader>
-                            <GridContainer style={{ padding: "2%" }}>
-                              {data.questions.map(question => {
-                                return (
-                                  <QuestionDetails
-                                    key={question._id}
-                                    question={question}
-                                    showActions={true}
-                                    actionButtonText={"Manage Question"}
-                                    actionFunction={
-                                      this.triggerQuestionManageDialog
-                                    }
-                                    showDeleteIcon={true}
-                                    // deleteFunction={this.deleteQuestion}
-                                  />
-                                );
-                              })}
-                            </GridContainer>
-                          </Card>
-                        </GridItem>
+      <Query query={RETRIVE_QUESTIONS}>
+        {({ data, loading, error }) => {
+          if (loading) {
+            return <Typography>Loading...</Typography>;
+          } else if (error) {
+            return <Typography>Error occured!!!</Typography>;
+          } else {
+            return (
+              <div>
+                {this.showQuestionManageDialog(this.state.open)}
+                <Spacing/>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Card className={classes.root}>
+                      <CardHeader color="warning">
+                        <h4 className={classes.cardTitleWhite}>Questions</h4>
+                      </CardHeader>
+                      <GridContainer style={{ padding: "2%" }}>
+                        {data.myQuestions.map(question => {
+                          return (
+                            <QuestionDetails
+                              key={question._id}
+                              question={question}
+                              showActions={question.approvalStatus !== 2}
+                              actionButtonText={"Manage Question"}
+                              actionFunction={this.triggerQuestionManageDialog}
+                              showDeleteIcon={true}
+                              // deleteFunction={this.deleteQuestion}
+                            />
+                          );
+                        })}
                       </GridContainer>
-                    </div>
-                  );
-                }
-              }}
-            </Query>
-          
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </div>
+            );
+          }
+        }}
+      </Query>
     );
   }
 }
 
-QuestionManage.propTypes = {
+MyQuestionsManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(QuestionManage);
+export default withStyles(dashboardStyle)(MyQuestionsManage);
