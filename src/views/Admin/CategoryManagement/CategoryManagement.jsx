@@ -20,6 +20,7 @@ import { Delete, Edit, ExpandLess, ExpandMore } from "@material-ui/icons";
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import {
   EXPANSION_CATEGORY_FORM,
@@ -403,27 +404,33 @@ class CategoryManagement extends React.Component {
                                 secondary={categoryDetail.category.description}
                               />
                               <ListItemSecondaryAction>
-                                <IconButton
-                                  aria-label="Edit"
-                                  onClick={e =>
-                                    this.openEditDialog(categoryDetail.category)
-                                  }
-                                >
-                                  <Edit />
-                                </IconButton>
+                                <Tooltip title="Edit Category">
+                                  <IconButton
+                                    aria-label="Edit"
+                                    onClick={e =>
+                                      this.openEditDialog(
+                                        categoryDetail.category
+                                      )
+                                    }
+                                  >
+                                    <Edit />
+                                  </IconButton>
+                                </Tooltip>
                                 <Mutation mutation={DELETE_CATEGORY}>
                                   {deleteCategory => (
-                                    <IconButton
-                                      aria-label="Delete"
-                                      onClick={e =>
-                                        this.handleDeleteCategoryClick(
-                                          categoryDetail.category,
-                                          deleteCategory
-                                        )
-                                      }
-                                    >
-                                      <Delete />
-                                    </IconButton>
+                                    <Tooltip title="Delete Category">
+                                      <IconButton
+                                        aria-label="Delete"
+                                        onClick={e =>
+                                          this.handleDeleteCategoryClick(
+                                            categoryDetail.category,
+                                            deleteCategory
+                                          )
+                                        }
+                                      >
+                                        <Delete />
+                                      </IconButton>
+                                    </Tooltip>
                                   )}
                                 </Mutation>
                                 <IconButton
@@ -470,30 +477,34 @@ class CategoryManagement extends React.Component {
                                       color={"grey"}
                                       secondary={subcategory.description}
                                     />
-                                    <IconButton
-                                      aria-label="Edit"
-                                      onClick={e =>
-                                        this.openSubcategoryEditDialog(
-                                          subcategory,
-                                          categoryDetail.category
-                                        )
-                                      }
-                                    >
-                                      <Edit />
-                                    </IconButton>
+                                    <Tooltip title="Edit SubCategory">
+                                      <IconButton
+                                        aria-label="Edit"
+                                        onClick={e =>
+                                          this.openSubcategoryEditDialog(
+                                            subcategory,
+                                            categoryDetail.category
+                                          )
+                                        }
+                                      >
+                                        <Edit />
+                                      </IconButton>
+                                    </Tooltip>
                                     <Mutation mutation={DELETE_SUBCATEGORY}>
                                       {deleteSubcategory => (
-                                        <IconButton
-                                          aria-label="Delete"
-                                          onClick={e =>
-                                            this.handleDeleteSubcategoryClick(
-                                              subcategory,
-                                              deleteSubcategory
-                                            )
-                                          }
-                                        >
-                                          <Delete />
-                                        </IconButton>
+                                        <Tooltip title="Delete SubCategory">
+                                          <IconButton
+                                            aria-label="Delete"
+                                            onClick={e =>
+                                              this.handleDeleteSubcategoryClick(
+                                                subcategory,
+                                                deleteSubcategory
+                                              )
+                                            }
+                                          >
+                                            <Delete />
+                                          </IconButton>
+                                        </Tooltip>
                                       )}
                                     </Mutation>
                                   </ListItem>
