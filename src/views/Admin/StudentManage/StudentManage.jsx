@@ -105,8 +105,8 @@ const columns = [
     }
   }
 ];
-
 class StudentManage extends React.Component {
+  deleteStudentList = [];
   students = [];
   rowSelected = false;
   refetchStudentsList = null;
@@ -117,7 +117,12 @@ class StudentManage extends React.Component {
       this.refetchStudentsList();
     }
   };
-
+  handleDelete = (deleteStudentId) => {
+    let data = deleteStudentId;
+    for (let index in deleteStudentId) {
+      console.log(data[index]);
+    }
+  }
   tableOptions = {
     filterType: "checkbox",
     rowsPerPage: 100,
@@ -125,9 +130,17 @@ class StudentManage extends React.Component {
     responsive: "stacked",
     rowsPerPageOptions: [20, 30, 100, 200, 1000, 10000],
     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
-      console.log("onRowSelect");
-      console.log(allRowsSelected);
+
       this.rowSelected = allRowsSelected.length > 0;
+    },
+    onRowsDelete: (rowsDeleted) => {
+      // console.log(rowsDeleted.data);
+      let data = rowsDeleted.data
+      for (let index in data) {
+        this.deleteStudentList.push(data[index].dataIndex);
+      }
+      this.handleDelete(this.students[this.deleteStudentList]);
+      
     },
     onRowClick: (rowData, rowState) => {
       console.log("onRowClick");
@@ -137,6 +150,7 @@ class StudentManage extends React.Component {
           this.students[clickedRowIndex],
           this.reloadStudentsList
         );
+
       }
     }
   };
