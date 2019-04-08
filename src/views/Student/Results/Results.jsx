@@ -1,12 +1,9 @@
 import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import CustomInput from "components/CustomInput/CustomInput.jsx";
-import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
@@ -20,10 +17,7 @@ import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
-
-import avatar from "assets/img/faces/marc.jpg";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
 
 function UserProfile(props) {
   const { classes } = props;
@@ -38,7 +32,7 @@ function UserProfile(props) {
               </CardIcon>
               <p className={classes.cardCategory}>Current Score</p>
               <h3 className={classes.cardTitle}>
-                4.9/10 <small>points</small>
+                4.9/10
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -62,7 +56,6 @@ function UserProfile(props) {
               <p className={classes.cardCategory}>Ranking</p>
               <h3 className={classes.cardTitle}>
                 420th
-                <small> Postion</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -79,13 +72,13 @@ function UserProfile(props) {
               <CardIcon color="danger">
                 <Icon>info_outline</Icon>
               </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <p className={classes.cardCategory}>Attempted Quizzes</p>
+              <h3 className={classes.cardTitle}>12</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
                 <LocalOffer />
-                Tracked from Github
+                Last one at 11/04/19
               </div>
             </CardFooter>
           </Card>
@@ -109,25 +102,11 @@ function UserProfile(props) {
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={e => e.preventDefault()}>
-                <img src={avatar} alt="..." />
-              </a>
-            </CardAvatar>
-            <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
-              <p className={classes.description}>
-                Don't be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
-            </CardBody>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card className={classes.root}>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Attempted Quizzes</h4>
+            </CardHeader>
           </Card>
         </GridItem>
       </GridContainer>
