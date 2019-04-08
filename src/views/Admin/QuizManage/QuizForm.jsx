@@ -118,6 +118,18 @@ class QuizForm extends React.Component {
         dates: {
           status: false,
           message: ""
+        },
+        marksPerQn: {
+          status: false,
+          message: ""
+        },
+        negativeMarksPerQn: {
+          status: false,
+          message: ""
+        },
+        numberOfQns: {
+          status: false,
+          message: ""
         }
       }
     };
@@ -161,17 +173,45 @@ class QuizForm extends React.Component {
   handleCommonFieldChanges = event => {
     event.persist();
 
-    if (event.target.value < 0) {
-      event.target.value = 0;
+    switch (event.target.name) {
+      case "marksPerQn":
+      case "negativeMarksPerQn":
+      case "numberOfQns":
+        if (isNaN(event.target.value) || Math.sign(event.target.value) !== 1) {
+          this.setState(prevState => ({
+            error: {
+              ...prevState.error,
+              [event.target.name]: {
+                status: true,
+                message: "Invalid input tried to enter"
+              }
+            }
+          }));
+        } else {
+          this.updateCommonFields(event);
+        }
+        break;
+      default:
+        this.updateCommonFields(event);
+        break;
     }
+  };
 
+  updateCommonFields(event) {
     this.setState(state => ({
       quizCommon: {
         ...state.quizCommon,
         [event.target.name]: event.target.value
+      },
+      error: {
+        ...state.error,
+        [event.target.name]: {
+          status: false,
+          message: ""
+        }
       }
     }));
-  };
+  }
 
   //Function is for obtaining subcategory corresponding to selected category
   handleCategorySelect = (event, index) => {
@@ -399,8 +439,6 @@ class QuizForm extends React.Component {
     while (counter <= this.numberOfSections) {
       let singlePiece = this.createSectionPiece(counter, classes);
 
-      console.log(`counter:${counter}, sectoinNum:${this.numberOfSections}`);
-
       sectionContainer.push(singlePiece);
       counter++;
     }
@@ -484,6 +522,8 @@ class QuizForm extends React.Component {
                       className={classes.container}
                     >
                       <TextField
+                        error={this.state.error.marksPerQn.status}
+                        helperText={this.state.error.marksPerQn.message}
                         id="standard-marks"
                         label="+ Marks Per Question"
                         margin="normal"
@@ -501,6 +541,8 @@ class QuizForm extends React.Component {
                       className={classes.container}
                     >
                       <TextField
+                        error={this.state.error.negativeMarksPerQn.status}
+                        helperText={this.state.error.negativeMarksPerQn.message}
                         id="standard-negative-marks"
                         label="- Marks per Question"
                         margin="normal"
@@ -518,6 +560,8 @@ class QuizForm extends React.Component {
                       className={classes.container}
                     >
                       <TextField
+                        error={this.state.error.numberOfQns.status}
+                        helperText={this.state.error.numberOfQns.message}
                         id="standard-number"
                         label="Number Of Questions"
                         margin="normal"
