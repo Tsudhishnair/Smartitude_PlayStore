@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { Button, IconButton, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  IconButton,
+  ListItemSecondaryAction,
+  Snackbar,
+  Tooltip
+} from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -136,7 +142,6 @@ class DeptManage extends React.Component {
         }
       })
       .catch(err => {
-
         this.setState({
           // set error message of snackbar
           error: {
@@ -270,18 +275,20 @@ class DeptManage extends React.Component {
                               <CardFooter>
                                 <Mutation mutation={deletedept}>
                                   {deleteDepartment => (
-                                    <IconButton
-                                      onClick={e =>
-                                        this.handleDelete(
-                                          deleteDepartment,
-                                          department
-                                        )
-                                      }
-                                    >
-                                      <DeleteForeverIcon
-                                        className={classes.icon}
-                                      />
-                                    </IconButton>
+                                    <Tooltip title="Delete">
+                                      <IconButton
+                                        onClick={e =>
+                                          this.handleDelete(
+                                            deleteDepartment,
+                                            department
+                                          )
+                                        }
+                                      >
+                                        <DeleteForeverIcon
+                                          className={classes.icon}
+                                        />
+                                      </IconButton>
+                                    </Tooltip>
                                   )}
                                 </Mutation>
                                 <Button
