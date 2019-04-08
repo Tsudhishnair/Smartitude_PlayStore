@@ -21,6 +21,8 @@ import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
+import Card from "../../../components/Card/Card";
+import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
   formroot: {
@@ -376,277 +378,286 @@ class AddQuestion extends React.Component {
         {performAction => {
           return (
             <div className={classes.root}>
-              <form autoComplete="off" autoWidth={true}>
-                <Typography>
-                  <strong>Enter Question Below:</strong>
-                </Typography>
-                <GridContainer>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.question}
-                      placeholder="Type in your question here"
-                      multiline={true}
-                      rows={2}
-                      label="Question"
-                      name="question"
-                      rowsMax={10}
-                      type="input"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                </GridContainer>
-                <Typography>
-                  <strong>Options: </strong>
-                </Typography>
-                <GridContainer>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.option1}
-                      id="option1"
-                      name="option1"
-                      label="Option 1"
-                      multiline={true}
-                      type="number"
-                      placeholder="Type in your option 1 here"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.option2}
-                      name="option2"
-                      id="option2"
-                      label="Option 2"
-                      multiline={true}
-                      type="number"
-                      placeholder="Type in your option 2 here"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.option3}
-                      id="option3"
-                      name="option3"
-                      label="Option 3"
-                      multiline={true}
-                      type="number"
-                      placeholder="Type in your option 3 here"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.option4}
-                      id="option4"
-                      name="option4"
-                      label="Option 4"
-                      multiline={true}
-                      type="number"
-                      placeholder="Type in your option 4 here"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                  <Typography>
-                    <strong>Detailed Answer</strong>
-                  </Typography>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    className={classes.container}
-                  >
-                    <TextField
-                      onChange={this.handleChange}
-                      value={this.state.solution}
-                      name="solution"
-                      placeholder="Type in your detailed answer"
-                      multiline={true}
-                      rows={2}
-                      label="AnswerDetailed"
-                      rowsMax={10}
-                      type="input"
-                      margin="normal"
-                      fullWidth
-                    />
-                  </GridItem>
-                </GridContainer>
+              <Card>
+                <CardBody>
+                  <form autoComplete="off" autoWidth={true}>
+                    <Typography>
+                      <strong>Enter Question Below:</strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.question}
+                          placeholder="Type in your question here"
+                          multiline={true}
+                          rows={2}
+                          label="Question"
+                          name="question"
+                          rowsMax={10}
+                          type="input"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                    </GridContainer>
+                    <Typography>
+                      <strong>Options: </strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.option1}
+                          id="option1"
+                          name="option1"
+                          label="Option 1"
+                          multiline={true}
+                          type="number"
+                          placeholder="Type in your option 1 here"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.option2}
+                          name="option2"
+                          id="option2"
+                          label="Option 2"
+                          multiline={true}
+                          type="number"
+                          placeholder="Type in your option 2 here"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.option3}
+                          id="option3"
+                          name="option3"
+                          label="Option 3"
+                          multiline={true}
+                          type="number"
+                          placeholder="Type in your option 3 here"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.option4}
+                          id="option4"
+                          name="option4"
+                          label="Option 4"
+                          multiline={true}
+                          type="number"
+                          placeholder="Type in your option 4 here"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                    </GridContainer>
+                    <Typography>
+                      <strong>Detailed Answer</strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          onChange={this.handleChange}
+                          value={this.state.solution}
+                          name="solution"
+                          placeholder="Type in your detailed answer"
+                          multiline={true}
+                          rows={2}
+                          label="AnswerDetailed"
+                          rowsMax={10}
+                          type="input"
+                          margin="normal"
+                          fullWidth
+                        />
+                      </GridItem>
+                    </GridContainer>
 
-                <Spacing />
+                    <Spacing />
 
-                <Typography>
-                  <strong>Other Info</strong>
-                </Typography>
-                <GridContainer>
-                  <GridItem xs={12} sm={3} md={3}>
-                    <InputLabel fullWidth>Correct Option</InputLabel>
-                    <Select
-                      onChange={this.handleOption}
-                      value={this.state.correctOption}
-                      renderValue={value => {
-                        return value;
-                      }}
-                      inputProps={{
-                        name: "correctOption",
-                        id: "correctOption"
-                      }}
-                      fullWidth
-                    >
-                      <MenuItem value={1}>Option 1</MenuItem>
-                      <MenuItem value={2}>Option 2</MenuItem>
-                      <MenuItem value={3}>Option 3</MenuItem>
-                      <MenuItem value={4}>Option 4</MenuItem>
-                      ); })}
-                    </Select>
-                  </GridItem>
+                    <Typography>
+                      <strong>Other Info</strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem xs={12} sm={3} md={3}>
+                        <InputLabel fullWidth>Correct Option</InputLabel>
+                        <Select
+                          onChange={this.handleOption}
+                          value={this.state.correctOption}
+                          renderValue={value => {
+                            return value;
+                          }}
+                          inputProps={{
+                            name: "correctOption",
+                            id: "correctOption"
+                          }}
+                          fullWidth
+                        >
+                          <MenuItem value={1}>Option 1</MenuItem>
+                          <MenuItem value={2}>Option 2</MenuItem>
+                          <MenuItem value={3}>Option 3</MenuItem>
+                          <MenuItem value={4}>Option 4</MenuItem>
+                          ); })}
+                        </Select>
+                      </GridItem>
 
-                  {/* Category and SubCategory
+                      {/* Category and SubCategory
             ------------------------------------------------------------------------------- */}
-                  <Query query={FETCH_FORM_FIELDS}>
-                    {({ data, loading, error }) => {
-                      if (loading) {
-                        return <Typography>Loading...</Typography>;
-                      } else if (error) {
-                        return <Typography>Error occured!!!</Typography>;
-                      } else {
-                        return (
-                          <GridContainer>
-                            <GridItem xs={12} sm={6} md={6}>
-                              <InputLabel htmlFor="category" fullWidth>
-                                Category
-                              </InputLabel>
-                              <Select
-                                onChange={this.handleCategorySelect}
-                                value={this.state.category.name}
-                                renderValue={value => {
-                                  return value;
-                                }}
-                                inputProps={{
-                                  name: "category",
-                                  id: "category"
-                                }}
-                                fullWidth
-                              >
-                                {data.categoryDetailsList.map(
-                                  categoryDetail => {
-                                    return (
-                                      <MenuItem value={categoryDetail}>
-                                        {categoryDetail.category.name}
-                                      </MenuItem>
-                                    );
-                                  }
-                                )}
-                              </Select>
-                            </GridItem>
-                            <GridItem xs={12} sm={6} md={6}>
-                              <InputLabel htmlFor="subcategory" fullWidth>
-                                Sub Category
-                              </InputLabel>
-                              <Select
-                                onChange={this.handleChange}
-                                value={this.state.subcategory.name}
-                                renderValue={value => {
-                                  return value;
-                                }}
-                                inputProps={{
-                                  name: "subcategory",
-                                  id: "subcategory"
-                                }}
-                                fullWidth
-                              >
-                                {this.state.subcategoryList.map(subcategory => {
-                                  return (
-                                    <MenuItem value={subcategory}>
-                                      {subcategory.name}
-                                    </MenuItem>
-                                  );
-                                })}
-                              </Select>
-                            </GridItem>
-                          </GridContainer>
-                        );
-                      }
-                    }}
-                  </Query>
-                  {/* ------------------------------------------------------------------------------- */}
+                      <Query query={FETCH_FORM_FIELDS}>
+                        {({ data, loading, error }) => {
+                          if (loading) {
+                            return <Typography>Loading...</Typography>;
+                          } else if (error) {
+                            return <Typography>Error occured!!!</Typography>;
+                          } else {
+                            return (
+                              <GridContainer>
+                                <GridItem xs={12} sm={6} md={6}>
+                                  <InputLabel htmlFor="category" fullWidth>
+                                    Category
+                                  </InputLabel>
+                                  <Select
+                                    onChange={this.handleCategorySelect}
+                                    value={this.state.category.name}
+                                    renderValue={value => {
+                                      return value;
+                                    }}
+                                    inputProps={{
+                                      name: "category",
+                                      id: "category"
+                                    }}
+                                    fullWidth
+                                  >
+                                    {data.categoryDetailsList.map(
+                                      categoryDetail => {
+                                        return (
+                                          <MenuItem value={categoryDetail}>
+                                            {categoryDetail.category.name}
+                                          </MenuItem>
+                                        );
+                                      }
+                                    )}
+                                  </Select>
+                                </GridItem>
+                                <GridItem xs={12} sm={6} md={6}>
+                                  <InputLabel htmlFor="subcategory" fullWidth>
+                                    Sub Category
+                                  </InputLabel>
+                                  <Select
+                                    onChange={this.handleChange}
+                                    value={this.state.subcategory.name}
+                                    renderValue={value => {
+                                      return value;
+                                    }}
+                                    inputProps={{
+                                      name: "subcategory",
+                                      id: "subcategory"
+                                    }}
+                                    fullWidth
+                                  >
+                                    {this.state.subcategoryList.map(
+                                      subcategory => {
+                                        return (
+                                          <MenuItem value={subcategory}>
+                                            {subcategory.name}
+                                          </MenuItem>
+                                        );
+                                      }
+                                    )}
+                                  </Select>
+                                </GridItem>
+                              </GridContainer>
+                            );
+                          }
+                        }}
+                      </Query>
+                      {/* ------------------------------------------------------------------------------- */}
 
-                  <GridItem xs={12} sm={3} md={3}>
-                    <InputLabel htmlFor="age-simple" fullWidth>
-                      Difficulty
-                      <TextField
-                        id="standard-number"
-                        type="number"
-                        name="difficulty"
-                        fullWidth
-                        onChange={this.handleChange}
-                        value={this.state.difficulty}
-                      />
-                    </InputLabel>
-                  </GridItem>
-                </GridContainer>
-                <Spacing />
-                <ExpansionPanelActions>
-                  <Button
-                    type="reset"
-                    variant={"outlined"}
-                    onClick={this.handleReset}
-                  >
-                    Clear
-                  </Button>
-                  <div className={classes.wrapper}>
-                    <Button
-                      color={"primary"}
-                      variant={"outlined"}
-                      type="submit"
-                      disabled={loading}
-                      onClick={e => this.handleClick(performAction, e)}
-                    >
-                      Submit
-                    </Button>
-                    {loading && (
-                      <CircularProgress
-                        size={24}
-                        className={classes.buttonProgress}
-                      />
-                    )}
-                  </div>
-                </ExpansionPanelActions>
-              </form>
+                      <GridItem xs={12} sm={3} md={3}>
+                        <InputLabel htmlFor="age-simple" fullWidth>
+                          Difficulty
+                          <TextField
+                            id="standard-number"
+                            type="number"
+                            name="difficulty"
+                            fullWidth
+                            InputProps={{ inputProps: { min: 0, max: 10 } }}
+                            onChange={this.handleChange}
+                            value={this.state.difficulty}
+                          />
+                        </InputLabel>
+                      </GridItem>
+                    </GridContainer>
+                    <Spacing />
+                    <ExpansionPanelActions>
+                      <Button
+                        type="reset"
+                        variant={"outlined"}
+                        onClick={this.handleReset}
+                      >
+                        Clear
+                      </Button>
+                      <div className={classes.wrapper}>
+                        <Button
+                          color={"primary"}
+                          variant={"outlined"}
+                          type="submit"
+                          disabled={loading}
+                          onClick={e => this.handleClick(performAction, e)}
+                        >
+                          Submit
+                        </Button>
+                        {loading && (
+                          <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                          />
+                        )}
+                      </div>
+                    </ExpansionPanelActions>
+                  </form>
+                </CardBody>
+              </Card>
               <Snackbar
                 anchorOrigin={{
                   vertical: "top",
