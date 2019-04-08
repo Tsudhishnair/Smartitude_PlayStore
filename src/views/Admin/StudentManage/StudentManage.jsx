@@ -15,10 +15,7 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
-} from "../../../Utils";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 
@@ -135,7 +132,7 @@ class StudentManage extends React.Component {
     onRowClick: (rowData, rowState) => {
       console.log("onRowClick");
       if (!this.rowSelected) {
-        const clickedRowIndex = rowState.rowIndex;
+        const clickedRowIndex = rowState.dataIndex;
         this.child.handleClickOpen(
           this.students[clickedRowIndex],
           this.reloadStudentsList
