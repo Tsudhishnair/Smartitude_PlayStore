@@ -40,8 +40,9 @@ import {
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import { Link } from "react-router-dom";
 
-class Dashboard extends React.Component {
+class StudentDashboard extends React.Component {
   state = {
     value: 0
   };
@@ -158,7 +159,9 @@ class Dashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>build</Icon>
+                        <Link to="/student/start_quiz">
                         <Button round color="success" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        </Link>
                       </CardFooter>
                
                     </Card>
@@ -174,7 +177,9 @@ class Dashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>cached</Icon>
+                        <Link to="/student/start_quiz">
                         <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        </Link>
                       </CardFooter>
                     </Card>
                   </GridItem>
@@ -370,8 +375,8 @@ class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {
+StudentDashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(dashboardStyle)(StudentDashboard);

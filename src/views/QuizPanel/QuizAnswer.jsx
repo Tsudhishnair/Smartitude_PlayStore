@@ -48,7 +48,7 @@ const styles = theme => ({
   }
 });
 
-class StartQuiz extends React.Component {
+class QuizAnswer extends React.Component {
   state = {
     value: "option"
   };
@@ -226,8 +226,8 @@ class StartQuiz extends React.Component {
   }
 }
 
-StartQuiz.propTypes = {
+QuizAnswer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(StartQuiz);
+export default withStyles(styles)(QuizAnswer);

@@ -1,14 +1,13 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 // import ContentPaste from "@material-ui/icons/ContentPaste";
-import LogOutIcon from "@material-ui/icons/ExitToApp";
 import BarChart from "@material-ui/icons/BarChart";
 import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 // core components/views
-import DashboardPage from "../views/Student/Dashboard/Dashboard.jsx";
+import DashboardPage from "../views/Student/Dashboard/StudentDashboard.jsx";
 import NotificationsPage from "../views/Student/Notifications/Notifications.jsx";
 import Results from "../views/Student/Results/Results.jsx";
-import Test from "../views/QuizPanel/StartQuiz";
+import Test from "../views/QuizPanel/PreQuizInfo";
 
 const dashboardRoutes = [
   {
@@ -34,9 +33,14 @@ const dashboardRoutes = [
   },
   {
     redirect: true,
+    path: "/student/start_quiz",
+    subRoute: true,
+    component: Test
+  },
+  {
+    redirect: true,
     path: "/student",
-    to: "/student/dashboard",
-    navbarName: "Redirect"
+    to: "/student/dashboard"
   }
 ];
 
