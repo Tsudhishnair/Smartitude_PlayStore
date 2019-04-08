@@ -112,7 +112,7 @@ class ApprovedQuestionsManage extends React.Component {
                               showActions={true}
                               actionButtonText={"Manage Question"}
                               actionFunction={this.triggerQuestionManageDialog}
-                              showDeleteIcon={true}
+                              showDeleteIcon={false}
                               // deleteFunction={this.deleteQuestion}
                             />
                           );
