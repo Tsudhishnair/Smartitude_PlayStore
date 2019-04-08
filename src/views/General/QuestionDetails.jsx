@@ -10,15 +10,53 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
-
+import MessageDialog from "../../components/Dialog/MessageDialog";
 class QuestionDetails extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      dialogDelete: false
+    };
+    // stores question which is to be deleted
+    this.questionToBeDeleted;
+
+    // stores mutation call of question
+    this.questionDeleteMutation;
   }
-  deleteQuestion = (func, data) => {
-    func({
+
+  handleDelete = (func, data) => {
+    this.toggleDeleteDialogVisibility();
+
+    this.questionToBeDeleted = data;
+    this.questionDeleteMutation = func;
+   
+  }
+  //Dialog for Question Delete
+  renderDeleteDialog = dialogDelete => {
+    if (dialogDelete) {
+      return (
+        <MessageDialog
+          title="Delete Question"
+          content="Are you sure you want to delete this Questions?"
+          positiveAction="Delete"
+          negativeAction="Cancel"
+          action={this.deleteQuestion}
+          onClose={this.toggleDeleteDialogVisibility}
+        />
+      );
+    }
+  };
+  //used to toggle the visibility of delete dialog
+  toggleDeleteDialogVisibility = () => {
+    this.setState(prevState => ({
+      dialogDelete: !prevState.dialogDelete
+    }));
+  };
+  //delete mutation action 
+  deleteQuestion = () => {
+    this.questionDeleteMutation({
       variables: {
-        _id: data
+        _id: this.questionToBeDeleted
       }
     });
   };
@@ -35,8 +73,8 @@ class QuestionDetails extends Component {
                 </GridItem>
               );
             })}
-            
-          <Divider />
+
+            <Divider />
           </GridContainer>
           <GridContainer>
             <GridItem>
@@ -72,6 +110,7 @@ class QuestionDetails extends Component {
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
+      { this.renderDeleteDialog(this.state.dialogDelete)}
         {console.log(question)}
         <CardBody>
           <h4>
@@ -104,7 +143,7 @@ class QuestionDetails extends Component {
                   return (
                     <IconButton
                       onClick={() => {
-                        this.deleteQuestion(deleteQuestion, question._id);
+                        this.handleDelete(deleteQuestion, question._id);
                       }}
                     >
                       <DeleteForeverIcon />
@@ -113,8 +152,8 @@ class QuestionDetails extends Component {
                 }}
               </Mutation>
             ) : (
-              ""
-            )}
+                ""
+              )}
             <Button
               round
               variant={"outlined"}
@@ -137,12 +176,12 @@ class QuestionDetails extends Component {
                 {secondaryActionButtonText}
               </Button>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </CardFooter>
         ) : (
-          ""
-        )}
+            ""
+          )}
         <Divider />
       </GridItem>
     );
