@@ -14,8 +14,34 @@ import MUIDataTable from "mui-datatables";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM } from "../../../Utils";
+import gql from "graphql-tag";
 
+const QUIZ_VIEW_QUERY = gql`
+{
+  AdminQuiz{
+    _id
+    name
+    description
+    createdBy
+    section{
+      category
+      subcategories{
+        _id
+        category
+        name
+      }
+    }
+    target
+    active
+    activeTo
+    activeFrom
+    negativeMarkPerQuestion
+    markperQuestion
+  }
+}
+`;
 class Dashboard extends React.Component {
+
   render() {
     const { classes } = this.props;
     const header1 = "Quiz";
