@@ -245,8 +245,6 @@ class FormAddStudent extends Component {
             () => {
               this.openSnackbar();
               this.props.reloadStudentsList();
-              console.log("response");
-              console.log(response);
             }
           );
         })
