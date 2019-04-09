@@ -14,9 +14,12 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
+import {
+  EXPANSION_FACULTY_BATCH,
+  EXPANSION_FACULTY_FORM
+} from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
@@ -25,19 +28,39 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 6
   }
 });
+const MULTIPLE_DELETE = gql`
+  mutation deleteMultipleFaculties($_ids: [ID!]!) {
+    deleteMultipleFaculties(_ids: $_ids)
+  }
+`;
 
 class Dashboard extends React.Component {
-  faculties = [];
-  departments = [];
-  categories = [];
-  subcategories = [];
-  categoryDetails = [];
-  refetchFacultiesList = null;
+  constructor(props) {
+    super(props);
+    this.faculties = [];
+    this.departments = [];
+    this.categories = [];
+    this.subcategories = [];
+    this.categoryDetails = [];
+    this.refetchFacultiesList = null;
+    this.deleteFacultiesList = [];
+    this.deleteMutation;
+  }
+
   reloadFacultiesList = () => {
     console.log("reloadFacultiesList called");
     if (this.refetchFacultiesList !== null) {
       this.refetchFacultiesList();
     }
+  };
+  //Deleting Faculties complete Details
+  handleDelete = deleteFacultyIds => {
+    console.log(deleteFacultyIds + "Deleted");
+    this.deleteMutation({
+      variables: {
+        _ids: deleteFacultyIds
+      }
+    });
   };
   render() {
     const { classes } = this.props;
@@ -149,7 +172,15 @@ class Dashboard extends React.Component {
         console.log(allRowsSelected);
         this.rowSelected = allRowsSelected.length > 0;
       },
-
+      onRowsDelete: rowsDeleted => {
+        let data = rowsDeleted.data;
+        for (let index in data) {
+          this.deleteFacultiesList.push(
+            this.faculties[data[index].dataIndex]._id
+          );
+        }
+        this.handleDelete(this.deleteFacultiesList);
+      },
       onRowClick: (rowData, rowMeta) => {
         if (!this.rowSelected) {
           const clickedRowIndex = rowMeta.dataIndex;
@@ -162,98 +193,117 @@ class Dashboard extends React.Component {
     };
 
     return (
-      <Query query={FETCH_DATA}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return "Loading...";
-          } else if (error) {
-            return "Error occured!";
-          } else {
-            this.departments = data.departments;
-            if (data.categoryDetailsList) {
-              this.categoryDetails = data.categoryDetailsList;
-              return (
-                <Fragment>
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <ExpansionPanel
-                        headers={header1}
-                        header={header2}
-                        departments={this.departments}
-                        categoryDetails={this.categoryDetails}
-                        directingValue={EXPANSION_FACULTY_FORM}
-                        reloadList={this.reloadFacultiesList}
-                      />
-                      <ExpansionPanel
-                        reloadList={this.reloadFacultiesList}
-                        headers={"Multiple Faculty"}
-                        header={"Add groups of faculty"}
-                        directingValue={EXPANSION_FACULTY_BATCH}
-                      />
-                    </GridItem>
-                  </GridContainer>
-                  <Spacing />
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <Card className={classes.root}>
-                        <CardHeader color="warning">
-                          <h4 className={classes.cardTitleWhite}>
-                            Faculty List
-                          </h4>
-                        </CardHeader>
-                        <CardBody>
-                          <Query query={FETCH_FACULTIES_LIST}>
-                            {({ data, loading, error, refetch }) => {
-                              if (loading) {
-                                return "Loading faculty list...";
-                              } else if (error) {
-                                return "Error occured!";
-                              } else {
-                                this.refetchFacultiesList = refetch;
-                                let facultiesList = [];
-                                facultiesList = data.faculties.map(faculty => {
-                                  let facultyData = [];
-                                  facultyData.push(faculty.name);
-                                  facultyData.push(faculty.username);
-                                  facultyData.push(
-                                    faculty.isInCharge ? "In-charge" : "Faculty"
-                                  );
-                                  facultyData.push(faculty.email);
-                                  facultyData.push(faculty.department.name);
-                                  if (faculty.category) {
-                                    facultyData.push(faculty.category.name);
-                                  }
-                                  return facultyData;
-                                });
-                                this.faculties = data.faculties;
-                                return (
-                                  <Fragment>
-                                    <TableDialog
-                                      onRef={ref => (this.child = ref)}
-                                      categoryDetails={this.categoryDetails}
-                                      departments={this.departments}
-                                    />
-                                    <MUIDataTable
-                                      title={""}
-                                      data={facultiesList}
-                                      columns={columns}
-                                      options={options}
-                                    />
-                                  </Fragment>
-                                );
-                              }
-                            }}
-                          </Query>
-                        </CardBody>
-                      </Card>
-                    </GridItem>
-                  </GridContainer>
-                </Fragment>
-              );
-            }
-          }
+      <Mutation mutation={MULTIPLE_DELETE}>
+        {deleteMultipleFaculties => {
+          return (
+            <Fragment>
+              {(this.deleteMutation = deleteMultipleFaculties)}
+              <Query query={FETCH_DATA}>
+                {({ data, loading, error }) => {
+                  if (loading) {
+                    return "Loading...";
+                  } else if (error) {
+                    return "Error occured!";
+                  } else {
+                    this.departments = data.departments;
+                    if (data.categoryDetailsList) {
+                      this.categoryDetails = data.categoryDetailsList;
+                      return (
+                        <Fragment>
+                          <GridContainer>
+                            <GridItem xs={12} sm={12} md={12}>
+                              <ExpansionPanel
+                                headers={header1}
+                                header={header2}
+                                departments={this.departments}
+                                categoryDetails={this.categoryDetails}
+                                directingValue={EXPANSION_FACULTY_FORM}
+                                reloadList={this.reloadFacultiesList}
+                              />
+                              <ExpansionPanel
+                                reloadList={this.reloadFacultiesList}
+                                headers={"Multiple Faculty"}
+                                header={"Add groups of faculty"}
+                                directingValue={EXPANSION_FACULTY_BATCH}
+                              />
+                            </GridItem>
+                          </GridContainer>
+                          <Spacing />
+                          <GridContainer>
+                            <GridItem xs={12} sm={12} md={12}>
+                              <Card className={classes.root}>
+                                <CardHeader color="warning">
+                                  <h4 className={classes.cardTitleWhite}>
+                                    Faculty List
+                                  </h4>
+                                </CardHeader>
+                                <CardBody>
+                                  <Query query={FETCH_FACULTIES_LIST}>
+                                    {({ data, loading, error, refetch }) => {
+                                      if (loading) {
+                                        return "Loading faculty list...";
+                                      } else if (error) {
+                                        return "Error occured!";
+                                      } else {
+                                        this.refetchFacultiesList = refetch;
+                                        let facultiesList = [];
+                                        facultiesList = data.faculties.map(
+                                          faculty => {
+                                            let facultyData = [];
+                                            facultyData.push(faculty.name);
+                                            facultyData.push(faculty.username);
+                                            facultyData.push(
+                                              faculty.isInCharge
+                                                ? "In-charge"
+                                                : "Faculty"
+                                            );
+                                            facultyData.push(faculty.email);
+                                            facultyData.push(
+                                              faculty.department.name
+                                            );
+                                            if (faculty.category) {
+                                              facultyData.push(
+                                                faculty.category.name
+                                              );
+                                            }
+                                            return facultyData;
+                                          }
+                                        );
+                                        this.faculties = data.faculties;
+                                        return (
+                                          <Fragment>
+                                            <TableDialog
+                                              onRef={ref => (this.child = ref)}
+                                              categoryDetails={
+                                                this.categoryDetails
+                                              }
+                                              departments={this.departments}
+                                            />
+                                            <MUIDataTable
+                                              title={""}
+                                              data={facultiesList}
+                                              columns={columns}
+                                              options={options}
+                                            />
+                                          </Fragment>
+                                        );
+                                      }
+                                    }}
+                                  </Query>
+                                </CardBody>
+                              </Card>
+                            </GridItem>
+                          </GridContainer>
+                        </Fragment>
+                      );
+                    }
+                  }
+                }}
+              </Query>
+            </Fragment>
+          );
         }}
-      </Query>
+      </Mutation>
     );
   }
 }
