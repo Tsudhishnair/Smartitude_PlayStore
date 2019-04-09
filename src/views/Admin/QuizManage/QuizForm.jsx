@@ -127,10 +127,6 @@ class QuizForm extends React.Component {
         negativeMarksPerQn: {
           status: false,
           message: ""
-        },
-        numberOfQns: {
-          status: false,
-          message: ""
         }
       },
       submitDialog: false
@@ -178,7 +174,6 @@ class QuizForm extends React.Component {
     switch (event.target.name) {
       case "marksPerQn":
       case "negativeMarksPerQn":
-      case "numberOfQns":
         if (isNaN(event.target.value) || Math.sign(event.target.value) !== 1) {
           //TODO: 0 not working, check working, also for negativemarksperqn
           this.setState(prevState => ({
@@ -311,8 +306,7 @@ class QuizForm extends React.Component {
       !quizCommon.description ||
       !quizCommon.batch ||
       dateError ||
-      !quizCommon.marksPerQn ||
-      !quizCommon.numberOfQns
+      !quizCommon.marksPerQn
     ) {
       this.toggleSubmitDialogVisibility();
     } else if (isNaN(quizCommon.negativeMarksPerQn)) {
@@ -609,25 +603,6 @@ class QuizForm extends React.Component {
                         type="number"
                         name="negativeMarksPerQn"
                         value={this.state.quizCommon.negativeMarksPerQn}
-                        onChange={this.handleCommonFieldChanges}
-                        fullWidth
-                      />
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.container}
-                    >
-                      <TextField
-                        error={this.state.error.numberOfQns.status}
-                        helperText={this.state.error.numberOfQns.message}
-                        id="standard-number"
-                        label="Number Of Questions"
-                        margin="normal"
-                        type="number"
-                        name="numberOfQns"
-                        value={this.state.quizCommon.numberOfQns}
                         onChange={this.handleCommonFieldChanges}
                         fullWidth
                       />
