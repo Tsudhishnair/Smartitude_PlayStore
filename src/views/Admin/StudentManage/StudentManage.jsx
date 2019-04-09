@@ -15,10 +15,7 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
-} from "../../../Utils";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 
@@ -108,8 +105,8 @@ const columns = [
     }
   }
 ];
-
 class StudentManage extends React.Component {
+  deleteStudentList = [];
   students = [];
   rowSelected = false;
   refetchStudentsList = null;
@@ -120,7 +117,12 @@ class StudentManage extends React.Component {
       this.refetchStudentsList();
     }
   };
-
+  handleDelete = (deleteStudentId) => {
+    let data = deleteStudentId;
+    for (let index in deleteStudentId) {
+      console.log(data[index]);
+    }
+  }
   tableOptions = {
     filterType: "checkbox",
     rowsPerPage: 100,
@@ -128,18 +130,27 @@ class StudentManage extends React.Component {
     responsive: "stacked",
     rowsPerPageOptions: [20, 30, 100, 200, 1000, 10000],
     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
-      console.log("onRowSelect");
-      console.log(allRowsSelected);
+
       this.rowSelected = allRowsSelected.length > 0;
+    },
+    onRowsDelete: (rowsDeleted) => {
+      // console.log(rowsDeleted.data);
+      let data = rowsDeleted.data
+      for (let index in data) {
+        this.deleteStudentList.push(data[index].dataIndex);
+      }
+      this.handleDelete(this.students[this.deleteStudentList]);
+      
     },
     onRowClick: (rowData, rowState) => {
       console.log("onRowClick");
       if (!this.rowSelected) {
-        const clickedRowIndex = rowState.rowIndex;
+        const clickedRowIndex = rowState.dataIndex;
         this.child.handleClickOpen(
           this.students[clickedRowIndex],
           this.reloadStudentsList
         );
+
       }
     }
   };

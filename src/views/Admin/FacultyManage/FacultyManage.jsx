@@ -16,10 +16,7 @@ import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  EXPANSION_FACULTY_BATCH,
-  EXPANSION_FACULTY_FORM
-} from "../../../Utils";
+import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
@@ -155,7 +152,7 @@ class Dashboard extends React.Component {
 
       onRowClick: (rowData, rowMeta) => {
         if (!this.rowSelected) {
-          const clickedRowIndex = rowMeta.rowIndex;
+          const clickedRowIndex = rowMeta.dataIndex;
           this.child.handleClickOpen(
             this.faculties[clickedRowIndex],
             this.reloadFacultiesList

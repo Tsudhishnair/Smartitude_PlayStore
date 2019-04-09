@@ -5,6 +5,7 @@ import { DatePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
@@ -131,7 +132,8 @@ class QuizForm extends React.Component {
           status: false,
           message: ""
         }
-      }
+      },
+      submitDialog: false
     };
   }
 
@@ -178,6 +180,7 @@ class QuizForm extends React.Component {
       case "negativeMarksPerQn":
       case "numberOfQns":
         if (isNaN(event.target.value) || Math.sign(event.target.value) !== 1) {
+          //TODO: 0 not working, check working, also for negativemarksperqn
           this.setState(prevState => ({
             error: {
               ...prevState.error,
@@ -297,7 +300,40 @@ class QuizForm extends React.Component {
     }
   };
 
-  handleSubmit = () => {};
+  handleSubmit = () => {
+    const quizCommon = this.state.quizCommon;
+    const quizSectionWise = this.state.quizSectionWise;
+    const dateError = this.state.error.dates.status;
+
+    //quizCommon fields check
+    if (
+      !quizCommon.quizName ||
+      !quizCommon.description ||
+      !quizCommon.batch ||
+      dateError ||
+      !quizCommon.marksPerQn ||
+      !quizCommon.numberOfQns
+    ) {
+      this.toggleSubmitDialogVisibility();
+    } else if (isNaN(quizCommon.negativeMarksPerQn)) {
+      this.toggleSubmitDialogVisibility();
+    }
+
+    for (let index in quizSectionWise) {
+      let item = quizSectionWise[index];
+      console.log(item);
+      console.log(item.category.name);
+      if (
+        !item.category.name ||
+        !item.numberOfQns ||
+        !item.timeLimit ||
+        item.subcategories.length === 0
+      ) {
+        console.log("ullil und");
+        this.toggleSubmitDialogVisibility();
+      }
+    }
+  };
 
   validateDates = () => {
     if (this.state.quizCommon.activeTo < this.state.quizCommon.activeFrom) {
@@ -320,6 +356,29 @@ class QuizForm extends React.Component {
           }
         }
       }));
+    }
+  };
+
+  toggleSubmitDialogVisibility = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      submitDialog: !prevState.submitDialog
+    }));
+  };
+
+  renderSubmitDialog = isVisible => {
+    if (isVisible) {
+      //TODO: PRESSING OK DOES NOT CHANGE submitDialog STATE
+      return (
+        <MessageDialog
+          title="Adding Quiz"
+          content="There is an error in one of the inputs. Please rectify"
+          positiveAction="Ok"
+          negativeAction="Cancel"
+          action={this.toggleSubmitDialogVisibility}
+          onClose={this.toggleSubmitDialogVisibility}
+        />
+      );
     }
   };
 
@@ -493,6 +552,7 @@ class QuizForm extends React.Component {
 
             return (
               <div className={classes.root}>
+                {this.renderSubmitDialog(this.state.submitDialog)}
                 <form autoComplete="off" autoWidth={true}>
                   <Typography>
                     <strong>Basic Info</strong>

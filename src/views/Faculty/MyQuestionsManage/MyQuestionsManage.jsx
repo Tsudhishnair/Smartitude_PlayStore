@@ -8,13 +8,39 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import CardHeader from "../../../components/Card/CardHeader";
 import Card from "../../../components/Card/Card";
-import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
+import Fuse from "fuse.js";
 
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
 // core components
+
+const styles = theme => ({
+  searchRoot: {
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    float: "right",
+    background: "transparent"
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1
+  },
+  iconButton: {
+    padding: 10
+  },
+  divider: {
+    width: 1,
+    height: 28,
+    margin: 4
+  }
+});
 
 class MyQuestionsManage extends React.Component {
   constructor(props) {
@@ -85,6 +111,18 @@ class MyQuestionsManage extends React.Component {
     `;
     //------------------------------------------------------------------------
 
+    var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ["question", "myQuestions.firstName"]
+    };
+
+    var fuse = new Fuse(RETRIVE_QUESTIONS, options);
+
     return (
       <Query query={RETRIVE_QUESTIONS}>
         {({ data, loading, error }) => {
@@ -96,13 +134,26 @@ class MyQuestionsManage extends React.Component {
             return (
               <div>
                 {this.showQuestionManageDialog(this.state.open)}
-                <Spacing/>
+                <Spacing />
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>
                       <CardHeader color="warning">
                         <h4 className={classes.cardTitleWhite}>Questions</h4>
                       </CardHeader>
+                      <Spacing />
+                      <div className={classes.searchRoot} elevation={1}>
+                        <InputBase
+                          className={classes.input}
+                          placeholder="Search Questions"
+                        />
+                        <IconButton
+                          className={classes.iconButton}
+                          aria-label="Search"
+                        >
+                          <SearchIcon />
+                        </IconButton>
+                      </div>
                       <GridContainer style={{ padding: "2%" }}>
                         {data.myQuestions.map(question => {
                           return (
@@ -134,4 +185,4 @@ MyQuestionsManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(MyQuestionsManage);
+export default withStyles(styles)(MyQuestionsManage);
