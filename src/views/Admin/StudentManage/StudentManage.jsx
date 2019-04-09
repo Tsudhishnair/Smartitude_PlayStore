@@ -63,7 +63,8 @@ const columns = [
     name: "Name",
     options: {
       filter: false,
-      sort: true
+      sort: true,
+      sortDirection: "asc"
     }
   },
   {

@@ -159,7 +159,7 @@ class StudentDashboard extends React.Component {
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>build</Icon>
-                        <Link to="/student/start_quiz">
+                        <Link to="/student/custom_quiz_setup">
                         <Button round color="success" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
                         </Link>
                       </CardFooter>
@@ -189,11 +189,13 @@ class StudentDashboard extends React.Component {
                         <h4 className={classes.cardTitleWhite}>Assigned Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
                           Attempt assigned quizzes
-                </p>
+                        </p>
                       </CardBody>
                       <CardFooter >
                         <Icon style={{ color: "white" }}>done_all</Icon>
+                        <Link to="/student/start_quiz">
                         <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        </Link>
                       </CardFooter>
                     </Card>
                   </GridItem>

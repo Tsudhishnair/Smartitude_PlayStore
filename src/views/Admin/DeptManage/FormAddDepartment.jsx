@@ -118,6 +118,7 @@ class FormAddDepartment extends React.Component {
 
   // handle assign button click
   handleClick = (addDepartment, e) => {
+    e.preventDefault();
     // check if name or dept fields are empty, if so, throw up snackbar and set msg accordingly
     if (!this.state.form.name) {
       this.setState(

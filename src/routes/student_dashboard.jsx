@@ -7,7 +7,8 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import DashboardPage from "../views/Student/Dashboard/StudentDashboard.jsx";
 import NotificationsPage from "../views/Student/Notifications/Notifications.jsx";
 import Results from "../views/Student/Results/Results.jsx";
-import Test from "../views/QuizPanel/PreQuizInfo";
+import PreQuizInfo from "../views/QuizPanel/PreQuizInfo";
+import CustomQuizSetup from "../views/QuizPanel/CustomQuizSetup";
 
 const dashboardRoutes = [
   {
@@ -35,7 +36,13 @@ const dashboardRoutes = [
     redirect: true,
     path: "/student/start_quiz",
     subRoute: true,
-    component: Test
+    component: PreQuizInfo
+  },
+  {
+    redirect: true,
+    path: "/student/custom_quiz_setup",
+    subRoute: true,
+    component: CustomQuizSetup
   },
   {
     redirect: true,

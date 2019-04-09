@@ -110,7 +110,7 @@ class QuestionDetails extends Component {
     } = this.props;
     return (
       <GridItem xs={12} sm={12} md={12}>
-      { this.renderDeleteDialog(this.state.dialogDelete)}
+        {this.renderDeleteDialog(this.state.dialogDelete)}
         {console.log(question)}
         <CardBody>
           <h4>
@@ -123,7 +123,7 @@ class QuestionDetails extends Component {
           )}
           <p>
             <b>Created By: </b>
-            {question.createdBy.name}
+            {question.createdBy}
             <br />
             <b>Category/Subcategory: </b>
             {question.category.name} - {question.subcategory.name}

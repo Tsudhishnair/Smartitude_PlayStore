@@ -75,8 +75,8 @@ class PreQuizInfo extends React.Component {
                     Each question carry <b>1 mark</b>, no negative marks <br />
                     All questions are multiple choice and there is only one
                     correct answer. The test can not be paused. <br />
-                    Calculators are permitted, we also recommend having a pen
-                    and paper ready for rough calculations. <br />
+                    Calculators are not permitted, we recommend having a pen and
+                    paper ready for rough calculations. <br />
                     Try to take the test in an environment that you will not be
                     disturbed. <br />
                   </Typography>
