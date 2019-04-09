@@ -122,6 +122,7 @@ class StudentManage extends React.Component {
     this.deleteMutation;
   }
   reloadStudentsList = () => {
+    // console.log("reloadStudentsList called");
     if (this.refetchStudentsList !== null) {
       this.refetchStudentsList();
     }

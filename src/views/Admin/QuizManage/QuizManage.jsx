@@ -119,7 +119,7 @@ class Dashboard extends React.Component {
                 title={""}
                 data={data}
                 columns={columns}
-                options={options}
+                options={this.options}
               />
             </Card>
           </GridItem>
