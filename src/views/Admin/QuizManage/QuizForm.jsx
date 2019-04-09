@@ -26,7 +26,7 @@ import { Delete } from "@material-ui/icons";
 
 import moment from "moment";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 
 const styles = theme => ({
   formroot: {
@@ -77,6 +77,14 @@ const ALL_QUERY = gql`
   }
 `;
 
+const ADD_QUIZ = gql`
+  mutation createAdminQuiz($adminQuizRequest: AdminQuizRequest!) {
+    createAdminQuiz(adminQuizRequest: $adminQuizRequest) {
+      _id
+    }
+  }
+`;
+
 const DATE_FROM = 1;
 const DATE_TO = 2;
 
@@ -95,6 +103,8 @@ class QuizForm extends React.Component {
 
     this.currentDate = new Date();
 
+    this.flag = true;
+
     this.state = {
       quizCommon: {
         quizName: "",
@@ -111,7 +121,7 @@ class QuizForm extends React.Component {
           subcategories: [],
           subcategoryList: [],
           clearSubcategoryChips: false,
-          numberOfQns: 0,
+          numberOfQuestions: 0,
           timeLimit: 0
         }
       ],
@@ -132,6 +142,14 @@ class QuizForm extends React.Component {
       submitDialog: false
     };
   }
+
+  makeFlagFalse = () => {
+    this.flag = false;
+  };
+
+  makeFlagTrue = () => {
+    this.flag = true;
+  };
 
   //Set the date in the state of Qiz Expiry from Quiz Form
   handleDateChange = (date, type) => {
@@ -252,7 +270,7 @@ class QuizForm extends React.Component {
         ...this.state.quizSectionWise,
         [index]: {
           ...this.state.quizSectionWise[index],
-          numberOfQns: event.target.value
+          numberOfQuestions: event.target.value
         }
       }
     });
@@ -272,7 +290,7 @@ class QuizForm extends React.Component {
           subcategories: [],
           subcategoryList: [],
           clearSubcategoryChips: false,
-          numberOfQns: 0,
+          numberOfQuestions: 0,
           timeLimit: 0
         }
       }
@@ -295,10 +313,12 @@ class QuizForm extends React.Component {
     }
   };
 
-  handleSubmit = () => {
+  handleSubmit = mutation => {
     const quizCommon = this.state.quizCommon;
     const quizSectionWise = this.state.quizSectionWise;
     const dateError = this.state.error.dates.status;
+
+    this.makeFlagTrue();
 
     //quizCommon fields check
     if (
@@ -308,24 +328,60 @@ class QuizForm extends React.Component {
       dateError ||
       !quizCommon.marksPerQn
     ) {
+      this.makeFlagFalse();
       this.toggleSubmitDialogVisibility();
     } else if (isNaN(quizCommon.negativeMarksPerQn)) {
+      this.makeFlagFalse();
       this.toggleSubmitDialogVisibility();
     }
 
     for (let index in quizSectionWise) {
       let item = quizSectionWise[index];
-      console.log(item);
-      console.log(item.category.name);
+
       if (
         !item.category.name ||
-        !item.numberOfQns ||
+        !item.numberOfQuestions ||
         !item.timeLimit ||
         item.subcategories.length === 0
       ) {
-        console.log("ullil und");
+        this.makeFlagFalse();
         this.toggleSubmitDialogVisibility();
       }
+    }
+
+    if (this.flag) {
+      let sectionRequest = [];
+
+      for (const index in quizSectionWise) {
+        delete quizSectionWise[index].subcategoryList;
+        delete quizSectionWise[index].clearSubcategoryChips;
+        quizSectionWise[index].category = quizSectionWise[index].category._id;
+        quizSectionWise[index].timeLimit = Number(
+          quizSectionWise[index].timeLimit
+        );
+        quizSectionWise[index].numberOfQuestions = Number(
+          quizSectionWise[index].numberOfQuestions
+        );
+        sectionRequest.push(quizSectionWise[index]);
+      }
+
+      mutation({
+        variables: {
+          adminQuizRequest: {
+            name: this.state.quizCommon.quizName,
+            description: this.state.quizCommon.description,
+            target: this.state.quizCommon.batch,
+            active: this.state.quizCommon.active,
+            activeFrom: this.state.quizCommon.activeFrom,
+            activeTo: this.state.quizCommon.activeTo,
+            markPerQuestion: Number(this.state.quizCommon.marksPerQn),
+            negativeMarkPerQuestion: Number(this.state.quizCommon.negativeMarksPerQn),
+            requestedSections: sectionRequest
+          }
+        }
+      })
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
     }
   };
 
@@ -458,7 +514,7 @@ class QuizForm extends React.Component {
               type="number"
               fullWidth
               margin="normal"
-              value={this.state.quizSectionWise[index].numberOfQns}
+              value={this.state.quizSectionWise[index].numberOfQuestions}
               onChange={e => this.handleNumberOfQnsField(e, index)}
             />
           </GridItem>
@@ -717,14 +773,18 @@ class QuizForm extends React.Component {
                     </Button>
                   </GridItem>
                   <GridItem xs={12} sm={2} md={2}>
-                    <Button
-                      fullWidth
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.handleSubmit}
-                    >
-                      Create Quiz
-                    </Button>
+                    <Mutation mutation={ADD_QUIZ}>
+                      {addQuiz => (
+                        <Button
+                          fullWidth
+                          color="primary"
+                          className={classes.button}
+                          onClick={() => this.handleSubmit(addQuiz)}
+                        >
+                          Create Quiz
+                        </Button>
+                      )}
+                    </Mutation>
                   </GridItem>
                 </form>
               </div>
