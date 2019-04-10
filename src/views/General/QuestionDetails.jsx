@@ -11,6 +11,7 @@ import gql from "graphql-tag";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import MessageDialog from "../../components/Dialog/MessageDialog";
+
 class QuestionDetails extends Component {
   constructor(props) {
     super(props);
@@ -29,8 +30,8 @@ class QuestionDetails extends Component {
 
     this.questionToBeDeleted = data;
     this.questionDeleteMutation = func;
-   
-  }
+
+  };
   //Dialog for Question Delete
   renderDeleteDialog = dialogDelete => {
     if (dialogDelete) {
@@ -123,7 +124,7 @@ class QuestionDetails extends Component {
           )}
           <p>
             <b>Created By: </b>
-            {question.createdBy}
+            {question.createdBy.name}
             <br />
             <b>Category/Subcategory: </b>
             {question.category.name} - {question.subcategory.name}
