@@ -304,9 +304,9 @@ class QuizForm extends React.Component {
     this.numberOfSections++;
 
     //create new section in the quizSectionWise object of objects and initialize a view for this
-    this.setState({
+    this.setState(prevState => ({
       quizSectionWise: {
-        ...this.state.quizSectionWise,
+        ...prevState.quizSectionWise,
         [this.numberOfSections]: {
           category: {
             name: ""
@@ -318,7 +318,7 @@ class QuizForm extends React.Component {
           timeLimit: 0
         }
       }
-    });
+    }));
   };
 
   //handle delete icon click for each section
@@ -380,37 +380,39 @@ class QuizForm extends React.Component {
         }
       })
         .then(res => {
-          //on successful completion of the mutation
-          // this.setState(
-          //   prevState => ({
-          //     ...prevState,
-          //     snackbar: {
-          //       ...prevState.snackbar,
-          //       variant: "success",
-          //       message: "Quiz added successfully!"
-          //     }
-          //   }),
-          //   () => this.openSnackbar()
-          // );
+          // on successful completion of the mutation
+          this.setState(prevState => ({
+            snackbar: {
+              ...prevState.snackbar,
+              open: true,
+              variant: "success",
+              message: "Quiz added successfully!"
+            }
+          }));
+          console.log('done');
         })
         .catch(err => {
           //if error was returned
-          this.setState(
-            prevState => ({
-              ...prevState,
-              snackbar: {
-                ...prevState.snackbar,
-                variant: "error",
-                duration: 10000,
-                message: "Error: " + err.graphQLErrors[0].message
-              }
-            }),
-            () => this.openSnackbar()
-          );
+          this.setState(prevState => ({
+            snackbar: {
+              ...prevState.snackbar,
+              open: true,
+              variant: "error",
+              duration: 10000,
+              message: "Error: " + err.graphQLErrors[0].message
+            }
+          }));
         });
     } else {
       //if there are errors in the form
-      console.log("error in some fields");
+      this.setState(prevState => ({
+        snackbar: {
+          ...prevState.snackbar,
+          open: true,
+          variant: "error",
+          message: "Invalid field values entered"
+        }
+      }));
     }
   };
 
@@ -435,11 +437,6 @@ class QuizForm extends React.Component {
       quizCommon.negativeMarksPerQn < 1
     ) {
       this.makeFlagFalse();
-    }
-
-    //if error was found, show a snackbar
-    if (!this.flag) {
-      // this.openSnackbar();
     }
   };
 
@@ -466,11 +463,6 @@ class QuizForm extends React.Component {
       else if (!item.timeLimit || item.timeLimit < 1) {
         this.makeFlagFalse();
       }
-    }
-
-    //if error is present, open a snackbar & show error
-    if (!this.flag) {
-      // this.openSnackbar();
     }
   };
 
