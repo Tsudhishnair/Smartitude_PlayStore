@@ -36,6 +36,28 @@ const styles = theme => ({
   }
 });
 
+const DELETE_DEPT = gql`
+  mutation deleteDepartment($_id: ID!) {
+    deleteDepartment(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+// initialise query to get list of all departments
+const DEPT_LIST = gql`
+  {
+    departments {
+      _id
+      name
+      description
+    }
+  }
+`;
+
+const header1 = "Department";
+const header2 = "Add new department";
+
 class DeptManage extends React.Component {
   refetchDepartmentsList = null;
 
@@ -220,27 +242,6 @@ class DeptManage extends React.Component {
     const { classes } = this.props;
     const { snackbar } = this.state;
 
-    // initialise query to get list of all departments
-    const deptList = gql`
-      {
-        departments {
-          _id
-          name
-          description
-        }
-      }
-    `;
-    const deletedept = gql`
-      mutation deleteDepartment($_id: ID!) {
-        deleteDepartment(_id: $_id) {
-          _id
-        }
-      }
-    `;
-
-    const header1 = "Department";
-    const header2 = "Add new department";
-
     return (
       <div>
         {this.renderUpdateDialog(this.state.updateDialogOpen)}
@@ -252,7 +253,7 @@ class DeptManage extends React.Component {
           reloadList={this.reloadDepartmentsList}
         />
 
-        <Query query={deptList}>
+        <Query query={DEPT_LIST}>
           {({ data, loading, error, refetch }) => {
             this.refetchDepartmentsList = refetch;
 
@@ -273,7 +274,7 @@ class DeptManage extends React.Component {
                                 </p>
                               </CardBody>
                               <CardFooter>
-                                <Mutation mutation={deletedept}>
+                                <Mutation mutation={DELETE_DEPT}>
                                   {deleteDepartment => (
                                     <Tooltip title="Delete">
                                       <IconButton

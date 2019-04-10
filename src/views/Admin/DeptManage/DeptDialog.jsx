@@ -9,8 +9,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
-import { Snackbar } from "@material-ui/core";
-import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+
+const UPDATE_DEPARTMENT = gql`
+  mutation editDepartment($_id: ID!, $departmentInput: DepartmentInput!) {
+    editDepartment(_id: $_id, departmentInput: $departmentInput) {
+      _id
+    }
+  }
+`;
 
 export default class DeptDialog extends React.Component {
   constructor(props) {
@@ -18,57 +24,25 @@ export default class DeptDialog extends React.Component {
 
     this.state = {
       open: true,
-      _id: "",
+      _id: this.props.department._id,
       department: {
         name: this.props.department.name,
         description: this.props.department.description
-      },
-      snackbar: {
-        open: true,
-        variant: "error",
-        message: "",
-        duration: 4000
       }
     };
   }
-
-  // open snackbar with timer
-  openSnackbar = () => {
-    this.setState({
-      snackbar: {
-        ...this.state.snackbar,
-        open: true
-      }
-    });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, this.state.snackbar.duration);
-  };
-
-  closeSnackbar = () => {
-    this.setState({
-      snackbar: {
-        ...this.state.snackbar,
-        open: false
-      }
-    });
-  };
 
   handleClose = () => {
     this.setState({
       department: {
         name: "",
         description: ""
-      }
+      },
+      open: false
     });
-    this.setState({ open: false });
     this.props.onClose();
   };
+
   handleChange = event => {
     this.setState({
       department: {
@@ -77,8 +51,9 @@ export default class DeptDialog extends React.Component {
       }
     });
   };
-  UpdateAndClose = async editDepartment => {
-    await this.setState({ _id: this.props.department._id });
+
+  updateAndClose = editDepartment => {
+    // await this.setState({ _id: this.props.department._id });
 
     editDepartment({
       variables: {
@@ -90,16 +65,6 @@ export default class DeptDialog extends React.Component {
       }
     })
       .then(response => {
-        this.setState(
-          {
-            snackbar: {
-              ...this.state.snackbar,
-              variant: "success",
-              message: " Modified successfully!"
-            }
-          },
-          () => this.openSnackbar()
-        );
         if (this.props.reloadDepartmentsList !== null) {
           this.props.reloadDepartmentsList();
         }
@@ -108,20 +73,15 @@ export default class DeptDialog extends React.Component {
         if (this.props.reloadDepartmentsList !== null) {
           this.props.reloadDepartmentsList();
         }
+      })
+      .finally( () => {
+        this.setState({ open: false });
+        this.props.onClose();
       });
-    this.setState({ open: false });
-    this.props.onClose();
   };
+
   render() {
     const { department } = this.props;
-    const { snackbar } = this.state;
-    const UPDATE_DEPARTMENT = gql`
-      mutation editDepartment($_id: ID!, $departmentInput: DepartmentInput!) {
-        editDepartment(_id: $_id, departmentInput: $departmentInput) {
-          _id
-        }
-      }
-    `;
 
     return (
       <Mutation mutation={UPDATE_DEPARTMENT}>
@@ -136,8 +96,6 @@ export default class DeptDialog extends React.Component {
                 onClose={this.handleClose}
                 aria-labelledby="form-dialog-title"
               >
-                {/* {console.log(this.state.department)
-                } */}
                 <DialogTitle id="form-dialog-title">
                   department Management
                 </DialogTitle>
@@ -173,7 +131,7 @@ export default class DeptDialog extends React.Component {
                   <Button
                     onClick={e => {
                       e.preventDefault();
-                      this.UpdateAndClose(editDepartment);
+                      this.updateAndClose(editDepartment);
                     }}
                     color="primary"
                   >
@@ -181,20 +139,6 @@ export default class DeptDialog extends React.Component {
                   </Button>
                 </DialogActions>
               </Dialog>
-              <Snackbar
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                open={snackbar.open}
-                autoHideDuration={6000}
-              >
-                <CustomSnackbar
-                  onClose={this.closeSnackbar}
-                  variant={snackbar.variant}
-                  message={snackbar.message}
-                />
-              </Snackbar>
             </div>
           );
         }}
