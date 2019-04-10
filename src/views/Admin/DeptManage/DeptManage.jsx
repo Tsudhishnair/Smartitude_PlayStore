@@ -210,6 +210,23 @@ class DeptManage extends React.Component {
     }));
   };
 
+  handleUpdateClose = (type, message) => {
+    this.setState(
+      prevState => ({
+        snackbar: {
+          ...prevState.snackbar,
+          variant: type,
+          message:
+            type === "success"
+              ? "Department successfully updated"
+              : message.graphQLErrors[0].message
+        }
+      }),
+      () => this.openSnackbar()
+    );
+    this.toggleUpdateDialogVisibility();
+  };
+
   // renders update & delete dialogs
   renderUpdateDialog = isVisible => {
     if (isVisible) {
@@ -217,7 +234,7 @@ class DeptManage extends React.Component {
         <DeptDialog
           reloadDepartmentsList={this.reloadDepartmentsList}
           department={this.state.deptData}
-          onClose={this.toggleUpdateDialogVisibility}
+          onClose={(type, message) => this.handleUpdateClose(type, message)}
         />
       );
     }

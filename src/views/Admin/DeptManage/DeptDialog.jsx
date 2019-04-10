@@ -53,8 +53,6 @@ export default class DeptDialog extends React.Component {
   };
 
   updateAndClose = editDepartment => {
-    // await this.setState({ _id: this.props.department._id });
-
     editDepartment({
       variables: {
         _id: this.state._id,
@@ -68,15 +66,16 @@ export default class DeptDialog extends React.Component {
         if (this.props.reloadDepartmentsList !== null) {
           this.props.reloadDepartmentsList();
         }
+        this.props.onClose("success");
       })
       .catch(err => {
         if (this.props.reloadDepartmentsList !== null) {
           this.props.reloadDepartmentsList();
         }
+        this.props.onClose("error", err);
       })
-      .finally( () => {
+      .finally(() => {
         this.setState({ open: false });
-        this.props.onClose();
       });
   };
 
