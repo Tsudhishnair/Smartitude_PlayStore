@@ -5,7 +5,6 @@ import { DatePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
@@ -19,7 +18,8 @@ import {
   withStyles,
   IconButton,
   FormControlLabel,
-  Switch
+  Switch,
+  Snackbar
 } from "@material-ui/core";
 
 import { Delete } from "@material-ui/icons";
@@ -27,6 +27,8 @@ import { Delete } from "@material-ui/icons";
 import moment from "moment";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
+
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 const styles = theme => ({
   formroot: {
@@ -77,6 +79,7 @@ const ALL_QUERY = gql`
   }
 `;
 
+//mutation to create a quiz
 const ADD_QUIZ = gql`
   mutation createAdminQuiz($adminQuizRequest: AdminQuizRequest!) {
     createAdminQuiz(adminQuizRequest: $adminQuizRequest) {
@@ -85,6 +88,7 @@ const ADD_QUIZ = gql`
   }
 `;
 
+//constants to handle from & to dates
 const DATE_FROM = 1;
 const DATE_TO = 2;
 
@@ -95,17 +99,23 @@ class QuizForm extends React.Component {
 
     this.props = props;
 
+    //maintain list of categories
     this.categories = [];
 
+    //maintain list of batches
     this.batches = [];
 
+    //total number of sections in the quiz
     this.numberOfSections = 0;
 
+    //sets the current date for the from & to fields to the current date
     this.currentDate = new Date();
 
+    //used to monitor errors in the system
     this.flag = true;
 
     this.state = {
+      //maintain fields which are common to all sections
       quizCommon: {
         quizName: "",
         batch: "",
@@ -113,45 +123,82 @@ class QuizForm extends React.Component {
         activeTo: new Date(),
         active: false
       },
+      //keeps separate data for separate sections
       quizSectionWise: [
         {
+          //selected category
           category: {
             name: ""
           },
+          //subcategories selected
           subcategories: [],
+          //list of possible subcategories for the category selected
           subcategoryList: [],
+          //if true, this clears the chips for subcategory
           clearSubcategoryChips: false,
+          //number of questions in the section
           numberOfQuestions: 0,
+          //time limit in mins
           timeLimit: 0
         }
       ],
+      //maintain error states
       error: {
+        //set to true if there is an error in the dates selected
         dates: {
-          status: false,
-          message: ""
-        },
-        marksPerQn: {
-          status: false,
-          message: ""
-        },
-        negativeMarksPerQn: {
           status: false,
           message: ""
         }
       },
-      submitDialog: false
+      //snackbar controls
+      snackbar: {
+        open: false,
+        variant: "error",
+        message: "",
+        duration: 4000
+      }
     };
   }
 
+  //set error flag to false
   makeFlagFalse = () => {
     this.flag = false;
   };
 
+  //set error flag to true
   makeFlagTrue = () => {
     this.flag = true;
   };
 
-  //Set the date in the state of Qiz Expiry from Quiz Form
+  // open snackbar with timer
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, this.state.snackbar.duration);
+  };
+
+  //close the snackbar
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
+  //handle date fields, both from & to, depending on the type passed
   handleDateChange = (date, type) => {
     if (type === DATE_FROM) {
       this.setState(
@@ -176,6 +223,7 @@ class QuizForm extends React.Component {
     }
   };
 
+  //handle the boolean active field
   handleActiveField = event => {
     this.setState(prevState => ({
       quizCommon: {
@@ -315,55 +363,18 @@ class QuizForm extends React.Component {
 
   handleSubmit = mutation => {
     const quizCommon = this.state.quizCommon;
-    const quizSectionWise = this.state.quizSectionWise;
     const dateError = this.state.error.dates.status;
+    const quizSectionWise = this.state.quizSectionWise;
 
     this.makeFlagTrue();
 
-    //quizCommon fields check
-    if (
-      !quizCommon.quizName ||
-      !quizCommon.description ||
-      !quizCommon.batch ||
-      dateError ||
-      !quizCommon.marksPerQn
-    ) {
-      this.makeFlagFalse();
-      this.toggleSubmitDialogVisibility();
-    } else if (isNaN(quizCommon.negativeMarksPerQn)) {
-      this.makeFlagFalse();
-      this.toggleSubmitDialogVisibility();
-    }
-
-    for (let index in quizSectionWise) {
-      let item = quizSectionWise[index];
-
-      if (
-        !item.category.name ||
-        !item.numberOfQuestions ||
-        !item.timeLimit ||
-        item.subcategories.length === 0
-      ) {
-        this.makeFlagFalse();
-        this.toggleSubmitDialogVisibility();
-      }
-    }
+    this.validateCommonFields(quizCommon, dateError);
+    this.validateSectionFields(quizSectionWise);
 
     if (this.flag) {
-      let sectionRequest = [];
+      const sectionRequest = this.transformSections(quizSectionWise);
 
-      for (const index in quizSectionWise) {
-        delete quizSectionWise[index].subcategoryList;
-        delete quizSectionWise[index].clearSubcategoryChips;
-        quizSectionWise[index].category = quizSectionWise[index].category._id;
-        quizSectionWise[index].timeLimit = Number(
-          quizSectionWise[index].timeLimit
-        );
-        quizSectionWise[index].numberOfQuestions = Number(
-          quizSectionWise[index].numberOfQuestions
-        );
-        sectionRequest.push(quizSectionWise[index]);
-      }
+      console.log(sectionRequest);
 
       mutation({
         variables: {
@@ -375,21 +386,112 @@ class QuizForm extends React.Component {
             activeFrom: this.state.quizCommon.activeFrom,
             activeTo: this.state.quizCommon.activeTo,
             markPerQuestion: Number(this.state.quizCommon.marksPerQn),
-            negativeMarkPerQuestion: Number(this.state.quizCommon.negativeMarksPerQn),
+            negativeMarkPerQuestion: Number(
+              this.state.quizCommon.negativeMarksPerQn
+            ),
             requestedSections: sectionRequest
           }
         }
       })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+        .then(res => {
+          // this.setState(
+          //   prevState => ({
+          //     ...prevState,
+          //     snackbar: {
+          //       ...prevState.snackbar,
+          //       variant: "success",
+          //       message: "Quiz added successfully!"
+          //     }
+          //   }),
+          //   () => this.openSnackbar()
+          // );
+        })
+        .catch(err => {
+          this.setState(
+            prevState => ({
+              ...prevState,
+              snackbar: {
+                ...prevState.snackbar,
+                variant: "error",
+                duration: 10000,
+                message: "Error: " + err.graphQLErrors[0].message
+              }
+            }),
+            () => this.openSnackbar()
+          );
+        });
+    } else {
+      console.log("error in some fields");
     }
+  };
+
+  validateCommonFields = (quizCommon, dateError) => {
+    //quizCommon fields check
+    if (
+      !quizCommon.quizName ||
+      !quizCommon.description ||
+      !quizCommon.batch ||
+      dateError
+    ) {
+      this.makeFlagFalse();
+    } else if (!quizCommon.marksPerQn || quizCommon.marksPerQn < 1) {
+      this.makeFlagFalse();
+    } else if (
+      !quizCommon.negativeMarksPerQn ||
+      quizCommon.negativeMarksPerQn < 1
+    ) {
+      this.makeFlagFalse();
+    }
+
+    if (!this.flag) {
+      // this.openSnackbar();
+    }
+  };
+
+  validateSectionFields = quizSectionWise => {
+    for (let index in quizSectionWise) {
+      let item = quizSectionWise[index];
+
+      if (
+        !item.category.name ||
+        !item.timeLimit ||
+        item.subcategories.length === 0
+      ) {
+        this.makeFlagFalse();
+      } else if (!item.numberOfQuestions || item.numberOfQuestions < 1) {
+        this.makeFlagFalse();
+      } else if (!item.timeLimit || item.timeLimit < 1) {
+        this.makeFlagFalse();
+      }
+    }
+
+    if (!this.flag) {
+      // this.openSnackbar();
+    }
+  };
+
+  transformSections = quizSectionWise => {
+    let sectionRequest = [];
+
+    for (const index in quizSectionWise) {
+      delete quizSectionWise[index].subcategoryList;
+      delete quizSectionWise[index].clearSubcategoryChips;
+      quizSectionWise[index].category = quizSectionWise[index].category._id;
+      quizSectionWise[index].timeLimit = Number(
+        quizSectionWise[index].timeLimit
+      );
+      quizSectionWise[index].numberOfQuestions = Number(
+        quizSectionWise[index].numberOfQuestions
+      );
+      sectionRequest.push(quizSectionWise[index]);
+    }
+    return sectionRequest;
   };
 
   validateDates = () => {
     if (this.state.quizCommon.activeTo < this.state.quizCommon.activeFrom) {
-      this.setState(prevState => ({
+      this.setState(() => ({
         error: {
-          ...prevState.error,
           dates: {
             message: "From date is larger than To date",
             status: true
@@ -397,38 +499,14 @@ class QuizForm extends React.Component {
         }
       }));
     } else {
-      this.setState(prevState => ({
+      this.setState(() => ({
         error: {
-          ...prevState.error,
           dates: {
             status: false,
             message: ""
           }
         }
       }));
-    }
-  };
-
-  toggleSubmitDialogVisibility = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      submitDialog: !prevState.submitDialog
-    }));
-  };
-
-  renderSubmitDialog = isVisible => {
-    if (isVisible) {
-      //TODO: PRESSING OK DOES NOT CHANGE submitDialog STATE
-      return (
-        <MessageDialog
-          title="Adding Quiz"
-          content="There is an error in one of the inputs. Please rectify"
-          positiveAction="Ok"
-          negativeAction="Cancel"
-          action={this.toggleSubmitDialogVisibility}
-          onClose={this.toggleSubmitDialogVisibility}
-        />
-      );
     }
   };
 
@@ -443,7 +521,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment />;
+      return <Fragment/>;
     }
   };
 
@@ -457,7 +535,7 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment />;
+      return <Fragment/>;
     }
   };
 
@@ -470,7 +548,7 @@ class QuizForm extends React.Component {
         <Fragment>
           <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
             <IconButton onClick={() => this.handleDeleteClick(index)}>
-              <Delete />
+              <Delete/>
             </IconButton>
           </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
@@ -529,11 +607,11 @@ class QuizForm extends React.Component {
               onChange={e => this.handleTimeLimitField(e, index)}
             />
           </GridItem>
-          <br />
+          <br/>
         </Fragment>
       );
     } else {
-      singlePiece = <Fragment />;
+      singlePiece = <Fragment/>;
     }
 
     return singlePiece;
@@ -589,209 +667,224 @@ class QuizForm extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Query query={ALL_QUERY}>
-        {({ data, loading, error }) => {
-          if (loading) {
-            return <Typography>Loading...</Typography>;
-          } else if (error) {
-            return <Typography>Error occured!!!</Typography>;
-          } else {
-            // assign value of common values to lists
-            this.categories = data.categoryDetailsList;
-            this.batches = data.batches;
+      <Fragment>
+        <Query query={ALL_QUERY}>
+          {({ data, loading, error }) => {
+            if (loading) {
+              return <Typography>Loading...</Typography>;
+            } else if (error) {
+              return <Typography>Error occured!!!</Typography>;
+            } else {
+              // assign value of common values to lists
+              this.categories = data.categoryDetailsList;
+              this.batches = data.batches;
 
-            return (
-              <div className={classes.root}>
-                {this.renderSubmitDialog(this.state.submitDialog)}
-                <form autoComplete="off" autoWidth={true}>
-                  <Typography>
-                    <strong>Basic Info</strong>
-                  </Typography>
-                  <GridContainer>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.container}
-                    >
-                      <TextField
-                        id="standard-search"
-                        label="Quiz Name"
-                        type="input"
-                        margin="normal"
-                        name="quizName"
-                        value={this.state.quizCommon.quizName}
-                        onChange={this.handleCommonFieldChanges}
-                        fullWidth
-                      />
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.container}
-                    >
-                      <TextField
-                        error={this.state.error.marksPerQn.status}
-                        helperText={this.state.error.marksPerQn.message}
-                        id="standard-marks"
-                        label="+ Marks Per Question"
-                        margin="normal"
-                        type="number"
-                        name="marksPerQn"
-                        value={this.state.quizCommon.marksPerQn}
-                        onChange={this.handleCommonFieldChanges}
-                        fullWidth
-                      />
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.container}
-                    >
-                      <TextField
-                        error={this.state.error.negativeMarksPerQn.status}
-                        helperText={this.state.error.negativeMarksPerQn.message}
-                        id="standard-negative-marks"
-                        label="- Marks per Question"
-                        margin="normal"
-                        type="number"
-                        name="negativeMarksPerQn"
-                        value={this.state.quizCommon.negativeMarksPerQn}
-                        onChange={this.handleCommonFieldChanges}
-                        fullWidth
-                      />
-                    </GridItem>
-                    <GridItem xs={12} sm={3} md={3}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker
-                          error={this.state.error.dates.status}
-                          helperText={this.state.error.dates.message}
-                          className={classes.date_root}
-                          minDate={this.currentDate}
-                          label="Active From"
-                          clearable
-                          formatDate={date => moment(date).format("YYYY-MM-DD")}
-                          value={this.state.quizCommon.activeFrom}
-                          format="dd/MMM/yyyy"
-                          onChange={date =>
-                            this.handleDateChange(date, DATE_FROM)
-                          }
-                        />
-                      </MuiPickersUtilsProvider>
-                    </GridItem>
-                    <GridItem xs={12} sm={3} md={3}>
-                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker
-                          className={classes.date_root}
-                          minDate={this.currentDate}
-                          label="Active Till"
-                          clearable
-                          formatDate={date => moment(date).format("YYYY-MM-DD")}
-                          value={this.state.quizCommon.activeTo}
-                          format="dd/MMM/yyyy"
-                          onChange={date =>
-                            this.handleDateChange(date, DATE_TO)
-                          }
-                        />
-                      </MuiPickersUtilsProvider>
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.formroot}
-                    >
-                      <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="batch">Batch</InputLabel>
-                        <Select
+              return (
+                <div className={classes.root}>
+                  <form autoComplete="off" autoWidth={true}>
+                    <Typography>
+                      <strong>Basic Info</strong>
+                    </Typography>
+                    <GridContainer>
+                      <GridItem
+                        xs={12}
+                        sm={3}
+                        md={3}
+                        className={classes.container}
+                      >
+                        <TextField
+                          id="standard-search"
+                          label="Quiz Name"
+                          type="input"
+                          margin="normal"
+                          name="quizName"
+                          value={this.state.quizCommon.quizName}
                           onChange={this.handleCommonFieldChanges}
-                          value={this.state.quizCommon.batch}
-                          renderValue={value => {
-                            return value;
-                          }}
-                          inputProps={{
-                            name: "batch",
-                            id: "batch"
-                          }}
                           fullWidth
-                        >
-                          {this.renderBatchDropdown()}
-                        </Select>
-                      </FormControl>
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={3}
-                      md={3}
-                      className={classes.container}
-                    >
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            name="active"
-                            checked={this.state.quizCommon.active}
-                            onChange={e => this.handleActiveField(e)}
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={3}
+                        md={3}
+                        className={classes.container}
+                      >
+                        <TextField
+                          id="standard-marks"
+                          label="+ Marks Per Question"
+                          margin="normal"
+                          type="number"
+                          name="marksPerQn"
+                          value={this.state.quizCommon.marksPerQn}
+                          onChange={this.handleCommonFieldChanges}
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={3}
+                        md={3}
+                        className={classes.container}
+                      >
+                        <TextField
+                          id="standard-negative-marks"
+                          label="- Marks per Question"
+                          margin="normal"
+                          type="number"
+                          name="negativeMarksPerQn"
+                          value={this.state.quizCommon.negativeMarksPerQn}
+                          onChange={this.handleCommonFieldChanges}
+                          fullWidth
+                        />
+                      </GridItem>
+                      <GridItem xs={12} sm={3} md={3}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <DatePicker
+                            error={this.state.error.dates.status}
+                            helperText={this.state.error.dates.message}
+                            className={classes.date_root}
+                            minDate={this.currentDate}
+                            label="Active From"
+                            clearable
+                            formatDate={date =>
+                              moment(date).format("YYYY-MM-DD")
+                            }
+                            value={this.state.quizCommon.activeFrom}
+                            format="dd/MMM/yyyy"
+                            onChange={date =>
+                              this.handleDateChange(date, DATE_FROM)
+                            }
                           />
-                        }
-                        label="Active"
-                      />
-                    </GridItem>
-                    <GridItem
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      className={classes.container}
-                    >
-                      <TextField
-                        id="description"
-                        label="Quiz Description"
-                        margin="normal"
-                        type="text"
-                        name="description"
-                        value={this.state.quizCommon.description}
-                        onChange={this.handleCommonFieldChanges}
-                        fullWidth
-                      />
-                    </GridItem>
-                  </GridContainer>
-                  <Typography>
-                    <strong>Other Info</strong>
-                  </Typography>
-                  <GridContainer>
-                    {this.renderSectionDetails(classes)}
-                  </GridContainer>
-                  <GridItem xs={12} sm={2} md={2}>
-                    <Button
-                      fullWidth
-                      color="primary"
-                      className={classes.button}
-                      onClick={this.handleClick}
-                    >
-                      Add More
-                    </Button>
-                  </GridItem>
-                  <GridItem xs={12} sm={2} md={2}>
-                    <Mutation mutation={ADD_QUIZ}>
-                      {addQuiz => (
-                        <Button
+                        </MuiPickersUtilsProvider>
+                      </GridItem>
+                      <GridItem xs={12} sm={3} md={3}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <DatePicker
+                            className={classes.date_root}
+                            minDate={this.currentDate}
+                            label="Active Till"
+                            clearable
+                            formatDate={date =>
+                              moment(date).format("YYYY-MM-DD")
+                            }
+                            value={this.state.quizCommon.activeTo}
+                            format="dd/MMM/yyyy"
+                            onChange={date =>
+                              this.handleDateChange(date, DATE_TO)
+                            }
+                          />
+                        </MuiPickersUtilsProvider>
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={3}
+                        md={3}
+                        className={classes.formroot}
+                      >
+                        <FormControl className={classes.formControl}>
+                          <InputLabel htmlFor="batch">Batch</InputLabel>
+                          <Select
+                            onChange={this.handleCommonFieldChanges}
+                            value={this.state.quizCommon.batch}
+                            renderValue={value => {
+                              return value;
+                            }}
+                            inputProps={{
+                              name: "batch",
+                              id: "batch"
+                            }}
+                            fullWidth
+                          >
+                            {this.renderBatchDropdown()}
+                          </Select>
+                        </FormControl>
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={3}
+                        md={3}
+                        className={classes.container}
+                      >
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              name="active"
+                              checked={this.state.quizCommon.active}
+                              onChange={e => this.handleActiveField(e)}
+                            />
+                          }
+                          label="Active"
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          id="description"
+                          label="Quiz Description"
+                          margin="normal"
+                          type="text"
+                          name="description"
+                          value={this.state.quizCommon.description}
+                          onChange={this.handleCommonFieldChanges}
                           fullWidth
-                          color="primary"
-                          className={classes.button}
-                          onClick={() => this.handleSubmit(addQuiz)}
-                        >
-                          Create Quiz
-                        </Button>
-                      )}
-                    </Mutation>
-                  </GridItem>
-                </form>
-              </div>
-            );
-          }
-        }}
-      </Query>
+                        />
+                      </GridItem>
+                    </GridContainer>
+                    <Typography>
+                      <strong>Other Info</strong>
+                    </Typography>
+                    <GridContainer>
+                      {this.renderSectionDetails(classes)}
+                    </GridContainer>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <Button
+                        fullWidth
+                        color="primary"
+                        className={classes.button}
+                        onClick={this.handleClick}
+                      >
+                        Add More
+                      </Button>
+                    </GridItem>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <Mutation mutation={ADD_QUIZ}>
+                        {addQuiz => (
+                          <Button
+                            fullWidth
+                            color="primary"
+                            className={classes.button}
+                            onClick={() => this.handleSubmit(addQuiz)}
+                          >
+                            Create Quiz
+                          </Button>
+                        )}
+                      </Mutation>
+                    </GridItem>
+                  </form>
+                </div>
+              );
+            }
+          }}
+        </Query>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={this.state.snackbar.open}
+          autoHideDuration={6000}
+        >
+          <CustomSnackbar
+            onClose={this.closeSnackbar}
+            variant={this.state.snackbar.variant}
+            message={this.state.snackbar.message}
+          />
+        </Snackbar>
+      </Fragment>
     );
   }
 }
