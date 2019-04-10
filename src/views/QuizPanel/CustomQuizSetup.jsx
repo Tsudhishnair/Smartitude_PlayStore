@@ -6,21 +6,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
-import {
-  Card,
-  Button,
-  CardContent,
-  Typography,
-  Divider
-} from "@material-ui/core";
+import {Button, CardContent, Typography } from "@material-ui/core";
 import CardFooter from "../../components/Card/CardFooter";
-import CardBody from "../../components/Card/CardBody";
-import Spacing from "../../components/Spacing/Spacing";
+import Card from "components/Card/Card.jsx";
 import Link from "react-router-dom/es/Link";
+import QuizForm from "../Admin/QuizManage/QuizForm";
+import CardHeader from "../../components/Card/CardHeader";
+import Spacing from "../../components/Spacing/Spacing";
 
 const styles = theme => ({
   root: {
     display: "block",
+    flexWrap: "nowrap",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -29,6 +26,30 @@ const styles = theme => ({
   },
   textDarkGrey: {
     color: "#696969"
+  },
+  formroot: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  container: {
+    display: "flex",
+    flexGrow: 1
+  },
+  date_root: {
+    marginTop: theme.spacing.unit * 2,
+    display: "flex",
+    flexWrap: "nowrap",
+    autoWidth: true
+  },
+  formControl: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    minWidth: 120,
+    display: "flex",
+    flexGrow: 1
+  },
+  button: {
+    margin: theme.spacing.unit * 4
   }
 });
 
@@ -49,18 +70,20 @@ class CustomQuizSetup extends React.Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <form>
+                <CardHeader color="success" className={classes.root}>
+                  <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
+                </CardHeader>
                 <CardContent>
-                  <Typography variant="h5" gutterBottom>
-                    Custom Quiz
-                  </Typography>
                   <Typography variant="body2">
                     Create a custom quiz of your preferred categories and topics
                   </Typography>
+                  <Spacing />
+                  <QuizForm />
                 </CardContent>
                 <CardFooter
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
-                  <Link to="/student/quiz">
+                  <Link to="/student/start_quiz">
                     <Button
                       variant="outlined"
                       color="primary"
@@ -77,6 +100,7 @@ class CustomQuizSetup extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
+
       </div>
     );
   }

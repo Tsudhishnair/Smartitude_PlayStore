@@ -9,6 +9,7 @@ import NotificationsPage from "../views/Student/Notifications/Notifications.jsx"
 import Results from "../views/Student/Results/Results.jsx";
 import PreQuizInfo from "../views/QuizPanel/PreQuizInfo";
 import CustomQuizSetup from "../views/QuizPanel/CustomQuizSetup";
+import AssignedQuizzes from "../views/QuizPanel/AssignedQuizzes";
 
 const dashboardRoutes = [
   {
@@ -43,6 +44,12 @@ const dashboardRoutes = [
     path: "/student/custom_quiz_setup",
     subRoute: true,
     component: CustomQuizSetup
+  },
+  {
+    redirect: true,
+    path: "/student/assigned_quizzes",
+    subRoute: true,
+    component: AssignedQuizzes
   },
   {
     redirect: true,
