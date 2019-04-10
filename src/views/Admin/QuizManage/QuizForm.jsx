@@ -237,42 +237,15 @@ class QuizForm extends React.Component {
   handleCommonFieldChanges = event => {
     event.persist();
 
-    switch (event.target.name) {
-      case "marksPerQn":
-      case "negativeMarksPerQn":
-        if (isNaN(event.target.value) || Math.sign(event.target.value) !== 1) {
-          //TODO: 0 not working, check working, also for negativemarksperqn
-          this.setState(prevState => ({
-            error: {
-              ...prevState.error,
-              [event.target.name]: {
-                status: true,
-                message: "Invalid input tried to enter"
-              }
-            }
-          }));
-        } else {
-          this.updateCommonFields(event);
-        }
-        break;
-      default:
-        this.updateCommonFields(event);
-        break;
-    }
+    this.updateCommonFields(event);
   };
 
+  //update value of fields
   updateCommonFields(event) {
     this.setState(state => ({
       quizCommon: {
         ...state.quizCommon,
         [event.target.name]: event.target.value
-      },
-      error: {
-        ...state.error,
-        [event.target.name]: {
-          status: false,
-          message: ""
-        }
       }
     }));
   }
@@ -300,6 +273,7 @@ class QuizForm extends React.Component {
     });
   };
 
+  //handle value of time limit field in sections
   handleTimeLimitField = (event, index) => {
     this.setState({
       quizSectionWise: {
@@ -312,6 +286,7 @@ class QuizForm extends React.Component {
     });
   };
 
+  //handle value of numberOfQns field in sections
   handleNumberOfQnsField = (event, index) => {
     this.setState({
       quizSectionWise: {
@@ -328,6 +303,7 @@ class QuizForm extends React.Component {
   handleClick = () => {
     this.numberOfSections++;
 
+    //create new section in the quizSectionWise object of objects and initialize a view for this
     this.setState({
       quizSectionWise: {
         ...this.state.quizSectionWise,
@@ -345,12 +321,15 @@ class QuizForm extends React.Component {
     });
   };
 
+  //handle delete icon click for each section
   handleDeleteClick = index => {
     let tempObj = this.state.quizSectionWise;
 
+    //handle conditions where only one section is presnt
     if (Object.keys(tempObj).length < 2) {
       return;
     } else {
+      //if more than one section is present, delete the section where the button was clicked and render new state
       delete tempObj[index];
 
       this.setState({
@@ -361,21 +340,28 @@ class QuizForm extends React.Component {
     }
   };
 
+  //called on submit button click
   handleSubmit = mutation => {
+    //get data from the states and assign it to new objects to prevent disbehaviour
     const quizCommon = this.state.quizCommon;
     const dateError = this.state.error.dates.status;
     const quizSectionWise = this.state.quizSectionWise;
 
+    //set flag value to true to reset it
     this.makeFlagTrue();
 
+    //validate both common and sectionwise fields in the form
     this.validateCommonFields(quizCommon, dateError);
     this.validateSectionFields(quizSectionWise);
 
+    //if no errors were found
     if (this.flag) {
+      //transform quizSectionWise into an array for the mutation
       const sectionRequest = this.transformSections(quizSectionWise);
 
       console.log(sectionRequest);
 
+      //call mutation & set variables
       mutation({
         variables: {
           adminQuizRequest: {
@@ -394,6 +380,7 @@ class QuizForm extends React.Component {
         }
       })
         .then(res => {
+          //on successful completion of the mutation
           // this.setState(
           //   prevState => ({
           //     ...prevState,
@@ -407,6 +394,7 @@ class QuizForm extends React.Component {
           // );
         })
         .catch(err => {
+          //if error was returned
           this.setState(
             prevState => ({
               ...prevState,
@@ -421,12 +409,14 @@ class QuizForm extends React.Component {
           );
         });
     } else {
+      //if there are errors in the form
       console.log("error in some fields");
     }
   };
 
+  //quizCommon fields check
   validateCommonFields = (quizCommon, dateError) => {
-    //quizCommon fields check
+    //null checks
     if (
       !quizCommon.quizName ||
       !quizCommon.description ||
@@ -434,48 +424,67 @@ class QuizForm extends React.Component {
       dateError
     ) {
       this.makeFlagFalse();
-    } else if (!quizCommon.marksPerQn || quizCommon.marksPerQn < 1) {
+    }
+    //marksPerQn field value check
+    else if (!quizCommon.marksPerQn || quizCommon.marksPerQn < 1) {
       this.makeFlagFalse();
-    } else if (
+    }
+    //negativeMarksPerQn field value check
+    else if (
       !quizCommon.negativeMarksPerQn ||
       quizCommon.negativeMarksPerQn < 1
     ) {
       this.makeFlagFalse();
     }
 
+    //if error was found, show a snackbar
     if (!this.flag) {
       // this.openSnackbar();
     }
   };
 
+  //quizSectionWise fields validation
   validateSectionFields = quizSectionWise => {
+    //iterate through the sections
     for (let index in quizSectionWise) {
+      //take single item of quizSection and assign it to 'item'
       let item = quizSectionWise[index];
 
+      //null check
       if (
         !item.category.name ||
         !item.timeLimit ||
         item.subcategories.length === 0
       ) {
         this.makeFlagFalse();
-      } else if (!item.numberOfQuestions || item.numberOfQuestions < 1) {
+      }
+      //numberOfQuestions field validator
+      else if (!item.numberOfQuestions || item.numberOfQuestions < 1) {
         this.makeFlagFalse();
-      } else if (!item.timeLimit || item.timeLimit < 1) {
+      }
+      //timeLimit field validator
+      else if (!item.timeLimit || item.timeLimit < 1) {
         this.makeFlagFalse();
       }
     }
 
+    //if error is present, open a snackbar & show error
     if (!this.flag) {
       // this.openSnackbar();
     }
   };
 
+  //used to transform the quizSectionWise object to array
   transformSections = quizSectionWise => {
+    //create temporary object
     let sectionRequest = [];
 
     for (const index in quizSectionWise) {
+      //remove unnecessary fields for mutation
       delete quizSectionWise[index].subcategoryList;
       delete quizSectionWise[index].clearSubcategoryChips;
+
+      //transform fields as required according to mutation specs
       quizSectionWise[index].category = quizSectionWise[index].category._id;
       quizSectionWise[index].timeLimit = Number(
         quizSectionWise[index].timeLimit
@@ -483,11 +492,14 @@ class QuizForm extends React.Component {
       quizSectionWise[index].numberOfQuestions = Number(
         quizSectionWise[index].numberOfQuestions
       );
+
+      //add to sectionRequest after transformation
       sectionRequest.push(quizSectionWise[index]);
     }
     return sectionRequest;
   };
 
+  //used to validate dates
   validateDates = () => {
     if (this.state.quizCommon.activeTo < this.state.quizCommon.activeFrom) {
       this.setState(() => ({
@@ -510,7 +522,7 @@ class QuizForm extends React.Component {
     }
   };
 
-  // Category dropdown funciton
+  // populate the dropdown used for category
   renderCategoryDropdown = () => {
     if (this.categories) {
       return this.categories.map(categoryDetail => {
@@ -521,10 +533,11 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
+  //populate the dropdown used for batches
   renderBatchDropdown = () => {
     if (this.batches) {
       return this.batches.map(batch => {
@@ -535,10 +548,11 @@ class QuizForm extends React.Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
+  //create jsx code for one section
   createSectionPiece = (counter, classes) => {
     let singlePiece;
     let index = counter;
@@ -548,7 +562,7 @@ class QuizForm extends React.Component {
         <Fragment>
           <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
             <IconButton onClick={() => this.handleDeleteClick(index)}>
-              <Delete/>
+              <Delete />
             </IconButton>
           </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
@@ -607,22 +621,24 @@ class QuizForm extends React.Component {
               onChange={e => this.handleTimeLimitField(e, index)}
             />
           </GridItem>
-          <br/>
+          <br />
         </Fragment>
       );
     } else {
-      singlePiece = <Fragment/>;
+      singlePiece = <Fragment />;
     }
 
     return singlePiece;
   };
 
+  //render code for a section
   renderSectionDetails = classes => {
     let counter = 0;
 
     let sectionContainer = [];
     console.log("section rendered");
 
+    //create section pieces
     while (counter <= this.numberOfSections) {
       let singlePiece = this.createSectionPiece(counter, classes);
 
