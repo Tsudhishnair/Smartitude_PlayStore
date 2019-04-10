@@ -43,6 +43,7 @@ const QUIZ_VIEW_QUERY = gql`
     }
   }
 `;
+let quizList = [];
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -129,15 +130,12 @@ class Dashboard extends React.Component {
       rowsPerPage: 20,
       elevation: 0,
       selectableRows: false,
-      rowsPerPageOptions: [20, 30, 100, 200],
+      rowsPerPageOptions: [20, 30, 100, 200]
 
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
-      onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
-        this.child.handleClickOpen(rowData);
-      }
+      // onRowClick: (rowData, rowState) => {
+      //   console.log(rowData, rowState);
+      //   this.child.handleClickOpen(rowData);
+      // }
     };
 
     return (
@@ -147,7 +145,8 @@ class Dashboard extends React.Component {
             <div>
               {!loading ? (
                 <Fragment>
-                  {console.log(data)}
+                  {console.log(data.adminQuizzes)}
+
                   {console.log("I am in")}
                   {/* not needed to use for quiz */}
                   {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
@@ -167,11 +166,26 @@ class Dashboard extends React.Component {
                         <CardHeader color="warning">
                           <h4 className={classes.cardTitleWhite}>Quizzes</h4>
                         </CardHeader>
+
+                        {
+                          quizList = data.adminQuizzes.map(data => {
+                            let quizData = [];
+                            quizData.push(data.name);
+                            quizData.push(data.description);
+                            quizData.push(data.name);
+                            quizData.push(data.target);
+                            quizData.push(data.active.toString());
+                            quizData.push(data.name);
+                            quizData.push(data.name);
+                            return quizData;
+                          })
+                        }
+
                         <MUIDataTable
                           title={""}
-                          data={testData}
+                          data={quizList}
                           columns={columns}
-                          options={this.options}
+                          options={options}
                         />
                       </Card>
                     </GridItem>
