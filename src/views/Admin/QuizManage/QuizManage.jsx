@@ -17,31 +17,30 @@ import { EXPANSION_QUIZ_FORM } from "../../../Utils";
 import gql from "graphql-tag";
 
 const QUIZ_VIEW_QUERY = gql`
-{
-  AdminQuiz{
-    _id
-    name
-    description
-    createdBy
-    section{
-      category
-      subcategories{
-        _id
+  {
+    AdminQuiz {
+      _id
+      name
+      description
+      createdBy
+      section {
         category
-        name
+        subcategories {
+          _id
+          category
+          name
+        }
       }
+      target
+      active
+      activeTo
+      activeFrom
+      negativeMarkPerQuestion
+      markperQuestion
     }
-    target
-    active
-    activeTo
-    activeFrom
-    negativeMarkPerQuestion
-    markperQuestion
   }
-}
 `;
 class Dashboard extends React.Component {
-
   render() {
     const { classes } = this.props;
     const header1 = "Quiz";
@@ -58,7 +57,8 @@ class Dashboard extends React.Component {
         name: "Description",
         options: {
           filter: false,
-          sort: true
+          sort: true,
+          display: false
         }
       },
       {
@@ -92,19 +92,31 @@ class Dashboard extends React.Component {
     ];
 
     const data = [
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"],
-      ["Joe James", "uxxxxx", "Incharge", "email@abc.com", "IT", "Verbal"]
+      ["Preliminary Round Batch", "uxxxxx", "Admin", "2019", "YES", "29/05/19"],
+      [
+        "Preliminary Round 1st Years",
+        "uxxxxx",
+        "Admin",
+        "2022",
+        "YES",
+        "29/05/19"
+      ],
+      [
+        "Preliminary Round 2nd Years",
+        "uxxxxx",
+        "Django",
+        "2019",
+        "YES",
+        "13/05/19"
+      ],
+      [
+        "Preliminary Round 3rdd Years",
+        "uxxxxx",
+        "Admin",
+        "2019",
+        "YES",
+        "30/05/19"
+      ]
     ];
 
     const options = {
@@ -124,7 +136,7 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <TableDialog onRef={ref => (this.child = ref)}/>
+        <TableDialog onRef={ref => (this.child = ref)} />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Expansionpanel

@@ -172,17 +172,14 @@ class FormAddDepartment extends React.Component {
           }
         })
         .catch(err => {
-          this.setState({
-            // set error message of snackbar
-            error: {
-              ...this.state.error,
-              message: err.graphQLErrors
-                ? err.graphQLErrors[0].message
-                : err.networkError
-            }
-          });
           this.setState(
             {
+              // error: {
+              //   ...this.state.error,
+              //   message: err.graphQLErrors
+              //     ? err.graphQLErrors[0].message
+              //     : err.networkError
+              // },
               loading: false,
               snackbar: {
                 ...this.state.snackbar,
@@ -241,7 +238,7 @@ class FormAddDepartment extends React.Component {
       <Mutation mutation={ADD_DEPARTMENT} onCompleted={this.clearFields}>
         {(addDepartment, data) => (
           <div className={classes.root}>
-            <form>
+            <form onSubmit={e => this.handleClick(addDepartment, e)}>
               <GridContainer>
                 <GridItem xs={6} md={6}>
                   <TextField
@@ -288,7 +285,6 @@ class FormAddDepartment extends React.Component {
                     variant="outlined"
                     disabled={loading}
                     type="submit"
-                    onClick={e => this.handleClick(addDepartment, e)}
                   >
                     Assign
                   </Button>

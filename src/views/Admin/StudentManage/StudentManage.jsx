@@ -58,13 +58,13 @@ const MULTIPLE_DELETE = gql`
     deleteMultipleStudents(_ids: $_ids)
   }
 `;
-const columns = [ 
+const columns = [
   {
     name: "Name",
     options: {
       filter: false,
       sort: true,
-      sortDirection: "asc"
+      sortDirection: "desc"
     }
   },
   {
