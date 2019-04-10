@@ -9,21 +9,12 @@ import Icon from "@material-ui/core/Icon";
 import Store from "@material-ui/icons/People";
 import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
 import Button from "components/CustomButtons/Button.jsx";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Table from "components/Table/Table.jsx";
-import Tasks from "components/Tasks/Tasks.jsx";
-import CustomTabs from "components/CustomTabs/CustomTabs.jsx";
 import Danger from "components/Typography/Danger.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
@@ -31,12 +22,8 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
-import { bugs, website, server } from "variables/general.jsx";
-
 import {
-  dailySalesChart,
   emailsSubscriptionChart,
-  completedTasksChart
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -69,7 +56,7 @@ class StudentDashboard extends React.Component {
                   4.9/10 <small>points</small>
                 </h3>
               </CardHeader>
-              <CardFooter stats >
+              <CardFooter stats>
                 <div className={classes.stats}>
                   <Danger>
                     <Warning />
@@ -88,7 +75,10 @@ class StudentDashboard extends React.Component {
                   <Store />
                 </CardIcon>
                 <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>420th<small> Postion</small></h3>
+                <h3 className={classes.cardTitle}>
+                  420th
+                  <small> Postion</small>
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -98,103 +88,105 @@ class StudentDashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="danger" stats icon>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
-          {/* <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="info" stats icon>
-                <CardIcon color="info">
-                  <Accessibility />
-                </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem> */}
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              {/* <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Take a Test</h4>
-                <p className={classes.cardCategoryWhite}>
-                  Choose your desired test type below
-            </p>
-              </CardHeader> */}
               <CardBody>
                 <h4 className={classes.cardTitle}>Take a Test</h4>
                 <p className={classes.cardCategory}>
                   Choose your desired test type below
-            </p>
+                </p>
                 <GridContainer>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #66bb6a, #43a047)", height: '180px' }}>
-  
-                      <CardBody >
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #66bb6a, #43a047)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
                         <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
-                          Create a customised quiz from a set of catagories
-                </p>
+                          Create a customised quiz from a set of categories
+                        </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>build</Icon>
                         <Link to="/student/custom_quiz_setup">
-                        <Button round color="success" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                          <Button
+                            round
+                            color="success"
+                            style={{
+                              background: "transparent",
+                              marginLeft: "auto"
+                            }}
+                          >
+                            Create Quiz
+                          </Button>
                         </Link>
                       </CardFooter>
-               
                     </Card>
                   </GridItem>
-   
+
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", height: '180px' }}>
-                      <CardBody >
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #26c6da, #00acc1)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
                         <h4 className={classes.cardTitleWhite}>Random Quiz</h4>
                         <p className={classes.cardCategoryWhite}>
-                          Create a quick random quiz of 10 questions
-                </p>
+                          Create a quick random quiz of set questions
+                        </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>cached</Icon>
                         <Link to="/student/start_quiz">
-                        <Button round color="info" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                          <Button
+                            round
+                            color="info"
+                            style={{
+                              background: "transparent",
+                              marginLeft: "auto"
+                            }}
+                          >
+                            Take Quiz
+                          </Button>
                         </Link>
                       </CardFooter>
                     </Card>
                   </GridItem>
                   <GridItem xs={12} sm={6} md={4}>
-                    <Card style={{ background: "linear-gradient(60deg, #ef5350, #e53935)", height: '180px' }}>
-                      <CardBody >
-                        <h4 className={classes.cardTitleWhite}>Assigned Quiz</h4>
+                    <Card
+                      style={{
+                        background: "linear-gradient(60deg, #ef5350, #e53935)",
+                        height: "180px"
+                      }}
+                    >
+                      <CardBody>
+                        <h4 className={classes.cardTitleWhite}>
+                          Assigned Quizzes
+                        </h4>
                         <p className={classes.cardCategoryWhite}>
                           Attempt assigned quizzes
                         </p>
                       </CardBody>
-                      <CardFooter >
+                      <CardFooter>
                         <Icon style={{ color: "white" }}>done_all</Icon>
-                        <Link to="/student/start_quiz">
-                        <Button round color="danger" style={{ background: "transparent", marginLeft: 'auto', }}>Take Quiz</Button>
+                        <Link to="/student/assigned_quizzes">
+                          <Button
+                            round
+                            color="danger"
+                            style={{
+                              background: "transparent",
+                              marginLeft: "auto"
+                            }}
+                          >
+                            View Quizzes
+                          </Button>
                         </Link>
                       </CardFooter>
                     </Card>
