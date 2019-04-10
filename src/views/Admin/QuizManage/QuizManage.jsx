@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -14,33 +14,39 @@ import MUIDataTable from "mui-datatables";
 import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM } from "../../../Utils";
+import { CircularProgress } from "@material-ui/core";
 import gql from "graphql-tag";
+import { Query } from "react-apollo";
+const styles = theme => ({
+  root: {
+    width: "100%",
+    marginTop: theme.spacing.unit * 6
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginLeft: theme.spacing.unit * 20
+  }
+});
 
 const QUIZ_VIEW_QUERY = gql`
   {
-    AdminQuiz {
+    adminQuizzes {
       _id
       name
       description
-      createdBy
-      section {
-        category
-        subcategories {
-          _id
-          category
-          name
-        }
-      }
       target
       active
       activeTo
       activeFrom
       negativeMarkPerQuestion
-      markperQuestion
+      markPerQuestion
     }
   }
 `;
 class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     const { classes } = this.props;
     const header1 = "Quiz";
@@ -91,8 +97,7 @@ class Dashboard extends React.Component {
       }
     ];
 
-    const data = [
-      ["Preliminary Round Batch", "uxxxxx", "Admin", "2019", "YES", "29/05/19"],
+    const testData = [
       [
         "Preliminary Round 1st Years",
         "uxxxxx",
@@ -123,6 +128,7 @@ class Dashboard extends React.Component {
       filterType: "checkbox",
       rowsPerPage: 20,
       elevation: 0,
+      selectableRows: false,
       rowsPerPageOptions: [20, 30, 100, 200],
 
       onRowsSelect: (rowsSelected, allRows) => {
@@ -135,34 +141,49 @@ class Dashboard extends React.Component {
     };
 
     return (
-      <div>
-        <TableDialog onRef={ref => (this.child = ref)} />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Expansionpanel
-              headers={header1}
-              header={header2}
-              directingValue={EXPANSION_QUIZ_FORM}
-            />
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card className={classes.root}>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Quizzes</h4>
-              </CardHeader>
-              <MUIDataTable
-                title={""}
-                data={data}
-                columns={columns}
-                options={this.options}
-              />
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
+      <Query query={QUIZ_VIEW_QUERY}>
+        {({ data, loading, error }) => {
+          return (
+            <div>
+              {!loading ? (
+                <Fragment>
+                  {console.log(data)}
+                  {console.log("I am in")}
+                  {/* not needed to use for quiz */}
+                  {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Expansionpanel
+                        headers={header1}
+                        header={header2}
+                        directingValue={EXPANSION_QUIZ_FORM}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                  <Spacing />
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Card className={classes.root}>
+                        <CardHeader color="warning">
+                          <h4 className={classes.cardTitleWhite}>Quizzes</h4>
+                        </CardHeader>
+                        <MUIDataTable
+                          title={""}
+                          data={testData}
+                          columns={columns}
+                          options={this.options}
+                        />
+                      </Card>
+                    </GridItem>
+                  </GridContainer>
+                </Fragment>
+              ) : (
+                <CircularProgress className={classes.progress} />
+              )}
+            </div>
+          );
+        }}
+      </Query>
     );
   }
 }
