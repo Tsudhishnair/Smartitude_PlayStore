@@ -11,12 +11,13 @@ import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import MUIDataTable from "mui-datatables";
-import TableDialog from "../../../components/Dialog/DialogQuizTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import Typography from "@material-ui/core/Typography";
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -141,61 +142,57 @@ class Dashboard extends React.Component {
     return (
       <Query query={QUIZ_VIEW_QUERY}>
         {({ data, loading, error }) => {
-          return (
-            <div>
-              {!loading ? (
-                <Fragment>
-                  {console.log(data.adminQuizzes)}
+          if (loading) {
+            return <CircularProgress className={classes.progress}/>;
+          } else if (error) {
+            return <Typography>Error occured while fetching data!</Typography>;
+          } else {
+            quizList = data.adminQuizzes.map(data => {
+              let quizData = [];
+              quizData.push(data.name);
+              quizData.push(data.description);
+              quizData.push(data.name);
+              quizData.push(data.target);
+              quizData.push(data.active.toString());
+              quizData.push(data.name);
+              quizData.push(data.name);
+              return quizData;
+            });
+            return (
+              <Fragment>
+                {console.log(data.adminQuizzes)}
 
-                  {console.log("I am in")}
-                  {/* not needed to use for quiz */}
-                  {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <Expansionpanel
-                        headers={header1}
-                        header={header2}
-                        directingValue={EXPANSION_QUIZ_FORM}
+                {console.log("I am in")}
+                {/* not needed to use for quiz */}
+                {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Expansionpanel
+                      headers={header1}
+                      header={header2}
+                      directingValue={EXPANSION_QUIZ_FORM}
+                    />
+                  </GridItem>
+                </GridContainer>
+                <Spacing/>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Card className={classes.root}>
+                      <CardHeader color="warning">
+                        <h4 className={classes.cardTitleWhite}>Quizzes</h4>
+                      </CardHeader>
+                      <MUIDataTable
+                        title={""}
+                        data={quizList}
+                        columns={columns}
+                        options={options}
                       />
-                    </GridItem>
-                  </GridContainer>
-                  <Spacing />
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <Card className={classes.root}>
-                        <CardHeader color="warning">
-                          <h4 className={classes.cardTitleWhite}>Quizzes</h4>
-                        </CardHeader>
-
-                        {
-                          quizList = data.adminQuizzes.map(data => {
-                            let quizData = [];
-                            quizData.push(data.name);
-                            quizData.push(data.description);
-                            quizData.push(data.name);
-                            quizData.push(data.target);
-                            quizData.push(data.active.toString());
-                            quizData.push(data.name);
-                            quizData.push(data.name);
-                            return quizData;
-                          })
-                        }
-
-                        <MUIDataTable
-                          title={""}
-                          data={quizList}
-                          columns={columns}
-                          options={options}
-                        />
-                      </Card>
-                    </GridItem>
-                  </GridContainer>
-                </Fragment>
-              ) : (
-                <CircularProgress className={classes.progress} />
-              )}
-            </div>
-          );
+                    </Card>
+                  </GridItem>
+                </GridContainer>
+              </Fragment>
+            );
+          }
         }}
       </Query>
     );
