@@ -19,16 +19,20 @@ import {
   IconButton,
   FormControlLabel,
   Switch,
-  Snackbar
+  Snackbar,
+  ExpansionPanelActions,
+  Divider,
+  Tooltip,
 } from "@material-ui/core";
 
-import { Delete } from "@material-ui/icons";
+import { Delete, RemoveCircle, ExpandMore } from "@material-ui/icons";
 
 import moment from "moment";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import Spacing from "../../../components/Spacing/Spacing";
 
 const styles = theme => ({
   formroot: {
@@ -389,7 +393,7 @@ class QuizForm extends React.Component {
               message: "Quiz added successfully!"
             }
           }));
-          console.log('done');
+          console.log("done");
         })
         .catch(err => {
           //if error was returned
@@ -552,11 +556,6 @@ class QuizForm extends React.Component {
     if (this.state.quizSectionWise[index]) {
       singlePiece = (
         <Fragment>
-          <GridItem xs={12} sm={12} md={12} className={classes.formControl}>
-            <IconButton onClick={() => this.handleDeleteClick(index)}>
-              <Delete />
-            </IconButton>
-          </GridItem>
           <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
             <FormControl fullWidth>
               <InputLabel htmlFor="category">Category</InputLabel>
@@ -607,13 +606,20 @@ class QuizForm extends React.Component {
               id="standard-number"
               label="Time Limit (min)"
               type="number"
-              fullWidth
               margin="normal"
               value={this.state.quizSectionWise[index].timeLimit}
               onChange={e => this.handleTimeLimitField(e, index)}
             />
+            <Tooltip title={"Delete Category Section"}>
+              <IconButton onClick={() => this.handleDeleteClick(index)}>
+                <Delete />
+              </IconButton>
+              {/*<IconButton onClick={() => this.handleDeleteClick(index)}>*/}
+              {/*  {this.numberOfSections ? <Delete /> : <br />}*/}
+              {/*</IconButton>*/}
+            </Tooltip>
           </GridItem>
-          <br />
+          <Spacing />
         </Fragment>
       );
     } else {
@@ -691,7 +697,7 @@ class QuizForm extends React.Component {
                 <div className={classes.root}>
                   <form autoComplete="off" autoWidth={true}>
                     <Typography>
-                      <strong>Basic Info</strong>
+                      <strong>Quiz Info</strong>
                     </Typography>
                     <GridContainer>
                       <GridItem
@@ -842,28 +848,32 @@ class QuizForm extends React.Component {
                         />
                       </GridItem>
                     </GridContainer>
+                    <Spacing />
                     <Typography>
-                      <strong>Other Info</strong>
+                      <strong>Category Info</strong>
                     </Typography>
-                    <GridContainer>
+                    <GridContainer className={classes.container}>
                       {this.renderSectionDetails(classes)}
                     </GridContainer>
-                    <GridItem xs={12} sm={2} md={2}>
+                    <ExpansionPanelActions>
                       <Button
-                        fullWidth
                         color="primary"
+                        fullWidth
+                        variant={"outlined"}
+                        size={"small"}
                         className={classes.button}
                         onClick={this.handleClick}
                       >
                         Add More
                       </Button>
-                    </GridItem>
-                    <GridItem xs={12} sm={2} md={2}>
+                    </ExpansionPanelActions>
+                    <Divider />
+                    <ExpansionPanelActions>
                       <Mutation mutation={ADD_QUIZ}>
                         {addQuiz => (
                           <Button
-                            fullWidth
                             color="primary"
+                            variant={"outlined"}
                             className={classes.button}
                             onClick={() => this.handleSubmit(addQuiz)}
                           >
@@ -871,7 +881,7 @@ class QuizForm extends React.Component {
                           </Button>
                         )}
                       </Mutation>
-                    </GridItem>
+                    </ExpansionPanelActions>
                   </form>
                 </div>
               );

@@ -30,7 +30,6 @@ class QuestionDetails extends Component {
 
     this.questionToBeDeleted = data;
     this.questionDeleteMutation = func;
-
   };
   //Dialog for Question Delete
   renderDeleteDialog = dialogDelete => {
@@ -53,7 +52,7 @@ class QuestionDetails extends Component {
       dialogDelete: !prevState.dialogDelete
     }));
   };
-  //delete mutation action 
+  //delete mutation action
   deleteQuestion = () => {
     this.questionDeleteMutation({
       variables: {
@@ -153,8 +152,8 @@ class QuestionDetails extends Component {
                 }}
               </Mutation>
             ) : (
-                ""
-              )}
+              ""
+            )}
             <Button
               round
               variant={"outlined"}
@@ -177,12 +176,12 @@ class QuestionDetails extends Component {
                 {secondaryActionButtonText}
               </Button>
             ) : (
-                ""
-              )}
+              ""
+            )}
           </CardFooter>
         ) : (
-            ""
-          )}
+          ""
+        )}
         <Divider />
       </GridItem>
     );
