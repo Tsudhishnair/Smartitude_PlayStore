@@ -18,14 +18,6 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
 
-import { bugs, website, server } from "variables/general.jsx";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.jsx";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link } from "react-router-dom";
 
@@ -46,6 +38,24 @@ class Dashboard extends React.Component {
     return (
       <div>
         <GridContainer>
+          <GridItem xs={12} sm={6} md={5}>
+            <Card Green>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                  <Icon>grade</Icon>
+                </CardIcon>
+                <p className={classes.cardCategory}>
+                  Pending Questions for Approval
+                </p>
+                <h3 className={classes.cardTitle}>
+                  10 <small>questions</small>
+                </h3>
+              </CardHeader>
+              <CardFooter> </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardBody>
@@ -64,21 +74,24 @@ class Dashboard extends React.Component {
                       >
                         <CardBody>
                           <h4 className={classes.cardTitleWhite}>
-                            Manage Questions
+                            My Questions
                           </h4>
                           <p className={classes.cardCategoryWhite}>
-                            Add, Remove and Edit Questions
+                            View all questions added by you.
                           </p>
                         </CardBody>
                         <CardFooter>
                           <Icon style={{ color: "white" }}>school</Icon>
-                          <Link to="/faculty/questions">
+                          <Link to="/faculty/my_questions">
                             <Button
                               round
                               color="success"
-                              style={{ marginLeft: "auto" }}
+                              style={{
+                                background: "transparent",
+                                marginLeft: "auto"
+                              }}
                             >
-                              Manage
+                              View Questions
                             </Button>
                           </Link>
                         </CardFooter>
@@ -109,7 +122,7 @@ class Dashboard extends React.Component {
                         </CardBody>
                         <CardFooter>
                           <Icon style={{ color: "white" }}>notifications</Icon>
-                          <Link to="faculty/approve_questions">
+                          <Link to="/faculty/awaiting_questions">
                             <Button
                               round
                               color="info"
@@ -118,7 +131,7 @@ class Dashboard extends React.Component {
                                 marginLeft: "auto"
                               }}
                             >
-                              Message
+                              Approve
                             </Button>
                           </Link>
                         </CardFooter>
@@ -157,7 +170,7 @@ class Dashboard extends React.Component {
                                 marginLeft: "auto"
                               }}
                             >
-                              Assign
+                              Add Questions
                             </Button>
                           </Link>
                         </CardFooter>
@@ -166,53 +179,6 @@ class Dashboard extends React.Component {
                   </GridItem>
                 </GridContainer>
               </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card Green>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>grade</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>
-                  Pending Questions for Approval
-                </p>
-                <h3 className={classes.cardTitle}>
-                  10 <small>points</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  {/*<Danger>*/}
-                  {/*<Warning />*/}
-                  {/*</Danger>*/}
-                  {/*<a href="#pablo" onClick={e => e.preventDefault()}>*/}
-                  {/*Prepare More*/}
-                  {/*</a>*/}
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card>
-              <CardHeader color="success" stats icon>
-                <CardIcon color="success">
-                  <Store />
-                </CardIcon>
-                <p className={classes.cardCategory}>Ranking</p>
-                <h3 className={classes.cardTitle}>
-                  420th
-                  <small> Postion</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
-              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
