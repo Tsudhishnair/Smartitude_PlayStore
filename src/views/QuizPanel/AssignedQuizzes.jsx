@@ -37,6 +37,32 @@ class AssignedQuizzes extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const testData = [
+      [
+        "Preliminary Round 1st Years",
+        "uxxxxx",
+        "Admin",
+        "2022",
+        "YES",
+        "29/05/19"
+      ],
+      [
+        "Preliminary Round 2nd Years",
+        "uxxxxx",
+        "Django",
+        "2019",
+        "YES",
+        "13/05/19"
+      ],
+      [
+        "Preliminary Round 3rdd Years",
+        "uxxxxx",
+        "Admin",
+        "2019",
+        "YES",
+        "30/05/19"
+      ]
+    ];
 
     return (
       <div className={classes.root}>
