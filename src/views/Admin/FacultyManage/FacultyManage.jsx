@@ -71,7 +71,8 @@ class Dashboard extends React.Component {
         name: "Name",
         options: {
           filter: false,
-          sort: true
+          sort: true,
+          sortDirection: "desc"
         }
       },
       {

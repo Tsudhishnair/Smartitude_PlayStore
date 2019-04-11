@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import {
   Card,
   Button,
@@ -14,15 +14,15 @@ import {
   Divider,
   Fab
 } from "@material-ui/core";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
-import Spacing from "../../components/Spacing/Spacing";
-import CardFooter from "../../components/Card/CardFooter";
-import CardBody from "../../components/Card/CardBody";
-import Timer from "react-compound-timer";
+import Radio from "@material-ui/core/Radio/index";
+import RadioGroup from "@material-ui/core/RadioGroup/index";
+import FormControlLabel from "@material-ui/core/FormControlLabel/index";
+import FormControl from "@material-ui/core/FormControl/index";
+import FormLabel from "@material-ui/core/FormLabel/index";
+import Spacing from "../../../components/Spacing/Spacing";
+import CardFooter from "../../../components/Card/CardFooter";
+import CardBody from "../../../components/Card/CardBody";
+import Timer from "react-compound-timer/build/components/Timer/Timer";
 
 const styles = theme => ({
   root: {

@@ -236,7 +236,7 @@ class StudentManage extends React.Component {
                           }
                         }}
                       </Query>
-                    </CardBody>{" "}
+                    </CardBody>
                   </Card>
                 </GridItem>
               </GridContainer>

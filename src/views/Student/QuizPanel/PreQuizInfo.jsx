@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import {
   Card,
   Button,
@@ -13,9 +13,9 @@ import {
   Typography,
   Divider
 } from "@material-ui/core";
-import CardFooter from "../../components/Card/CardFooter";
-import CardBody from "../../components/Card/CardBody";
-import Spacing from "../../components/Spacing/Spacing";
+import CardFooter from "../../../components/Card/CardFooter";
+import CardBody from "../../../components/Card/CardBody";
+import Spacing from "../../../components/Spacing/Spacing";
 import Link from "react-router-dom/es/Link";
 
 const styles = theme => ({

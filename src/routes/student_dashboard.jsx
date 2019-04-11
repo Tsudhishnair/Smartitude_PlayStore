@@ -7,9 +7,9 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import DashboardPage from "../views/Student/Dashboard/StudentDashboard.jsx";
 import NotificationsPage from "../views/Student/Notifications/Notifications.jsx";
 import Results from "../views/Student/Results/Results.jsx";
-import PreQuizInfo from "../views/QuizPanel/PreQuizInfo";
-import CustomQuizSetup from "../views/QuizPanel/CustomQuizSetup";
-import AssignedQuizzes from "../views/QuizPanel/AssignedQuizzes";
+import PreQuizInfo from "../views/Student/QuizPanel/PreQuizInfo";
+import CustomQuizSetup from "../views/Student/QuizPanel/CustomQuizSetup";
+import AssignedQuizzes from "../views/Student/QuizPanel/AssignedQuizzes";
 
 const dashboardRoutes = [
   {

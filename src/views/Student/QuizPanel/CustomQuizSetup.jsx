@@ -4,15 +4,15 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import {Button, CardContent, Typography } from "@material-ui/core";
-import CardFooter from "../../components/Card/CardFooter";
+import CardFooter from "../../../components/Card/CardFooter";
 import Card from "components/Card/Card.jsx";
 import Link from "react-router-dom/es/Link";
-import QuizForm from "../Admin/QuizManage/QuizForm";
-import CardHeader from "../../components/Card/CardHeader";
-import Spacing from "../../components/Spacing/Spacing";
+import QuizForm from "../../Admin/QuizManage/QuizForm";
+import CardHeader from "../../../components/Card/CardHeader";
+import Spacing from "../../../components/Spacing/Spacing";
 
 const styles = theme => ({
   root: {

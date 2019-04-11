@@ -91,8 +91,7 @@ const columns = [
     name: "Expiry",
     options: {
       filter: false,
-      sort: true,
-      sortDirection: "desc"
+      sort: true
     }
   }
 ];
@@ -105,7 +104,7 @@ const options = {
   rowsPerPageOptions: [20, 30, 100, 200]
 };
 
-class QuizManage extends React.Component {
+class QuestionManage extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -148,19 +147,9 @@ class QuizManage extends React.Component {
                 {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <Expansionpanel
-                      headers={header1}
-                      header={header2}
-                      directingValue={EXPANSION_QUIZ_FORM}
-                    />
-                  </GridItem>
-                </GridContainer>
-                <Spacing />
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>
                       <CardHeader color="warning">
-                        <h4 className={classes.cardTitleWhite}>Quizzes</h4>
+                        <h4 className={classes.cardTitleWhite}>Questions</h4>
                       </CardHeader>
                       <CardBody>
                         <MUIDataTable
@@ -182,8 +171,8 @@ class QuizManage extends React.Component {
   }
 }
 
-QuizManage.propTypes = {
+QuestionManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(QuizManage);
+export default withStyles(dashboardStyle)(QuestionManage);

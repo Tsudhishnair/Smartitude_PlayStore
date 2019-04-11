@@ -5,6 +5,7 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import Person from "@material-ui/icons/Person";
 import School from "@material-ui/icons/School";
+import Message from "@material-ui/icons/Message"
 import Report from "@material-ui/icons/Assignment";
 import Account from "@material-ui/icons/AccountBalance"
 
@@ -12,12 +13,12 @@ import Account from "@material-ui/icons/AccountBalance"
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuizManage from "../views/Admin/QuizManage/QuizManage";
+import QuestionManage from "../views/Admin/QuestionManage/QuestionManage";
 import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DeptManage from "../views/Admin/DeptManage/DeptManage";
 import ReportGen from "../views/Admin/ReportGen/ReportGen";
 import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManagement.jsx";
-import MessageDialog from "components/Dialog/MessageDialog.jsx";
 
 const dashboardRoutes = [
   {
@@ -47,6 +48,13 @@ const dashboardRoutes = [
     navbarName: "Quiz",
     icon: NotificationIcon,
     component: QuizManage
+  },
+  {
+    path: "/admin/question_management",
+    sidebarName: "Questions",
+    navbarName: "Questions",
+    icon: Message,
+    component: QuestionManage
   },
   {
     path: "/admin/category_management",

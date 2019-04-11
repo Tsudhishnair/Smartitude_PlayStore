@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import GridContainer from "../../components/Grid/GridContainer";
-import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import { Typography } from "@material-ui/core";
 import Card from "components/Card/Card.jsx";
-import CardHeader from "../../components/Card/CardHeader";
+import CardHeader from "../../../components/Card/CardHeader";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import CardContent from "@material-ui/core/es/CardContent/CardContent";

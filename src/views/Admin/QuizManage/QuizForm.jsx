@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { DatePicker } from "material-ui-pickers";
+import { DateTimePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -22,10 +22,10 @@ import {
   Snackbar,
   ExpansionPanelActions,
   Divider,
-  Tooltip,
+  Tooltip
 } from "@material-ui/core";
 
-import { Delete, RemoveCircle, ExpandMore } from "@material-ui/icons";
+import { Delete } from "@material-ui/icons";
 
 import moment from "moment";
 import gql from "graphql-tag";
@@ -33,6 +33,7 @@ import { Query, Mutation } from "react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
+import PropTypes from "prop-types";
 
 const styles = theme => ({
   formroot: {
@@ -753,27 +754,27 @@ class QuizForm extends React.Component {
                       </GridItem>
                       <GridItem xs={12} sm={3} md={3}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
+                          <DateTimePicker
                             error={this.state.error.dates.status}
                             helperText={this.state.error.dates.message}
                             className={classes.date_root}
-                            minDate={this.currentDate}
                             label="Active From"
                             clearable
                             formatDate={date =>
                               moment(date).format("YYYY-MM-DD")
                             }
                             value={this.state.quizCommon.activeFrom}
-                            format="dd/MMM/yyyy"
+                            // format="dd/MMM/yyyy hr:min"
                             onChange={date =>
                               this.handleDateChange(date, DATE_FROM)
                             }
+                            disablePast
                           />
                         </MuiPickersUtilsProvider>
                       </GridItem>
                       <GridItem xs={12} sm={3} md={3}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DatePicker
+                          <DateTimePicker
                             className={classes.date_root}
                             minDate={this.currentDate}
                             label="Active Till"
@@ -782,7 +783,7 @@ class QuizForm extends React.Component {
                               moment(date).format("YYYY-MM-DD")
                             }
                             value={this.state.quizCommon.activeTo}
-                            format="dd/MMM/yyyy"
+                            // format="dd/MMM/yyyy"
                             onChange={date =>
                               this.handleDateChange(date, DATE_TO)
                             }
@@ -907,6 +908,8 @@ class QuizForm extends React.Component {
   }
 }
 
-// QuizForm.propTypes =
+QuizForm.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(styles)(QuizForm);

@@ -20,7 +20,7 @@ import AdminPanel from "./layouts/AdminPanel/AdminPanel";
 import StudentPanel from "./layouts/StudentPanel/StudentPanel";
 import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
 import Landing from "./layouts/Landing/Landing";
-import QuizPanel from "./views/QuizPanel/QuizAnswer";
+import QuizPanel from "./views/Student/QuizPanel/QuizAnswer";
 import { PrivateRoute } from "./routes/PrivateRoute";
 
 import AddQuestion from "./views/Faculty/AddQuestion/AddQuestion";
