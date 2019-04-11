@@ -225,8 +225,8 @@ class FormAddSubcategory extends Component {
                   </GridItem>
                   <GridItem
                     xs={12}
-                    md={12}
-                    sm={12}
+                    md={8}
+                    sm={8}
                     className={classes.formControl}
                   >
                     <TextField
@@ -256,7 +256,8 @@ class FormAddSubcategory extends Component {
                       type="text"
                       value={this.state.description}
                       onChange={this.handleChange}
-                      multiline
+                      multiline={true}
+                      rows={2}
                       fullWidth
                       required
                     />

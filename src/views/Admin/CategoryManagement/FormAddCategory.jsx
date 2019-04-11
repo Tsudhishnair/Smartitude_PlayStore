@@ -199,7 +199,8 @@ class FormAddCategory extends Component {
                       type="text"
                       value={this.state.description}
                       onChange={this.handleChange}
-                      multiline
+                      multiline={true}
+                      rows={2}
                       fullWidth
                       required
                     />
