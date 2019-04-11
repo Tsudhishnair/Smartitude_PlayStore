@@ -211,19 +211,29 @@ class DeptManage extends React.Component {
   };
 
   handleUpdateClose = (type, message) => {
-    this.setState(
-      prevState => ({
-        snackbar: {
-          ...prevState.snackbar,
-          variant: type,
-          message:
-            type === "success"
-              ? "Department successfully updated"
-              : message.graphQLErrors[0].message
-        }
-      }),
-      () => this.openSnackbar()
-    );
+    if (type === "success") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: "Department successfully updated"
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    } else if (type === "error") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: message.graphQLErrors[0].message
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    }
     this.toggleUpdateDialogVisibility();
   };
 
