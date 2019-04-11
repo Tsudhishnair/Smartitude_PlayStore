@@ -438,7 +438,7 @@ class QuizForm extends React.Component {
     //negativeMarksPerQn field value check
     else if (
       !quizCommon.negativeMarksPerQn ||
-      quizCommon.negativeMarksPerQn < 1
+      quizCommon.negativeMarksPerQn < 0
     ) {
       this.makeFlagFalse();
     }
