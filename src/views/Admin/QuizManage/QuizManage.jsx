@@ -132,11 +132,6 @@ class Dashboard extends React.Component {
       elevation: 0,
       selectableRows: false,
       rowsPerPageOptions: [20, 30, 100, 200]
-
-      // onRowClick: (rowData, rowState) => {
-      //   console.log(rowData, rowState);
-      //   this.child.handleClickOpen(rowData);
-      // }
     };
 
     return (
@@ -154,15 +149,17 @@ class Dashboard extends React.Component {
               quizData.push(data.name);
               quizData.push(data.target);
               quizData.push(data.active.toString());
-              quizData.push(data.name);
-              quizData.push(data.name);
+              quizData.push(data.activeTo);
+              let a = new Date(data.activeTo);
+              console.log(a);
+              
               return quizData;
             });
             return (
               <Fragment>
-                {console.log(data.adminQuizzes)}
-
-                {console.log("I am in")}
+                
+              {console.log(data)
+              }
                 {/* not needed to use for quiz */}
                 {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
                 <GridContainer>
