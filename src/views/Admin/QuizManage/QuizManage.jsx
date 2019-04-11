@@ -45,100 +45,84 @@ const QUIZ_VIEW_QUERY = gql`
   }
 `;
 let quizList = [];
+
+const header1 = "Quiz";
+const header2 = "Create & Assign Quiz";
+
+const columns = [
+  {
+    name: "QuizName",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "Description",
+    options: {
+      filter: false,
+      sort: true,
+      display: false
+    }
+  },
+  {
+    name: "Created By",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Target",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Active",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Expiry",
+    options: {
+      filter: false,
+      sort: true
+    }
+  }
+];
+
+const options = {
+  filterType: "checkbox",
+  rowsPerPage: 20,
+  elevation: 0,
+  selectableRows: false,
+  rowsPerPageOptions: [20, 30, 100, 200]
+};
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  transformDateString = dateString => {
+    const newDate = new Date(dateString);
+
+    return `${newDate.getDate()}/${newDate.getMonth() +
+      1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
+  };
+
   render() {
     const { classes } = this.props;
-    const header1 = "Quiz";
-    const header2 = "Create & Assign Quiz";
-    const columns = [
-      {
-        name: "QuizName",
-        options: {
-          filter: false,
-          sort: true
-        }
-      },
-      {
-        name: "Description",
-        options: {
-          filter: false,
-          sort: true,
-          display: false
-        }
-      },
-      {
-        name: "Created By",
-        options: {
-          filter: true,
-          sort: true
-        }
-      },
-      {
-        name: "Target",
-        options: {
-          filter: true,
-          sort: true
-        }
-      },
-      {
-        name: "Active",
-        options: {
-          filter: true,
-          sort: true
-        }
-      },
-      {
-        name: "Expiry",
-        options: {
-          filter: false,
-          sort: true
-        }
-      }
-    ];
-
-    const testData = [
-      [
-        "Preliminary Round 1st Years",
-        "uxxxxx",
-        "Admin",
-        "2022",
-        "YES",
-        "29/05/19"
-      ],
-      [
-        "Preliminary Round 2nd Years",
-        "uxxxxx",
-        "Django",
-        "2019",
-        "YES",
-        "13/05/19"
-      ],
-      [
-        "Preliminary Round 3rdd Years",
-        "uxxxxx",
-        "Admin",
-        "2019",
-        "YES",
-        "30/05/19"
-      ]
-    ];
-
-    const options = {
-      filterType: "checkbox",
-      rowsPerPage: 20,
-      elevation: 0,
-      selectableRows: false,
-      rowsPerPageOptions: [20, 30, 100, 200]
-    };
 
     return (
       <Query query={QUIZ_VIEW_QUERY}>
         {({ data, loading, error }) => {
           if (loading) {
-            return <CircularProgress className={classes.progress}/>;
+            return <CircularProgress className={classes.progress} />;
           } else if (error) {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {
@@ -148,18 +132,16 @@ class Dashboard extends React.Component {
               quizData.push(data.description);
               quizData.push(data.name);
               quizData.push(data.target);
-              quizData.push(data.active.toString());
-              quizData.push(data.activeTo);
-              let a = new Date(data.activeTo);
-              console.log(a);
-              
+
+              data.active ? quizData.push("Yes") : quizData.push("No");
+
+              quizData.push(this.transformDateString(data.activeTo));
+
               return quizData;
             });
             return (
               <Fragment>
-                
-              {console.log(data)
-              }
+                {console.log(data)}
                 {/* not needed to use for quiz */}
                 {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
                 <GridContainer>
@@ -171,7 +153,7 @@ class Dashboard extends React.Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Spacing/>
+                <Spacing />
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>
