@@ -171,7 +171,7 @@ class DialogQuestion extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-          <GridContainer style={{ padding: "5%" }}>
+          <GridContainer style={{ padding: "3%" }}>
             <GridItem xs={12} sm={12} md={12}>
               <AddQuestion question={question} isEdit={true} fullwidth />
             </GridItem>
