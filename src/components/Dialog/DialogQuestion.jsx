@@ -76,7 +76,6 @@ class DialogQuestion extends React.Component {
 
   render() {
     const { classes, question } = this.props;
-    const bull = <span className={classes.bullet}>•</span>;
 
     // const Frameworks = props => {
     //   return (
@@ -123,7 +122,7 @@ class DialogQuestion extends React.Component {
                 onClick={this.handleClose}
                 aria-label="Close"
               >
-                <CloseIcon/>
+                <CloseIcon />
               </IconButton>
               <Typography variant="h7" color="inherit" className={classes.flex}>
                 Question
@@ -133,26 +132,26 @@ class DialogQuestion extends React.Component {
               {/*</Button>*/}
             </Toolbar>
           </AppBar>
-          <Spacing/>
+          <Spacing />
           <GridContainer style={{ padding: "1%" }}>
             <GridItem xs={12} sm={12} md={12}>
               <Card className={classes.card}>
                 <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    Quiz ID
-                  </Typography>
-                  <Typography variant="h5" component="h2">
-                    Quiz Name Comes Here
-                  </Typography>
-                  <Typography className={classes.pos} color="textSecondary">
-                    description description description description description
-                    description description description description
-                  </Typography>
-                  <Spacing/>
+                  {/*<Typography*/}
+                  {/*  className={classes.title}*/}
+                  {/*  color="textSecondary"*/}
+                  {/*  gutterBottom*/}
+                  {/*>*/}
+                  {/*  Quiz ID*/}
+                  {/*</Typography>*/}
+                  {/*<Typography variant="h5" component="h2">*/}
+                  {/*  Quiz Name Comes Here*/}
+                  {/*</Typography>*/}
+                  {/*<Typography className={classes.pos} color="textSecondary">*/}
+                  {/*  description description description description description*/}
+                  {/*  description description description description*/}
+                  {/*</Typography>*/}
+                  {/*<Spacing/>*/}
                   <GridContainer>
                     <GridItem xs={12} sm={3} md={3}>
                       <Typography component="p">
@@ -172,10 +171,10 @@ class DialogQuestion extends React.Component {
               </Card>
             </GridItem>
           </GridContainer>
-
-
-          <GridContainer style={{ padding: "2%" }}>
-            <AddQuestion question={question} isEdit={true}/>
+          <GridContainer style={{ padding: "3%" }}>
+            <GridItem xs={12} sm={12} md={12}>
+              <AddQuestion question={question} isEdit={true} fullwidth />
+            </GridItem>
           </GridContainer>
         </Dialog>
       </div>
@@ -186,7 +185,7 @@ class DialogQuestion extends React.Component {
 DialogQuestion.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
-  question: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(DialogQuestion);
