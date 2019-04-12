@@ -24,9 +24,9 @@ const APPROVE_QUESTION = gql`
   }
 `;
 
-const DELETE_QUESTION = gql`
-  mutation deleteQuestion($_id: ID!) {
-    deleteQuestion(_id: $_id) {
+const REJECT_QUESTION = gql`
+  mutation rejectQuestion($_id: ID!) {
+    rejectQuestion(_id: $_id) {
       _id
     }
   }
@@ -85,8 +85,8 @@ class ApproveQuestion extends React.Component {
         );
       } else if (this.state.reject) {
         return (
-          <Mutation mutation={DELETE_QUESTION}>
-            {deleteQuestion => {
+          <Mutation mutation={REJECT_QUESTION}>
+            {rejectQuestion => {
               return (
                 <MessageDialog
                   title="Confirm Rejection"
@@ -95,7 +95,7 @@ class ApproveQuestion extends React.Component {
                   content="Rejecting the question will delete this question permanently. Are you sure you want to continue?"
                   onClose={this.closeDialog}
                   action={() => {
-                    this.performRejection(deleteQuestion);
+                    this.performRejection(rejectQuestion);
                   }}
                 />
               );
@@ -118,9 +118,9 @@ class ApproveQuestion extends React.Component {
     });
   };
 
-  performRejection = deleteQuestion => {
+  performRejection = rejectQuestion => {
     console.log("performRejection called");
-    deleteQuestion({
+    rejectQuestion({
       variables: {
         _id: this.state.question._id
       }
