@@ -20,6 +20,13 @@ export const loginHandler = {
   userType: localStorage.getItem("userType")
 };
 
+export const transformDateString = dateString => {
+  const newDate = new Date(dateString);
+
+  return `${newDate.getDate()}/${newDate.getMonth() +
+    1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
+};
+
 export const EXPANSION_QUIZ_FORM = 1;
 export const EXPANSION_FACULTY_FORM = 2;
 export const EXPANSION_STUDENT_BATCH = 3;

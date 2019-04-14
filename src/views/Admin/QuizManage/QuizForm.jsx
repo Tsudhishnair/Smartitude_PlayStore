@@ -394,9 +394,9 @@ class QuizForm extends React.Component {
               message: "Quiz added successfully!"
             }
           }));
-          console.log("done");
         })
         .catch(err => {
+          console.log(err);
           //if error was returned
           this.setState(prevState => ({
             snackbar: {
@@ -404,7 +404,10 @@ class QuizForm extends React.Component {
               open: true,
               variant: "error",
               duration: 10000,
-              message: "Error: " + err.graphQLErrors[0].message
+              message:
+                "Error: " + err.graphQLErrors[0]
+                  ? err.graphQLErrors[0].message
+                  : err.networkError
             }
           }));
         });
@@ -829,6 +832,23 @@ class QuizForm extends React.Component {
                             />
                           }
                           label="Active"
+                        />
+                      </GridItem>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.container}
+                      >
+                        <TextField
+                          id="standard-instructions"
+                          label="Instructions for students"
+                          margin="normal"
+                          type="number"
+                          name="instructions"
+                          value={this.state.quizCommon.instructions}
+                          onChange={this.handleCommonFieldChanges}
+                          fullWidth
                         />
                       </GridItem>
                       <GridItem

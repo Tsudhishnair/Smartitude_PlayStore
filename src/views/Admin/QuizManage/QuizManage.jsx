@@ -12,7 +12,7 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import MUIDataTable from "mui-datatables";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { EXPANSION_QUIZ_FORM } from "../../../Utils";
+import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
@@ -110,13 +110,6 @@ class QuizManage extends React.Component {
     super(props);
   }
 
-  transformDateString = dateString => {
-    const newDate = new Date(dateString);
-
-    return `${newDate.getDate()}/${newDate.getMonth() +
-      1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
-  };
-
   render() {
     const { classes } = this.props;
 
@@ -137,7 +130,7 @@ class QuizManage extends React.Component {
 
               data.active ? quizData.push("Yes") : quizData.push("No");
 
-              quizData.push(this.transformDateString(data.activeTo));
+              quizData.push(transformDateString(data.activeTo));
 
               return quizData;
             });
