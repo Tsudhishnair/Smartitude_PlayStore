@@ -126,7 +126,8 @@ class QuizForm extends React.Component {
         batch: "",
         activeFrom: new Date(),
         activeTo: new Date(),
-        active: false
+        active: false,
+        instructions: ""
       },
       //keeps separate data for separate sections
       quizSectionWise: [
@@ -380,7 +381,8 @@ class QuizForm extends React.Component {
             negativeMarkPerQuestion: Number(
               this.state.quizCommon.negativeMarksPerQn
             ),
-            requestedSections: sectionRequest
+            requestedSections: sectionRequest,
+            instructions: this.state.quizCommon.instructions
           }
         }
       })
@@ -404,10 +406,9 @@ class QuizForm extends React.Component {
               open: true,
               variant: "error",
               duration: 10000,
-              message:
-                "Error: " + err.graphQLErrors[0]
-                  ? err.graphQLErrors[0].message
-                  : err.networkError
+              message: "Error: " + err
+              // ? err.graphQLErrors[0].message
+              // : err.networkError[0].message
             }
           }));
         });
@@ -844,7 +845,7 @@ class QuizForm extends React.Component {
                           id="standard-instructions"
                           label="Instructions for students"
                           margin="normal"
-                          type="number"
+                          type="text"
                           name="instructions"
                           value={this.state.quizCommon.instructions}
                           onChange={this.handleCommonFieldChanges}
