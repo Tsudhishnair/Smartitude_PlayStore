@@ -153,10 +153,8 @@ class StudentManage extends React.Component {
         this.deleteStudentList.push(this.students[data[index].dataIndex]._id);
       }
       this.handleDelete(this.deleteStudentList);
-
     },
     onRowClick: (rowData, rowState) => {
-      // console.log("onRowClick");
       if (!this.rowSelected) {
         const clickedRowIndex = rowState.dataIndex;
         this.child.handleClickOpen(

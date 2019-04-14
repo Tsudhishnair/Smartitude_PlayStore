@@ -18,6 +18,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import { transformDateString } from "../../../Utils";
+import { Redirect } from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -58,14 +59,6 @@ const columns = [
   }
 ];
 
-const options = {
-  filterType: "checkbox",
-  rowsPerPage: 20,
-  elevation: 0,
-  selectableRows: false,
-  rowsPerPageOptions: [20, 30, 100, 200]
-};
-
 const ADMIN_QUIZZES_BATCH = gql`
   {
     adminQuizzesBatch {
@@ -78,15 +71,60 @@ const ADMIN_QUIZZES_BATCH = gql`
 `;
 
 class AssignedQuizzes extends React.Component {
-  state = {
-    value: "option"
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      redirecter: false,
+      value: "option"
+    };
+
+    this.quizList;
+
+    this.options = {
+      filterType: "checkbox",
+      rowsPerPage: 20,
+      elevation: 0,
+      selectableRows: false,
+      rowsPerPageOptions: [20, 30, 100, 200],
+      onRowClick: (rowData, rowState) => {
+        if (!this.rowSelected) {
+          this.handleRowClick(rowState.dataIndex);
+        }
+      }
+    };
+  }
+
+  handleRowClick = clickedIndex => {
+
+    this.clickedQuiz = this.quizList[clickedIndex];
+
+    this.setState(() => ({
+      redirecter: true
+    }));
   };
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
 
   render() {
     const { classes } = this.props;
+
+    if (this.state.redirecter === true) {
+      console.log("redirecter switched ");
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/student/start_quiz",
+            state: {
+              ...this.clickedQuiz
+            }
+          }}
+        />
+      );
+    }
 
     return (
       <div className={classes.root}>
@@ -101,7 +139,7 @@ class AssignedQuizzes extends React.Component {
                   <Query query={ADMIN_QUIZZES_BATCH}>
                     {({ data, loading, error }) => {
                       if (loading) {
-                        return "";
+                        return "Loading";
                       } else if (error) {
                         return "Error occured";
                       } else {
@@ -117,12 +155,15 @@ class AssignedQuizzes extends React.Component {
                           quizData.push(transformDateString(quiz.activeTo));
                           return quizData;
                         });
+
+                        this.quizList = data.adminQuizzesBatch;
+
                         return (
                           <MUIDataTable
                             title={""}
                             data={quizList}
                             columns={columns}
-                            options={options}
+                            options={this.options}
                           />
                         );
                       }

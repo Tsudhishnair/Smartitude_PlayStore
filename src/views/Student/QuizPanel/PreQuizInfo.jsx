@@ -33,9 +33,14 @@ const styles = theme => ({
 });
 
 class PreQuizInfo extends React.Component {
-  state = {
-    value: "option"
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: "option"
+    };
+  }
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
