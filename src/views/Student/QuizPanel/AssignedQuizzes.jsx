@@ -6,12 +6,18 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import { Typography } from "@material-ui/core";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "../../../components/Card/CardHeader";
+import CardBody from "../../../components/Card/CardBody";
+
+import MUIDataTable from "mui-datatables";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import CardContent from "@material-ui/core/es/CardContent/CardContent";
+
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+
+import { transformDateString } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -27,6 +33,50 @@ const styles = theme => ({
   }
 });
 
+const columns = [
+  {
+    name: "QuizName",
+    options: {
+      filter: false,
+      sort: true
+    }
+  },
+  {
+    name: "Active",
+    options: {
+      filter: true,
+      sort: true
+    }
+  },
+  {
+    name: "Expiry",
+    options: {
+      filter: false,
+      sort: true,
+      sortDirection: "desc"
+    }
+  }
+];
+
+const options = {
+  filterType: "checkbox",
+  rowsPerPage: 20,
+  elevation: 0,
+  selectableRows: false,
+  rowsPerPageOptions: [20, 30, 100, 200]
+};
+
+const ADMIN_QUIZZES_BATCH = gql`
+  {
+    adminQuizzesBatch {
+      _id
+      name
+      active
+      activeTo
+    }
+  }
+`;
+
 class AssignedQuizzes extends React.Component {
   state = {
     value: "option"
@@ -37,32 +87,6 @@ class AssignedQuizzes extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const testData = [
-      [
-        "Preliminary Round 1st Years",
-        "uxxxxx",
-        "Admin",
-        "2022",
-        "YES",
-        "29/05/19"
-      ],
-      [
-        "Preliminary Round 2nd Years",
-        "uxxxxx",
-        "Django",
-        "2019",
-        "YES",
-        "13/05/19"
-      ],
-      [
-        "Preliminary Round 3rdd Years",
-        "uxxxxx",
-        "Admin",
-        "2019",
-        "YES",
-        "30/05/19"
-      ]
-    ];
 
     return (
       <div className={classes.root}>
@@ -73,14 +97,38 @@ class AssignedQuizzes extends React.Component {
                 <CardHeader className={classes.root} color="danger">
                   <h4 className={classes.cardTitleWhite}>Assigned Quizzes</h4>
                 </CardHeader>
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    className={classes.cardTitleWhite}
-                  >
-                    Create a custom quiz of your preferred categories and topics
-                  </Typography>
-                </CardContent>
+                <CardBody>
+                  <Query query={ADMIN_QUIZZES_BATCH}>
+                    {({ data, loading, error }) => {
+                      if (loading) {
+                        return "";
+                      } else if (error) {
+                        return "Error occured";
+                      } else {
+                        let quizList;
+                        quizList = data.adminQuizzesBatch.map(quiz => {
+                          let quizData = [];
+                          quizData.push(quiz.name);
+
+                          quizData.active
+                            ? quizData.push("Yes")
+                            : quizData.push("No");
+
+                          quizData.push(transformDateString(quiz.activeTo));
+                          return quizData;
+                        });
+                        return (
+                          <MUIDataTable
+                            title={""}
+                            data={quizList}
+                            columns={columns}
+                            options={options}
+                          />
+                        );
+                      }
+                    }}
+                  </Query>
+                </CardBody>
               </form>
             </Card>
           </GridItem>
