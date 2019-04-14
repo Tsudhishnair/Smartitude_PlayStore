@@ -60,7 +60,7 @@ class Expansionpanel extends Component {
     let layout;
 
     if (directingValue === EXPANSION_QUIZ_FORM) {
-      layout = <QuizForm />;
+      layout = <QuizForm quizType={false}/>;
     } else if (directingValue === EXPANSION_FACULTY_FORM) {
       layout = (
         <CreateNewFacultyForm

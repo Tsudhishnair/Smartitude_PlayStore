@@ -9,7 +9,6 @@ import GridItem from "../../../components/Grid/GridItem";
 import {Button, CardContent, Typography } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import Card from "components/Card/Card.jsx";
-import Link from "react-router-dom/es/Link";
 import QuizForm from "../../Admin/QuizManage/QuizForm";
 import CardHeader from "../../../components/Card/CardHeader";
 import Spacing from "../../../components/Spacing/Spacing";
@@ -78,9 +77,9 @@ class CustomQuizSetup extends React.Component {
                     Create a custom quiz of your preferred categories and topics
                   </Typography>
                   <Spacing />
-                  <QuizForm />
+                  <QuizForm quizType={true}/>
                 </CardContent>
-                <CardFooter
+                {/* <CardFooter
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
                   <Link to="/student/start_quiz">
@@ -95,7 +94,7 @@ class CustomQuizSetup extends React.Component {
                       Create Quiz
                     </Button>
                   </Link>
-                </CardFooter>
+                </CardFooter> */}
               </form>
             </Card>
           </GridItem>

@@ -5,7 +5,7 @@ import { DateTimePicker } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-
+import Link from "react-router-dom/es/Link";
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
   FormControl,
@@ -683,7 +683,8 @@ class QuizForm extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
+    const { classes, quizType } = this.props;
 
     return (
       <Fragment>
@@ -697,216 +698,425 @@ class QuizForm extends React.Component {
               // assign value of common values to lists
               this.categories = data.categoryDetailsList;
               this.batches = data.batches;
-
-              return (
-                <div className={classes.root}>
-                  <form autoComplete="off" autoWidth={true}>
-                    <Typography>
-                      <strong>Quiz Info</strong>
-                    </Typography>
-                    <GridContainer>
-                      <GridItem
-                        xs={12}
-                        sm={3}
-                        md={3}
-                        className={classes.container}
-                      >
-                        <TextField
-                          id="standard-search"
-                          label="Quiz Name"
-                          type="input"
-                          margin="normal"
-                          name="quizName"
-                          value={this.state.quizCommon.quizName}
-                          onChange={this.handleCommonFieldChanges}
-                          fullWidth
-                        />
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={3}
-                        md={3}
-                        className={classes.container}
-                      >
-                        <TextField
-                          id="standard-marks"
-                          label="+ Marks Per Question"
-                          margin="normal"
-                          type="number"
-                          name="marksPerQn"
-                          value={this.state.quizCommon.marksPerQn}
-                          onChange={this.handleCommonFieldChanges}
-                          fullWidth
-                        />
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={3}
-                        md={3}
-                        className={classes.container}
-                      >
-                        <TextField
-                          id="standard-negative-marks"
-                          label="- Marks per Question"
-                          margin="normal"
-                          type="number"
-                          name="negativeMarksPerQn"
-                          value={this.state.quizCommon.negativeMarksPerQn}
-                          onChange={this.handleCommonFieldChanges}
-                          fullWidth
-                        />
-                      </GridItem>
-                      <GridItem xs={12} sm={3} md={3}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DateTimePicker
-                            error={this.state.error.dates.status}
-                            helperText={this.state.error.dates.message}
-                            className={classes.date_root}
-                            label="Active From"
-                            clearable
-                            formatDate={date =>
-                              moment(date).format("YYYY-MM-DD")
-                            }
-                            value={this.state.quizCommon.activeFrom}
-                            // format="dd/MMM/yyyy hr:min"
-                            onChange={date =>
-                              this.handleDateChange(date, DATE_FROM)
-                            }
-                            disablePast
-                          />
-                        </MuiPickersUtilsProvider>
-                      </GridItem>
-                      <GridItem xs={12} sm={3} md={3}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <DateTimePicker
-                            className={classes.date_root}
-                            minDate={this.currentDate}
-                            label="Active Till"
-                            clearable
-                            formatDate={date =>
-                              moment(date).format("YYYY-MM-DD")
-                            }
-                            value={this.state.quizCommon.activeTo}
-                            // format="dd/MMM/yyyy"
-                            onChange={date =>
-                              this.handleDateChange(date, DATE_TO)
-                            }
-                          />
-                        </MuiPickersUtilsProvider>
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={3}
-                        md={3}
-                        className={classes.formroot}
-                      >
-                        <FormControl className={classes.formControl}>
-                          <InputLabel htmlFor="batch">Batch</InputLabel>
-                          <Select
+              if (quizType) {
+                return (
+                  <div className={classes.root}>
+                    <form autoComplete="off" autoWidth={true}>
+                      <Typography>
+                        <strong>Quiz Info</strong>
+                      </Typography>
+                      <GridContainer>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-search"
+                            label="Quiz Name"
+                            type="input"
+                            margin="normal"
+                            name="quizName"
+                            value={this.state.quizCommon.quizName}
                             onChange={this.handleCommonFieldChanges}
-                            value={this.state.quizCommon.batch}
-                            renderValue={value => {
-                              return value;
-                            }}
-                            inputProps={{
-                              name: "batch",
-                              id: "batch"
-                            }}
                             fullWidth
-                          >
-                            {this.renderBatchDropdown()}
-                          </Select>
-                        </FormControl>
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={3}
-                        md={3}
-                        className={classes.container}
-                      >
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              name="active"
-                              checked={this.state.quizCommon.active}
-                              onChange={e => this.handleActiveField(e)}
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-marks"
+                            label="+ Marks Per Question"
+                            margin="normal"
+                            type="number"
+                            name="marksPerQn"
+                            value={this.state.quizCommon.marksPerQn}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-negative-marks"
+                            label="- Marks per Question"
+                            margin="normal"
+                            type="number"
+                            name="negativeMarksPerQn"
+                            value={this.state.quizCommon.negativeMarksPerQn}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={3} md={3}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
+                              error={this.state.error.dates.status}
+                              helperText={this.state.error.dates.message}
+                              className={classes.date_root}
+                              label="Active From"
+                              clearable
+                              formatDate={date =>
+                                moment(date).format("YYYY-MM-DD")
+                              }
+                              value={this.state.quizCommon.activeFrom}
+                              // format="dd/MMM/yyyy hr:min"
+                              onChange={date =>
+                                this.handleDateChange(date, DATE_FROM)
+                              }
+                              disablePast
                             />
-                          }
-                          label="Active"
-                        />
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        className={classes.container}
-                      >
-                        <TextField
-                          id="standard-instructions"
-                          label="Instructions for students"
-                          margin="normal"
-                          type="text"
-                          name="instructions"
-                          value={this.state.quizCommon.instructions}
-                          onChange={this.handleCommonFieldChanges}
+                          </MuiPickersUtilsProvider>
+                        </GridItem>
+                        <GridItem xs={12} sm={3} md={3}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
+                              className={classes.date_root}
+                              minDate={this.currentDate}
+                              label="Active Till"
+                              clearable
+                              formatDate={date =>
+                                moment(date).format("YYYY-MM-DD")
+                              }
+                              value={this.state.quizCommon.activeTo}
+                              // format="dd/MMM/yyyy"
+                              onChange={date =>
+                                this.handleDateChange(date, DATE_TO)
+                              }
+                            />
+                          </MuiPickersUtilsProvider>
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.formroot}
+                        >
+                          <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="batch">Batch</InputLabel>
+                            <Select
+                              onChange={this.handleCommonFieldChanges}
+                              value={this.state.quizCommon.batch}
+                              renderValue={value => {
+                                return value;
+                              }}
+                              inputProps={{
+                                name: "batch",
+                                id: "batch"
+                              }}
+                              fullWidth
+                            >
+                              {this.renderBatchDropdown()}
+                            </Select>
+                          </FormControl>
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                name="active"
+                                checked={this.state.quizCommon.active}
+                                onChange={e => this.handleActiveField(e)}
+                              />
+                            }
+                            label="Active"
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-instructions"
+                            label="Instructions for students"
+                            margin="normal"
+                            type="text"
+                            name="instructions"
+                            value={this.state.quizCommon.instructions}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="description"
+                            label="Quiz Description"
+                            margin="normal"
+                            type="text"
+                            name="description"
+                            value={this.state.quizCommon.description}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                      </GridContainer>
+                      <Spacing />
+                      <Typography>
+                        <strong>Category Info</strong>
+                      </Typography>
+                      <GridContainer className={classes.container}>
+                        {this.renderSectionDetails(classes)}
+                      </GridContainer>
+                      <ExpansionPanelActions>
+                        <Button
+                          color="primary"
                           fullWidth
-                        />
-                      </GridItem>
-                      <GridItem
-                        xs={12}
-                        sm={12}
-                        md={12}
-                        className={classes.container}
-                      >
-                        <TextField
-                          id="description"
-                          label="Quiz Description"
-                          margin="normal"
-                          type="text"
-                          name="description"
-                          value={this.state.quizCommon.description}
-                          onChange={this.handleCommonFieldChanges}
-                          fullWidth
-                        />
-                      </GridItem>
-                    </GridContainer>
-                    <Spacing />
-                    <Typography>
-                      <strong>Category Info</strong>
-                    </Typography>
-                    <GridContainer className={classes.container}>
-                      {this.renderSectionDetails(classes)}
-                    </GridContainer>
-                    <ExpansionPanelActions>
-                      <Button
-                        color="primary"
-                        fullWidth
-                        variant={"outlined"}
-                        size={"small"}
-                        className={classes.button}
-                        onClick={this.handleClick}
-                      >
-                        Add More
-                      </Button>
-                    </ExpansionPanelActions>
-                    <Divider />
-                    <ExpansionPanelActions>
-                      <Mutation mutation={ADD_QUIZ}>
-                        {addQuiz => (
+                          variant={"outlined"}
+                          size={"small"}
+                          className={classes.button}
+                          onClick={this.handleClick}
+                        >
+                          Add More
+                        </Button>
+                      </ExpansionPanelActions>
+                      <Divider />
+                      <ExpansionPanelActions>
+                        <Link to="/student/start_quiz">
                           <Button
                             color="primary"
                             variant={"outlined"}
                             className={classes.button}
-                            onClick={() => this.handleSubmit(addQuiz)}
+                            // onClick={() => this.handleSubmit(addQuiz)}
                           >
-                            Create Quiz
+                            Create Custom Quiz
                           </Button>
-                        )}
-                      </Mutation>
-                    </ExpansionPanelActions>
-                  </form>
-                </div>
-              );
+                        </Link>
+                      </ExpansionPanelActions>
+                    </form>
+                  </div>
+                );
+              } else {
+                return (
+                  <div className={classes.root}>
+                    <form autoComplete="off" autoWidth={true}>
+                      <Typography>
+                        <strong>Quiz Info</strong>
+                      </Typography>
+                      <GridContainer>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-search"
+                            label="Quiz Name"
+                            type="input"
+                            margin="normal"
+                            name="quizName"
+                            value={this.state.quizCommon.quizName}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-marks"
+                            label="+ Marks Per Question"
+                            margin="normal"
+                            type="number"
+                            name="marksPerQn"
+                            value={this.state.quizCommon.marksPerQn}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-negative-marks"
+                            label="- Marks per Question"
+                            margin="normal"
+                            type="number"
+                            name="negativeMarksPerQn"
+                            value={this.state.quizCommon.negativeMarksPerQn}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={3} md={3}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
+                              error={this.state.error.dates.status}
+                              helperText={this.state.error.dates.message}
+                              className={classes.date_root}
+                              label="Active From"
+                              clearable
+                              formatDate={date =>
+                                moment(date).format("YYYY-MM-DD")
+                              }
+                              value={this.state.quizCommon.activeFrom}
+                              // format="dd/MMM/yyyy hr:min"
+                              onChange={date =>
+                                this.handleDateChange(date, DATE_FROM)
+                              }
+                              disablePast
+                            />
+                          </MuiPickersUtilsProvider>
+                        </GridItem>
+                        <GridItem xs={12} sm={3} md={3}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <DateTimePicker
+                              className={classes.date_root}
+                              minDate={this.currentDate}
+                              label="Active Till"
+                              clearable
+                              formatDate={date =>
+                                moment(date).format("YYYY-MM-DD")
+                              }
+                              value={this.state.quizCommon.activeTo}
+                              // format="dd/MMM/yyyy"
+                              onChange={date =>
+                                this.handleDateChange(date, DATE_TO)
+                              }
+                            />
+                          </MuiPickersUtilsProvider>
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.formroot}
+                        >
+                          <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="batch">Batch</InputLabel>
+                            <Select
+                              onChange={this.handleCommonFieldChanges}
+                              value={this.state.quizCommon.batch}
+                              renderValue={value => {
+                                return value;
+                              }}
+                              inputProps={{
+                                name: "batch",
+                                id: "batch"
+                              }}
+                              fullWidth
+                            >
+                              {this.renderBatchDropdown()}
+                            </Select>
+                          </FormControl>
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                          className={classes.container}
+                        >
+                          <FormControlLabel
+                            control={
+                              <Switch
+                                name="active"
+                                checked={this.state.quizCommon.active}
+                                onChange={e => this.handleActiveField(e)}
+                              />
+                            }
+                            label="Active"
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="standard-instructions"
+                            label="Instructions for students"
+                            margin="normal"
+                            type="text"
+                            name="instructions"
+                            value={this.state.quizCommon.instructions}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                        <GridItem
+                          xs={12}
+                          sm={12}
+                          md={12}
+                          className={classes.container}
+                        >
+                          <TextField
+                            id="description"
+                            label="Quiz Description"
+                            margin="normal"
+                            type="text"
+                            name="description"
+                            value={this.state.quizCommon.description}
+                            onChange={this.handleCommonFieldChanges}
+                            fullWidth
+                          />
+                        </GridItem>
+                      </GridContainer>
+                      <Spacing />
+                      <Typography>
+                        <strong>Category Info</strong>
+                      </Typography>
+                      <GridContainer className={classes.container}>
+                        {this.renderSectionDetails(classes)}
+                      </GridContainer>
+                      <ExpansionPanelActions>
+                        <Button
+                          color="primary"
+                          fullWidth
+                          variant={"outlined"}
+                          size={"small"}
+                          className={classes.button}
+                          onClick={this.handleClick}
+                        >
+                          Add More
+                        </Button>
+                      </ExpansionPanelActions>
+                      <Divider />
+                      <ExpansionPanelActions>
+                        <Mutation mutation={ADD_QUIZ}>
+                          {addQuiz => (
+                            <Button
+                              color="primary"
+                              variant={"outlined"}
+                              className={classes.button}
+                              onClick={() => this.handleSubmit(addQuiz)}
+                            >
+                              Create Admin Quiz
+                            </Button>
+                          )}
+                        </Mutation>
+                      </ExpansionPanelActions>
+                    </form>
+                  </div>
+                );
+              }
             }
           }}
         </Query>
