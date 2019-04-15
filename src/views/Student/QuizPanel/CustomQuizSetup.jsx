@@ -53,12 +53,12 @@ const styles = theme => ({
 });
 
 class CustomQuizSetup extends React.Component {
-  state = {
-    value: "option"
-  };
-  handleChange = event => {
-    this.setState({ value: event.target.value });
-  };
+  // state = {
+  //   value: "option"
+  // };
+  // handleChange = event => {
+  //   this.setState({ value: event.target.value });
+  // };
 
   render() {
     const { classes } = this.props;
@@ -79,22 +79,6 @@ class CustomQuizSetup extends React.Component {
                   <Spacing />
                   <QuizForm quizType={true}/>
                 </CardContent>
-                {/* <CardFooter
-                  style={{ justifyContent: "center", alignItems: "center" }}
-                >
-                  <Link to="/student/start_quiz">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size={"large"}
-                      style={{ float: "center" }}
-                      type={"submit"}
-                      className={classes.button}
-                    >
-                      Create Quiz
-                    </Button>
-                  </Link>
-                </CardFooter> */}
               </form>
             </Card>
           </GridItem>
