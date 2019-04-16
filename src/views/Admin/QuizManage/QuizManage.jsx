@@ -39,10 +39,7 @@ const QUIZ_VIEW_QUERY = gql`
       target
       active
       activeTo
-      activeFrom
-      negativeMarkPerQuestion
-      markPerQuestion
-    }
+      }
   }
 `;
 let quizList = [];
@@ -62,14 +59,6 @@ const columns = [
     name: "Description",
     options: {
       filter: false,
-      sort: true,
-      display: false
-    }
-  },
-  {
-    name: "Created By",
-    options: {
-      filter: true,
       sort: true
     }
   },
@@ -125,7 +114,6 @@ class QuizManage extends React.Component {
               let quizData = [];
               quizData.push(data.name);
               quizData.push(data.description);
-              quizData.push(data.name);
               quizData.push(data.target);
 
               data.active ? quizData.push("Yes") : quizData.push("No");

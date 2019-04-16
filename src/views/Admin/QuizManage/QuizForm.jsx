@@ -977,6 +977,7 @@ class QuizForm extends React.Component {
                             margin="normal"
                             type="text"
                             name="instructions"
+                            placeholder="These will be listed on the student's pre-quiz screen. Use ~ to separate your instructions"
                             value={this.state.quizCommon.instructions}
                             onChange={e => this.handleCommonFieldChanges(e)}
                             fullWidth
