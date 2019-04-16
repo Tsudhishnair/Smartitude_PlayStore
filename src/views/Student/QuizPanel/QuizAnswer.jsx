@@ -74,14 +74,9 @@ class QuizAnswer extends React.Component {
 
   handleNext = () => {
     const { activeStep } = this.state;
-    let { skipped } = this.state;
-    if (this.isStepSkipped(activeStep)) {
-      skipped = new Set(skipped.values());
-      skipped.delete(activeStep);
-    }
+
     this.setState({
-      activeStep: activeStep + 1,
-      skipped
+      activeStep: activeStep + 1
     });
   };
 
@@ -91,33 +86,11 @@ class QuizAnswer extends React.Component {
     }));
   };
 
-  handleSkip = () => {
-    const { activeStep } = this.state;
-    if (!this.isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    this.setState(state => {
-      const skipped = new Set(state.skipped.values());
-      skipped.add(activeStep);
-      return {
-        activeStep: state.activeStep + 1,
-        skipped
-      };
-    });
-  };
-
   handleReset = () => {
     this.setState({
       activeStep: 0
     });
   };
-
-  isStepSkipped(step) {
-    return this.state.skipped.has(step);
-  }
 
   handleChange = event => {
     this.setState({ value: event.target.value });
@@ -225,28 +198,26 @@ class QuizAnswer extends React.Component {
             <Card>
               <CardContent>
                 <p>
-                  Time Remaining:{" "}
-                  <h4 className={classes.timer}>
+                  <Typography variant={"overline"}>Time Remaining:</Typography>
+                  <Typography variant={"h5"} className={classes.timer}>
                     <b>
-                      {" "}
                       <Timer
-                        initialTime={60000 * 10 + 60}
+                        initialTime={60000 * 1 + 60}
                         direction="backward"
-                        onStop={() => console.log("onStop hook")}
+                        onStop={this.handleNext}
                       >
-                        {() => (
+                        {(stop, getTimerState, getTime) => (
                           <React.Fragment>
                             <Timer.Minutes /> minutes <Timer.Seconds /> seconds
+                            {getTimerState}
                           </React.Fragment>
                         )}
                       </Timer>
                     </b>
-                  </h4>
+                  </Typography>
                 </p>
                 <Spacing />
-                <p>
-                  <b>Questions:</b>
-                </p>
+                <Typography variant={"overline"}>Questions:</Typography>
                 <Fab
                   size="small"
                   variant={"outlined"}
@@ -279,34 +250,35 @@ class QuizAnswer extends React.Component {
                 <Button
                   variant="outlined"
                   color="primary"
-                  size={"small"}
                   type={"submit"}
+                  size={"small"}
+                  fullWidth
                   className={classes.button}
+                  onClick={this.handleNext}
                 >
-                  Finish Quiz
+                  {activeStep === steps.length - 1
+                    ? "Finish Quiz"
+                    : "Submit Section"}
                 </Button>
               </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
-        <Spacing/>
+        <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                  {steps.map((label, index) => {
-                    const props = {};
-                    const labelProps = {};
-                    if (this.isStepSkipped(index)) {
-                      props.completed = false;
-                    }
-                    return (
-                      <Step key={label} {...props}>
-                        <StepLabel {...labelProps}>{label}</StepLabel>
-                      </Step>
-                    );
-                  })}
-                </Stepper>
+              <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label, index) => {
+                  const props = {};
+                  const labelProps = {};
+                  return (
+                    <Step key={label} {...props}>
+                      <StepLabel {...labelProps}>{label}</StepLabel>
+                    </Step>
+                  );
+                })}
+              </Stepper>
             </Card>
           </GridItem>
         </GridContainer>
