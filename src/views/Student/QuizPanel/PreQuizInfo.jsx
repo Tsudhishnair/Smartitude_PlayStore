@@ -11,7 +11,9 @@ import {
   Button,
   CardContent,
   Typography,
-  Divider
+  Divider,
+  List,
+  ListItem
 } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
@@ -46,6 +48,23 @@ class PreQuizInfo extends React.Component {
     this.setState({ value: event.target.value });
   };
 
+  transformInstructions = instructions => {
+    let instructionString = "";
+
+    let breakObject = <br />;
+    let instructionObject = [];
+
+    let i = 0;
+    while (i < instructions.length) {
+      instructionString = `${i + 1}. ${instructions[i]}`;
+      instructionObject.push(instructionString);
+      instructionObject.push(breakObject);
+      i++;
+    }
+
+    return instructionObject;
+  };
+
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
@@ -70,7 +89,7 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textGrey}
                   >
-                    XX Questions | XX Minutes
+                    XX Questions | XX Minutes || XX sections
                   </Typography>
                   <Spacing />
                   <Typography variant="h6" gutterBottom>
@@ -81,13 +100,7 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textDarkGrey}
                   >
-                    Each question carry <b>1 mark</b>, no negative marks <br />
-                    All questions are multiple choice and there is only one
-                    correct answer. The test can not be paused. <br />
-                    Calculators are not permitted, we recommend having a pen and
-                    paper ready for rough calculations. <br />
-                    Try to take the test in an environment that you will not be
-                    disturbed. <br />
+                    {this.transformInstructions(quiz.instructions)}
                   </Typography>
                 </CardContent>
                 <CardBody>

@@ -43,13 +43,6 @@ const columns = [
     }
   },
   {
-    name: "Active",
-    options: {
-      filter: true,
-      sort: true
-    }
-  },
-  {
     name: "Expiry",
     options: {
       filter: false,
@@ -66,7 +59,22 @@ const ADMIN_QUIZZES_BATCH = gql`
       name
       description
       instructions
-      
+      sections {
+        category {
+          _id
+          name
+        }
+        timeLimit
+        questions {
+          _id
+          question
+          options
+          correctOption
+          solution
+        }
+        markPerQuestion
+        negativeMarkPerQuestion
+      }
       active
       activeTo
     }
@@ -114,7 +122,6 @@ class AssignedQuizzes extends React.Component {
     const { classes } = this.props;
 
     if (this.state.redirecter === true) {
-      console.log("redirecter switched ");
       return (
         <Redirect
           push
@@ -150,16 +157,12 @@ class AssignedQuizzes extends React.Component {
                           let quizData = [];
                           quizData.push(quiz.name);
 
-                          quizData.active
-                            ? quizData.push("Yes")
-                            : quizData.push("No");
-
                           quizData.push(transformDateString(quiz.activeTo));
                           return quizData;
                         });
 
                         this.quizList = data.adminQuizzesBatch;
-
+                        console.log(this.quizList);
                         return (
                           <MUIDataTable
                             title={""}
