@@ -177,7 +177,9 @@ class QuizForm extends React.Component {
           //number of questions in the section
           numberOfQuestions: 0,
           //time limit in mins
-          timeLimit: 0
+          timeLimit: 0,
+          marksPerQn: 0,
+          negativeMarksPerQn: 0
         }
       ],
       //maintain error states
@@ -275,18 +277,13 @@ class QuizForm extends React.Component {
   handleCommonFieldChanges = event => {
     event.persist();
 
-    this.updateCommonFields(event);
-  };
-
-  //update value of fields
-  updateCommonFields(event) {
     this.setState(state => ({
       quizCommon: {
         ...state.quizCommon,
         [event.target.name]: event.target.value
       }
     }));
-  }
+  };
 
   //Function is for obtaining subcategory corresponding to selected category
   handleCategorySelect = (event, index) => {
@@ -311,27 +308,13 @@ class QuizForm extends React.Component {
     });
   };
 
-  //handle value of time limit field in sections
-  handleTimeLimitField = (event, index) => {
+  handleSectionWiseFields = (event, index) => {
     this.setState({
       quizSectionWise: {
         ...this.state.quizSectionWise,
         [index]: {
           ...this.state.quizSectionWise[index],
-          timeLimit: event.target.value
-        }
-      }
-    });
-  };
-
-  //handle value of numberOfQns field in sections
-  handleNumberOfQnsField = (event, index) => {
-    this.setState({
-      quizSectionWise: {
-        ...this.state.quizSectionWise,
-        [index]: {
-          ...this.state.quizSectionWise[index],
-          numberOfQuestions: event.target.value
+          [event.target.name]: event.target.value
         }
       }
     });
@@ -353,7 +336,9 @@ class QuizForm extends React.Component {
           subcategoryList: [],
           clearSubcategoryChips: false,
           numberOfQuestions: 0,
-          timeLimit: 0
+          timeLimit: 0,
+          marksPerQn: 0,
+          negativeMarksPerQn: 0
         }
       }
     }));
@@ -627,6 +612,40 @@ class QuizForm extends React.Component {
               onChipsCleared={() => this.chipsCleared(index)}
             />
           </GridItem>
+          <GridItem
+            xs={12}
+            sm={3}
+            md={3}
+            className={classes.container}
+          >
+            <TextField
+              id="standard-marks"
+              label="+ Marks Per Question"
+              margin="normal"
+              type="number"
+              name="marksPerQn"
+              value={this.state.quizSectionWise[index].marksPerQn}
+              onChange={e => this.handleSectionWiseFields(e, index)}
+              fullWidth
+            />
+          </GridItem>
+          <GridItem
+            xs={12}
+            sm={3}
+            md={3}
+            className={classes.container}
+          >
+            <TextField
+              id="standard-negative-marks"
+              label="- Marks per Question"
+              margin="normal"
+              type="number"
+              name="negativeMarksPerQn"
+              value={this.state.quizSectionWise[index].negativeMarksPerQn}
+              onChange={e => this.handleSectionWiseFields(e, index)}
+              fullWidth
+            />
+          </GridItem>
           <GridItem xs={12} sm={2} md={6}>
             <TextField
               id="standard-number"
@@ -634,8 +653,9 @@ class QuizForm extends React.Component {
               type="number"
               fullWidth
               margin="normal"
+              name="numberOfQuestions"
               value={this.state.quizSectionWise[index].numberOfQuestions}
-              onChange={e => this.handleNumberOfQnsField(e, index)}
+              onChange={e => this.handleSectionWiseFields(e, index)}
             />
           </GridItem>
           <GridItem xs={12} sm={2} md={6}>
@@ -644,8 +664,9 @@ class QuizForm extends React.Component {
               label="Time Limit (min)"
               type="number"
               margin="normal"
+              name="timeLimit"
               value={this.state.quizSectionWise[index].timeLimit}
-              onChange={e => this.handleTimeLimitField(e, index)}
+              onChange={e => this.handleSectionWiseFields(e, index)}
             />
             <Tooltip title={"Delete Category Section"}>
               <IconButton onClick={() => this.handleDeleteClick(index)}>
@@ -810,41 +831,7 @@ class QuizForm extends React.Component {
                             margin="normal"
                             name="quizName"
                             value={this.state.quizCommon.quizName}
-                            onChange={this.handleCommonFieldChanges}
-                            fullWidth
-                          />
-                        </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={3}
-                          md={3}
-                          className={classes.container}
-                        >
-                          <TextField
-                            id="standard-marks"
-                            label="+ Marks Per Question"
-                            margin="normal"
-                            type="number"
-                            name="marksPerQn"
-                            value={this.state.quizCommon.marksPerQn}
-                            onChange={this.handleCommonFieldChanges}
-                            fullWidth
-                          />
-                        </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={3}
-                          md={3}
-                          className={classes.container}
-                        >
-                          <TextField
-                            id="standard-negative-marks"
-                            label="- Marks per Question"
-                            margin="normal"
-                            type="number"
-                            name="negativeMarksPerQn"
-                            value={this.state.quizCommon.negativeMarksPerQn}
-                            onChange={this.handleCommonFieldChanges}
+                            onChange={e => this.handleCommonFieldChanges(e)}
                             fullWidth
                           />
                         </GridItem>
@@ -895,7 +882,7 @@ class QuizForm extends React.Component {
                           <FormControl className={classes.formControl}>
                             <InputLabel htmlFor="batch">Batch</InputLabel>
                             <Select
-                              onChange={this.handleCommonFieldChanges}
+                              onChange={e => this.handleCommonFieldChanges(e)}
                               value={this.state.quizCommon.batch}
                               renderValue={value => {
                                 return value;
@@ -940,7 +927,7 @@ class QuizForm extends React.Component {
                             type="text"
                             name="instructions"
                             value={this.state.quizCommon.instructions}
-                            onChange={this.handleCommonFieldChanges}
+                            onChange={e => this.handleCommonFieldChanges(e)}
                             fullWidth
                           />
                         </GridItem>
@@ -957,7 +944,7 @@ class QuizForm extends React.Component {
                             type="text"
                             name="description"
                             value={this.state.quizCommon.description}
-                            onChange={this.handleCommonFieldChanges}
+                            onChange={e => this.handleCommonFieldChanges(e)}
                             fullWidth
                           />
                         </GridItem>
