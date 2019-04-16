@@ -12,7 +12,10 @@ import {
   CardContent,
   Typography,
   Divider,
-  Fab
+  Fab,
+  StepLabel,
+  Step,
+  Stepper
 } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio/index";
 import RadioGroup from "@material-ui/core/RadioGroup/index";
@@ -45,19 +48,99 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     elevation: 0,
     boxShadow: "none"
+  },
+  button: {
+    marginRight: theme.spacing.unit
+  },
+  instructions: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   }
 });
 
+function getSteps() {
+  return ["Logical Reasoning", "Quantitative", "Verbal"];
+}
+
+function getStepContent(step) {
+  switch (step) {
+    case 0:
+      return "Select campaign settings...";
+    case 1:
+      return "What is an ad group anyways?";
+    case 2:
+      return "This is the bit I really care about!";
+    default:
+      return "Unknown step";
+  }
+}
+
 class QuizAnswer extends React.Component {
   state = {
-    value: "option"
+    value: "option",
+    activeStep: 0,
+    skipped: new Set()
   };
+
+  //Stepper Functions
+
+  isStepOptional = step => step === 1;
+
+  handleNext = () => {
+    const { activeStep } = this.state;
+    let { skipped } = this.state;
+    if (this.isStepSkipped(activeStep)) {
+      skipped = new Set(skipped.values());
+      skipped.delete(activeStep);
+    }
+    this.setState({
+      activeStep: activeStep + 1,
+      skipped
+    });
+  };
+
+  handleBack = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep - 1
+    }));
+  };
+
+  handleSkip = () => {
+    const { activeStep } = this.state;
+    if (!this.isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    this.setState(state => {
+      const skipped = new Set(state.skipped.values());
+      skipped.add(activeStep);
+      return {
+        activeStep: state.activeStep + 1,
+        skipped
+      };
+    });
+  };
+
+  handleReset = () => {
+    this.setState({
+      activeStep: 0
+    });
+  };
+
+  isStepSkipped(step) {
+    return this.state.skipped.has(step);
+  }
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
 
   render() {
     const { classes } = this.props;
+    const steps = getSteps();
+    const { activeStep } = this.state;
 
     return (
       <div className={classes.root}>
@@ -218,6 +301,29 @@ class QuizAnswer extends React.Component {
                   Finish Quiz
                 </Button>
               </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <Spacing/>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardContent>
+                <Stepper activeStep={activeStep}>
+                  {steps.map((label, index) => {
+                    const props = {};
+                    const labelProps = {};
+                    if (this.isStepSkipped(index)) {
+                      props.completed = false;
+                    }
+                    return (
+                      <Step key={label} {...props}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+              </CardContent>
             </Card>
           </GridItem>
         </GridContainer>
