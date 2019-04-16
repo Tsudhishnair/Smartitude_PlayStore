@@ -93,42 +93,77 @@ const ADD_QUIZ = gql`
   }
 `;
 const CREATE_CUSTOM_QUIZ_QUERY = gql`
-      query generateCustomQuiz($customQuizRequest:CustomQuizRequest!){
-        generateCustomQuiz(customQuizRequest:$customQuizRequest)
-      {
-        section{
-          category
-          subcateories{
+  query generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
+    generateCustomQuiz(customQuizRequest: $customQuizRequest) {
+      sections {
+        category {
+          _id
+          name
+        }
+        subcategories {
+          _id
+          category {
             _id
-            category
             name
           }
-          timeLimit
-          questions{
-            _id
-            question
-            createdBy
-            category
-            subcategory
-            approvalStatus
-            difficulty
-            timesAttempted
-            timesSolved
-            option
-            correctOption
-            solution
-          }
+          name
         }
-        markPerQuestion
-        negativeMarkPerQuestion
+        timeLimit
+        questions {
+          _id
+          question
+          createdBy {
+            _id
+            username
+            name
+            email
+            phoneNumber
+            department {
+              _id
+              name
+              description
+            }
+            subcategory {
+              _id
+              category {
+                _id
+                name
+              }
+              name
+            }
+            isInCharge
+          }
+          category {
+            _id
+            name
+          }
+          subcategory {
+            _id
+            category {
+              _id
+              name
+            }
+            name
+          }
+          approvalStatus
+          difficulty
+          timesAttempted
+          timesSolved
+          options
+          correctOption
+          solution
+        }
       }
+      markPerQuestion
+      negativeMarkPerQuestion
     }
+  }
 `;
 
 //constants to handle from & to dates
 const DATE_FROM = 1;
 const DATE_TO = 2;
-
+let requestedSections = [];
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
   constructor(props) {
@@ -430,7 +465,6 @@ class QuizForm extends React.Component {
           }));
         })
         .catch(err => {
-          console.log(err);
           //if error was returned
           this.setState(prevState => ({
             snackbar: {
@@ -671,7 +705,6 @@ class QuizForm extends React.Component {
     let counter = 0;
 
     let sectionContainer = [];
-    console.log("section rendered");
 
     //create section pieces
     while (counter <= this.numberOfSections) {
@@ -713,9 +746,13 @@ class QuizForm extends React.Component {
       }
     });
   };
-
-  //Function called on Custom Quiz form submit
-  handleCustomQuizSubmit = mutaion => {};
+  //Function called on Custom Quiz requested section variabe value
+  CustomQuizRequestedSectionVariable() {
+    requestedSections = this.transformSections(this.state.quizSectionWise);
+    console.log("testing:--------");
+    console.log(requestedSections);
+    return requestedSections;
+  }
 
   render() {
     // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
@@ -735,59 +772,82 @@ class QuizForm extends React.Component {
               this.batches = data.batches;
               if (quizType) {
                 return (
-                  <div className={classes.root}>
-                    <form autoComplete="off" autoWidth={true}>
-                      <Spacing />
-                      <Typography>
-                        <strong>Custom Quiz Info</strong>
-                      </Typography>
-                      <GridContainer className={classes.container}>
-                        {this.renderSectionDetails(classes)}
-                        <GridItem
-                          xs={12}
-                          sm={6}
-                          md={6}
-                          className={classes.container}
-                        >
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                name="Need Negative marks or not"
-                                checked={this.state.quizCommon.active}
-                                onChange={e => this.handleActiveField(e)}
-                              />
-                            }
-                            label="Need Negative marks or not"
-                          />
-                        </GridItem>
-                      </GridContainer>
-                      <ExpansionPanelActions>
-                        <Button
-                          color="primary"
-                          fullWidth
-                          variant={"outlined"}
-                          size={"small"}
-                          className={classes.button}
-                          onClick={this.handleClick}
-                        >
-                          Add More
-                        </Button>
-                      </ExpansionPanelActions>
-                      <Divider />
-                      <ExpansionPanelActions>
-                        <Link to="/student/start_quiz">
-                          <Button
-                            color="primary"
-                            variant={"outlined"}
-                            className={classes.button}
-                            onClick={() => this.handleCustomQuizSubmit()}
-                          >
-                            Create Custom Quiz
-                          </Button>
-                        </Link>
-                      </ExpansionPanelActions>
-                    </form>
-                  </div>
+                  <Query
+                    query={CREATE_CUSTOM_QUIZ_QUERY}
+                    variables={{
+                      customQuizRequest :{
+                        requestedSections: this
+                          .CustomQuizRequestedSectionVariable,
+                        negativeMarks: true
+                      }}
+                    }
+                  >
+                    {({ data, loading}) => {
+                      if (!loading){
+                        return (
+                          <div className={classes.root}>
+                            {console.log(this.requestedSections)}
+                            {console.log(data)}
+                            <form autoComplete="off" autoWidth={true}>
+                              <Spacing />
+                              <Typography>
+                                <strong>Custom Quiz Info</strong>
+                              </Typography>
+                              <GridContainer className={classes.container}>
+                                {this.renderSectionDetails(classes)}
+                                <GridItem
+                                  xs={12}
+                                  sm={6}
+                                  md={6}
+                                  className={classes.container}
+                                >
+                                  <FormControlLabel
+                                    control={
+                                      <Switch
+                                        name="Need Negative marks or not"
+                                        checked={this.state.quizCommon.active}
+                                        onChange={e =>
+                                          this.handleActiveField(e)
+                                        }
+                                      />
+                                    }
+                                    label="Need Negative marks or not"
+                                  />
+                                </GridItem>
+                              </GridContainer>
+                              <ExpansionPanelActions>
+                                <Button
+                                  color="primary"
+                                  fullWidth
+                                  variant={"outlined"}
+                                  size={"small"}
+                                  className={classes.button}
+                                  onClick={this.handleClick}
+                                >
+                                  Add More
+                                </Button>
+                              </ExpansionPanelActions>
+                              <Divider />
+                              <ExpansionPanelActions>
+                                <Link to="/student/start_quiz">
+                                  <Button
+                                    color="primary"
+                                    variant={"outlined"}
+                                    className={classes.button}
+                                    onClick={
+                                      this.CustomQuizRequestedSectionVariable
+                                    }
+                                  >
+                                    Create Custom Quiz
+                                  </Button>
+                                </Link>
+                              </ExpansionPanelActions>
+                            </form>
+                          </div>
+                        );
+                      }
+                    }}
+                  </Query>
                 );
               } else {
                 return (
