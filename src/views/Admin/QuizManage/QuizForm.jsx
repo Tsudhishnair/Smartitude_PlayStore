@@ -1,35 +1,34 @@
 import React, { Fragment } from "react";
 
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
-import { DateTimePicker } from "material-ui-pickers";
+import { DateTimePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Link from "react-router-dom/es/Link";
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
+  Button,
+  Divider,
+  ExpansionPanelActions,
   FormControl,
+  FormControlLabel,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
-  Button,
-  Typography,
-  TextField,
-  withStyles,
-  IconButton,
-  FormControlLabel,
-  Switch,
   Snackbar,
-  ExpansionPanelActions,
-  Divider,
-  Tooltip
+  Switch,
+  TextField,
+  Tooltip,
+  Typography,
+  withStyles
 } from "@material-ui/core";
 
 import { Delete } from "@material-ui/icons";
 
 import moment from "moment";
 import gql from "graphql-tag";
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
@@ -386,7 +385,7 @@ class QuizForm extends React.Component {
 
     //handle conditions where only one section is presnt
     if (Object.keys(tempObj).length < 2) {
-      return;
+
     } else {
       //if more than one section is present, delete the section where the button was clicked and render new state
       delete tempObj[index];
@@ -787,15 +786,23 @@ class QuizForm extends React.Component {
                   <Query
                     query={CREATE_CUSTOM_QUIZ_QUERY}
                     variables={{
-                      customQuizRequest :{
+                      customQuizRequest: {
                         requestedSections: this
                           .CustomQuizRequestedSectionVariable,
                         negativeMarks: true
-                      }}
-                    }
+                      }
+                    }}
                   >
-                    {({ data, loading}) => {
-                      if (!loading){
+                    {({ data, loading, error }) => {
+                      if (loading) {
+                        return <Typography>Loading data...</Typography>;
+                      } else if (error) {
+                        return (
+                          <Typography>
+                            Error occured in custom quiz request
+                          </Typography>
+                        );
+                      } else {
                         return (
                           <div className={classes.root}>
                             {console.log(this.requestedSections)}
