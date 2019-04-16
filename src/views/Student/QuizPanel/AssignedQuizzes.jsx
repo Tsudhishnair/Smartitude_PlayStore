@@ -65,6 +65,8 @@ const ADMIN_QUIZZES_BATCH = gql`
       _id
       name
       description
+      instructions
+      
       active
       activeTo
     }

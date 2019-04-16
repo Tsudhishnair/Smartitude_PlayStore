@@ -93,36 +93,35 @@ const ADD_QUIZ = gql`
   }
 `;
 const CREATE_CUSTOM_QUIZ_QUERY = gql`
-      query generateCustomQuiz($customQuizRequest:CustomQuizRequest!){
-        generateCustomQuiz(customQuizRequest:$customQuizRequest)
-      {
-        section{
+  query generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
+    generateCustomQuiz(customQuizRequest: $customQuizRequest) {
+      section {
+        category
+        subcateories {
+          _id
           category
-          subcateories{
-            _id
-            category
-            name
-          }
-          timeLimit
-          questions{
-            _id
-            question
-            createdBy
-            category
-            subcategory
-            approvalStatus
-            difficulty
-            timesAttempted
-            timesSolved
-            option
-            correctOption
-            solution
-          }
+          name
         }
-        markPerQuestion
-        negativeMarkPerQuestion
+        timeLimit
+        questions {
+          _id
+          question
+          createdBy
+          category
+          subcategory
+          approvalStatus
+          difficulty
+          timesAttempted
+          timesSolved
+          option
+          correctOption
+          solution
+        }
       }
+      markPerQuestion
+      negativeMarkPerQuestion
     }
+  }
 `;
 
 //constants to handle from & to dates
@@ -159,7 +158,8 @@ class QuizForm extends React.Component {
         activeFrom: new Date(),
         activeTo: new Date(),
         active: false,
-        instructions: ""
+        instructions: "",
+        description: ""
       },
       //keeps separate data for separate sections
       quizSectionWise: [
@@ -382,8 +382,6 @@ class QuizForm extends React.Component {
       //transform quizSectionWise into an array for the mutation
       const sectionRequest = this.transformSections(quizSectionWise);
 
-      console.log(sectionRequest);
-
       //call mutation & set variables
       mutation({
         variables: {
@@ -394,12 +392,8 @@ class QuizForm extends React.Component {
             active: this.state.quizCommon.active,
             activeFrom: this.state.quizCommon.activeFrom,
             activeTo: this.state.quizCommon.activeTo,
-            markPerQuestion: Number(this.state.quizCommon.marksPerQn),
-            negativeMarkPerQuestion: Number(
-              this.state.quizCommon.negativeMarksPerQn
-            ),
-            requestedSections: sectionRequest,
-            instructions: this.state.quizCommon.instructions
+            instructions: this.state.quizCommon.instructions,
+            requestedSections: sectionRequest
           }
         }
       })
@@ -448,19 +442,9 @@ class QuizForm extends React.Component {
     if (
       !quizCommon.quizName ||
       !quizCommon.description ||
+      !quizCommon.instructions ||
       !quizCommon.batch ||
       dateError
-    ) {
-      this.makeFlagFalse();
-    }
-    //marksPerQn field value check
-    else if (!quizCommon.marksPerQn || quizCommon.marksPerQn < 1) {
-      this.makeFlagFalse();
-    }
-    //negativeMarksPerQn field value check
-    else if (
-      !quizCommon.negativeMarksPerQn ||
-      quizCommon.negativeMarksPerQn < 0
     ) {
       this.makeFlagFalse();
     }
@@ -489,6 +473,14 @@ class QuizForm extends React.Component {
       else if (!item.timeLimit || item.timeLimit < 1) {
         this.makeFlagFalse();
       }
+      //marksPerQn field value check
+      else if (!item.marksPerQn || item.marksPerQn < 1) {
+        this.makeFlagFalse();
+      }
+      //negativeMarksPerQn field value check
+      else if (!item.negativeMarksPerQn || item.negativeMarksPerQn < 0) {
+        this.makeFlagFalse();
+      }
     }
   };
 
@@ -510,7 +502,15 @@ class QuizForm extends React.Component {
       quizSectionWise[index].numberOfQuestions = Number(
         quizSectionWise[index].numberOfQuestions
       );
+      quizSectionWise[index].markPerQuestion = Number(
+        quizSectionWise[index].marksPerQn
+      );
+      quizSectionWise[index].negativeMarkPerQuestion = Number(
+        quizSectionWise[index].negativeMarksPerQn
+      );
 
+      delete quizSectionWise[index].marksPerQn;
+      delete quizSectionWise[index].negativeMarksPerQn;
       //add to sectionRequest after transformation
       sectionRequest.push(quizSectionWise[index]);
     }
@@ -612,12 +612,7 @@ class QuizForm extends React.Component {
               onChipsCleared={() => this.chipsCleared(index)}
             />
           </GridItem>
-          <GridItem
-            xs={12}
-            sm={3}
-            md={3}
-            className={classes.container}
-          >
+          <GridItem xs={12} sm={3} md={3} className={classes.container}>
             <TextField
               id="standard-marks"
               label="+ Marks Per Question"
@@ -629,12 +624,7 @@ class QuizForm extends React.Component {
               fullWidth
             />
           </GridItem>
-          <GridItem
-            xs={12}
-            sm={3}
-            md={3}
-            className={classes.container}
-          >
+          <GridItem xs={12} sm={3} md={3} className={classes.container}>
             <TextField
               id="standard-negative-marks"
               label="- Marks per Question"
