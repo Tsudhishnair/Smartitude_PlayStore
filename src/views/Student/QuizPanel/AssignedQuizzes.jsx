@@ -64,6 +64,7 @@ const ADMIN_QUIZZES_BATCH = gql`
     adminQuizzesBatch {
       _id
       name
+      description
       active
       activeTo
     }
@@ -96,7 +97,6 @@ class AssignedQuizzes extends React.Component {
   }
 
   handleRowClick = clickedIndex => {
-
     this.clickedQuiz = this.quizList[clickedIndex];
 
     this.setState(() => ({

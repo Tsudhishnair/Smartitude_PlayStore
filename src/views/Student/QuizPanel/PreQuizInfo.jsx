@@ -17,6 +17,7 @@ import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Spacing from "../../../components/Spacing/Spacing";
 import Link from "react-router-dom/es/Link";
+import { Redirect } from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -47,6 +48,11 @@ class PreQuizInfo extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const quiz = this.props.location.state;
+
+    if (!quiz) {
+      return <Redirect to="/student/dashboard" />;
+    }
 
     return (
       <div className={classes.root}>
@@ -56,11 +62,9 @@ class PreQuizInfo extends React.Component {
               <form>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
-                    Quiz Name
+                    {quiz.name}
                   </Typography>
-                  <Typography variant="body2">
-                    Quiz Description Quiz Description Quiz Description Quiz
-                  </Typography>
+                  <Typography variant="body2">{quiz.description}</Typography>
                   <Typography
                     variant="h6"
                     gutterBottom
