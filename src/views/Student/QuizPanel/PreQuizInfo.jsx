@@ -65,6 +65,34 @@ class PreQuizInfo extends React.Component {
     return instructionObject;
   };
 
+  transformTimeLimit = sections => {
+    let totalTimeLimit = 0;
+    let i = 0;
+
+    while (i < sections.length) {
+      totalTimeLimit += sections[i].timeLimit;
+      i++;
+    }
+
+    return totalTimeLimit;
+  };
+
+  getNumberOfSections = sections => {
+    return sections.length;
+  };
+
+  getTotalNumberOfQns = sections => {
+    let totalQns = 0;
+
+    let i = 0;
+    while (i < sections.length) {
+      totalQns += sections[i].questions.length;
+      i++;
+    }
+
+    return totalQns;
+  };
+
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
@@ -89,7 +117,9 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textGrey}
                   >
-                    XX Questions | XX Minutes || XX sections
+                    {this.getTotalNumberOfQns(quiz.sections)} Questions ||
+                    {this.transformTimeLimit(quiz.sections)} Minutes ||
+                    {this.getNumberOfSections(quiz.sections)} sections
                   </Typography>
                   <Spacing />
                   <Typography variant="h6" gutterBottom>
