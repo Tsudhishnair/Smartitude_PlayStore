@@ -152,9 +152,10 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
           correctOption
           solution
         }
+        markPerQuestion
+        negativeMarkPerQuestion
       }
-      markPerQuestion
-      negativeMarkPerQuestion
+
     }
   }
 `;
