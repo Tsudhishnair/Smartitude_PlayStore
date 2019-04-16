@@ -29,10 +29,9 @@ import Timer from "react-compound-timer/build/components/Timer/Timer";
 
 const styles = theme => ({
   root: {
-    display: "block",
-    margin: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit * 5,
-    marginRight: theme.spacing.unit * 5
+    margin: theme.spacing.unit * 1,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2
   },
   timer: {
     color: "green"
@@ -59,20 +58,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ["Logical Reasoning", "Quantitative", "Verbal"];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return "Select campaign settings...";
-    case 1:
-      return "What is an ad group anyways?";
-    case 2:
-      return "This is the bit I really care about!";
-    default:
-      return "Unknown step";
-  }
+  return ["Logical Reasoning", "Quantitative", "Verbal", "Technical Section"];
 }
 
 class QuizAnswer extends React.Component {
@@ -150,7 +136,6 @@ class QuizAnswer extends React.Component {
               <h4>Quiz Name</h4>
             </Typography>
           </GridItem>
-          <GridItem />
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
@@ -308,8 +293,7 @@ class QuizAnswer extends React.Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              <CardContent>
-                <Stepper activeStep={activeStep}>
+                <Stepper activeStep={activeStep} alternativeLabel>
                   {steps.map((label, index) => {
                     const props = {};
                     const labelProps = {};
@@ -323,7 +307,6 @@ class QuizAnswer extends React.Component {
                     );
                   })}
                 </Stepper>
-              </CardContent>
             </Card>
           </GridItem>
         </GridContainer>
