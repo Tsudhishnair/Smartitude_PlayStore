@@ -277,18 +277,18 @@ class QuizForm extends React.Component {
         label: subcategory.name
       };
     });
-    this.setState({
+    this.setState(prevState => ({
       quizSectionWise: {
-        ...this.state.quizSectionWise,
+        ...prevState.quizSectionWise,
         [index]: {
-          ...this.state.quizSectionWise[index],
+          ...prevState.quizSectionWise[index],
           category: categoryDetail.category,
           subcategoryList: availableSubcategories,
           subcategories: [],
           clearSubcategoryChips: true
         }
       }
-    });
+    }));
   };
 
   handleSectionWiseFields = (event, index) => {
@@ -470,30 +470,31 @@ class QuizForm extends React.Component {
     //create temporary object
     let sectionRequest = [];
 
+    let tempVariable = JSON.parse(JSON.stringify(quizSectionWise));
     for (const index in quizSectionWise) {
       //remove unnecessary fields for mutation
-      delete quizSectionWise[index].subcategoryList;
-      delete quizSectionWise[index].clearSubcategoryChips;
+      delete tempVariable[index].subcategoryList;
+      delete tempVariable[index].clearSubcategoryChips;
 
       //transform fields as required according to mutation specs
-      quizSectionWise[index].category = quizSectionWise[index].category._id;
-      quizSectionWise[index].timeLimit = Number(
-        quizSectionWise[index].timeLimit
+      tempVariable[index].category = tempVariable[index].category._id;
+      tempVariable[index].timeLimit = Number(
+        tempVariable[index].timeLimit
       );
-      quizSectionWise[index].numberOfQuestions = Number(
-        quizSectionWise[index].numberOfQuestions
+      tempVariable[index].numberOfQuestions = Number(
+        tempVariable[index].numberOfQuestions
       );
-      quizSectionWise[index].markPerQuestion = Number(
-        quizSectionWise[index].marksPerQn
+      tempVariable[index].markPerQuestion = Number(
+        tempVariable[index].marksPerQn
       );
-      quizSectionWise[index].negativeMarkPerQuestion = Number(
-        quizSectionWise[index].negativeMarksPerQn
+      tempVariable[index].negativeMarkPerQuestion = Number(
+        tempVariable[index].negativeMarksPerQn
       );
 
-      delete quizSectionWise[index].marksPerQn;
-      delete quizSectionWise[index].negativeMarksPerQn;
+      delete tempVariable[index].marksPerQn;
+      delete tempVariable[index].negativeMarksPerQn;
       //add to sectionRequest after transformation
-      sectionRequest.push(quizSectionWise[index]);
+      sectionRequest.push(tempVariable[index]);
     }
     return sectionRequest;
   };
