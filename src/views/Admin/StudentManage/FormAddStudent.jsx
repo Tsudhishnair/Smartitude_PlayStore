@@ -277,9 +277,10 @@ class FormAddStudent extends Component {
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {addStudent => {
+        {(addStudent,{data}) => {
           return (
             <div className={classes.root}>
+            {console.log(data)}
               <form>
                 <Typography>
                   <strong>Basic Info</strong>
