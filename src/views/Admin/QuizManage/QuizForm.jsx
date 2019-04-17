@@ -744,11 +744,11 @@ class QuizForm extends React.Component {
               if (quizType) {
                 return (
                   <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY}>
-                    {(generateCustomQuiz) => {
+                    {(generateCustomQuiz,{data}) => {
                       return (
                         <div className={classes.root}>
-                          {/* {console.log("returning Dayas")}
-                          {console.log(data)} */}
+                           {/* {console.log("returning Dayas")} */}
+                          {console.log(data)} 
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
