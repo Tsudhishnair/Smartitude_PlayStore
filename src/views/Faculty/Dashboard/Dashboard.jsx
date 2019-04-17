@@ -81,7 +81,7 @@ class Dashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>school</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>school</Icon>
                           <Link to="/faculty/my_questions">
                             <Button
                               round
@@ -121,7 +121,7 @@ class Dashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>notifications</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>notifications</Icon>
                           <Link to="/faculty/awaiting_questions">
                             <Button
                               round
@@ -160,7 +160,7 @@ class Dashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>done_all</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>done_all</Icon>
                           <Link to="/faculty/add_new_question">
                             <Button
                               round

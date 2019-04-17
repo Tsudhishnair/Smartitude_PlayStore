@@ -2,51 +2,50 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import {
-  Avatar,
-  Button,
-  CssBaseline,
   FormControl,
-  FormControlLabel,
-  Checkbox,
   Input,
   InputLabel,
-  Paper,
-  Typography,
-  createMuiTheme,
-  Snackbar
+  Snackbar,
+  CircularProgress
 } from "@material-ui/core";
 
+import combineStyles from "components/CombineStyles/CombineStyles.js";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect, withRouter } from "react-router-dom";
-
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import green from "@material-ui/core/colors/green";
 import lock from "assets/img/drawable/smart_logo.png";
-import { MuiThemeProvider } from "material-ui/styles";
-import Footer from "../../components/Footer/StudentLoginFooter";
-import { orange100 } from "material-ui/styles/colors";
-
+import Footer from "../../components/Footer/Footer";
 import gql from "graphql-tag";
+import IconButton from "@material-ui/core/IconButton";
 import { Mutation } from "react-apollo";
+import { loginHandler } from "../../Utils";
+
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import CustomSnackbar from "../../components/Snackbar/CustomSnackbar";
-
-
-import { loginHandler } from "../../Utils";
 import GridContainer from "../../components/Grid/GridContainer";
-import Spacing from "../../components/Spacing/Spacing";
+import Header from "../../components/HomeHeader/HomeHeader.jsx";
+import HeaderLinks from "../../components/HomeHeader/HeaderLinks.jsx";
+import Button from "../../components/CustomButtons/Button";
 
+import Card from "components/Card/Card.jsx";
+import CardBody from "components/Card/CardBody.jsx";
+import CardHeader from "../../components/Card/CardHeader.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+
+import image from "assets/img/bg5.jpg";
+import GridItem from "../../components/Grid/GridItem";
+
+import loginPageStyle from "assets/jss/material-dashboard-react/views/loginPage.jsx";
+
+// login mutation query
 const STUDENT_LOGIN = gql`
   mutation studentLogin($username: String!, $password: String!) {
     studentLogin(username: $username, password: $password)
   }
 `;
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: orange100 }, // Purple and green play nicely together.
-    secondary: { main: "#11cb5f" } // This is just green.A700 as hex.
-  }
-});
 
 const styles = theme => ({
   "@global": {
@@ -55,42 +54,26 @@ const styles = theme => ({
       // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
     }
   },
-  root: {
-    height: "88vh",
-    primary: "orange",
-    secondary: "orange",
-    backgroundSize: "cover",
-    padding: theme.spacing.unit * 7,
-    margin: "0"
-  },
-  main: {
-    width: "auto",
-    display: "block", // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
-  },
-  paper: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`
-  },
-  avatar: {
+  wrapper: {
     margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main
+    position: "relative"
   },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -9,
+    marginLeft: -12
   },
-  submit: {
+  margin: {
+    margin: theme.spacing.unit
+  },
+  withoutLabel: {
     marginTop: theme.spacing.unit * 3
+  },
+  textField: {
+    flexBasis: 200
   }
 });
 
@@ -98,6 +81,7 @@ class StudentLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       form: {
         username: "",
         password: ""
@@ -108,10 +92,12 @@ class StudentLogin extends Component {
       },
       error: {
         message: ""
-      }
+      },
+      cardAnimaton: "cardHidden"
     };
   }
 
+  // handle username field
   handleUserName = event => {
     this.setState({
       form: {
@@ -120,6 +106,7 @@ class StudentLogin extends Component {
       }
     });
   };
+  // handle password field
   handlePassword = event => {
     this.setState({
       form: {
@@ -128,9 +115,10 @@ class StudentLogin extends Component {
       }
     });
   };
+  // handle submit button click
   handleClick = (studentLogin, e) => {
+    e.preventDefault();
     this.setState({ ...this.state, loading: true });
-
     studentLogin({
       variables: {
         username: this.state.form.username,
@@ -138,8 +126,9 @@ class StudentLogin extends Component {
       }
     })
       .then(response => {
-        localStorage.setItem("token", response.data.studentLogin);
+        // set token to the auth token received
 
+        localStorage.setItem("token", response.data.studentLogin);
         // check for the value in local storage & update local state accordingly
         if (loginHandler.authenticated("student")) {
           this.setState(() => ({
@@ -151,7 +140,7 @@ class StudentLogin extends Component {
         // set error message for snackbar
         this.setState({
           error: {
-            message: err.graphQLErrors
+            message: err.graphQLErrors[0]
               ? err.graphQLErrors[0].message
               : err.networkError
           }
@@ -191,10 +180,21 @@ class StudentLogin extends Component {
         redirecter: true
       }));
     }
+    setTimeout(
+      function() {
+        this.setState({ cardAnimaton: "" });
+      }.bind(this),
+      700
+    );
   }
 
+  handleClickShowPassword = () => {
+    this.setState(state => ({ showPassword: !state.showPassword }));
+  };
+
   render() {
-    const { classes } = this.props;
+    const { loading } = this.state;
+    const { classes, ...rest } = this.props;
     const { redirecter, snackbar, error } = this.state;
 
     // if auth token is present in storage, redirect to dashboard
@@ -205,72 +205,111 @@ class StudentLogin extends Component {
     return (
       <Mutation mutation={STUDENT_LOGIN}>
         {(studentLogin, data) => (
-          <MuiThemeProvider>
-            <div className={classes.root}>
-              <main className={classes.main}>
-                <CssBaseline />
-                <Paper className={classes.paper}>
-                  <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                  </Avatar>
-                  <Typography component="h1" variant="h5">
-                    Sign in
-                  </Typography>
-                  <form
-                    className={classes.form}
-                    onSubmit={e => e.preventDefault()}
-                  >
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="email">Email Address</InputLabel>
-                      <Input
-                        id="email"
-                        name="email"
-                        autoComplete="email"
-                        onChange={this.handleUserName}
-                        value={this.state.form.username}
-                        autoFocus
-                      />
-                    </FormControl>
-                    <FormControl margin="normal" required fullWidth>
-                      <InputLabel htmlFor="password">Password</InputLabel>
-                      <Input
-                        name="password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        onChange={this.handlePassword}
-                        value={this.state.form.password}
-                      />
-                    </FormControl>
-                    <FormControlLabel
-                      control={<Checkbox value="remember" color="primary" />}
-                      label="Remember me"
-                    />
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      onClick={e => this.handleClick(studentLogin, e)}
-                    >
-                      Login
-                    </Button>
-                  </form>
-                </Paper>
-                <Spacing/>
-                <GridContainer
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justify="center"
-                  style={{ marginTop: "5vh" }}
-                >
-                  <img width="200dp" src={lock} alt="..." />
+          <div>
+            <Header
+              absolute
+              color="transparent"
+              brand="Smartitude"
+              rightLinks={<HeaderLinks />}
+              {...rest}
+            />
+            <div
+              className={classes.pageHeader}
+              style={{
+                backgroundImage: "url(" + image + ")",
+                backgroundSize: "cover",
+                backgroundPosition: "top center"
+              }}
+            >
+              <div className={classes.container}>
+                <GridContainer justify="center">
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Card className={classes[this.state.cardAnimaton]}>
+                      <form
+                        className={classes.form}
+                        onSubmit={e => this.handleClick(studentLogin, e)}
+                      >
+                        <CardHeader
+                          color="primary"
+                          className={classes.cardHeader}
+                        >
+                          <h4>Student Login</h4>
+                        </CardHeader>
+                        <p className={classes.divider}>
+                          <img width="150dp" src={lock} alt="..." />
+                        </p>
+                        <CardBody>
+                          <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="email">Username</InputLabel>
+                            <Input
+                              id="email"
+                              name="email"
+                              autoComplete="email"
+                              onChange={this.handleUserName}
+                              value={this.state.form.username}
+                            />
+                          </FormControl>
+                          <FormControl required fullWidth>
+                            <InputLabel htmlFor="adornment-password">
+                              Password
+                            </InputLabel>
+                            <Input
+                              id="adornment-password"
+                              type={
+                                this.state.showPassword ? "text" : "password"
+                              }
+                              onChange={this.handlePassword}
+                              fullWidth
+                              value={this.state.form.password}
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.handleClickShowPassword}
+                                  >
+                                    {this.state.showPassword ? (
+                                      <Visibility />
+                                    ) : (
+                                      <VisibilityOff />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              }
+                            />
+                          </FormControl>
+                        </CardBody>
+                        <CardFooter className={classes.cardFooter}>
+                          <div className={classes.wrapper}>
+                            <Button
+                              type="submit"
+                              fullWidth
+                              variant="contained"
+                              color="primary"
+                              size={"lg"}
+                              simple
+                              disabled={loading}
+                              className={classes.submit}
+                            >
+                              Login
+                            </Button>
+                            {loading && (
+                              <CircularProgress
+                                size={26}
+                                className={classes.buttonProgress}
+                              />
+                            )}
+                          </div>
+                          {/*<Button simple color="primary" size="lg">*/}
+                          {/*  Login*/}
+                          {/*</Button>*/}
+                        </CardFooter>
+                      </form>
+                    </Card>
+                  </GridItem>
                 </GridContainer>
-              </main>
+              </div>
+              <Footer whiteFont />
             </div>
-            <Footer />
             <Snackbar
               anchorOrigin={{
                 vertical: "top",
@@ -285,7 +324,7 @@ class StudentLogin extends Component {
                 message={error.message}
               />
             </Snackbar>
-          </MuiThemeProvider>
+          </div>
         )}
       </Mutation>
     );
@@ -296,5 +335,6 @@ StudentLogin.propTypes = {
   classes: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
+const combinedStyles = combineStyles(styles, loginPageStyle);
 
-export default withRouter(withStyles(styles)(StudentLogin));
+export default withRouter(withStyles(combinedStyles)(StudentLogin));

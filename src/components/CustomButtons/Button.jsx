@@ -53,7 +53,7 @@ RegularButton.propTypes = {
     "warning",
     "danger",
     "rose",
-    "white",
+    "smart_white.png",
     "transparent"
   ]),
   size: PropTypes.oneOf(["sm", "lg"]),

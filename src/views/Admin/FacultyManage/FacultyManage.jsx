@@ -5,7 +5,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
@@ -21,11 +20,16 @@ import {
   EXPANSION_FACULTY_FORM
 } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
     width: "100%",
     marginTop: theme.spacing.unit * 6
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginLeft: "45%"
   }
 });
 const MULTIPLE_DELETE = gql`
@@ -202,7 +206,7 @@ class Dashboard extends React.Component {
               <Query query={FETCH_DATA}>
                 {({ data, loading, error }) => {
                   if (loading) {
-                    return "Loading...";
+                    return <CircularProgress className={classes.progress} />;
                   } else if (error) {
                     return "Error occured!";
                   } else {
@@ -313,4 +317,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(Dashboard);
+export default withStyles(styles)(Dashboard);

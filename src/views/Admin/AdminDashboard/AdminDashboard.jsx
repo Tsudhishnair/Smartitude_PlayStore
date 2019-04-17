@@ -65,7 +65,7 @@ class AdminDashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>school</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>school</Icon>
                           <Link to="/admin/student_management">
                             <Button
                               round
@@ -105,7 +105,7 @@ class AdminDashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>notifications</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>notifications</Icon>
                           <Link to="/admin/notification_management">
                             <Button
                               round
@@ -144,7 +144,7 @@ class AdminDashboard extends React.Component {
                           </p>
                         </CardBody>
                         <CardFooter>
-                          <Icon style={{ color: "white" }}>done_all</Icon>
+                          <Icon style={{ color: "smart_white.png" }}>done_all</Icon>
                           <Link to="/admin/quiz_management">
                             <Button
                               round

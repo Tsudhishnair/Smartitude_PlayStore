@@ -56,7 +56,7 @@ function Header({ ...props }) {
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" href="#" className={classes.title}>
+          <Button color="transparent" disabled href="#" className={classes.title}>
             {makeBrand()}
           </Button>
           <div>
@@ -64,13 +64,9 @@ function Header({ ...props }) {
               <Query query={adminInfo}>
                 {({ data, loading, error }) => {
                   return (
-                    <Button
-                      color="transparent"
-                      href="#"
-                      className={classes.subtitle}
-                    >
+                    <Typography variant={"overline"}>
                       {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
-                    </Button>
+                    </Typography>
                   );
                 }}
               </Query>
@@ -87,13 +83,9 @@ function Header({ ...props }) {
                   } else {
                     localStorage.setItem("faculty", data.meFaculty._id);
                     return (
-                      <Button
-                        color="transparent"
-                        href="#"
-                        className={classes.subtitle}
-                      >
+                      <Typography variant={"overline"}>
                         {!loading ? `Logged in as: ${data.meFaculty.name}` : ""}
-                      </Button>
+                      </Typography>
                     );
                   }
                 }}

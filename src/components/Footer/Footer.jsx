@@ -7,35 +7,53 @@ import List from "@material-ui/core/List";
 // core components
 import footerStyle from "assets/jss/material-dashboard-react/components/footerStyle.jsx";
 import Link from "react-router-dom/es/Link";
-import Toolbar from "../../layouts/Landing/Landing";
+import classNames from "classnames";
 
 function Footer({ ...props }) {
-  const { classes } = props;
+  const { classes, whiteFont } = props;
+  const footerClasses = classNames({
+    [classes.footer]: true,
+    [classes.footerWhiteFont]: whiteFont
+  });
+  const aClasses = classNames({
+    [classes.a]: true,
+    [classes.footerWhiteFont]: whiteFont
+  });
   return (
-    <footer className={classes.footer}>
+    <footer className={footerClasses}>
       <div className={classes.container}>
         <div className={classes.left}>
           <List className={classes.list}>
-            <Link to="/">
-              <ListItem className={classes.inlineBlock}>
-                <a className={classes.block}>Home</a>
-              </ListItem>
-            </Link>
-            <Link to="www.rajagiritech.ac.in">
-              <ListItem className={classes.inlineBlock}>
-                <a className={classes.block}>RSET</a>
-              </ListItem>
-            </Link>
-          </List>
-        </div>
-        <div className={classes.right}>
-          <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a className={classes.block}>
-                &copy; {1900 + new Date().getYear()} Smartitude
+              <Link to={"/"}>
+                <div className={classes.block}>
+                  Home
+                </div>
+              </Link>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a
+                href="www.rajagiritech.ac.in"
+                className={classes.block}
+                target="blank"
+              >
+                RSET
+              </a>
+            </ListItem>
+            <ListItem className={classes.inlineBlock}>
+              <a
+                href="https://github.com/Kuttipishaash/smartitude-app-main"
+                className={classes.block}
+                target="_blank"
+              >
+                Privacy Policy & Licences
               </a>
             </ListItem>
           </List>
+        </div>
+        <div className={classes.right}>
+          &copy; {1900 + new Date().getYear()}{" "}
+          Smartitude
         </div>
       </div>
     </footer>
@@ -43,7 +61,8 @@ function Footer({ ...props }) {
 }
 
 Footer.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  whiteFont: PropTypes.bool
 };
 
 export default withStyles(footerStyle)(Footer);

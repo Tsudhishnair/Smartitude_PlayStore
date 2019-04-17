@@ -26,7 +26,7 @@ const styles = theme => ({
   },
   progress: {
     margin: theme.spacing.unit * 10,
-    marginLeft: theme.spacing.unit * 20
+    marginLeft: "45%"
   }
 });
 

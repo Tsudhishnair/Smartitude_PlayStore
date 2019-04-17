@@ -27,8 +27,8 @@ import AddQuestion from "./views/Faculty/AddQuestion/AddQuestion";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#ff9800" }, // Purple and green play nicely together.
-    secondary: { main: orange700 } // This is just green.A700 as hex.
+    primary: { main: "#f5af19" }, // Purple and green play nicely together.
+    secondary: { main: "#f12711" } // This is just green.A700 as hex.
   },
   typography: { useNextVariants: true }
 });

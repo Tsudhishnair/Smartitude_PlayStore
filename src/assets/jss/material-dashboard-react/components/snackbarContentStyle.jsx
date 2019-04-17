@@ -17,7 +17,7 @@ const snackbarContentStyle = {
     lineHeight: "20px",
     marginBottom: "20px",
     fontSize: "14px",
-    backgroundColor: "white",
+    backgroundColor: "smart_white.png",
     color: "#555555",
     borderRadius: "3px",
     boxShadow:
