@@ -713,7 +713,7 @@ class QuizForm extends React.Component {
       delete requestedSectionsArray[index].marksPerQn;
       delete requestedSectionsArray[index].negativeMarksPerQn;
     }
-    console.log(requestedSectionsArray);
+    // console.log(requestedSectionsArray);
     mutation({
       variables: {
         customQuizRequest: {
@@ -743,11 +743,11 @@ class QuizForm extends React.Component {
               if (quizType) {
                 return (
                   <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY}>
-                    {(generateCustomQuiz, { data }) => {
+                    {(generateCustomQuiz) => {
                       return (
                         <div className={classes.root}>
-                          {console.log("returning Dayas")}
-                          {console.log(data)}
+                          {/* {console.log("returning Dayas")}
+                          {console.log(data)} */}
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
