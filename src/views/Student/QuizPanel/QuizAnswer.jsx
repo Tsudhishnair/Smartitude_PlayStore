@@ -102,8 +102,18 @@ class QuizAnswer extends React.Component {
     });
   };
 
+  handleClearClick = () => {
+    this.setState(() => ({
+      markedOption: ""
+    }));
+  };
+
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    event.persist();
+
+    this.setState(() => ({
+      markedOption: Number(event.target.value)
+    }));
   };
 
   getSteps = quizSections => {
@@ -175,27 +185,27 @@ class QuizAnswer extends React.Component {
                       aria-label="options"
                       name="option"
                       className={classes.group}
-                      value={this.state.value}
+                      value={this.state.markedOption}
                       onChange={this.handleChange}
                     >
                       <FormControlLabel
                         value={1}
-                        control={<Radio/>}
+                        control={<Radio />}
                         label={this.state.fields.options["1"]}
                       />
                       <FormControlLabel
                         value={2}
-                        control={<Radio/>}
+                        control={<Radio />}
                         label={this.state.fields.options["2"]}
                       />
                       <FormControlLabel
                         value={3}
-                        control={<Radio/>}
+                        control={<Radio />}
                         label={this.state.fields.options["3"]}
                       />
                       <FormControlLabel
                         value={4}
-                        control={<Radio/>}
+                        control={<Radio />}
                         label={this.state.fields.options["4"]}
                       />
                     </RadioGroup>
@@ -216,6 +226,7 @@ class QuizAnswer extends React.Component {
                     size={"small"}
                     type={"reset"}
                     className={classes.button}
+                    onClick={this.handleClearClick}
                   >
                     Clear Selection
                   </Button>
