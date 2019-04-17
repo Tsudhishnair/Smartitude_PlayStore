@@ -79,8 +79,10 @@ class QuizAnswer extends React.Component {
         }
       },
       markedOption: "",
-      prevButton: true,
-      nextButton: false
+      prevButton: !this.isFirstQn(),
+      nextButton: !this.isLastQn(
+        this.props.location.state.sections[this.currentSection]
+      )
     };
   }
 
@@ -182,6 +184,17 @@ class QuizAnswer extends React.Component {
     return this.currentQnNum + 1;
   };
 
+  getTotalTime = sections => {
+    let totalTime = 0;
+
+    let i = 0;
+    while (i < sections.length) {
+      totalTime += sections[i].timeLimit;
+      i++;
+    }
+    return totalTime;
+  };
+
   changeQuestion = (questionNo, quizSection) => {
     this.currentQnNum = questionNo;
     this.setFields(quizSection);
@@ -199,7 +212,9 @@ class QuizAnswer extends React.Component {
           4: currentQn.options[3]
         },
         markedOption: ""
-      }
+      },
+      prevButton: !this.isFirstQn(),
+      nextButton: !this.isLastQn(quizSection)
     }));
   };
 
@@ -349,7 +364,7 @@ class QuizAnswer extends React.Component {
                   <Typography variant={"h5"} className={classes.timer}>
                     <b>
                       <Timer
-                        initialTime={60000 * 1 + 60}
+                        initialTime={60000 * this.getTotalTime(quiz.sections)}
                         direction="backward"
                         onStop={this.handleNext}
                       >
