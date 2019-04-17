@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -15,9 +15,9 @@ import Sidebar from "components/Sidebar/Sidebar.jsx";
 import dashboardRoutes from "routes/student_dashboard.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-
-import image from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
+import { loginHandler } from "../../Utils";
+import MessageDialog from "../../components/Dialog/MessageDialog";
 
 const switchRoutes = (
   <Switch>
@@ -31,11 +31,13 @@ const switchRoutes = (
   </Switch>
 );
 
-class App extends React.Component {
+class StudentPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mobileOpen: false
+      mobileOpen: false,
+      redirect: false,
+      isLogoutDialogVisible: false
     };
     this.resizeFunction = this.resizeFunction.bind(this);
   }
@@ -67,11 +69,49 @@ class App extends React.Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeFunction);
   }
+
+
+  logout = () => {
+    loginHandler.logout();
+    this.setState({
+      redirect: true
+    });
+  };
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/admin/login"/>;
+    }
+  };
+
+  toggleLogoutVisibility = () => {
+    this.setState(prevState => ({
+      isLogoutDialogVisible: !prevState.isLogoutDialogVisible
+    }));
+  };
+
+  renderLogoutDialog = (isVisible) => {
+    if (isVisible) {
+      return (
+        <MessageDialog
+          title="Logout"
+          content="Are you sure that you want to logout?"
+          positiveAction="YES"
+          negativeAction="NO"
+          action={this.logout}
+          onClose={this.toggleLogoutVisibility}
+        />
+      );
+    }
+  };
   render() {
     const { classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
+        {this.renderRedirect()}
+        {this.renderLogoutDialog(this.state.isLogoutDialogVisible)}
         <Sidebar
+          logoutDialogToggle={this.toggleLogoutVisibility}
           routes={dashboardRoutes}
           logoText={"Smartitude"}
           logo={logo}
@@ -100,8 +140,8 @@ class App extends React.Component {
   }
 }
 
-App.propTypes = {
+StudentPanel.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(App);
+export default withStyles(dashboardStyle)(StudentPanel);
