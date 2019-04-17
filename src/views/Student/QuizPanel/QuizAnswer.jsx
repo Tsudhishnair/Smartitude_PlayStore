@@ -58,21 +58,28 @@ const styles = theme => ({
 });
 
 class QuizAnswer extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
+
+    this.currentSection = 0;
+    this.currentQnNum = 0;
+
+    const currentQn = this.props.location.state.sections[this.currentSection].questions[this.currentQnNum];
+
     this.state = {
       activeStep: 0,
       fields: {
-        question: "",
+        question: currentQn.question,
         options: {
-          1: "",
-          2: "",
-          3: "",
-          4: ""
+          1: currentQn.options[0],
+          2: currentQn.options[1],
+          3: currentQn.options[2],
+          4: currentQn.options[3]
         }
       },
       markedOption: ""
     };
+
   }
 
   handleNext = () => {
@@ -109,6 +116,25 @@ class QuizAnswer extends React.Component {
     return sectionNames;
   };
 
+  getQuestionNumber = () => {
+    return this.currentQnNum + 1;
+  };
+
+  setFields = quizSection => {
+    const currentQn = quizSection.questions[this.currentQnNum];
+    this.setState(() => ({
+      fields: {
+        question: currentQn.question,
+        options: {
+          1: currentQn.options[0],
+          2: currentQn.options[1],
+          3: currentQn.options[2],
+          4: currentQn.options[3]
+        }
+      }
+    }));
+  };
+
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
@@ -132,14 +158,10 @@ class QuizAnswer extends React.Component {
               <form>
                 <CardContent>
                   <Typography>
-                    Question Number: <b>XX</b>
+                    Question Number: <b>{this.getQuestionNumber()}</b>
                   </Typography>
-                  <p>
-                    A train 125 m long passes a man, running at 5 km/hr in the
-                    same direction in which the train is going, in 10 seconds.
-                    The speed of the train is:
-                  </p>
-                  <Divider />
+                  <p>{this.state.fields.question}</p>
+                  <Divider/>
                 </CardContent>
                 <CardBody>
                   <FormControl
@@ -157,29 +179,29 @@ class QuizAnswer extends React.Component {
                       onChange={this.handleChange}
                     >
                       <FormControlLabel
-                        value="option1"
-                        control={<Radio />}
-                        label="Option 1"
+                        value={1}
+                        control={<Radio/>}
+                        label={this.state.fields.options["1"]}
                       />
                       <FormControlLabel
-                        value="option2"
-                        control={<Radio />}
-                        label="Option 2"
+                        value={2}
+                        control={<Radio/>}
+                        label={this.state.fields.options["2"]}
                       />
                       <FormControlLabel
-                        value="option3"
-                        control={<Radio />}
-                        label="Option 3"
+                        value={3}
+                        control={<Radio/>}
+                        label={this.state.fields.options["3"]}
                       />
                       <FormControlLabel
-                        value="option4"
-                        control={<Radio />}
-                        label="Option 4"
+                        value={4}
+                        control={<Radio/>}
+                        label={this.state.fields.options["4"]}
                       />
                     </RadioGroup>
                   </FormControl>
                 </CardBody>
-                <Divider />
+                <Divider/>
                 <CardFooter>
                   <Button
                     variant="outlined"
@@ -224,7 +246,7 @@ class QuizAnswer extends React.Component {
                       >
                         {(stop, getTimerState, getTime) => (
                           <React.Fragment>
-                            <Timer.Minutes /> minutes <Timer.Seconds /> seconds
+                            <Timer.Minutes/> minutes <Timer.Seconds/> seconds
                             {getTimerState}
                           </React.Fragment>
                         )}
@@ -232,7 +254,7 @@ class QuizAnswer extends React.Component {
                     </b>
                   </Typography>
                 </p>
-                <Spacing />
+                <Spacing/>
                 <Typography variant={"overline"}>Questions:</Typography>
                 <Fab
                   size="small"
@@ -280,7 +302,7 @@ class QuizAnswer extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <Spacing />
+        <Spacing/>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
