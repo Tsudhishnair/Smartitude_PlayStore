@@ -95,15 +95,13 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
       sections {
-        questions{
-          _id
+        questions {
           question
-          category
-          subcategory
           options
           correctOption
           solution
         }
+        timeLimit
       }
     }
   }
@@ -711,7 +709,7 @@ class QuizForm extends React.Component {
     e.preventDefault();
     console.log("data initiation begins in 3,2,1............");
     requestedSectionsArray = this.transformSections(this.state.quizSectionWise);
-    for (const index in requestedSectionsArray){
+    for (const index in requestedSectionsArray) {
       delete requestedSectionsArray[index].marksPerQn;
       delete requestedSectionsArray[index].negativeMarksPerQn;
     }
@@ -745,7 +743,7 @@ class QuizForm extends React.Component {
               if (quizType) {
                 return (
                   <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY}>
-                    {(generateCustomQuiz,{data}) => {
+                    {(generateCustomQuiz, { data }) => {
                       return (
                         <div className={classes.root}>
                           {console.log("returning Dayas")}
