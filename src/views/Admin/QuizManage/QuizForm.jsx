@@ -95,65 +95,15 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
       sections {
-        category {
-          _id
-          name
-        }
-        subcategories {
-          _id
-          category {
-            _id
-            name
-          }
-          name
-        }
-        timeLimit
-        questions {
+        questions{
           _id
           question
-          createdBy {
-            _id
-            username
-            name
-            email
-            phoneNumber
-            department {
-              _id
-              name
-              description
-            }
-            subcategory {
-              _id
-              category {
-                _id
-                name
-              }
-              name
-            }
-            isInCharge
-          }
-          category {
-            _id
-            name
-          }
-          subcategory {
-            _id
-            category {
-              _id
-              name
-            }
-            name
-          }
-          approvalStatus
-          difficulty
-          timesAttempted
-          timesSolved
+          category
+          subcategory
           options
           correctOption
           solution
         }
-        markPerQuestion
-        negativeMarkPerQuestion
       }
     }
   }
