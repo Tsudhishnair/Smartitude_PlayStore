@@ -57,20 +57,23 @@ const styles = theme => ({
   }
 });
 
-function getSteps() {
-  return ["Logical Reasoning", "Quantitative", "Verbal", "Technical Section"];
-}
-
 class QuizAnswer extends React.Component {
-  state = {
-    value: "option",
-    activeStep: 0,
-    skipped: new Set()
-  };
-
-  //Stepper Functions
-
-  isStepOptional = step => step === 1;
+  constructor (props) {
+    super(props);
+    this.state = {
+      activeStep: 0,
+      fields: {
+        question: "",
+        options: {
+          1: "",
+          2: "",
+          3: "",
+          4: ""
+        }
+      },
+      markedOption: ""
+    };
+  }
 
   handleNext = () => {
     const { activeStep } = this.state;
@@ -96,17 +99,30 @@ class QuizAnswer extends React.Component {
     this.setState({ value: event.target.value });
   };
 
+  getSteps = quizSections => {
+    let sectionNames = [];
+    let i = 0;
+    while (i < quizSections.length) {
+      sectionNames.push(quizSections[i].category.name);
+      i++;
+    }
+    return sectionNames;
+  };
+
   render() {
     const { classes } = this.props;
-    const steps = getSteps();
+    const quiz = this.props.location.state;
     const { activeStep } = this.state;
+
+    const steps = this.getSteps(quiz.sections);
+    console.log(quiz);
 
     return (
       <div className={classes.root}>
         <GridContainer>
           <GridItem>
             <Typography>
-              <h4>Quiz Name</h4>
+              <h4>{quiz.name}</h4>
             </Typography>
           </GridItem>
         </GridContainer>

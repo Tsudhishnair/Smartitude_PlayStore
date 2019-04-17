@@ -117,8 +117,8 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textGrey}
                   >
-                    {this.getTotalNumberOfQns(quiz.sections)} Questions ||
-                    {this.transformTimeLimit(quiz.sections)} Minutes ||
+                    {this.getTotalNumberOfQns(quiz.sections)} Questions |{" "}
+                    {this.transformTimeLimit(quiz.sections)} Minutes |{" "}
                     {this.getNumberOfSections(quiz.sections)} sections
                   </Typography>
                   <Spacing />
@@ -157,7 +157,14 @@ class PreQuizInfo extends React.Component {
                 <CardFooter
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
-                  <Link to="/student/quiz">
+                  <Link
+                    to={{
+                      pathname: "/student/quiz",
+                      state: {
+                        ...quiz
+                      }
+                    }}
+                  >
                     <Button
                       variant="outlined"
                       color="primary"
