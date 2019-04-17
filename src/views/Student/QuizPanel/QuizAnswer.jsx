@@ -78,9 +78,19 @@ class QuizAnswer extends React.Component {
           4: currentQn.options[3]
         }
       },
-      markedOption: ""
+      markedOption: "",
+      prevButton: true,
+      nextButton: false
     };
   }
+
+  isFirstQn = () => {
+    return this.currentQnNum !== 0;
+  };
+
+  isLastQn = selectedSection => {
+    return this.currentQnNum !== selectedSection.questions.length - 1;
+  };
 
   handleNext = () => {
     const { activeStep } = this.state;
@@ -109,37 +119,45 @@ class QuizAnswer extends React.Component {
   };
 
   handleNextClick = (event, selectedSection) => {
-    const newQn = selectedSection.questions[++this.currentQnNum];
+    if (this.isLastQn(selectedSection)) {
+      const newQn = selectedSection.questions[++this.currentQnNum];
 
-    this.setState(() => ({
-      fields: {
-        question: newQn.question,
-        options: {
-          1: newQn.options[0],
-          2: newQn.options[1],
-          3: newQn.options[2],
-          4: newQn.options[3]
-        }
-      },
-      markedOption: ""
-    }));
+      this.setState(() => ({
+        fields: {
+          question: newQn.question,
+          options: {
+            1: newQn.options[0],
+            2: newQn.options[1],
+            3: newQn.options[2],
+            4: newQn.options[3]
+          }
+        },
+        markedOption: "",
+        prevButton: !this.isFirstQn(),
+        nextButton: !this.isLastQn(selectedSection)
+      }));
+    }
   };
 
   handlePreviousClick = (event, selectedSection) => {
-    const newQn = selectedSection.questions[--this.currentQnNum];
+    if (this.isFirstQn()) {
+      const newQn = selectedSection.questions[--this.currentQnNum];
 
-    this.setState(() => ({
-      fields: {
-        question: newQn.question,
-        options: {
-          1: newQn.options[0],
-          2: newQn.options[1],
-          3: newQn.options[2],
-          4: newQn.options[3]
-        }
-      },
-      markedOption: ""
-    }));
+      this.setState(prevState => ({
+        fields: {
+          question: newQn.question,
+          options: {
+            1: newQn.options[0],
+            2: newQn.options[1],
+            3: newQn.options[2],
+            4: newQn.options[3]
+          }
+        },
+        markedOption: "",
+        nextButton: !this.isLastQn(selectedSection),
+        prevButton: !this.isFirstQn()
+      }));
+    }
   };
 
   handleChange = event => {
@@ -290,6 +308,7 @@ class QuizAnswer extends React.Component {
                     variant="outlined"
                     color={"secondary"}
                     size={"small"}
+                    disabled={this.state.prevButton}
                     className={classes.button}
                     onClick={event =>
                       this.handlePreviousClick(event, selectedSection)
@@ -310,6 +329,7 @@ class QuizAnswer extends React.Component {
                     variant="outlined"
                     color="primary"
                     size={"small"}
+                    disabled={this.state.nextButton}
                     className={classes.button}
                     onClick={event =>
                       this.handleNextClick(event, selectedSection)
