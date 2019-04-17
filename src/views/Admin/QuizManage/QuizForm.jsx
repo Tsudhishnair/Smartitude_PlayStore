@@ -768,8 +768,10 @@ class QuizForm extends React.Component {
     console.log(requestedSectionsArray);
     mutation({
       variables: {
-        requestedSections: requestedSectionsArray,
-        negativeMarks: true
+        customQuizRequest: {
+          requestedSections: requestedSectionsArray,
+          negativeMarks: true
+        }
       }
     });
   };
