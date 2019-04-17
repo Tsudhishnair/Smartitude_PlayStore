@@ -761,6 +761,7 @@ class QuizForm extends React.Component {
   //Function called on Custom Quiz requested section variabe value
   CustomQuizRequestedSectionVariable() {
     requestedSections = this.transformSections(this.state.quizSectionWise);
+    requestedSections.push(this.state.subcategories);
     console.log("testing:--------");
     console.log(requestedSections);
     return requestedSections;
