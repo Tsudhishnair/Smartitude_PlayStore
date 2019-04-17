@@ -108,6 +108,40 @@ class QuizAnswer extends React.Component {
     }));
   };
 
+  handleNextClick = (event, selectedSection) => {
+    const newQn = selectedSection.questions[++this.currentQnNum];
+
+    this.setState(() => ({
+      fields: {
+        question: newQn.question,
+        options: {
+          1: newQn.options[0],
+          2: newQn.options[1],
+          3: newQn.options[2],
+          4: newQn.options[3]
+        }
+      },
+      markedOption: ""
+    }));
+  };
+
+  handlePreviousClick = (event, selectedSection) => {
+    const newQn = selectedSection.questions[--this.currentQnNum];
+
+    this.setState(() => ({
+      fields: {
+        question: newQn.question,
+        options: {
+          1: newQn.options[0],
+          2: newQn.options[1],
+          3: newQn.options[2],
+          4: newQn.options[3]
+        }
+      },
+      markedOption: ""
+    }));
+  };
+
   handleChange = event => {
     event.persist();
 
@@ -130,6 +164,11 @@ class QuizAnswer extends React.Component {
     return this.currentQnNum + 1;
   };
 
+  changeQuestion = (questionNo, quizSection) => {
+    this.currentQnNum = questionNo;
+    this.setFields(quizSection);
+  };
+
   setFields = quizSection => {
     const currentQn = quizSection.questions[this.currentQnNum];
     this.setState(() => ({
@@ -140,22 +179,23 @@ class QuizAnswer extends React.Component {
           2: currentQn.options[1],
           3: currentQn.options[2],
           4: currentQn.options[3]
-        }
+        },
+        markedOption: ""
       }
     }));
   };
 
   generateQuestionJumpers = (quizSection, styles) => {
-    console.log(quizSection);
-
     let quizJumpers = [];
 
     let i = 0;
     while (i < quizSection.questions.length) {
       if (this.currentQnNum + 1 === i + 1) {
-        quizJumpers.push(this.generateJumper(i + 1, "primary", styles));
+        quizJumpers.push(
+          this.generateJumper(i, "primary", styles, quizSection)
+        );
       } else {
-        quizJumpers.push(this.generateJumper(i + 1, "white", styles));
+        quizJumpers.push(this.generateJumper(i, "white", styles, quizSection));
       }
       i++;
     }
@@ -163,16 +203,17 @@ class QuizAnswer extends React.Component {
     return quizJumpers;
   };
 
-  generateJumper = (questionNo, color, styles) => {
+  generateJumper = (questionNo, color, styles, quizSection) => {
     return (
       <Fab
         size="small"
         variant={"outlined"}
         color={color}
         aria-label="Add"
+        onClick={() => this.changeQuestion(questionNo, quizSection)}
         className={styles}
       >
-        {questionNo}
+        {questionNo + 1}
       </Fab>
     );
   };
@@ -180,10 +221,10 @@ class QuizAnswer extends React.Component {
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
+    const selectedSection = quiz.sections[this.currentSection];
     const { activeStep } = this.state;
 
     const steps = this.getSteps(quiz.sections);
-    console.log(quiz);
 
     return (
       <div className={classes.root}>
@@ -250,6 +291,9 @@ class QuizAnswer extends React.Component {
                     color={"secondary"}
                     size={"small"}
                     className={classes.button}
+                    onClick={event =>
+                      this.handlePreviousClick(event, selectedSection)
+                    }
                   >
                     Previous
                   </Button>
@@ -266,8 +310,10 @@ class QuizAnswer extends React.Component {
                     variant="outlined"
                     color="primary"
                     size={"small"}
-                    type={"submit"}
                     className={classes.button}
+                    onClick={event =>
+                      this.handleNextClick(event, selectedSection)
+                    }
                   >
                     Next
                   </Button>
@@ -299,10 +345,7 @@ class QuizAnswer extends React.Component {
                 </p>
                 <Spacing />
                 <Typography variant={"overline"}>Questions:</Typography>
-                {this.generateQuestionJumpers(
-                  quiz.sections[this.currentSection],
-                  classes.fab
-                )}
+                {this.generateQuestionJumpers(selectedSection, classes.fab)}
               </CardContent>
               <CardFooter>
                 <Button
