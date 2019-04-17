@@ -64,7 +64,8 @@ class QuizAnswer extends React.Component {
     this.currentSection = 0;
     this.currentQnNum = 0;
 
-    const currentQn = this.props.location.state.sections[this.currentSection].questions[this.currentQnNum];
+    const currentQn = this.props.location.state.sections[this.currentSection]
+      .questions[this.currentQnNum];
 
     this.state = {
       activeStep: 0,
@@ -79,7 +80,6 @@ class QuizAnswer extends React.Component {
       },
       markedOption: ""
     };
-
   }
 
   handleNext = () => {
@@ -145,6 +145,38 @@ class QuizAnswer extends React.Component {
     }));
   };
 
+  generateQuestionJumpers = (quizSection, styles) => {
+    console.log(quizSection);
+
+    let quizJumpers = [];
+
+    let i = 0;
+    while (i < quizSection.questions.length) {
+      if (this.currentQnNum + 1 === i + 1) {
+        quizJumpers.push(this.generateJumper(i + 1, "primary", styles));
+      } else {
+        quizJumpers.push(this.generateJumper(i + 1, "white", styles));
+      }
+      i++;
+    }
+
+    return quizJumpers;
+  };
+
+  generateJumper = (questionNo, color, styles) => {
+    return (
+      <Fab
+        size="small"
+        variant={"outlined"}
+        color={color}
+        aria-label="Add"
+        className={styles}
+      >
+        {questionNo}
+      </Fab>
+    );
+  };
+
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
@@ -171,7 +203,7 @@ class QuizAnswer extends React.Component {
                     Question Number: <b>{this.getQuestionNumber()}</b>
                   </Typography>
                   <p>{this.state.fields.question}</p>
-                  <Divider/>
+                  <Divider />
                 </CardContent>
                 <CardBody>
                   <FormControl
@@ -211,7 +243,7 @@ class QuizAnswer extends React.Component {
                     </RadioGroup>
                   </FormControl>
                 </CardBody>
-                <Divider/>
+                <Divider />
                 <CardFooter>
                   <Button
                     variant="outlined"
@@ -257,7 +289,7 @@ class QuizAnswer extends React.Component {
                       >
                         {(stop, getTimerState, getTime) => (
                           <React.Fragment>
-                            <Timer.Minutes/> minutes <Timer.Seconds/> seconds
+                            <Timer.Minutes /> minutes <Timer.Seconds /> seconds
                             {getTimerState}
                           </React.Fragment>
                         )}
@@ -265,35 +297,12 @@ class QuizAnswer extends React.Component {
                     </b>
                   </Typography>
                 </p>
-                <Spacing/>
+                <Spacing />
                 <Typography variant={"overline"}>Questions:</Typography>
-                <Fab
-                  size="small"
-                  variant={"outlined"}
-                  color="primary"
-                  aria-label="Add"
-                  className={classes.fab}
-                >
-                  1
-                </Fab>
-                <Fab
-                  size="small"
-                  variant={"outlined"}
-                  color="white"
-                  aria-label="Add"
-                  className={classes.fab}
-                >
-                  2
-                </Fab>
-                <Fab
-                  size="small"
-                  variant={"outlined"}
-                  color="white"
-                  aria-label="Add"
-                  className={classes.fab}
-                >
-                  3
-                </Fab>
+                {this.generateQuestionJumpers(
+                  quiz.sections[this.currentSection],
+                  classes.fab
+                )}
               </CardContent>
               <CardFooter>
                 <Button
@@ -313,7 +322,7 @@ class QuizAnswer extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <Spacing/>
+        <Spacing />
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
