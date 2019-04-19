@@ -10,6 +10,7 @@ import Results from "../views/Student/Results/Results.jsx";
 import PreQuizInfo from "../views/Student/QuizPanel/PreQuizInfo";
 import CustomQuizSetup from "../views/Student/QuizPanel/CustomQuizSetup";
 import AssignedQuizzes from "../views/Student/QuizPanel/AssignedQuizzes";
+import QuizAnswer from "../views/Student/QuizPanel/QuizAnswer.jsx";
 
 const dashboardRoutes = [
   {
@@ -39,6 +40,13 @@ const dashboardRoutes = [
     subRoute: true,
     component: PreQuizInfo
   },
+  {
+    redirect: true,
+    path: "/student/quiz",
+    subRoute: true,
+    component: QuizAnswer
+  },
+  
   {
     redirect: true,
     path: "/student/custom_quiz_setup",

@@ -25,7 +25,7 @@ import {
 } from "@material-ui/core";
 
 import { Delete } from "@material-ui/icons";
-
+import { Redirect } from "react-router-dom";
 import moment from "moment";
 import gql from "graphql-tag";
 import { Mutation, Query } from "react-apollo";
@@ -144,6 +144,10 @@ class QuizForm extends React.Component {
         instructions: "",
         description: ""
       },
+      //used to store the Custom quiz data
+      customQuizData :[],
+      //to hanlde redirect on Custom Quiz Create 
+      redirecter : false,
       //keeps separate data for separate sections
       quizSectionWise: [
         {
@@ -705,10 +709,10 @@ class QuizForm extends React.Component {
       }
     });
   };
-  //Function called on Custom Quiz requested section variabe value
+  //Function to create the required type of array for passing as argument for createing custom quiz and for invoking mutation
   CustomQuizRequestedSectionVariable = (mutation, e) => {
     e.preventDefault();
-    console.log("data initiation begins in 3,2,1............");
+    // console.log("data initiation begins in 3,2,1............");
     requestedSectionsArray = this.transformSections(this.state.quizSectionWise);
     for (const index in requestedSectionsArray) {
       delete requestedSectionsArray[index].marksPerQn;
@@ -723,12 +727,35 @@ class QuizForm extends React.Component {
         }
       }
     });
+
+  };
+  //Function to handle redirect after Create Cutom Quiz Mutaion is invoked
+  handleMutationComplete = (data) => {
+    this.setState({
+      ...this.state,
+      customQuizData:data,
+      redirecter:true
+    });
+console.log(data);
   };
 
   render() {
     // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
     const { classes, quizType } = this.props;
-
+    //to redirect after mutaion on custom quiz is called which is being manged using state
+    if (this.state.redirecter === true) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/student/quiz",
+            state: {
+              ...this.state.customQuizData
+            }
+          }}
+        />
+      );
+    }
     return (
       <Fragment>
         <Query query={ALL_QUERY}>
@@ -741,14 +768,17 @@ class QuizForm extends React.Component {
               // assign value of common values to lists
               this.categories = data.categoryDetailsList;
               this.batches = data.batches;
+              // quizType whether to render custom quiz form or assigned. IF true renders custom quiz in student pannel 
               if (quizType) {
                 return (
-                  <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY}>
+                  <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY} onCompleted={({generateCustomQuiz})=>{
+                    this.handleMutationComplete(generateCustomQuiz);
+                  }}>
                     {(generateCustomQuiz,{data}) => {
                       return (
                         <div className={classes.root}>
                            {/* {console.log("returning Dayas")} */}
-                          {console.log(data)} 
+                          {/* {console.log(data)}  */}
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
@@ -810,7 +840,9 @@ class QuizForm extends React.Component {
                     }}
                   </Mutation>
                 );
-              } else {
+              }
+              // Else part holds the form for Admin Quiz available on admin pannel
+              else {
                 return (
                   <div className={classes.root}>
                     <form autoComplete="off" autoWidth={true}>
