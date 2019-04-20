@@ -5,15 +5,29 @@ https://github.com/nadbm/react-datasheet
 
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/Kuttipishaash/smartitude-app-main.svg?maxAge=2592000)]() [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/Kuttipishaash/smartitude-app-main.svg?maxAge=2592000)]()
 
-Material StudentDashboard React is a free Material-UI Admin with a fresh, new design inspired by Google's Material Design. We are very excited to introduce our take on the material concepts through an easy to use and beautiful set of components. Material StudentDashboard React was built over the popular Material-UI framework.
+The Smartitude System assess a person’s core capability of common skills, such as numerical, verbal and diagrammatic reasoning. It offers a very effective mechanism for training candidates to become increasingly involved in the recruitment process. Smartitude is built over the popular Material-UI framework.
 
-Material StudentDashboard React makes use of light, surface and movement. The general layout resembles sheets of paper following multiple different layers, so that the depth and order is obvious. The navigation stays mainly on the left sidebar and the content is on the right inside the main panel.
+## Problem Statement
 
-Material StudentDashboard React comes with 5 color filter choices for both the sidebar and the card headers (blue, green, orange, red and purple) and an option to have a background image on the sidebar.
+College students lack a central and organized system where they can take aptitude tests to practice for their placement drives. The applications that already exist don’t offer many features other than the ability to attend tests and viewing the result along with the right answers.
 
-Material StudentDashboard React was created using [create-react-app](https://github.com/facebook/create-react-app) and it uses a framework built by our friend [Olivier - Material-UI v3.1.0](https://github.com/mui-org/material-ui), who did an amazing job creating the backbone for the material effects, animations, ripples and transitions. Big thanks to his team for the effort and forward thinking they put into it.
+## Solution
 
-Special thanks go to:
+Smartitude application takes up the challenge of solving the above mentioned problem faced by numerous students. Smartitude will offer the following functionalities for its users:
++ Primarily, a Smartitude user can take aptitude tests and view its results as well as the right answers as soon as the test is over.
++ User’s performance in various types of tests taken is analyzed after each test set.
++ Questions selected for tests will be based on the performance of users which will be analysed in various types of tests.
++ Generate weekly leaderboards for the institution.
++ Groups of faculties are allocated to monitor and manage each category of questions based on their area of expertise.
++ Faculties can upload new questions to the question bank of the app. These questions will be added to the question bank only when another faculty in charge of monitoring that category of questions approve the uploaded question and its solution.
++ The admin users of a particular institution can add, remove or edit the other users which includes teachers who are allotted to monitor questions and answers uploaded to the application by students and other teachers who are not in the monitoring teachers list.
++ Separate downloadable report generation for students, teachers and placement cell officers.
++ Colleges can conduct tests for a group of students as a competition.
+
+This application will be made for both web and mobile platforms. The solution for the problem of conducting aptitude training in colleges was inferred from a detailed study conducted among the placement officer. teachers and students of the college.
+
+
+## Used:
 + [React-chartist](https://github.com/fraserxu/react-chartist) for the wonderful charts.
 
 We are very excited to share this dashboard with you and we look forward to hearing your feedback!
