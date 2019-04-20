@@ -7,6 +7,25 @@ https://github.com/nadbm/react-datasheet
 
 The Smartitude System assess a person’s core capability of common skills, such as numerical, verbal and diagrammatic reasoning. It offers a very effective mechanism for training candidates to become increasingly involved in the recruitment process. Smartitude is built over the popular Material-UI framework.
 
+## Used:
++ [React-chartist](https://github.com/fraserxu/react-chartist) for the wonderful charts.
+
+
+## Table of Contents
+
+* [Versions](#versions)
+* [Problem Statement](#problem-statement)
+* [Solution](#solution)
+* [Documentation](#documentation)
+* [File Structure](#file-structure)
+* [Browser Support](#browser-support)
+* [Resources](#resources)
+* [Reporting Issues](#reporting-issues)
+* [Technical Support or Questions](#technical-support-or-questions)
+* [Licensing](#licensing)
+* [Useful Links](#useful-links)
+
+
 ## Problem Statement
 
 College students lack a central and organized system where they can take aptitude tests to practice for their placement drives. The applications that already exist don’t offer many features other than the ability to attend tests and viewing the result along with the right answers.
@@ -25,28 +44,6 @@ Smartitude application takes up the challenge of solving the above mentioned pro
 + Colleges can conduct tests for a group of students as a competition.
 
 This application will be made for both web and mobile platforms. The solution for the problem of conducting aptitude training in colleges was inferred from a detailed study conducted among the placement officer. teachers and students of the college.
-
-
-## Used:
-+ [React-chartist](https://github.com/fraserxu/react-chartist) for the wonderful charts.
-
-We are very excited to share this dashboard with you and we look forward to hearing your feedback!
-
-You can find the Github Repo here.
-
-## Table of Contents
-
-* [Versions](#versions)
-* [Demo](#demo)
-* [Quick Start](#quick-start)
-* [Documentation](#documentation)
-* [File Structure](#file-structure)
-* [Browser Support](#browser-support)
-* [Resources](#resources)
-* [Reporting Issues](#reporting-issues)
-* [Technical Support or Questions](#technical-support-or-questions)
-* [Licensing](#licensing)
-* [Useful Links](#useful-links)
 
 
 ## Documentation
