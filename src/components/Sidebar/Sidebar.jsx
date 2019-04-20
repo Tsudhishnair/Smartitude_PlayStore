@@ -11,9 +11,12 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
+import BrandLogo from "assets/img/sidebar_smart_white.png";
+import Background from "assets/img/sidebarback.jpg";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 
 import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
+import Link from "react-router-dom/es/Link";
 
 class Sidebar extends Component {
   // verifies if routeName is the one active (in browser input)
@@ -22,7 +25,7 @@ class Sidebar extends Component {
   };
 
   render() {
-    const { classes, color, logo, image, logoText, routes } = this.props;
+    const { classes, color, image, logoText, routes } = this.props;
 
     const listItems = routes.map((prop, key) => {
       if (prop.redirect) return null;
@@ -84,12 +87,11 @@ class Sidebar extends Component {
     var links = <List className={classes.list}>{listItems}</List>;
     var brand = (
       <div className={classes.logo}>
-        <a href="#" className={classes.logoLink}>
+        <Link to={"/"} className={classes.logoLink}>
           <div className={classes.logoImage}>
-            <img src={logo} alt="logo" className={classes.img} />
+            <img src={BrandLogo} alt="logo" className={classes.img} />
           </div>
-          {logoText}
-        </a>
+        </Link>
       </div>
     );
     return (
@@ -109,10 +111,10 @@ class Sidebar extends Component {
           >
             {brand}
             <div className={classes.sidebarWrapper}>{links}</div>
-            {image !== undefined ? (
+            {Background !== undefined ? (
               <div
                 className={classes.background}
-                style={{ backgroundImage: "url(" + image + ")" }}
+                style={{ backgroundImage: "url(" + Background + ")" }}
               />
             ) : null}
           </Drawer>
@@ -128,13 +130,13 @@ class Sidebar extends Component {
           >
             {brand}
             <div className={classes.sidebarWrapper}>{links}</div>
-            {image !== undefined ? (
+            {Background !== undefined ? (
               <div
                 className={classes.background}
-                style={{ backgroundImage: "url(" + image + ")" }}
+                style={{ backgroundImage: "url(" + Background + ")" }}
               />
             ) : null}
-          </Drawer>
+          </Drawer>xx
         </Hidden>
       </div>
     );

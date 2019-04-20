@@ -77,18 +77,24 @@ const sidebarStyle = theme => ({
     }
   },
   logoImage: {
-    width: "30px",
+    width: "150px",
     display: "inline-block",
-    maxHeight: "30px",
+    maxHeight: "150px",
     marginLeft: "10px",
     marginRight: "15px"
   },
   img: {
-    width: "35px",
-    top: "22px",
+    top: "-5px",
+    width: "140px",
     position: "absolute",
     verticalAlign: "middle",
-    border: "0"
+    horizontalAlign: "middle",
+    border: "0",
+    textDecoration: "none",
+    backgroundColor: "transparent",
+    "&,&:hover": {
+      color: "orange"
+    }
   },
   background: {
     position: "absolute",
@@ -107,8 +113,8 @@ const sidebarStyle = theme => ({
       height: "100%",
       content: '""',
       display: "block",
-      background: "#000",
-      opacity: ".8"
+      background: "#1f1f1f",
+      opacity: ".9"
     }
   },
   list: {

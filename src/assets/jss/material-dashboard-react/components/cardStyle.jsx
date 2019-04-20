@@ -23,6 +23,20 @@ const cardStyle = {
   },
   cardCarousel: {
     overflow: "hidden"
+  },
+  cardGreen: {
+    background: "green",
+    boxShadow: "none"
+  },
+  cardProfile: {
+    marginTop: "30px",
+    textAlign: "center"
+  },
+  cardChart: {
+    "& p": {
+      marginTop: "0px",
+      paddingTop: "0px"
+    }
   }
 };
 
