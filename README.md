@@ -56,30 +56,44 @@ This application will be made for both web and mobile platforms. The solution fo
 Within the download you'll find the following directories and files:
 
 ```
-material-dashboard-react
+smartitude-app-main 
 .
 ├── CHANGELOG.md
+├── ISSUE_TEMPLATE.md
 ├── LICENSE.md
 ├── README.md
-├── documentation
-│   ├── assets
-│   │   ├── css
-│   │   ├── img
-│   │   │   └── faces
-│   │   └── js
-│   └── tutorial-components.html
+├── package-lock.json
 ├── package.json
 ├── public
+│   ├── apple-icon.png
 │   ├── favicon.ico
 │   ├── index.html
 │   └── manifest.json
 └── src
+    ├── Utils.js
     ├── assets
     │   ├── css
     │   │   └── material-dashboard-react.css
-    │   ├── github
     │   ├── img
-    │   │   └── faces
+    │   │   ├── apple-icon.png
+    │   │   ├── bg4.jpg
+    │   │   ├── bg5.jpg
+    │   │   ├── cover.jpeg
+    │   │   ├── drawable
+    │   │   │   ├── lock.jpg
+    │   │   │   └── smart_logo.png
+    │   │   ├── faces
+    │   │   │   └── marc.jpg
+    │   │   ├── favicon.png
+    │   │   ├── mask.png
+    │   │   ├── new_logo.png
+    │   │   ├── reactlogo.png
+    │   │   ├── sidebar-1.jpg
+    │   │   ├── sidebar-2.jpg
+    │   │   ├── sidebar-3.jpg
+    │   │   ├── sidebar-4.jpg
+    │   │   ├── smart_white.png
+    │   │   └── tim_80x80.png
     │   └── jss
     │       ├── material-dashboard-react
     │       │   ├── cardImagesStyles.jsx
@@ -92,11 +106,15 @@ material-dashboard-react
     │       │   │   ├── cardHeaderStyle.jsx
     │       │   │   ├── cardIconStyle.jsx
     │       │   │   ├── cardStyle.jsx
+    │       │   │   ├── customDropdownStyle.jsx
     │       │   │   ├── customInputStyle.jsx
     │       │   │   ├── customTabsStyle.jsx
     │       │   │   ├── footerStyle.jsx
     │       │   │   ├── headerLinksStyle.jsx
     │       │   │   ├── headerStyle.jsx
+    │       │   │   ├── infoStyle.jsx
+    │       │   │   ├── parallaxStyle.jsx
+    │       │   │   ├── productStyle.jsx
     │       │   │   ├── sidebarStyle.jsx
     │       │   │   ├── snackbarContentStyle.jsx
     │       │   │   ├── tableStyle.jsx
@@ -104,13 +122,23 @@ material-dashboard-react
     │       │   │   └── typographyStyle.jsx
     │       │   ├── dropdownStyle.jsx
     │       │   ├── layouts
-    │       │   │   └── dashboardStyle.jsx
+    │       │   │   ├── dashboardStyle.jsx
+    │       │   │   └── loginStyles.jsx
     │       │   ├── tooltipStyle.jsx
+    │       │   ├── tooltipsStyle.jsx
     │       │   └── views
+    │       │       ├── components.jsx
     │       │       ├── dashboardStyle.jsx
-    │       │       └── iconsStyle.jsx
-    │       └── material-dashboard-react.jsx
+    │       │       ├── headerLinksStyle.jsx
+    │       │       ├── headerStyle.jsx
+    │       │       ├── iconsStyle.jsx
+    │       │       ├── landingPage.jsx
+    │       │       └── loginPage.jsx
+    │       ├── material-dashboard-react.jsx
+    │       └── material-kit-react.jsx
     ├── components
+    │   ├── AutoChip
+    │   │   └── ReactChipSelect.jsx
     │   ├── Card
     │   │   ├── Card.jsx
     │   │   ├── CardAvatar.jsx
@@ -118,24 +146,60 @@ material-dashboard-react
     │   │   ├── CardFooter.jsx
     │   │   ├── CardHeader.jsx
     │   │   └── CardIcon.jsx
+    │   ├── CombineStyles
+    │   │   └── CombineStyles.js
     │   ├── CustomButtons
     │   │   └── Button.jsx
+    │   ├── CustomDropdown
+    │   │   └── CustomDropdown.jsx
     │   ├── CustomInput
     │   │   └── CustomInput.jsx
     │   ├── CustomTabs
     │   │   └── CustomTabs.jsx
+    │   ├── Dialog
+    │   │   ├── DialogCategory.jsx
+    │   │   ├── DialogDelete.jsx
+    │   │   ├── DialogFacultyTable.jsx
+    │   │   ├── DialogQuestion.jsx
+    │   │   ├── DialogQuizTable.jsx
+    │   │   ├── DialogStudentTable.jsx
+    │   │   └── MessageDialog.jsx
+    │   ├── ExpansionPanel
+    │   │   └── Expansionpanel.jsx
     │   ├── Footer
-    │   │   └── Footer.jsx
+    │   │   ├── AdminLoginFooter.jsx
+    │   │   ├── FacultyLoginFooter.jsx
+    │   │   ├── Footer.jsx
+    │   │   └── StudentLoginFooter.jsx
     │   ├── Grid
+    │   │   ├── GridContainer.jsx
     │   │   └── GridItem.jsx
     │   ├── Header
     │   │   ├── Header.jsx
     │   │   └── HeaderLinks.jsx
+    │   ├── HomeHeader
+    │   │   ├── HeaderLinks.jsx
+    │   │   └── HomeHeader.jsx
+    │   ├── InfoArea
+    │   │   └── InfoArea.jsx
+    │   ├── LinkButton.jsx
+    │   ├── NotificationSnack
+    │   │   ├── Error.jsx
+    │   │   └── Success.jsx
+    │   ├── Parallax
+    │   │   └── Parallax.jsx
+    │   ├── QuizAdmin
+    │   │   └── QuizAdmin.jsx
     │   ├── Sidebar
     │   │   └── Sidebar.jsx
     │   ├── Snackbar
+    │   │   ├── CustomSnackbar.jsx
     │   │   ├── Snackbar.jsx
     │   │   └── SnackbarContent.jsx
+    │   ├── Spacing
+    │   │   └── Spacing.jsx
+    │   ├── SubList
+    │   │   └── SubList.jsx
     │   ├── Table
     │   │   └── Table.jsx
     │   ├── Tasks
@@ -150,32 +214,104 @@ material-dashboard-react
     │       └── Warning.jsx
     ├── index.js
     ├── layouts
-    │   └── StudentDashboard
-    │       └── StudentDashboardshboard.jsx
+    │   ├── AdminPanel
+    │   │   └── AdminPanel.jsx
+    │   ├── FacultyPanel
+    │   │   └── FacultyPanel.jsx
+    │   ├── Landing
+    │   │   ├── Landing.jsx
+    │   │   └── ProductSection.jsx
+    │   ├── Login
+    │   │   ├── AdminLogin.jsx
+    │   │   ├── FacultyLogin.jsx
+    │   │   └── StudentLogin.jsx
+    │   └── StudentPanel
+    │       └── StudentPanel.jsx
     ├── logo.svg
     ├── routes
-    │   ├── dashboard.jsx
-    │   └── index.jsx
+    │   ├── PrivateRoute.jsx
+    │   ├── admin_dashboard.jsx
+    │   ├── faculty_dashboard.jsx
+    │   └── student_dashboard.jsx
     ├── variables
     │   ├── charts.jsx
     │   └── general.jsx
     └── views
-        ├── StudentDashboard
-        │   └── StudentDashboard.jsxard.jsx
+        ├── Admin
+        │   ├── AdminDashboard
+        │   │   └── AdminDashboard.jsx
+        │   ├── AdminNotification
+        │   │   └── AdminNotification.jsx
+        │   ├── CategoryManagement
+        │   │   ├── CategoryManagement.jsx
+        │   │   ├── FormAddCategory.jsx
+        │   │   └── FormAddSubcategory.jsx
+        │   ├── DeptManage
+        │   │   ├── DeptDialog.jsx
+        │   │   ├── DeptManage.jsx
+        │   │   └── FormAddDepartment.jsx
+        │   ├── FacultyManage
+        │   │   ├── CreateNewFacultyForm.jsx
+        │   │   ├── FacultyManage.jsx
+        │   │   └── FormAddFacultyBatch.jsx
+        │   ├── NotificationManager
+        │   │   └── NotificationManager.jsx
+        │   ├── QuestionManage
+        │   │   └── QuestionManage.jsx
+        │   ├── QuizManage
+        │   │   ├── QuizForm.jsx
+        │   │   └── QuizManage.jsx
+        │   ├── ReportGen
+        │   │   └── ReportGen.jsx
+        │   └── StudentManage
+        │       ├── FormAddStudent.jsx
+        │       ├── FormAddStudentBatch.jsx
+        │       └── StudentManage.jsx
+        ├── Faculty
+        │   ├── AddQuestion
+        │   │   └── AddQuestion.jsx
+        │   ├── ApproveQuestion
+        │   │   └── ApproveQuestion.jsx
+        │   ├── ApprovedQuestionsManage
+        │   │   └── ApprovedQuestionsManage.jsx
+        │   ├── Dashboard
+        │   │   └── Dashboard.jsx
+        │   ├── FacultyManage
+        │   │   ├── CreateNewFacultyForm.jsx
+        │   │   ├── FacultyManage.jsx
+        │   │   └── FormAddFacultyBatch.jsx
+        │   ├── MyQuestionsManage
+        │   │   └── MyQuestionsManage.jsx
+        │   ├── Notifications
+        │   │   └── Notifications.jsx
+        │   └── Results
+        │       └── Results.jsx
+        ├── General
+        │   └── QuestionDetails.jsx
         ├── Icons
         │   └── Icons.jsx
-        ├── Maps
-        │   └── Maps.jsx
-        ├── Notifications
-        │   └── Notifications.jsx
-        ├── TableList
-        │   └── TableList.jsx
-        ├── Typography
-        │   └── Typography.jsx
-        ├── UpgradeToPro
-        │   └── UpgradeToPro.jsx
-        └── UserProfile
-            └── UserProfile.jsx
+        ├── Student
+        │   ├── Dashboard
+        │   │   └── StudentDashboard.jsx
+        │   ├── Notifications
+        │   │   └── Notifications.jsx
+        │   ├── QuizPanel
+        │   │   ├── AssignedQuizzes.jsx
+        │   │   ├── CustomQuizSetup.jsx
+        │   │   ├── PreQuizInfo.jsx
+        │   │   └── QuizAnswer.jsx
+        │   └── Results
+        │       └── Results.jsx
+        └── Unwanted
+            ├── Maps
+            │   └── Maps.jsx
+            ├── TableList
+            │   └── TableList.jsx
+            ├── Typography
+            │   └── Typography.jsx
+            └── UpgradeToPro
+                ├── NotificationManager.jsx
+                └── UpgradeToPro.jsx
 ```
 
 ## Licensing
