@@ -1,27 +1,21 @@
 # [Smartitude](https://demos.creative-tim.com/material-dashboard-react/#/dashboard)
 
-Components for reference:
-https://github.com/nadbm/react-datasheet
+<div align="center">
+	<img src="https://raw.githubusercontent.com/Kuttipishaash/smartitude-app-main/master/src/assets/img/drawable/smart_logo.png" width="300">
+</div>
+
 
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/Kuttipishaash/smartitude-app-main.svg?maxAge=2592000)]() [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/Kuttipishaash/smartitude-app-main.svg?maxAge=2592000)]()
 
 The Smartitude System assess a person’s core capability of common skills, such as numerical, verbal and diagrammatic reasoning. It offers a very effective mechanism for training candidates to become increasingly involved in the recruitment process. Smartitude is built over the popular Material-UI framework.
 
-## Used:
-+ [React-chartist](https://github.com/fraserxu/react-chartist) for the wonderful charts.
-
 
 ## Table of Contents
 
-* [Versions](#versions)
 * [Problem Statement](#problem-statement)
 * [Solution](#solution)
-* [Documentation](#documentation)
+* [Used Components](#used-components)
 * [File Structure](#file-structure)
-* [Browser Support](#browser-support)
-* [Resources](#resources)
-* [Reporting Issues](#reporting-issues)
-* [Technical Support or Questions](#technical-support-or-questions)
 * [Licensing](#licensing)
 * [Useful Links](#useful-links)
 
@@ -46,8 +40,14 @@ Smartitude application takes up the challenge of solving the above mentioned pro
 This application will be made for both web and mobile platforms. The solution for the problem of conducting aptitude training in colleges was inferred from a detailed study conducted among the placement officer. teachers and students of the college.
 
 
-## Documentation
-The documentation for the Material StudentDashboard React is hosted at our [website](https://demos.creative-tim.com/material-dashboard-react/#/documentation/tutorial).
+## Used Components
+
++ [material-dashboard-react](https://github.com/creativetimofficial/material-dashboard-react)
++ [Graphql](https://github.com/graphql/graphql-js)
++ [React-chartist](https://github.com/fraserxu/react-chartist) for the wonderful charts.
++ [material-ui-pickers](https://github.com/dmtrKovalenko/material-ui-pickers)
++ [react-datasheet](https://github.com/nadbm/react-datasheet)
+
 
 
 ## File Structure
@@ -179,5 +179,5 @@ material-dashboard-react
 
 ## Licensing
 
-- Copyright 2018 Creative Tim (https://www.creative-tim.com)
-- Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
+- Copyright 2019 Smartiude (https://www.smartitude.com)
+- Licensed under MIT (https://github.com/Kuttipishaash/smartitude-app-main/blob/master/LICENSE.md)
