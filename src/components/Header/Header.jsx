@@ -4,7 +4,13 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import { AppBar, Hidden, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Hidden,
+  IconButton,
+  Toolbar,
+  Typography
+} from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
@@ -12,6 +18,7 @@ import Button from "components/CustomButtons/Button.jsx";
 
 import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
 import { Query } from "../../../node_modules/react-apollo";
+import AdminNavbarLinks from "./HeaderLinks.jsx";
 import gql from "graphql-tag";
 import { loginHandler } from "../../Utils";
 
@@ -56,45 +63,18 @@ function Header({ ...props }) {
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" disabled href="#" className={classes.title}>
+          <Button
+            color="transparent"
+            disabled
+            href="#"
+            className={classes.title}
+          >
             {makeBrand()}
           </Button>
-          <div>
-            {loginHandler.userType === "admin" ? (
-              <Query query={adminInfo}>
-                {({ data, loading, error }) => {
-                  return (
-                    <Typography variant={"overline"}>
-                      {!loading ? `Logged in as: ${data.meAdmin.name}` : ""}
-                    </Typography>
-                  );
-                }}
-              </Query>
-            ) : (
-              ""
-            )}
-            {loginHandler.userType === "faculty" ? (
-              <Query query={facultyInfo}>
-                {({ data, loading, error }) => {
-                  if (loading) {
-                    return <Typography>Loading...</Typography>;
-                  } else if (error) {
-                    return <Typography>Error occured!</Typography>;
-                  } else {
-                    localStorage.setItem("faculty", data.meFaculty._id);
-                    return (
-                      <Typography variant={"overline"}>
-                        {!loading ? `Logged in as: ${data.meFaculty.name}` : ""}
-                      </Typography>
-                    );
-                  }
-                }}
-              </Query>
-            ) : (
-              ""
-            )}
-          </div>
         </div>
+        <Hidden smDown implementation="css">
+          <AdminNavbarLinks />
+        </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton
             color="inherit"

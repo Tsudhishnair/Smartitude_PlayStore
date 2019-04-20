@@ -1,7 +1,14 @@
 import React from "react";
+import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Hidden from "@material-ui/core/Hidden";
+import Poppers from "@material-ui/core/Popper";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 import Notifications from "@material-ui/icons/Notifications";
@@ -12,6 +19,11 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
+
+import { Query } from "../../../node_modules/react-apollo";
+import gql from "graphql-tag";
+import { loginHandler } from "../../Utils";
+import { Typography } from "@material-ui/core";
 
 class HeaderLinks extends React.Component {
   state = {
@@ -32,69 +44,76 @@ class HeaderLinks extends React.Component {
   render() {
     const { classes } = this.props;
     const { open } = this.state;
+
+    const adminInfo = gql`
+      {
+        meAdmin {
+          _id
+          name
+        }
+      }
+    `;
+
+    const facultyInfo = gql`
+      {
+        meFaculty {
+          _id
+          name
+        }
+      }
+    `;
     return (
       <div>
-        <div className={classes.searchWrapper}>
-          <CustomInput
-            formControlProps={{
-              className: classes.margin + " " + classes.search
-            }}
-            inputProps={{
-              placeholder: "Search",
-              inputProps: {
-                "aria-label": "Search"
-              }
-            }}
-          />
-          <Button color="white" aria-label="edit" justIcon round>
-            <Search />
-          </Button>
-        </div>
+        {/*<div className={classes.searchWrapper}>*/}
+        {/*  <CustomInput*/}
+        {/*    formControlProps={{*/}
+        {/*      className: classes.margin + " " + classes.search*/}
+        {/*    }}*/}
+        {/*    inputProps={{*/}
+        {/*      placeholder: "Search",*/}
+        {/*      inputProps: {*/}
+        {/*        "aria-label": "Search"*/}
+        {/*      }*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*  <Button color="white" aria-label="edit" justIcon round>*/}
+        {/*    <Search />*/}
+        {/*  </Button>*/}
+        {/*</div>*/}
         <Button
-          color={window.innerWidth > 959 ? "transparent" : "smart_white.png"}
-          justIcon={window.innerWidth > 959}
-          simple={!(window.innerWidth > 959)}
-          aria-label="Dashboard"
-          className={classes.buttonLink}
-        >
-          <Dashboard className={classes.icons} />
-          <Hidden mdUp implementation="css">
-            <p className={classes.linkText}>Dashboard</p>
-          </Hidden>
-        </Button>
-        <div className={classes.manager}>
-          <Button
-            buttonRef={node => {
-              this.anchorEl = node;
-            }}
-            color={window.innerWidth > 959 ? "transparent" : "smart_white.png"}
-            justIcon={window.innerWidth > 959}
-            simple={!(window.innerWidth > 959)}
-            aria-owns={open ? "menu-list-grow" : null}
-            aria-haspopup="true"
-            onClick={this.handleToggle}
-            className={classes.buttonLink}
-          >
-            <Notifications className={classes.icons} />
-            <span className={classes.notifications}>5</span>
-            <Hidden mdUp implementation="css">
-              <p onClick={this.handleClick} className={classes.linkText}>
-                Notification
-              </p>
-            </Hidden>
-          </Button>
-        </div>
-        <Button
-          color={window.innerWidth > 959 ? "transparent" : "smart_white.png"}
-          justIcon={window.innerWidth > 959}
-          simple={!(window.innerWidth > 959)}
+          color={window.innerWidth > 959 ? "transparent" : "white"}
           aria-label="Person"
+          disabled
           className={classes.buttonLink}
         >
           <Person className={classes.icons} />
-          <Hidden mdUp implementation="css">
-            <p className={classes.linkText}>Profile</p>
-          </Hidden>
+          <p className={classes.linkText}>
+            {loginHandler.userType === "admin" ? (
+              <Query query={adminInfo}>
+                {({ data, loading, error }) => {
+                  return !loading ? `${data.meAdmin.name}` : "";
+                }}
+              </Query>
+            ) : (
+              ""
+            )}
+            {loginHandler.userType === "faculty" ? (
+              <Query query={facultyInfo}>
+                {({ data, loading, error }) => {
+                  if (loading) {
+                    return <Typography>Loading...</Typography>;
+                  } else if (error) {
+                    return <Typography>Error occured!</Typography>;
+                  } else {
+                    localStorage.setItem("faculty", data.meFaculty._id);
+                    return !loading ? `${data.meFaculty.name}` : "";
+                  }
+                }}
+              </Query>
+            ) : (
+              ""
+            )}
+          </p>
         </Button>
       </div>
     );
