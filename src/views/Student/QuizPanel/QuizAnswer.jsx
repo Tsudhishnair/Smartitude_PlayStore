@@ -94,24 +94,18 @@ class QuizAnswer extends React.Component {
     return this.currentQnNum !== selectedSection.questions.length - 1;
   };
 
-  handleNext = () => {
-    const { activeStep } = this.state;
+  handleSectionSubmit = quizSections => {
+    this.currentQnNum = 0;
 
-    this.setState({
-      activeStep: activeStep + 1
-    });
-  };
+    if (++this.currentSection < quizSections.length) {
+      this.setState(prevState => ({
+        activeStep: prevState.activeStep + 1
+      }));
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1
-    }));
-  };
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0
-    });
+      this.setFields(quizSections[this.currentSection]);
+    } else {
+      // TODO: CALL MUTATION HERE
+    }
   };
 
   handleClearClick = () => {
@@ -145,7 +139,7 @@ class QuizAnswer extends React.Component {
     if (this.isFirstQn()) {
       const newQn = selectedSection.questions[--this.currentQnNum];
 
-      this.setState(prevState => ({
+      this.setState(() => ({
         fields: {
           question: newQn.question,
           options: {
@@ -184,15 +178,17 @@ class QuizAnswer extends React.Component {
     return this.currentQnNum + 1;
   };
 
-  getTotalTime = sections => {
-    let totalTime = 0;
+  //now returning total time, thats not required, return time for only one section
+  getTimeLimit = section => {
+    return section.timeLimit;
+    // let totalTime = 0;
 
-    let i = 0;
-    while (i < sections.length) {
-      totalTime += sections[i].timeLimit;
-      i++;
-    }
-    return totalTime;
+    // let i = 0;
+    // while (i < sections.length) {
+    //   totalTime += sections[i].timeLimit;
+    //   i++;
+    // }
+    // return totalTime;
   };
 
   changeQuestion = (questionNo, quizSection) => {
@@ -258,6 +254,8 @@ class QuizAnswer extends React.Component {
     const { activeStep } = this.state;
 
     const steps = this.getSteps(quiz.sections);
+
+    console.log(quiz);
 
     return (
       <div className={classes.root}>
@@ -364,9 +362,9 @@ class QuizAnswer extends React.Component {
                   <Typography variant={"h5"} className={classes.timer}>
                     <b>
                       <Timer
-                        initialTime={60000 * this.getTotalTime(quiz.sections)}
+                        initialTime={60000 * this.getTimeLimit(selectedSection)}
                         direction="backward"
-                        onStop={this.handleNext}
+                        onStop={this.handleSectionSubmit}
                       >
                         {(stop, getTimerState, getTime) => (
                           <React.Fragment>
@@ -390,7 +388,7 @@ class QuizAnswer extends React.Component {
                   size={"small"}
                   fullWidth
                   className={classes.button}
-                  onClick={this.handleNext}
+                  onClick={() => this.handleSectionSubmit(quiz.sections)}
                 >
                   {activeStep === steps.length - 1
                     ? "Finish Quiz"
@@ -405,7 +403,7 @@ class QuizAnswer extends React.Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map((label, index) => {
+                {steps.map(label => {
                   const props = {};
                   const labelProps = {};
                   return (
