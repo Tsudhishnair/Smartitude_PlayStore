@@ -38,7 +38,8 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import image from "assets/img/bg5.jpg";
 import GridItem from "../../components/Grid/GridItem";
 
-import loginPageStyle from "assets/jss/material-dashboard-react/views/loginPage.jsx";
+import loginPageStyle from "../../assets/jss/material-dashboard-react/views/loginPage.jsx";
+import classNames from "classnames";
 
 // login mutation query
 const ADMIN_LOGIN = gql`
@@ -197,6 +198,7 @@ class AdminLogin extends Component {
     const { classes, ...rest } = this.props;
     const { redirecter, snackbar, error } = this.state;
 
+
     // if auth token is present in storage, redirect to dashboard
     if (redirecter === true) {
       return <Redirect to="/admin/dashboard" />;
@@ -223,7 +225,7 @@ class AdminLogin extends Component {
             >
               <div className={classes.container}>
                 <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={11} sm={9} md={4}>
                     <Card className={classes[this.state.cardAnimaton]}>
                       <form
                         className={classes.form}
@@ -239,8 +241,8 @@ class AdminLogin extends Component {
                           <img width="150dp" src={lock} alt="..." />
                         </p>
                         <CardBody>
-                          <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Username</InputLabel>
+                          <FormControl required fullWidth className={classes.formControl}>
+                            <InputLabel htmlFor="email" className={classes.labelRoot}>Username</InputLabel>
                             <Input
                               id="email"
                               name="email"
@@ -249,8 +251,8 @@ class AdminLogin extends Component {
                               value={this.state.form.username}
                             />
                           </FormControl>
-                          <FormControl required fullWidth>
-                            <InputLabel htmlFor="adornment-password">
+                          <FormControl required fullWidth className={classes.formControl}>
+                            <InputLabel htmlFor="adornment-password" className={classes.labelRoot}>
                               Password
                             </InputLabel>
                             <Input
@@ -299,9 +301,6 @@ class AdminLogin extends Component {
                               />
                             )}
                           </div>
-                          {/*<Button simple color="primary" size="lg">*/}
-                          {/*  Login*/}
-                          {/*</Button>*/}
                         </CardFooter>
                       </form>
                     </Card>

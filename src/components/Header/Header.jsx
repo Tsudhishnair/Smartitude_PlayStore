@@ -4,23 +4,14 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import {
-  AppBar,
-  Hidden,
-  IconButton,
-  Toolbar,
-  Typography
-} from "@material-ui/core";
+import { AppBar, Hidden, IconButton, Toolbar } from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
-import { Query } from "../../../node_modules/react-apollo";
 import AdminNavbarLinks from "./HeaderLinks.jsx";
-import gql from "graphql-tag";
-import { loginHandler } from "../../Utils";
 
 function Header({ ...props }) {
   function makeBrand() {
@@ -39,24 +30,6 @@ function Header({ ...props }) {
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
-
-  const adminInfo = gql`
-    {
-      meAdmin {
-        _id
-        name
-      }
-    }
-  `;
-
-  const facultyInfo = gql`
-    {
-      meFaculty {
-        _id
-        name
-      }
-    }
-  `;
 
   return (
     <AppBar className={classes.appBar + appBarClasses}>

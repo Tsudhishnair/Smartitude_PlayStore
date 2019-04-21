@@ -54,24 +54,24 @@ function HeaderLinks({ ...props }) {
       {/*    <CloudDownload className={classes.icons} /> Download*/}
       {/*  </Button>*/}
       {/*</ListItem>*/}
-      <ListItem className={classes.listItem}>
-        <Tooltip
-          id="instagram-twitter"
-          title="Visit RSET Homepage"
-          placement={window.innerWidth > 959 ? "top" : "left"}
-          classes={{ tooltip: classes.tooltip }}
-        >
-          <Button
-            href="https://www.rajagiritech.ac.in"
-            target="_blank"
-            color="transparent"
-            className={classes.navLink}
-          >
-            <Home className={classes.socialIcons}/>
-            {/*<i className={classes.socialIcons + " fab fa-facebook"} />*/}
-          </Button>
-        </Tooltip>
-      </ListItem>
+      {/*<ListItem className={classes.listItem}>*/}
+      {/*  <Tooltip*/}
+      {/*    id="instagram-twitter"*/}
+      {/*    title="Visit RSET Homepage"*/}
+      {/*    placement={window.innerWidth > 959 ? "top" : "left"}*/}
+      {/*    classes={{ tooltip: classes.tooltip }}*/}
+      {/*  >*/}
+      {/*    <Button*/}
+      {/*      href="https://www.rajagiritech.ac.in"*/}
+      {/*      target="_blank"*/}
+      {/*      color="transparent"*/}
+      {/*      className={classes.navLink}*/}
+      {/*    >*/}
+      {/*      <Home className={classes.socialIcons}/>*/}
+      {/*      /!*<i className={classes.socialIcons + " fab fa-facebook"} />*!/*/}
+      {/*    </Button>*/}
+      {/*  </Tooltip>*/}
+      {/*</ListItem>*/}
     </List>
   );
 }
