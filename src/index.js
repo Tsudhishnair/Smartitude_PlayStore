@@ -48,7 +48,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
-  uri: "https://smartitude-server.herokuapp.com/"
+  uri: "https://smartitude-graphql.herokuapp.com//graphql"
 });
 
 const client = new ApolloClient({
