@@ -49,10 +49,10 @@ function Footer({ ...props }) {
               </ListItem>
             </List>
           </div>
+          <div className={classes.right}>
+            &copy; {1900 + new Date().getYear()} Smartitude
+          </div>
         </Hidden>
-        <div className={classes.right}>
-          &copy; {1900 + new Date().getYear()} Smartitude
-        </div>
       </div>
     </footer>
   );
