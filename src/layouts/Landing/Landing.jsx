@@ -105,12 +105,12 @@ function Landing(props) {
                 process.
               </h4>
               <br />
-              <Link to={"/student/login"}>
-                <Button color="warning" size="lg">
-                  {/*<i className="fas fa-play" />*/}
-                  Student Login
-                </Button>
-              </Link>
+              {/*<Link to={"/student/login"}>*/}
+              {/*  <Button color="warning" size="lg">*/}
+              {/*    /!*<i className="fas fa-play" />*!/*/}
+              {/*    Student Login*/}
+              {/*  </Button>*/}
+              {/*</Link>*/}
             </GridItem>
           </GridContainer>
         </div>

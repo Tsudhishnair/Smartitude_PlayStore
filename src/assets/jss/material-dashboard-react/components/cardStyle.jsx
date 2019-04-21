@@ -1,7 +1,7 @@
 const cardStyle = {
   card: {
     border: "0",
-    marginBottom: "30px",
+    marginBottom: "10px",
     marginTop: "30px",
     borderRadius: "6px",
     color: "rgba(0, 0, 0, 0.87)",

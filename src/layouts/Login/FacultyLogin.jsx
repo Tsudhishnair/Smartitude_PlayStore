@@ -223,7 +223,7 @@ class FacultyLogin extends Component {
             >
               <div className={classes.container}>
                 <GridContainer justify="center">
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={11} sm={9} md={4}>
                     <Card className={classes[this.state.cardAnimaton]}>
                       <form
                         className={classes.form}
@@ -239,8 +239,8 @@ class FacultyLogin extends Component {
                           <img width="150dp" src={lock} alt="..." />
                         </p>
                         <CardBody>
-                          <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Username</InputLabel>
+                          <FormControl  required fullWidth className={classes.formControl}>
+                            <InputLabel htmlFor="email" className={classes.labelRoot}>Username</InputLabel>
                             <Input
                               id="email"
                               name="email"
@@ -249,8 +249,8 @@ class FacultyLogin extends Component {
                               value={this.state.form.username}
                             />
                           </FormControl>
-                          <FormControl required fullWidth>
-                            <InputLabel htmlFor="adornment-password">
+                          <FormControl required fullWidth className={classes.formControl}>
+                            <InputLabel htmlFor="adornment-password" className={classes.labelRoot}>
                               Password
                             </InputLabel>
                             <Input

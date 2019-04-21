@@ -1,12 +1,21 @@
 import { container } from "assets/jss/material-kit-react.jsx";
 
+import {
+  primaryColor,
+  dangerColor,
+  successColor,
+  defaultFont
+} from "assets/jss/material-dashboard-react.jsx";
+
 const signupPageStyle = {
   container: {
-    ...container,
-    zIndex: "2",
+    zIndex: "5",
+    margin: "0",
     position: "relative",
-    paddingTop: "20vh",
-    color: "#FFFFFF"
+    padding: "0",
+    paddingTop: "15vh",
+    color: "#FFFFFF",
+    overflow: "scroll"
   },
   cardHidden: {
     opacity: "0",
@@ -19,6 +28,7 @@ const signupPageStyle = {
     position: "relative",
     margin: "0",
     padding: "0",
+    overflow: "scroll",
     border: "0",
     alignItems: "center",
     "&:before": {
@@ -49,32 +59,22 @@ const signupPageStyle = {
   cardHeader: {
     width: "auto",
     textAlign: "center",
-    marginLeft: "20px",
-    marginRight: "20px",
+    marginLeft: "10px",
+    marginRight: "10px",
     marginTop: "-40px",
     padding: "20px 0",
-    marginBottom: "15px"
-  },
-  socialIcons: {
-    maxWidth: "24px",
-    marginTop: "0",
-    width: "100%",
-    transform: "none",
-    left: "0",
-    top: "0",
-    height: "100%",
-    lineHeight: "41px",
-    fontSize: "20px"
+    marginBottom: "5px"
   },
   divider: {
-    marginTop: "30px",
+    marginTop: "5%",
     marginBottom: "0px",
     textAlign: "center"
   },
   cardFooter: {
     paddingTop: "0rem",
+    padding: "0",
     border: "0",
-    borderRadius: "6px",
+    borderRadius: "4px",
     justifyContent: "center !important"
   },
   socialLine: {
@@ -84,6 +84,71 @@ const signupPageStyle = {
   },
   inputIconsColor: {
     color: "#495057"
+  },
+  footer: {
+    position: "absolute",
+    bottom: "0",
+    padding: "0",
+    width: "100%"
+  },
+
+  //Custom Input
+
+  disabled: {
+    "&:before": {
+      backgroundColor: "transparent !important"
+    }
+  },
+  underline: {
+    "&:hover:not($disabled):before,&:before": {
+      borderColor: "#D2D2D2 !important",
+      borderWidth: "1px !important"
+    },
+    "&:after": {
+      borderColor: primaryColor
+    }
+  },
+  underlineError: {
+    "&:after": {
+      borderColor: dangerColor
+    }
+  },
+  underlineSuccess: {
+    "&:after": {
+      borderColor: successColor
+    }
+  },
+  labelRoot: {
+    ...defaultFont,
+    color: "#AAAAAA !important",
+    fontWeight: "400",
+    fontSize: "14px",
+    lineHeight: "1.42857"
+  },
+  labelRootError: {
+    color: dangerColor
+  },
+  labelRootSuccess: {
+    color: successColor
+  },
+  feedback: {
+    position: "absolute",
+    top: "18px",
+    right: "0",
+    zIndex: "2",
+    display: "block",
+    width: "24px",
+    height: "24px",
+    textAlign: "center",
+    pointerEvents: "none"
+  },
+  marginTop: {
+    marginTop: "16px"
+  },
+  formControl: {
+    paddingBottom: "4px",
+    margin: "18px 0 0 0",
+    position: "relative"
   }
 };
 
