@@ -15,7 +15,6 @@ const signupPageStyle = {
     padding: "0",
     paddingTop: "15vh",
     color: "#FFFFFF",
-    overflow: "scroll"
   },
   cardHidden: {
     opacity: "0",
@@ -28,7 +27,6 @@ const signupPageStyle = {
     position: "relative",
     margin: "0",
     padding: "0",
-    overflow: "scroll",
     border: "0",
     alignItems: "center",
     "&:before": {
