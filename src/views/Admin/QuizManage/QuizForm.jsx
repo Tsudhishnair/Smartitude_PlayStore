@@ -100,7 +100,7 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
           options
           correctOption
           solution
-          category{
+          category {
             _id
             name
           }
@@ -127,6 +127,8 @@ class QuizForm extends React.Component {
 
     //maintain list of batches
     this.batches = [];
+    //need negative marks or not for custom quiz
+    this.needNegative = false;
 
     //total number of sections in the quiz
     this.numberOfSections = 0;
@@ -261,6 +263,13 @@ class QuizForm extends React.Component {
         ...prevState.quizCommon,
         active: !prevState.quizCommon.active
       }
+    }));
+  };
+  //handle needNegative toggle Field
+  handleNeedNegative = event => {
+    this.setState(prevState => ({
+      ...prevState,
+      needNegative: !prevState.needNegative
     }));
   };
 
@@ -725,7 +734,7 @@ class QuizForm extends React.Component {
       variables: {
         customQuizRequest: {
           requestedSections: requestedSectionsArray,
-          negativeMarks: true
+          negativeMarks: this.state.needNegative
         }
       }
     });
@@ -799,9 +808,9 @@ class QuizForm extends React.Component {
                                 <FormControlLabel
                                   control={
                                     <Switch
-                                      name="Need Negative marks or not"
-                                      checked={this.state.quizCommon.active}
-                                      onChange={e => this.handleActiveField(e)}
+                                      name="needNegative"
+                                      checked={this.state.needNegative}
+                                      onChange={e => this.handleNeedNegative(e)}
                                     />
                                   }
                                   label="Need Negative marks or not"
