@@ -790,8 +790,8 @@ class QuizForm extends React.Component {
                     {(generateCustomQuiz, { data }) => {
                       return (
                         <div className={classes.root}>
-                          {/* {console.log("returning Dayas")} */}
-                          {/* {console.log(data)}  */}
+                          {console.log("returning Dayas")}
+                          {console.log(data)} 
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
