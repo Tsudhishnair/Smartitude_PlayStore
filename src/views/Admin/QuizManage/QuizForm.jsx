@@ -100,6 +100,10 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
           options
           correctOption
           solution
+          category{
+            _id
+            name
+          }
         }
         timeLimit
       }
@@ -145,9 +149,9 @@ class QuizForm extends React.Component {
         description: ""
       },
       //used to store the Custom quiz data
-      customQuizData :[],
-      //to hanlde redirect on Custom Quiz Create 
-      redirecter : false,
+      customQuizData: [],
+      //to hanlde redirect on Custom Quiz Create
+      redirecter: false,
       //keeps separate data for separate sections
       quizSectionWise: [
         {
@@ -482,9 +486,7 @@ class QuizForm extends React.Component {
 
       //transform fields as required according to mutation specs
       tempVariable[index].category = tempVariable[index].category._id;
-      tempVariable[index].timeLimit = Number(
-        tempVariable[index].timeLimit
-      );
+      tempVariable[index].timeLimit = Number(tempVariable[index].timeLimit);
       tempVariable[index].numberOfQuestions = Number(
         tempVariable[index].numberOfQuestions
       );
@@ -727,16 +729,15 @@ class QuizForm extends React.Component {
         }
       }
     });
-
   };
   //Function to handle redirect after Create Cutom Quiz Mutaion is invoked
-  handleMutationComplete = (data) => {
+  handleMutationComplete = data => {
     this.setState({
       ...this.state,
-      customQuizData:data,
-      redirecter:true
+      customQuizData: data,
+      redirecter: true
     });
-console.log(data);
+    console.log(data);
   };
 
   render() {
@@ -768,16 +769,19 @@ console.log(data);
               // assign value of common values to lists
               this.categories = data.categoryDetailsList;
               this.batches = data.batches;
-              // quizType whether to render custom quiz form or assigned. IF true renders custom quiz in student pannel 
+              // quizType whether to render custom quiz form or assigned. IF true renders custom quiz in student pannel
               if (quizType) {
                 return (
-                  <Mutation mutation={CREATE_CUSTOM_QUIZ_QUERY} onCompleted={({generateCustomQuiz})=>{
-                    this.handleMutationComplete(generateCustomQuiz);
-                  }}>
-                    {(generateCustomQuiz,{data}) => {
+                  <Mutation
+                    mutation={CREATE_CUSTOM_QUIZ_QUERY}
+                    onCompleted={({ generateCustomQuiz }) => {
+                      this.handleMutationComplete(generateCustomQuiz);
+                    }}
+                  >
+                    {(generateCustomQuiz, { data }) => {
                       return (
                         <div className={classes.root}>
-                           {/* {console.log("returning Dayas")} */}
+                          {/* {console.log("returning Dayas")} */}
                           {/* {console.log(data)}  */}
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
