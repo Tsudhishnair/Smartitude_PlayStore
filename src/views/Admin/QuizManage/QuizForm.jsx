@@ -95,15 +95,15 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
       sections {
+        category{
+          _id
+          name
+        }
         questions {
           question
           options
           correctOption
           solution
-          category {
-            _id
-            name
-          }
         }
         timeLimit
       }
@@ -741,12 +741,14 @@ class QuizForm extends React.Component {
   };
   //Function to handle redirect after Create Cutom Quiz Mutaion is invoked
   handleMutationComplete = data => {
+    
+    console.log("mutaion completed");
+    console.log(data);
     this.setState({
       ...this.state,
       customQuizData: data,
       redirecter: true
     });
-    console.log(data);
   };
 
   render() {
@@ -790,8 +792,8 @@ class QuizForm extends React.Component {
                     {(generateCustomQuiz, { data }) => {
                       return (
                         <div className={classes.root}>
-                          {console.log("returning Dayas")}
-                          {console.log(data)} 
+                          {/* {console.log("returning Dayas")} */}
+                          {/* {console.log(data)}  */}
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
