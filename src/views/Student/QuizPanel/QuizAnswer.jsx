@@ -79,18 +79,42 @@ class QuizAnswer extends React.Component {
         }
       },
       markedOption: "",
-      prevButton: !this.isFirstQn(),
-      nextButton: !this.isLastQn(
+      prevButton: !this.isNotFirstQn(),
+      nextButton: !this.isNotLastQn(
         this.props.location.state.sections[this.currentSection]
       )
     };
+
+    this.dataToSubmit = {
+      quizId: this.props.location.state._id,
+      attemptedAt: new Date(),
+      attemptedSections: []
+    };
+
+    let i = 0;
+    while (i < this.props.location.state.sections.length) {
+      this.dataToSubmit.attemptedSections.push({
+        attemptedQuestions: []
+      });
+
+      let j = 0;
+      while (j < this.props.location.state.sections[i].questions.length) {
+        this.dataToSubmit.attemptedSections[i].attemptedQuestions.push({
+          question: "",
+          markedOption: "",
+          timeTakenToMark: 0
+        });
+        j++;
+      }
+      i++;
+    }
   }
 
-  isFirstQn = () => {
+  isNotFirstQn = () => {
     return this.currentQnNum !== 0;
   };
 
-  isLastQn = selectedSection => {
+  isNotLastQn = selectedSection => {
     return this.currentQnNum !== selectedSection.questions.length - 1;
   };
 
@@ -115,7 +139,7 @@ class QuizAnswer extends React.Component {
   };
 
   handleNextClick = (event, selectedSection) => {
-    if (this.isLastQn(selectedSection)) {
+    if (this.isNotLastQn(selectedSection)) {
       const newQn = selectedSection.questions[++this.currentQnNum];
 
       this.setState(() => ({
@@ -129,14 +153,14 @@ class QuizAnswer extends React.Component {
           }
         },
         markedOption: "",
-        prevButton: !this.isFirstQn(),
-        nextButton: !this.isLastQn(selectedSection)
+        prevButton: !this.isNotFirstQn(),
+        nextButton: !this.isNotLastQn(selectedSection)
       }));
     }
   };
 
   handlePreviousClick = (event, selectedSection) => {
-    if (this.isFirstQn()) {
+    if (this.isNotFirstQn()) {
       const newQn = selectedSection.questions[--this.currentQnNum];
 
       this.setState(() => ({
@@ -147,17 +171,22 @@ class QuizAnswer extends React.Component {
             2: newQn.options[1],
             3: newQn.options[2],
             4: newQn.options[3]
-          }
-        },
-        markedOption: "",
-        nextButton: !this.isLastQn(selectedSection),
-        prevButton: !this.isFirstQn()
+          },
+          markedOption: "",
+          nextButton: !this.isNotLastQn(selectedSection),
+          prevButton: !this.isNotFirstQn()
+        }
       }));
     }
   };
 
-  handleChange = event => {
+  handleChange = (event, quizSections) => {
     event.persist();
+
+    console.log(quizSections[this.currentSection]);
+    this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
+      this.currentQnNum
+    ] = Number(event.target.value);
 
     this.setState(() => ({
       markedOption: Number(event.target.value)
@@ -209,8 +238,8 @@ class QuizAnswer extends React.Component {
         },
         markedOption: ""
       },
-      prevButton: !this.isFirstQn(),
-      nextButton: !this.isLastQn(quizSection)
+      prevButton: !this.isNotFirstQn(),
+      nextButton: !this.isNotLastQn(quizSection)
     }));
   };
 
@@ -257,6 +286,8 @@ class QuizAnswer extends React.Component {
 
     console.log(quiz);
 
+    console.log(this.dataToSubmit);
+
     return (
       <div className={classes.root}>
         <GridContainer>
@@ -290,7 +321,9 @@ class QuizAnswer extends React.Component {
                       name="option"
                       className={classes.group}
                       value={this.state.markedOption}
-                      onChange={this.handleChange}
+                      onChange={event =>
+                        this.handleChange(event, quiz.sections)
+                      }
                     >
                       <FormControlLabel
                         value={1}
