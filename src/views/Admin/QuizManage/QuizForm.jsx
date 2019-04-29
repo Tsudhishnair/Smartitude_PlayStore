@@ -566,9 +566,8 @@ class QuizForm extends React.Component {
       return <Fragment />;
     }
   };
-
   //create jsx code for one section
-  createSectionPiece = (counter, classes) => {
+  createSectionPiece = (counter, classes, quizType) => {
     let singlePiece;
     let index = counter;
 
@@ -609,30 +608,33 @@ class QuizForm extends React.Component {
               onChipsCleared={() => this.chipsCleared(index)}
             />
           </GridItem>
-          <GridItem xs={12} sm={3} md={3} className={classes.container}>
-            <TextField
-              id="standard-marks"
-              label="+ Marks Per Question"
-              margin="normal"
-              type="number"
-              name="marksPerQn"
-              value={this.state.quizSectionWise[index].marksPerQn}
-              onChange={e => this.handleSectionWiseFields(e, index)}
-              fullWidth
-            />
-          </GridItem>
-          <GridItem xs={12} sm={3} md={3} className={classes.container}>
-            <TextField
-              id="standard-negative-marks"
-              label="- Marks per Question"
-              margin="normal"
-              type="number"
-              name="negativeMarksPerQn"
-              value={this.state.quizSectionWise[index].negativeMarksPerQn}
-              onChange={e => this.handleSectionWiseFields(e, index)}
-              fullWidth
-            />
-          </GridItem>
+          {quizType ?
+             "": <Fragment>
+             <GridItem xs={12} sm={3} md={3} className={classes.container}>
+               <TextField
+                 id="standard-marks"
+                 label="+ Marks Per Question"
+                 margin="normal"
+                 type="number"
+                 name="marksPerQn"
+                 value={this.state.quizSectionWise[index].marksPerQn}
+                 onChange={e => this.handleSectionWiseFields(e, index)}
+                 fullWidth
+               />
+             </GridItem>
+             <GridItem xs={12} sm={3} md={3} className={classes.container}>
+               <TextField
+                 id="standard-negative-marks"
+                 label="- Marks per Question"
+                 margin="normal"
+                 type="number"
+                 name="negativeMarksPerQn"
+                 value={this.state.quizSectionWise[index].negativeMarksPerQn}
+                 onChange={e => this.handleSectionWiseFields(e, index)}
+                 fullWidth
+               />
+             </GridItem>
+           </Fragment>}
           <GridItem xs={12} sm={2} md={6}>
             <TextField
               id="standard-number"
@@ -675,14 +677,14 @@ class QuizForm extends React.Component {
   };
 
   //render code for a section
-  renderSectionDetails = classes => {
+  renderSectionDetails = (classes, quizType) => {
     let counter = 0;
 
     let sectionContainer = [];
 
     //create section pieces
     while (counter <= this.numberOfSections) {
-      let singlePiece = this.createSectionPiece(counter, classes);
+      let singlePiece = this.createSectionPiece(counter, classes, quizType);
 
       sectionContainer.push(singlePiece);
       counter++;
@@ -741,9 +743,6 @@ class QuizForm extends React.Component {
   };
   //Function to handle redirect after Create Cutom Quiz Mutaion is invoked
   handleMutationComplete = data => {
-    
-    console.log("mutaion completed");
-    console.log(data);
     this.setState({
       ...this.state,
       customQuizData: data,
@@ -792,15 +791,13 @@ class QuizForm extends React.Component {
                     {(generateCustomQuiz, { data }) => {
                       return (
                         <div className={classes.root}>
-                          {/* {console.log("returning Dayas")} */}
-                          {/* {console.log(data)}  */}
                           <form autoComplete="off" autoWidth={true}>
                             <Spacing />
                             <Typography>
                               <strong>Custom Quiz Info</strong>
                             </Typography>
                             <GridContainer className={classes.container}>
-                              {this.renderSectionDetails(classes)}
+                              {this.renderSectionDetails(classes, quizType)}
                               <GridItem
                                 xs={12}
                                 sm={6}
