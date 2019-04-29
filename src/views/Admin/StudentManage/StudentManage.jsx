@@ -12,13 +12,10 @@ import CardHeader from "components/Card/CardHeader.jsx";
 
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogStudentTable";
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
-} from "../../../Utils";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 
@@ -48,8 +45,6 @@ const FETCH_STUDENTS = gql`
         name
       }
       batch
-      attemptedAdminQuizzes
-      attemptedCustomQuizzes
     }
   }
 `;
