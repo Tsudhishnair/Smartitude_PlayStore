@@ -144,19 +144,17 @@ class StudentDashboard extends React.Component {
                       </CardBody>
                       <CardFooter>
                         <Icon style={{ color: "white" }}>cached</Icon>
-                        <Link to="/student/start_quiz">
-                          <Button
-                            round
-                            color="info"
-                            style={{
-                              background: "transparent",
-                              marginLeft: "auto"
-                            }}
-                            onClick={this.handleRandomQuiz}
-                          >
-                            Take Quiz
+                        <Button
+                          round
+                          color="info"
+                          style={{
+                            background: "transparent",
+                            marginLeft: "auto"
+                          }}
+                          onClick={this.handleRandomQuiz}
+                        >
+                          Take Quiz
                           </Button>
-                        </Link>
                       </CardFooter>
                     </Card>
                   </GridItem>
