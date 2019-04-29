@@ -2,21 +2,18 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-// core components
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import MUIDataTable from "mui-datatables";
-import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
-import { CircularProgress } from "@material-ui/core";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import Typography from "@material-ui/core/Typography";
+import { CircularProgress, Typography } from "@material-ui/core";
+// core components
+import MUIDataTable from "mui-datatables";
+import GridItem from "../../../components/Grid/GridItem.jsx";
+import GridContainer from "../../../components/Grid/GridContainer.jsx";
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import Card from "../../../components/Card/Card.jsx";
+import CardHeader from "../../../components/Card/CardHeader.jsx";
+import Spacing from "../../../components/Spacing/Spacing.jsx";
+import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
@@ -26,6 +23,7 @@ const styles = theme => ({
   },
   progress: {
     margin: theme.spacing.unit * 10,
+    marginTop: "10%",
     marginLeft: "45%"
   }
 });
@@ -39,7 +37,7 @@ const QUIZ_VIEW_QUERY = gql`
       target
       active
       activeTo
-      }
+    }
   }
 `;
 let quizList = [];
@@ -167,4 +165,4 @@ QuizManage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(QuizManage);
+export default withStyles(styles)(QuizManage);

@@ -96,6 +96,12 @@ class AssignedQuizzes extends React.Component {
       filterType: "checkbox",
       rowsPerPage: 20,
       elevation: 0,
+      print: false,
+      download: false,
+      responsive: "scroll",
+      pagination: false,
+      filter: false,
+      viewColumns: false,
       selectableRows: false,
       rowsPerPageOptions: [20, 30, 100, 200],
       onRowClick: (rowData, rowState) => {

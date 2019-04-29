@@ -5,6 +5,7 @@ import Card from "components/Card/Card.jsx";
 import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 import {
+  CircularProgress,
   Collapse,
   IconButton,
   List,
@@ -16,7 +17,6 @@ import {
 } from "@material-ui/core";
 
 import { Delete, Edit, ExpandLess, ExpandMore } from "@material-ui/icons";
-
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -50,6 +50,11 @@ const styles = theme => ({
   },
   nested: {
     paddingLeft: theme.spacing.unit * 6
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginTop: "10%",
+    marginLeft: "45%"
   }
 });
 
@@ -350,7 +355,7 @@ class CategoryManagement extends React.Component {
         {({ data, loading, error, refetch }) => {
           this.reloadList = refetch;
           if (loading) {
-            return <Typography>Loading</Typography>;
+            return <CircularProgress className={classes.progress} />;
           } else if (error) {
             return <Typography>Error occured while fetching data.</Typography>;
           } else {
