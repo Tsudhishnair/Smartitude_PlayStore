@@ -29,7 +29,6 @@ import { Redirect } from "react-router-dom";
 import moment from "moment";
 import gql from "graphql-tag";
 import { Mutation, Query } from "react-apollo";
-
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
 import PropTypes from "prop-types";

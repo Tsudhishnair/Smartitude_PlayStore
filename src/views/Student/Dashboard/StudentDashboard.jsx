@@ -22,16 +22,28 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
-
 import { emailsSubscriptionChart } from "variables/charts.jsx";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+const RANDOM_QUIZ = gql`
+mutation generateRandomQuiz{
+  questions
+}`;
 
 class StudentDashboard extends React.Component {
-  state = {
-    value: 0
-  };
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      value: 0,
+      RandomQuizQuestion: [],
+      redirector:false
+    };
+  }
+
   handleChange = (event, value) => {
     this.setState({ value });
   };
@@ -39,8 +51,40 @@ class StudentDashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+
+  // handleRandomQuiz = RandomMutaion => {
+  //   const data = RandomMutaion();
+  //   this.setState(prevState => ({
+  //     ...prevState,
+  //     RandomQuizQuestion: data,
+  //     redirector:true
+  //   }));
+  // };
+
+  handleMutationComplete = data => {
+    console.log(data);
+    console.log("asdsbfhasd");
+    this.setState(prevState => ({
+      ...prevState,
+      RandomQuizQuestion: data,
+      redirector:true
+    }));
+  };
   render() {
     const { classes } = this.props;
+    if (this.state.redirecter === true) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/student/quiz",
+            state: {
+              ...this.state.RandomQuizQuestion
+            }
+          }}
+        />
+      );
+    }
     return (
       <div>
         <GridContainer>
@@ -132,7 +176,6 @@ class StudentDashboard extends React.Component {
                       </Card>
                     </Grow>
                   </GridItem>
-
                   <GridItem xs={12} sm={6} md={4}>
                     <Grow
                       in={true}
@@ -156,19 +199,29 @@ class StudentDashboard extends React.Component {
                         </CardBody>
                         <CardFooter>
                           <Icon style={{ color: "white" }}>cached</Icon>
-                          <Link to="/student/start_quiz">
-                            <Button
-                              round
-                              color="info"
-                              style={{
-                                background: "transparent",
-                                marginLeft: "auto"
-                              }}
-                              onClick={this.handleRandomQuiz}
-                            >
-                              Take Quiz
-                            </Button>
-                          </Link>
+                          <Mutation
+                            mutation={RANDOM_QUIZ}
+                            onCompleted={({ generateRandomQuiz }) => {
+                              this.handleMutationComplete(generateRandomQuiz);
+                            }}
+                          >
+                            {(generateRandomQuiz, { data }) => {
+                              return (
+                                <Button
+                                  round
+                                  color="info"
+                                  style={{
+                                    background: "transparent",
+                                    marginLeft: "auto"
+                                  }}
+                                  onClick={
+                                    generateRandomQuiz}
+                                >
+                                  Take Quiz
+                                </Button>
+                              );
+                            }}
+                          </Mutation>
                         </CardFooter>
                       </Card>
                     </Grow>
