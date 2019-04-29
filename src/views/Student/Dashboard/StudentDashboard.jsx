@@ -112,7 +112,7 @@ class StudentDashboard extends React.Component {
                         </p>
                       </CardBody>
                       <CardFooter>
-                        <Icon style={{ color: "smart_white.png" }}>build</Icon>
+                        <Icon style={{ color: "white" }}>build</Icon>
                         <Link to="/student/custom_quiz_setup">
                           <Button
                             round
@@ -143,7 +143,7 @@ class StudentDashboard extends React.Component {
                         </p>
                       </CardBody>
                       <CardFooter>
-                        <Icon style={{ color: "smart_white.png" }}>cached</Icon>
+                        <Icon style={{ color: "white" }}>cached</Icon>
                         <Link to="/student/start_quiz">
                           <Button
                             round
@@ -176,7 +176,7 @@ class StudentDashboard extends React.Component {
                         </p>
                       </CardBody>
                       <CardFooter>
-                        <Icon style={{ color: "smart_white.png" }}>done_all</Icon>
+                        <Icon style={{ color: "white" }}>done_all</Icon>
                         <Link to="/student/assigned_quizzes">
                           <Button
                             round
