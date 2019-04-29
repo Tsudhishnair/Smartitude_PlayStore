@@ -2,16 +2,18 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-// core components
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
-import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
-import MUIDataTable from "mui-datatables";
-import { CircularProgress } from "@material-ui/core";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import Typography from "@material-ui/core/Typography";
+import { CircularProgress, Typography } from "@material-ui/core";
+// core components
+import MUIDataTable from "mui-datatables";
+import GridItem from "../../../components/Grid/GridItem.jsx";
+import GridContainer from "../../../components/Grid/GridContainer.jsx";
+import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import Card from "../../../components/Card/Card.jsx";
+import CardHeader from "../../../components/Card/CardHeader.jsx";
+import Spacing from "../../../components/Spacing/Spacing.jsx";
+import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
@@ -35,9 +37,6 @@ const QUIZ_VIEW_QUERY = gql`
       target
       active
       activeTo
-      activeFrom
-      negativeMarkPerQuestion
-      markPerQuestion
     }
   }
 `;
@@ -58,14 +57,6 @@ const columns = [
     name: "Description",
     options: {
       filter: false,
-      sort: true,
-      display: false
-    }
-  },
-  {
-    name: "Created By",
-    options: {
-      filter: true,
       sort: true
     }
   },
@@ -87,7 +78,8 @@ const columns = [
     name: "Expiry",
     options: {
       filter: false,
-      sort: true
+      sort: true,
+      sortDirection: "desc"
     }
   }
 ];
@@ -105,13 +97,6 @@ class QuestionManage extends React.Component {
     super(props);
   }
 
-  transformDateString = dateString => {
-    const newDate = new Date(dateString);
-
-    return `${newDate.getDate()}/${newDate.getMonth() +
-      1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
-  };
-
   render() {
     const { classes } = this.props;
 
@@ -127,12 +112,11 @@ class QuestionManage extends React.Component {
               let quizData = [];
               quizData.push(data.name);
               quizData.push(data.description);
-              quizData.push(data.name);
               quizData.push(data.target);
 
               data.active ? quizData.push("Yes") : quizData.push("No");
 
-              quizData.push(this.transformDateString(data.activeTo));
+              quizData.push(transformDateString(data.activeTo));
 
               return quizData;
             });
