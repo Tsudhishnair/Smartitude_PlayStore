@@ -18,6 +18,7 @@ import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboar
 import logo from "assets/img/reactlogo.png";
 import { loginHandler } from "../../Utils";
 import MessageDialog from "../../components/Dialog/MessageDialog";
+import Grow from "@material-ui/core/Grow";
 
 const switchRoutes = (
   <Switch>
