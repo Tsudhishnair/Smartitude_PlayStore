@@ -62,6 +62,15 @@ class HeaderLinks extends React.Component {
         }
       }
     `;
+
+    const studentInfo = gql`
+      {
+        meStudent {
+          _id
+          name
+        }
+      }
+    `;
     return (
       <div>
         {/*<div className={classes.searchWrapper}>*/}
@@ -91,7 +100,14 @@ class HeaderLinks extends React.Component {
             {loginHandler.userType === "admin" ? (
               <Query query={adminInfo}>
                 {({ data, loading, error }) => {
-                  return !loading ? `${data.meAdmin.name}` : "";
+                  if (loading) {
+                    return <Typography>Loading...</Typography>;
+                  } else if (error) {
+                    return <Typography>Error Occurred!</Typography>;
+                  } else {
+                    localStorage.setItem("admin", data.meAdmin._id);
+                    return !loading ? `${data.meAdmin.name}` : "";
+                  }
                 }}
               </Query>
             ) : (
@@ -103,10 +119,26 @@ class HeaderLinks extends React.Component {
                   if (loading) {
                     return <Typography>Loading...</Typography>;
                   } else if (error) {
-                    return <Typography>Error occured!</Typography>;
+                    return <Typography>Error Occurred!</Typography>;
                   } else {
                     localStorage.setItem("faculty", data.meFaculty._id);
                     return !loading ? `${data.meFaculty.name}` : "";
+                  }
+                }}
+              </Query>
+            ) : (
+              ""
+            )}
+            {loginHandler.userType === "student" ? (
+              <Query query={studentInfo}>
+                {({ data, loading, error }) => {
+                  if (loading) {
+                    return <Typography>Loading...</Typography>;
+                  } else if (error) {
+                    return <Typography>Error Occurred!</Typography>;
+                  } else {
+                    localStorage.setItem("student", data.meStudent._id);
+                    return !loading ? `${data.meStudent.name}` : "";
                   }
                 }}
               </Query>

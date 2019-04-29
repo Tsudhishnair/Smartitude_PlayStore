@@ -81,7 +81,7 @@ class StudentPanel extends React.Component {
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/admin/login"/>;
+      return <Redirect to="/student/login"/>;
     }
   };
 

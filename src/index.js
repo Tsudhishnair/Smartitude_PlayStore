@@ -48,6 +48,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = createHttpLink({
+  // uri: "http://localhost:4000/graphql"
   uri: "https://smartitude-graphql.herokuapp.com/graphql"
 });
 
