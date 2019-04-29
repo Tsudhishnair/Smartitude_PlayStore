@@ -46,7 +46,7 @@ const dashboardRoutes = [
     subRoute: true,
     component: QuizAnswer
   },
-  
+
   {
     redirect: true,
     path: "/student/custom_quiz_setup",
