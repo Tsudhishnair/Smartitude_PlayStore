@@ -24,27 +24,32 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
 import { emailsSubscriptionChart } from "variables/charts.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import { Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 
 //mutation for generating random quiz questions
 const RANDOM_QUIZ = gql`
-mutation generateRandomQuiz{
-  questions
-}`;
+  mutation generateRandomQuiz {
+    generateRandomQuiz {
+      questions {
+        _id
+        question
+      }
+    }
+  }
+`;
 
-//stores the questions 
+//stores the questions
 class StudentDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
       value: 0,
-      RandomQuizQuestion:[],
+      RandomQuizQuestion: [],
       //checks the state to redirect to next page
-      redirector:false
+      redirector: false
     };
   }
 
@@ -56,7 +61,7 @@ class StudentDashboard extends React.Component {
     this.setState({ value: index });
   };
   handleRandomQuizCreate = generateRandomQuiz => {
-    // generateRandomQuiz;
+    generateRandomQuiz();
   };
   handleMutationComplete = data => {
     console.log(data);
@@ -64,7 +69,7 @@ class StudentDashboard extends React.Component {
     this.setState(prevState => ({
       ...prevState,
       RandomQuizQuestion: data,
-      redirector:true
+      redirector: true
     }));
   };
   render() {
@@ -203,6 +208,10 @@ class StudentDashboard extends React.Component {
                             }}
                           >
                             {(generateRandomQuiz, { data }) => {
+                              if (data) {
+                                console.log("Data fetched for random quiz: ");
+                                console.log(data);
+                              }
                               return (
                                 <Button
                                   round
@@ -211,8 +220,11 @@ class StudentDashboard extends React.Component {
                                     background: "transparent",
                                     marginLeft: "auto"
                                   }}
-                                  onClick={
-                                    this.handleRandomQuizCreate(generateRandomQuiz)}
+                                  onClick={e => {
+                                    this.handleRandomQuizCreate(
+                                      generateRandomQuiz
+                                    );
+                                  }}
                                 >
                                   Take Quiz
                                 </Button>
