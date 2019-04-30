@@ -138,6 +138,10 @@ class QuizAnswer extends React.Component {
                       <RadioGroup
                         aria-label="options"
                         name="option"
+                        value={
+                          this.data.attemptedSections[sectionIndex]
+                            .attemptedQuestions[questionIndex].markedOption
+                        }
                         className={classes.group}
                       >
                         <FormControlLabel
