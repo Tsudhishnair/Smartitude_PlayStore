@@ -65,123 +65,167 @@ const styles = theme => ({
 class QuizAnswer extends React.Component {
   constructor(props) {
     super(props);
+
+    this.data = this.props.location.state;
+
+    console.log(this.data);
   }
+
+  renderHeader = () => {
+    return (
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardContent>
+              <p>
+                <Typography variant={"overline"} />
+                <Typography variant={"h5"}>
+                  <center>
+                    <p>Congratulation</p>
+                  </center>
+                </Typography>
+              </p>
+            </CardContent>
+            <CardFooter>
+              <p>
+                <strong>Score:</strong>
+                25.5/50
+              </p>
+              <p>
+                <strong>Negative Marks:</strong>
+                24
+              </p>
+              <p>
+                <strong>Time Taken:</strong>
+                23.6 mins/30mins
+              </p>
+              <p>
+                <strong>Current Rank:</strong>
+                6th/150
+              </p>
+            </CardFooter>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    );
+  };
+
+  createQuestionPiece = (sectionIndex, questionIndex, classes) => {
+    const question = this.data.sections[sectionIndex].questions[questionIndex];
+
+    console.log(question);
+
+    return (
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <form>
+                  <CardContent>
+                    <Typography>
+                      Question Number: <b>{questionIndex + 1}</b>
+                    </Typography>
+                    <p>{question.question}</p>
+                    <Divider />
+                  </CardContent>
+                  <CardBody>
+                    <FormControl
+                      component="fieldset"
+                      className={classes.formControl}
+                    >
+                      <FormLabel component="legend">Marked Choice</FormLabel>
+                      <RadioGroup
+                        aria-label="options"
+                        name="option"
+                        className={classes.group}
+                      >
+                        <FormControlLabel
+                          value={1}
+                          control={<Radio />}
+                          label={question.options[0]}
+                        />
+                        <FormControlLabel
+                          value={2}
+                          control={<Radio />}
+                          label={question.options[1]}
+                        />
+                        <FormControlLabel
+                          value={3}
+                          control={<Radio />}
+                          label={question.options[2]}
+                        />
+                        <FormControlLabel
+                          value={4}
+                          control={<Radio />}
+                          label={question.options[3]}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </CardBody>
+                  <Divider />
+                </form>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <p>
+                  <strong>Detailed Answer:</strong>
+                  <div>{question.solution}</div>
+                </p>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Card>
+        </GridItem>
+      </GridContainer>
+    );
+  };
+
+  renderQuestions = classes => {
+    let rowCounter = 0,
+      columnCounter = 0;
+
+    let questions = [];
+
+    while (rowCounter < this.data.sections.length) {
+      console.log(this.data.sections);
+
+      columnCounter = 0;
+      while (columnCounter < this.data.sections[rowCounter].questions.length) {
+        questions.push(
+          this.createQuestionPiece(rowCounter, columnCounter, classes)
+        );
+        columnCounter++;
+      }
+      rowCounter++;
+    }
+
+    return (
+      <React.Fragment>
+        <Spacing />
+        {questions}
+      </React.Fragment>
+    );
+  };
+
+  createSectionHeader = () => {
+    return <Typography>Section #</Typography>;
+  };
 
   render() {
     const { classes } = this.props;
-
-    console.log(this.props.location.state);
 
     return (
       <div className={classes.root}>
         <GridContainer>
           <GridItem>
             <Typography>
-              <h4>Quiz 1</h4>
+              <h4>{this.data.name}</h4>
             </Typography>
           </GridItem>
         </GridContainer>
         <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardContent>
-                <p>
-                  <Typography variant={"overline"} />
-                  <Typography variant={"h5"}>
-                    <center>
-                      <p>Congratulation</p>
-                    </center>
-                  </Typography>
-                </p>
-              </CardContent>
-              <CardFooter>
-                <p>
-                  <strong>Score:</strong>
-                  25.5/50
-                </p>
-                <p>
-                  <strong>Negative Marks:</strong>
-                  24
-                </p>
-                <p>
-                  <strong>Time Taken:</strong>
-                  23.6 mins/30mins
-                </p>
-                <p>
-                  <strong>Current Rank:</strong>
-                  6th/150
-                </p>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <form>
-                    <CardContent>
-                      <Typography>
-                        Question Number: <b>1</b>
-                      </Typography>
-                      <p>
-                        A train travells at a spped of 120 km/hr. how long does
-                        it take to travel a distance of 3km?
-                      </p>
-                      <Divider />
-                    </CardContent>
-                    <CardBody>
-                      <FormControl
-                        component="fieldset"
-                        className={classes.formControl}
-                      >
-                        <FormLabel component="legend">Marked Choice</FormLabel>
-                        <RadioGroup
-                          aria-label="options"
-                          name="option"
-                          className={classes.group}
-                        >
-                          <FormControlLabel
-                            value={1}
-                            control={<Radio />}
-                            label={"1"}
-                          />
-                          <FormControlLabel
-                            value={2}
-                            control={<Radio />}
-                            label={"2"}
-                          />
-                          <FormControlLabel
-                            value={3}
-                            control={<Radio />}
-                            label={"3"}
-                          />
-                          <FormControlLabel
-                            value={4}
-                            control={<Radio />}
-                            label={"4"}
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </CardBody>
-                    <Divider />
-                  </form>
-                </ExpansionPanelSummary>
-
-                <ExpansionPanelDetails>
-                  <p>
-                    <strong>Detailed Answer:</strong>
-                    <div>The has no fuel thus it travels zero km.</div>
-                  </p>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Card>
-          </GridItem>
-        </GridContainer>
+        {this.renderHeader()}
+        {this.createSectionHeader()}
+        {this.renderQuestions(classes)}
       </div>
     );
   }
