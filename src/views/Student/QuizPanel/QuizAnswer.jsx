@@ -141,7 +141,7 @@ class QuizAnswer extends React.Component {
   handleNextClick = (event, selectedSection) => {
     if (this.isNotLastQn(selectedSection)) {
       const newQn = selectedSection.questions[++this.currentQnNum];
-
+      console.log(this.getMarkedOption());
       this.setState(() => ({
         fields: {
           question: newQn.question,
@@ -152,7 +152,7 @@ class QuizAnswer extends React.Component {
             4: newQn.options[3]
           }
         },
-        markedOption: "",
+        markedOption: this.getMarkedOption(),
         prevButton: !this.isNotFirstQn(),
         nextButton: !this.isNotLastQn(selectedSection)
       }));
@@ -162,7 +162,7 @@ class QuizAnswer extends React.Component {
   handlePreviousClick = (event, selectedSection) => {
     if (this.isNotFirstQn()) {
       const newQn = selectedSection.questions[--this.currentQnNum];
-
+      console.log(this.getMarkedOption());
       this.setState(() => ({
         fields: {
           question: newQn.question,
@@ -171,11 +171,11 @@ class QuizAnswer extends React.Component {
             2: newQn.options[1],
             3: newQn.options[2],
             4: newQn.options[3]
-          },
-          markedOption: "",
-          nextButton: !this.isNotLastQn(selectedSection),
-          prevButton: !this.isNotFirstQn()
-        }
+          }
+        },
+        markedOption: this.getMarkedOption(),
+        nextButton: !this.isNotLastQn(selectedSection),
+        prevButton: !this.isNotFirstQn()
       }));
     }
   };
@@ -184,9 +184,8 @@ class QuizAnswer extends React.Component {
     event.persist();
 
     console.log(quizSections[this.currentSection]);
-    this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
-      this.currentQnNum
-    ] = Number(event.target.value);
+
+    this.setMarkedOption(event.target.value);
 
     this.setState(() => ({
       markedOption: Number(event.target.value)
@@ -236,11 +235,22 @@ class QuizAnswer extends React.Component {
           3: currentQn.options[2],
           4: currentQn.options[3]
         },
-        markedOption: ""
+        markedOption: this.getMarkedOption()
       },
       prevButton: !this.isNotFirstQn(),
       nextButton: !this.isNotLastQn(quizSection)
     }));
+  };
+
+  setMarkedOption = value => {
+    this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
+      this.currentQnNum
+    ].markedOption = Number(value);
+  };
+
+  getMarkedOption = () => {
+    return this.dataToSubmit.attemptedSections[this.currentSection]
+      .attemptedQuestions[this.currentQnNum].markedOption;
   };
 
   generateQuestionJumpers = (quizSection, styles) => {
