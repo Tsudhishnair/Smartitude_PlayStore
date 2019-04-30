@@ -83,7 +83,7 @@ class QuizPanelView extends React.Component {
       nextButton: !this.isNotLastQn(
         this.props.location.state.sections[this.currentSection]
       ),
-      redirector:false,
+      redirector: false
     };
 
     this.dataToSubmit = {
@@ -101,7 +101,7 @@ class QuizPanelView extends React.Component {
       let j = 0;
       while (j < this.props.location.state.sections[i].questions.length) {
         this.dataToSubmit.attemptedSections[i].attemptedQuestions.push({
-          question: "",
+          question: this.props.location.state.sections[i].questions[j]._id,
           markedOption: "",
           timeTakenToMark: 0
         });
@@ -130,9 +130,9 @@ class QuizPanelView extends React.Component {
       this.setFields(quizSections[this.currentSection]);
     } else {
       // TODO: CALL MUTATION HERE
-      this.setState(prevState=>({
+      this.setState(prevState => ({
         ...prevState,
-        redirector:true
+        redirector: true
       }));
     }
   };
@@ -146,7 +146,7 @@ class QuizPanelView extends React.Component {
   handleNextClick = (event, selectedSection) => {
     if (this.isNotLastQn(selectedSection)) {
       const newQn = selectedSection.questions[++this.currentQnNum];
-      console.log(this.getMarkedOption());
+
       this.setState(() => ({
         fields: {
           question: newQn.question,
@@ -167,7 +167,7 @@ class QuizPanelView extends React.Component {
   handlePreviousClick = (event, selectedSection) => {
     if (this.isNotFirstQn()) {
       const newQn = selectedSection.questions[--this.currentQnNum];
-      console.log(this.getMarkedOption());
+
       this.setState(() => ({
         fields: {
           question: newQn.question,
@@ -302,13 +302,13 @@ class QuizPanelView extends React.Component {
     console.log(quiz);
 
     console.log(this.dataToSubmit);
-    
+
     if (this.state.redirector === true) {
       return (
         <Redirect
           push
           to={{
-            pathname: "/student/quiz_answer",
+            pathname: "/student/quiz_answer"
           }}
         />
       );
