@@ -108,6 +108,7 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
           name
         }
         questions {
+          _id
           question
           options
           correctOption
@@ -772,11 +773,10 @@ class QuizForm extends React.Component {
     // console.log("data initiation begins in 3,2,1............");
     requestedSectionsArray = this.transformSections(this.state.quizSectionWise);
     for (let index in requestedSectionsArray) {
-      console.log("removing data")
       delete requestedSectionsArray[index].marksPerQn;
       delete requestedSectionsArray[index].negativeMarksPerQn;
     }
-    // console.log(requestedSectionsArray);
+    console.log(requestedSectionsArray);
     mutation({
       variables: {
         customQuizRequest: {
