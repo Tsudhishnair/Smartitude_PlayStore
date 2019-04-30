@@ -12,13 +12,12 @@ import CardBody from "../../../components/Card/CardBody";
 
 import MUIDataTable from "mui-datatables";
 
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import { transformDateString } from "../../../Utils";
 import { Redirect } from "react-router-dom";
+import {CircularProgress} from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -31,6 +30,11 @@ const styles = theme => ({
   },
   textDarkGrey: {
     color: "#696969"
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginTop: "10%",
+    marginLeft: "45%"
   }
 });
 
@@ -154,7 +158,9 @@ class AssignedQuizzes extends React.Component {
                   <Query query={ADMIN_QUIZZES_BATCH}>
                     {({ data, loading, error }) => {
                       if (loading) {
-                        return "Loading";
+                        return (
+                          <CircularProgress className={classes.progress} />
+                        );
                       } else if (error) {
                         return "Error occured";
                       } else {
@@ -194,4 +200,4 @@ AssignedQuizzes.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(AssignedQuizzes);
+export default withStyles(styles)(AssignedQuizzes);
