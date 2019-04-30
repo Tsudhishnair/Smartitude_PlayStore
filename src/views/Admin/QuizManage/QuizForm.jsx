@@ -274,7 +274,7 @@ class QuizForm extends React.Component {
     }));
   };
   //handle needNegative toggle Field
-  handleNeedNegative = event => {
+  handleNeedNegative = () => {
     this.setState(prevState => ({
       ...prevState,
       needNegative: !prevState.needNegative
@@ -771,7 +771,8 @@ class QuizForm extends React.Component {
     e.preventDefault();
     // console.log("data initiation begins in 3,2,1............");
     requestedSectionsArray = this.transformSections(this.state.quizSectionWise);
-    for (const index in requestedSectionsArray) {
+    for (let index in requestedSectionsArray) {
+      console.log("removing data")
       delete requestedSectionsArray[index].marksPerQn;
       delete requestedSectionsArray[index].negativeMarksPerQn;
     }
@@ -843,7 +844,7 @@ class QuizForm extends React.Component {
                                     <Switch
                                       name="needNegative"
                                       checked={this.state.needNegative}
-                                      onChange={e => this.handleNeedNegative(e)}
+                                      onChange={this.handleNeedNegative}
                                     />
                                   }
                                   label="Negative Marking"
