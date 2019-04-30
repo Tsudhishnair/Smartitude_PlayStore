@@ -109,6 +109,8 @@ class QuizPanelView extends React.Component {
       }
       i++;
     }
+
+    this.manageTimeTakenCounter();
   }
 
   isNotFirstQn = () => {
@@ -185,10 +187,8 @@ class QuizPanelView extends React.Component {
     }
   };
 
-  handleChange = (event, quizSections) => {
+  handleChange = event => {
     event.persist();
-
-    console.log(quizSections[this.currentSection]);
 
     this.setMarkedOption(event.target.value);
 
@@ -256,6 +256,13 @@ class QuizPanelView extends React.Component {
   getMarkedOption = () => {
     return this.dataToSubmit.attemptedSections[this.currentSection]
       .attemptedQuestions[this.currentQnNum].markedOption;
+  };
+
+  manageTimeTakenCounter = () => {
+    setInterval(() => {
+      this.dataToSubmit.attemptedSections[this.currentSection]
+        .attemptedQuestions[this.currentQnNum].timeTakenToMark++;
+    }, 1000);
   };
 
   generateQuestionJumpers = (quizSection, styles) => {
