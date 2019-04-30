@@ -128,7 +128,7 @@ class QuizAnswer extends React.Component {
                         className={classes.formControl}
                       >
                         <FormLabel component="legend">
-                          Select your correct choice below
+                          Marked Choice
                         </FormLabel>
                         <RadioGroup
                           aria-label="options"
