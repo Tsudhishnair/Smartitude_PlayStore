@@ -34,7 +34,7 @@ import Spacing from "../../../components/Spacing/Spacing";
 import PropTypes from "prop-types";
 
 const styles = theme => ({
-  formroot: {
+  formRoot: {
     display: "flex",
     flexWrap: "wrap"
   },
@@ -58,10 +58,19 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
     minWidth: 120,
     display: "flex",
-    flexGrow: 1
+    flexGrow: 1,
+    margin: "18px 0 0 0",
+    position: "relative"
   },
   button: {
     margin: theme.spacing.unit * 4
+  },
+  delete: {
+    margin: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 4
+  },
+  greyBackground: {
+    background: "grey"
   }
 });
 
@@ -349,6 +358,7 @@ class QuizForm extends React.Component {
 
     //handle conditions where only one section is presnt
     if (Object.keys(tempObj).length < 2) {
+      null;
     } else {
       //if more than one section is present, delete the section where the button was clicked and render new state
       delete tempObj[index];
@@ -573,102 +583,134 @@ class QuizForm extends React.Component {
     if (this.state.quizSectionWise[index]) {
       singlePiece = (
         <Fragment>
-          <GridItem xs={12} sm={4} md={4} className={classes.formControl}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="category">Category</InputLabel>
-              <Select
-                onChange={e => this.handleCategorySelect(e, index)}
-                value={this.state.quizSectionWise[index].category.name}
-                renderValue={value => {
-                  return value;
-                }}
-                inputProps={{
-                  name: "category",
-                  id: "category"
-                }}
-                fullWidth
-              >
-                {this.renderCategoryDropdown()}
-              </Select>
-            </FormControl>
-          </GridItem>
-          <GridItem xs={12} sm={8} md={8} className={classes.elementPadding}>
-            <ReactChipInput
-              style={{ zIndex: 0 }}
-              data={this.state.quizSectionWise[index].subcategoryList}
-              label="Sub-Categories"
-              hintText="Select sub-categories"
-              getSelectedObjects={selectedSubcategories =>
-                this.getSelectedSubcategories(selectedSubcategories, index)
-              }
-              clearChips={
-                this.state.quizSectionWise[index].clearSubcategoryChips
-              }
-              onChipsCleared={() => this.chipsCleared(index)}
-            />
-          </GridItem>
-          {quizType ? (
-            ""
-          ) : (
-            <Fragment>
-              <GridItem xs={12} sm={3} md={3} className={classes.container}>
-                <TextField
-                  id="standard-marks"
-                  label="+ Marks Per Question"
-                  margin="normal"
-                  type="number"
-                  name="marksPerQn"
-                  value={this.state.quizSectionWise[index].marksPerQn}
-                  onChange={e => this.handleSectionWiseFields(e, index)}
-                  fullWidth
-                />
-              </GridItem>
-              <GridItem xs={12} sm={3} md={3} className={classes.container}>
-                <TextField
-                  id="standard-negative-marks"
-                  label="- Marks per Question"
-                  margin="normal"
-                  type="number"
-                  name="negativeMarksPerQn"
-                  value={this.state.quizSectionWise[index].negativeMarksPerQn}
-                  onChange={e => this.handleSectionWiseFields(e, index)}
-                  fullWidth
-                />
-              </GridItem>
-            </Fragment>
-          )}
-          <GridItem xs={12} sm={2} md={3}>
-            <TextField
-              id="standard-number"
-              label="No. Of Quest."
-              type="number"
-              fullWidth
-              margin="normal"
-              name="numberOfQuestions"
-              value={this.state.quizSectionWise[index].numberOfQuestions}
-              onChange={e => this.handleSectionWiseFields(e, index)}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={2} md={3}>
-            <TextField
-              id="standard-number"
-              label="Time Limit (min)"
-              type="number"
-              margin="normal"
-              name="timeLimit"
-              value={this.state.quizSectionWise[index].timeLimit}
-              onChange={e => this.handleSectionWiseFields(e, index)}
-            />
-            <Tooltip title={"Delete Category Section"}>
-              <IconButton onClick={() => this.handleDeleteClick(index)}>
-                <Delete />
-              </IconButton>
-              {/*<IconButton onClick={() => this.handleDeleteClick(index)}>*/}
-              {/*  {this.numberOfSections ? <Delete /> : <br />}*/}
-              {/*</IconButton>*/}
-            </Tooltip>
-          </GridItem>
           <Spacing />
+          <GridContainer>
+            <GridItem xs={12} sm={4} md={4}>
+              <FormControl required fullWidth className={classes.formControl}>
+                <InputLabel htmlFor="category">Category</InputLabel>
+                <Select
+                  onChange={e => this.handleCategorySelect(e, index)}
+                  value={this.state.quizSectionWise[index].category.name}
+                  hintText="Select Categories"
+                  renderValue={value => {
+                    return value;
+                  }}
+                  inputProps={{
+                    name: "category",
+                    id: "category"
+                  }}
+                  fullWidth
+                >
+                  {this.renderCategoryDropdown()}
+                </Select>
+              </FormControl>
+            </GridItem>
+            <GridItem xs={12} sm={8} md={8}>
+              <FormControl
+                required
+                fullWidth
+                className={classes.formControl}
+              >
+                <ReactChipInput
+                  style={{ zIndex: 0 }}
+                  data={this.state.quizSectionWise[index].subcategoryList}
+                  label="Sub-Categories"
+                  margin={"normal"}
+                  hintText="Select sub-categories"
+                  getSelectedObjects={selectedSubcategories =>
+                    this.getSelectedSubcategories(selectedSubcategories, index)
+                  }
+                  clearChips={
+                    this.state.quizSectionWise[index].clearSubcategoryChips
+                  }
+                  onChipsCleared={() => this.chipsCleared(index)}
+                />
+              </FormControl>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            {quizType ? (
+              ""
+            ) : (
+              <Fragment>
+                <GridItem xs={12} sm={2} md={2} className={classes.container}>
+                  <FormControl
+                    required
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <TextField
+                      id="standard-marks"
+                      label="+ Marks per Quest."
+                      margin="normal"
+                      type="number"
+                      name="marksPerQn"
+                      value={this.state.quizSectionWise[index].marksPerQn}
+                      onChange={e => this.handleSectionWiseFields(e, index)}
+                      fullWidth
+                    />
+                  </FormControl>
+                </GridItem>
+                <GridItem xs={12} sm={2} md={2} className={classes.container}>
+                  <FormControl
+                    required
+                    fullWidth
+                    className={classes.formControl}
+                  >
+                    <TextField
+                      id="standard-negative-marks"
+                      label="- Marks per Quest."
+                      margin="normal"
+                      type="number"
+                      name="negativeMarksPerQn"
+                      value={
+                        this.state.quizSectionWise[index].negativeMarksPerQn
+                      }
+                      onChange={e => this.handleSectionWiseFields(e, index)}
+                      fullWidth
+                    />
+                  </FormControl>
+                </GridItem>
+              </Fragment>
+            )}
+            <GridItem xs={12} sm={2} md={3}>
+              <FormControl required fullWidth className={classes.formControl}>
+                <TextField
+                  id="standard-number"
+                  label="No. Of Quest."
+                  type="number"
+                  fullWidth
+                  margin="normal"
+                  name="numberOfQuestions"
+                  value={this.state.quizSectionWise[index].numberOfQuestions}
+                  onChange={e => this.handleSectionWiseFields(e, index)}
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem xs={10} sm={2} md={3}>
+              <FormControl required fullWidth className={classes.formControl}>
+                <TextField
+                  id="standard-number"
+                  label="Time Limit (min)"
+                  type="number"
+                  margin="normal"
+                  name="timeLimit"
+                  value={this.state.quizSectionWise[index].timeLimit}
+                  onChange={e => this.handleSectionWiseFields(e, index)}
+                />
+              </FormControl>
+            </GridItem>
+            <GridItem xs={2} sm={1} md={1}>
+              <div className={classes.delete}>
+                <Tooltip title={"Delete Category Section"}>
+                  <IconButton onClick={() => this.handleDeleteClick(index)}>
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </GridItem>
+            <Spacing />
+          </GridContainer>
         </Fragment>
       );
     } else {
@@ -792,20 +834,10 @@ class QuizForm extends React.Component {
                   >
                     {(generateCustomQuiz, { data }) => {
                       return (
-                        <div className={classes.root}>
-                          <form autoComplete="off" autoWidth={true}>
-                            <Spacing />
-                            <Typography>
-                              <strong>Custom Quiz Info</strong>
-                            </Typography>
+                        <Fragment>
+                          <form autoComplete="off" fullwidth>
                             <GridContainer className={classes.container}>
-                              {this.renderSectionDetails(classes, quizType)}
-                              <GridItem
-                                xs={12}
-                                sm={6}
-                                md={6}
-                                className={classes.container}
-                              >
+                              <GridItem xs={12} sm={12} md={12}>
                                 <FormControlLabel
                                   control={
                                     <Switch
@@ -814,10 +846,11 @@ class QuizForm extends React.Component {
                                       onChange={e => this.handleNeedNegative(e)}
                                     />
                                   }
-                                  label="Need Negative marks or not"
+                                  label="Negative Marking"
                                 />
                               </GridItem>
                             </GridContainer>
+                            {this.renderSectionDetails(classes, quizType)}
                             <ExpansionPanelActions>
                               <Button
                                 color="primary"
@@ -849,7 +882,7 @@ class QuizForm extends React.Component {
                               </Link>
                             </ExpansionPanelActions>
                           </form>
-                        </div>
+                        </Fragment>
                       );
                     }}
                   </Mutation>
@@ -864,22 +897,24 @@ class QuizForm extends React.Component {
                         <strong>Quiz Info</strong>
                       </Typography>
                       <GridContainer>
-                        <GridItem
-                          xs={12}
-                          sm={3}
-                          md={3}
-                          className={classes.container}
-                        >
-                          <TextField
-                            id="standard-search"
-                            label="Quiz Name"
-                            type="input"
-                            margin="normal"
-                            name="quizName"
-                            value={this.state.quizCommon.quizName}
-                            onChange={e => this.handleCommonFieldChanges(e)}
+                        <GridItem xs={12} sm={3} md={3}>
+                          <FormControl
+                            required
                             fullWidth
-                          />
+                            className={classes.formControl}
+                            style={{ marginTop: "-4px" }}
+                          >
+                            <TextField
+                              id="standard-search"
+                              label="Quiz Name"
+                              type="input"
+                              margin="normal"
+                              name="quizName"
+                              value={this.state.quizCommon.quizName}
+                              onChange={e => this.handleCommonFieldChanges(e)}
+                              fullWidth
+                            />
+                          </FormControl>
                         </GridItem>
                         <GridItem xs={12} sm={3} md={3}>
                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -919,13 +954,12 @@ class QuizForm extends React.Component {
                             />
                           </MuiPickersUtilsProvider>
                         </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={3}
-                          md={3}
-                          className={classes.formroot}
-                        >
-                          <FormControl className={classes.formControl}>
+                        <GridItem xs={12} sm={3} md={3}>
+                          <FormControl
+                            required
+                            fullWidth
+                            className={classes.formControl}
+                          >
                             <InputLabel htmlFor="batch">Batch</InputLabel>
                             <Select
                               onChange={e => this.handleCommonFieldChanges(e)}
@@ -960,49 +994,49 @@ class QuizForm extends React.Component {
                             label="Active"
                           />
                         </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          className={classes.container}
-                        >
-                          <TextField
-                            id="standard-instructions"
-                            label="Instructions for students"
-                            margin="normal"
-                            type="text"
-                            name="instructions"
-                            placeholder="These will be listed on the student's pre-quiz screen. Use ~ to separate your instructions"
-                            value={this.state.quizCommon.instructions}
-                            onChange={e => this.handleCommonFieldChanges(e)}
+                        <GridItem xs={12} sm={12} md={12}>
+                          <FormControl
+                            required
                             fullWidth
-                          />
+                            className={classes.formControl}
+                          >
+                            <TextField
+                              id="standard-instructions"
+                              label="Instructions for students"
+                              margin="normal"
+                              type="text"
+                              name="instructions"
+                              placeholder="These will be listed on the student's pre-quiz screen. Use ~ to separate your instructions"
+                              value={this.state.quizCommon.instructions}
+                              onChange={e => this.handleCommonFieldChanges(e)}
+                              fullWidth
+                            />
+                          </FormControl>
                         </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          className={classes.container}
-                        >
-                          <TextField
-                            id="description"
-                            label="Quiz Description"
-                            margin="normal"
-                            type="text"
-                            name="description"
-                            value={this.state.quizCommon.description}
-                            onChange={e => this.handleCommonFieldChanges(e)}
+                        <GridItem xs={12} sm={12} md={12}>
+                          <FormControl
+                            required
                             fullWidth
-                          />
+                            className={classes.formControl}
+                          >
+                            <TextField
+                              id="description"
+                              label="Quiz Description"
+                              margin="normal"
+                              type="text"
+                              name="description"
+                              value={this.state.quizCommon.description}
+                              onChange={e => this.handleCommonFieldChanges(e)}
+                              fullWidth
+                            />
+                          </FormControl>
                         </GridItem>
                       </GridContainer>
                       <Spacing />
                       <Typography>
                         <strong>Category Info</strong>
                       </Typography>
-                      <GridContainer className={classes.container}>
-                        {this.renderSectionDetails(classes)}
-                      </GridContainer>
+                      {this.renderSectionDetails(classes)}
                       <ExpansionPanelActions>
                         <Button
                           color="primary"

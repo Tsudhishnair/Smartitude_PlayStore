@@ -25,7 +25,7 @@ import Card from "../../../components/Card/Card";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
-  formroot: {
+  formRoot: {
     display: "flex",
     flexWrap: "wrap"
   },

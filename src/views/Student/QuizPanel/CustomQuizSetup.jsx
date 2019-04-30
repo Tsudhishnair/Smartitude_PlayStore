@@ -6,12 +6,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import {Button, CardContent, Typography } from "@material-ui/core";
+import { Button, CardContent, Divider, Typography } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import Card from "components/Card/Card.jsx";
 import QuizForm from "../../Admin/QuizManage/QuizForm";
 import CardHeader from "../../../components/Card/CardHeader";
 import Spacing from "../../../components/Spacing/Spacing";
+import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
   root: {
@@ -65,26 +66,23 @@ class CustomQuizSetup extends React.Component {
 
     return (
       <div className={classes.root}>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <form>
-                <CardHeader color="success" className={classes.root}>
-                  <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
-                </CardHeader>
-                <CardContent>
-                  <Typography variant="body2">
-                    Create a custom quiz of your preferred categories and topics
-                  </Typography>
-                  <Spacing />
-                  //Quiz form for assigned and custom quiz quizType if true displays cutom quiz form
-                  <QuizForm quizType={true}/>
-                </CardContent>
-              </form>
-            </Card>
-          </GridItem>
-        </GridContainer>
+        <Card>
+          <form>
+            <CardHeader color="success" className={classes.root}>
+              <h4 className={classes.cardTitleWhite}>Custom Quiz</h4>
+            </CardHeader>
+            <CardBody>
+              <Typography variant="body2">
+                Create a custom quiz of your preferred categories and topics
+              </Typography>
 
+              <CardContent>
+                <Divider />
+                <QuizForm quizType={true} />
+              </CardContent>
+            </CardBody>
+          </form>
+        </Card>
       </div>
     );
   }
