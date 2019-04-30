@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Route, Router, Switch } from "react-router-dom";
-
 import "assets/css/material-dashboard-react.css?v=1.5.0";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { orange700 } from "material-ui/styles/colors";
 
 import { ApolloClient } from "apollo-client";
 import { ApolloProvider } from "react-apollo";

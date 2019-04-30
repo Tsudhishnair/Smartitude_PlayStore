@@ -87,12 +87,9 @@ class Notifications extends React.Component {
               Material UI
             </a>{" "}
             and styled by{" "}
-            <a target="_blank" href="https://www.creative-tim.com/">
-              Creative Tim
-            </a>. Please checkout the{" "}
-            <a href="#pablo" target="_blank">
-              full documentation
-            </a>.
+            <a target="_blank" href="">
+              Smartitude
+            </a>
           </p>
         </CardHeader>
         <CardBody>
