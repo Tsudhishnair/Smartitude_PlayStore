@@ -62,14 +62,20 @@ class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
 
+    //currentSecion is an index value of the section that is being attempted currently
     this.currentSection = 0;
+
+    //maintaining index value of current question being answered
     this.currentQnNum = 0;
 
+    //get object of current question being answered
     const currentQn = this.props.location.state.sections[this.currentSection]
       .questions[this.currentQnNum];
 
     this.state = {
+      //index value of step that is active
       activeStep: 0,
+      //maintain value of fields of question
       fields: {
         question: currentQn.question,
         options: {
@@ -79,20 +85,25 @@ class QuizPanelView extends React.Component {
           4: currentQn.options[3]
         }
       },
+      //integer value of option marked by user
       markedOption: "",
+      //maintain state of prev and next buttons
       prevButton: !this.isNotFirstQn(),
       nextButton: !this.isNotLastQn(
         this.props.location.state.sections[this.currentSection]
       ),
+      //used to redirect from quizPanel to answers view
       redirector: false
     };
 
+    //contains data to be submitted on submission of sections and quiz
     this.dataToSubmit = {
       quizId: this.props.location.state._id,
       attemptedAt: new Date(),
       attemptedSections: []
     };
 
+    //populate dataToSubmit with empty data to protect against undefined values
     let i = 0;
     while (i < this.props.location.state.sections.length) {
       this.dataToSubmit.attemptedSections.push({
@@ -111,20 +122,26 @@ class QuizPanelView extends React.Component {
       i++;
     }
 
+    //start time counter
     this.manageTimeTakenCounter();
   }
 
+  //check if qn is the first of the section
   isNotFirstQn = () => {
     return this.currentQnNum !== 0;
   };
 
+  //check if qn is the last of the section
   isNotLastQn = selectedSection => {
     return this.currentQnNum !== selectedSection.questions.length - 1;
   };
 
+  //called when section submit is called
   handleSectionSubmit = quizSections => {
+    //set qn index to 0 to start from first qn
     this.currentQnNum = 0;
 
+    //check if section is the last one, if not, change activeStep and change fields
     if (++this.currentSection < quizSections.length) {
       this.setState(prevState => ({
         activeStep: prevState.activeStep + 1
@@ -132,20 +149,22 @@ class QuizPanelView extends React.Component {
 
       this.setFields(quizSections[this.currentSection]);
     } else {
+      //call mutation for final section submission
       // TODO: CALL MUTATION HERE
-      this.setState(prevState => ({
-        ...prevState,
+      this.setState(() => ({
         redirector: true
       }));
     }
   };
 
+  //clear markedOption field
   handleClearClick = () => {
     this.setState(() => ({
       markedOption: this.setMarkedOption("")
     }));
   };
 
+  //change qn to the next index
   handleNextClick = (event, selectedSection) => {
     if (this.isNotLastQn(selectedSection)) {
       const newQn = selectedSection.questions[++this.currentQnNum];
@@ -167,6 +186,7 @@ class QuizPanelView extends React.Component {
     }
   };
 
+  //change qn to the previous index
   handlePreviousClick = (event, selectedSection) => {
     if (this.isNotFirstQn()) {
       const newQn = selectedSection.questions[--this.currentQnNum];
@@ -188,9 +208,11 @@ class QuizPanelView extends React.Component {
     }
   };
 
+  //called when an option is clicked in a question
   handleChange = event => {
     event.persist();
 
+    //change marked option to the new option
     this.setMarkedOption(event.target.value);
 
     this.setState(() => ({
@@ -198,6 +220,7 @@ class QuizPanelView extends React.Component {
     }));
   };
 
+  //get steps for display
   getSteps = quizSections => {
     let sectionNames = [];
     let i = 0;
@@ -208,11 +231,12 @@ class QuizPanelView extends React.Component {
     return sectionNames;
   };
 
+  //get the current question number
   getQuestionNumber = () => {
     return this.currentQnNum + 1;
   };
 
-  //now returning total time, thats not required, return time for only one section
+  //return timeLimit of the section
   getTimeLimit = section => {
     return section.timeLimit;
     // let totalTime = 0;
@@ -225,11 +249,13 @@ class QuizPanelView extends React.Component {
     // return totalTime;
   };
 
+  //change questionIndex and set fields
   changeQuestion = (questionNo, quizSection) => {
     this.currentQnNum = questionNo;
     this.setFields(quizSection);
   };
 
+  //set question fields depending on the current section and qnNumber
   setFields = quizSection => {
     const currentQn = quizSection.questions[this.currentQnNum];
     this.setState(() => ({
@@ -248,17 +274,20 @@ class QuizPanelView extends React.Component {
     }));
   };
 
+  //set Marked option depending on the value passed
   setMarkedOption = value => {
     this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
       this.currentQnNum
     ].markedOption = Number(value);
   };
 
+  //return options that were marked
   getMarkedOption = () => {
     return this.dataToSubmit.attemptedSections[this.currentSection]
       .attemptedQuestions[this.currentQnNum].markedOption;
   };
 
+  //start counter. this counter sets value for timeTakenToMark field in the array to be submitted according to the current section and Qno
   manageTimeTakenCounter = () => {
     setInterval(() => {
       this.dataToSubmit.attemptedSections[this.currentSection]
@@ -266,9 +295,11 @@ class QuizPanelView extends React.Component {
     }, 1000);
   };
 
+  //generate jumpers
   generateQuestionJumpers = (quizSection, styles) => {
     let quizJumpers = [];
 
+    //create jumpers and assign colors according to the current index of qn
     let i = 0;
     while (i < quizSection.questions.length) {
       if (this.currentQnNum + 1 === i + 1) {
@@ -284,6 +315,7 @@ class QuizPanelView extends React.Component {
     return quizJumpers;
   };
 
+  //return Fab code for the jumper
   generateJumper = (questionNo, color, styles, quizSection) => {
     return (
       <Fab
