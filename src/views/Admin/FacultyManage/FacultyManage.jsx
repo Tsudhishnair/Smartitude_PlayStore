@@ -170,6 +170,7 @@ class Dashboard extends React.Component {
     const options = {
       filterType: "checkbox",
       rowsPerPage: 20,
+      responsive: "scroll",
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200, 1000],
       onRowsSelect: (currentRowsSelected, allRowsSelected) => {

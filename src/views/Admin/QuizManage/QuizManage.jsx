@@ -88,6 +88,7 @@ const options = {
   filterType: "checkbox",
   rowsPerPage: 20,
   elevation: 0,
+  responsive: "scroll",
   selectableRows: false,
   rowsPerPageOptions: [20, 30, 100, 200]
 };
