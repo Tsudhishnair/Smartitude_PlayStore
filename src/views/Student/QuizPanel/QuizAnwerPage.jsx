@@ -183,14 +183,16 @@ class QuizAnswer extends React.Component {
     let rowCounter = 0,
       columnCounter = 0;
 
-    let questions = [];
+    let container = [];
 
     while (rowCounter < this.data.sections.length) {
       console.log(this.data.sections);
 
+      container.push(this.createSectionHeader(rowCounter + 1));
+
       columnCounter = 0;
       while (columnCounter < this.data.sections[rowCounter].questions.length) {
-        questions.push(
+        container.push(
           this.createQuestionPiece(rowCounter, columnCounter, classes)
         );
         columnCounter++;
@@ -201,13 +203,13 @@ class QuizAnswer extends React.Component {
     return (
       <React.Fragment>
         <Spacing />
-        {questions}
+        {container}
       </React.Fragment>
     );
   };
 
-  createSectionHeader = () => {
-    return <Typography>Section #</Typography>;
+  createSectionHeader = value => {
+    return <Typography>Section {value}</Typography>;
   };
 
   render() {
@@ -224,7 +226,6 @@ class QuizAnswer extends React.Component {
         </GridContainer>
         <Spacing />
         {this.renderHeader()}
-        {this.createSectionHeader()}
         {this.renderQuestions(classes)}
       </div>
     );
