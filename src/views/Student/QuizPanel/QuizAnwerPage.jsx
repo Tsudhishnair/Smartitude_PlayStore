@@ -26,7 +26,7 @@ import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Timer from "react-compound-timer/build/components/Timer/Timer";
-import { Redirect } from "react-router-dom";
+
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 1,
@@ -57,265 +57,12 @@ const styles = theme => ({
   }
 });
 
-class QuizPanelView extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.currentSection = 0;
-    this.currentQnNum = 0;
-
-    const currentQn = this.props.location.state.sections[this.currentSection]
-      .questions[this.currentQnNum];
-
-    this.state = {
-      activeStep: 0,
-      fields: {
-        question: currentQn.question,
-        options: {
-          1: currentQn.options[0],
-          2: currentQn.options[1],
-          3: currentQn.options[2],
-          4: currentQn.options[3]
-        }
-      },
-      markedOption: "",
-      prevButton: !this.isNotFirstQn(),
-      nextButton: !this.isNotLastQn(
-        this.props.location.state.sections[this.currentSection]
-      ),
-      redirector:false,
-    };
-
-    this.dataToSubmit = {
-      quizId: this.props.location.state._id,
-      attemptedAt: new Date(),
-      attemptedSections: []
-    };
-
-    let i = 0;
-    while (i < this.props.location.state.sections.length) {
-      this.dataToSubmit.attemptedSections.push({
-        attemptedQuestions: []
-      });
-
-      let j = 0;
-      while (j < this.props.location.state.sections[i].questions.length) {
-        this.dataToSubmit.attemptedSections[i].attemptedQuestions.push({
-          question: "",
-          markedOption: "",
-          timeTakenToMark: 0
-        });
-        j++;
-      }
-      i++;
-    }
-  }
-
-  isNotFirstQn = () => {
-    return this.currentQnNum !== 0;
-  };
-
-  isNotLastQn = selectedSection => {
-    return this.currentQnNum !== selectedSection.questions.length - 1;
-  };
-
-  handleSectionSubmit = quizSections => {
-    this.currentQnNum = 0;
-
-    if (++this.currentSection < quizSections.length) {
-      this.setState(prevState => ({
-        activeStep: prevState.activeStep + 1
-      }));
-
-      this.setFields(quizSections[this.currentSection]);
-    } else {
-      // TODO: CALL MUTATION HERE
-      this.setState(prevState=>({
-        ...prevState,
-        redirector:true
-      }));
-    }
-  };
-
-  handleClearClick = () => {
-    this.setState(() => ({
-      markedOption: ""
-    }));
-  };
-
-  handleNextClick = (event, selectedSection) => {
-    if (this.isNotLastQn(selectedSection)) {
-      const newQn = selectedSection.questions[++this.currentQnNum];
-      console.log(this.getMarkedOption());
-      this.setState(() => ({
-        fields: {
-          question: newQn.question,
-          options: {
-            1: newQn.options[0],
-            2: newQn.options[1],
-            3: newQn.options[2],
-            4: newQn.options[3]
-          }
-        },
-        markedOption: this.getMarkedOption(),
-        prevButton: !this.isNotFirstQn(),
-        nextButton: !this.isNotLastQn(selectedSection)
-      }));
-    }
-  };
-
-  handlePreviousClick = (event, selectedSection) => {
-    if (this.isNotFirstQn()) {
-      const newQn = selectedSection.questions[--this.currentQnNum];
-      console.log(this.getMarkedOption());
-      this.setState(() => ({
-        fields: {
-          question: newQn.question,
-          options: {
-            1: newQn.options[0],
-            2: newQn.options[1],
-            3: newQn.options[2],
-            4: newQn.options[3]
-          }
-        },
-        markedOption: this.getMarkedOption(),
-        nextButton: !this.isNotLastQn(selectedSection),
-        prevButton: !this.isNotFirstQn()
-      }));
-    }
-  };
-
-  handleChange = (event, quizSections) => {
-    event.persist();
-
-    console.log(quizSections[this.currentSection]);
-
-    this.setMarkedOption(event.target.value);
-
-    this.setState(() => ({
-      markedOption: Number(event.target.value)
-    }));
-  };
-
-  getSteps = quizSections => {
-    let sectionNames = [];
-    let i = 0;
-    while (i < quizSections.length) {
-      sectionNames.push(quizSections[i].category.name);
-      i++;
-    }
-    return sectionNames;
-  };
-
-  getQuestionNumber = () => {
-    return this.currentQnNum + 1;
-  };
-
-  //now returning total time, thats not required, return time for only one section
-  getTimeLimit = section => {
-    return section.timeLimit;
-    // let totalTime = 0;
-
-    // let i = 0;
-    // while (i < sections.length) {
-    //   totalTime += sections[i].timeLimit;
-    //   i++;
-    // }
-    // return totalTime;
-  };
-
-  changeQuestion = (questionNo, quizSection) => {
-    this.currentQnNum = questionNo;
-    this.setFields(quizSection);
-  };
-
-  setFields = quizSection => {
-    const currentQn = quizSection.questions[this.currentQnNum];
-    this.setState(() => ({
-      fields: {
-        question: currentQn.question,
-        options: {
-          1: currentQn.options[0],
-          2: currentQn.options[1],
-          3: currentQn.options[2],
-          4: currentQn.options[3]
-        },
-        markedOption: this.getMarkedOption()
-      },
-      prevButton: !this.isNotFirstQn(),
-      nextButton: !this.isNotLastQn(quizSection)
-    }));
-  };
-
-  setMarkedOption = value => {
-    this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
-      this.currentQnNum
-    ].markedOption = Number(value);
-  };
-
-  getMarkedOption = () => {
-    return this.dataToSubmit.attemptedSections[this.currentSection]
-      .attemptedQuestions[this.currentQnNum].markedOption;
-  };
-
-  generateQuestionJumpers = (quizSection, styles) => {
-    let quizJumpers = [];
-
-    let i = 0;
-    while (i < quizSection.questions.length) {
-      if (this.currentQnNum + 1 === i + 1) {
-        quizJumpers.push(
-          this.generateJumper(i, "primary", styles, quizSection)
-        );
-      } else {
-        quizJumpers.push(this.generateJumper(i, "white", styles, quizSection));
-      }
-      i++;
-    }
-
-    return quizJumpers;
-  };
-
-  generateJumper = (questionNo, color, styles, quizSection) => {
-    return (
-      <Fab
-        size="small"
-        variant={"outlined"}
-        color={color}
-        aria-label="Add"
-        onClick={() => this.changeQuestion(questionNo, quizSection)}
-        className={styles}
-      >
-        {questionNo + 1}
-      </Fab>
-    );
-  };
-
+class QuizAnswer extends React.Component {
   render() {
     const { classes } = this.props;
-    const quiz = this.props.location.state;
-    const selectedSection = quiz.sections[this.currentSection];
-    const { activeStep } = this.state;
-
-    const steps = this.getSteps(quiz.sections);
-
-    console.log(quiz);
-
-    console.log(this.dataToSubmit);
-    
-    if (this.state.redirector === true) {
-      return (
-        <Redirect
-          push
-          to={{
-            pathname: "/student/quiz_answer",
-          }}
-        />
-      );
-    }
     return (
       <div className={classes.root}>
-        <GridContainer>
+        {/* <GridContainer>
           <GridItem>
             <Typography>
               <h4>{quiz.name}</h4>
@@ -473,14 +220,16 @@ class QuizPanelView extends React.Component {
               </Stepper>
             </Card>
           </GridItem>
-        </GridContainer>
+        </GridContainer> */}
+        
+        <p>hello asdbhjskldbgklhi</p>
       </div>
     );
   }
 }
 
-QuizPanelView.propTypes = {
+QuizAnswer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(QuizPanelView);
+export default withStyles(styles)(QuizAnswer);
