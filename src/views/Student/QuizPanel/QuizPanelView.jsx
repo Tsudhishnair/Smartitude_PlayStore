@@ -139,7 +139,7 @@ class QuizPanelView extends React.Component {
 
   handleClearClick = () => {
     this.setState(() => ({
-      markedOption: ""
+      markedOption: this.setMarkedOption("")
     }));
   };
 
@@ -239,9 +239,9 @@ class QuizPanelView extends React.Component {
           2: currentQn.options[1],
           3: currentQn.options[2],
           4: currentQn.options[3]
-        },
-        markedOption: this.getMarkedOption()
+        }
       },
+      markedOption: this.getMarkedOption(),
       prevButton: !this.isNotFirstQn(),
       nextButton: !this.isNotLastQn(quizSection)
     }));
