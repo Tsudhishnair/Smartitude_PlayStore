@@ -96,6 +96,9 @@ class QuizPanelView extends React.Component {
       redirector: false
     };
 
+    //maintain interval for timeTaken field
+    this.timer;
+
     //contains data to be submitted on submission of sections and quiz
     this.dataToSubmit = {
       quizId: this.props.location.state._id,
@@ -150,6 +153,8 @@ class QuizPanelView extends React.Component {
       this.setFields(quizSections[this.currentSection]);
     } else {
       //call mutation for final section submission
+
+      this.clearTimeTakenCounter();
       // TODO: CALL MUTATION HERE
       this.setState(() => ({
         redirector: true
@@ -289,10 +294,14 @@ class QuizPanelView extends React.Component {
 
   //start counter. this counter sets value for timeTakenToMark field in the array to be submitted according to the current section and Qno
   manageTimeTakenCounter = () => {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.dataToSubmit.attemptedSections[this.currentSection]
         .attemptedQuestions[this.currentQnNum].timeTakenToMark++;
     }, 1000);
+  };
+
+  clearTimeTakenCounter = () => {
+    clearInterval(this.timer);
   };
 
   //generate jumpers
@@ -348,7 +357,11 @@ class QuizPanelView extends React.Component {
         <Redirect
           push
           to={{
-            pathname: "/student/quiz_answer"
+            pathname: "/student/quiz_answer",
+            state: {
+              ...this.dataToSubmit,
+              ...quiz
+            }
           }}
         />
       );

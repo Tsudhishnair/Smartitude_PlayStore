@@ -31,6 +31,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 1,
@@ -62,8 +63,15 @@ const styles = theme => ({
 });
 
 class QuizAnswer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { classes } = this.props;
+
+    console.log(this.props.location.state);
+
     return (
       <div className={classes.root}>
         <GridContainer>
@@ -89,16 +97,20 @@ class QuizAnswer extends React.Component {
               </CardContent>
               <CardFooter>
                 <p>
-                  <strong>Score:</strong>25.5/50
+                  <strong>Score:</strong>
+                  25.5/50
                 </p>
                 <p>
-                  <strong>Negative Marks:</strong>24
+                  <strong>Negative Marks:</strong>
+                  24
                 </p>
                 <p>
-                  <strong>Time Taken:</strong>23.6 mins/30mins
+                  <strong>Time Taken:</strong>
+                  23.6 mins/30mins
                 </p>
                 <p>
-                  <strong>Current Rank:</strong>6th/150
+                  <strong>Current Rank:</strong>
+                  6th/150
                 </p>
               </CardFooter>
             </Card>
@@ -127,9 +139,7 @@ class QuizAnswer extends React.Component {
                         component="fieldset"
                         className={classes.formControl}
                       >
-                        <FormLabel component="legend">
-                          Marked Choice
-                        </FormLabel>
+                        <FormLabel component="legend">Marked Choice</FormLabel>
                         <RadioGroup
                           aria-label="options"
                           name="option"
