@@ -77,6 +77,7 @@ class CustomQuizSetup extends React.Component {
                     Create a custom quiz of your preferred categories and topics
                   </Typography>
                   <Spacing />
+                  //Quiz form for assigned and custom quiz quizType if true displays cutom quiz form
                   <QuizForm quizType={true}/>
                 </CardContent>
               </form>

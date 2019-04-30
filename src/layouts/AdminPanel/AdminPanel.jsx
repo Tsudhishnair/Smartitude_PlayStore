@@ -124,7 +124,7 @@ class AdminPanel extends React.Component {
             routes={dashboardRoutes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
-          />
+        />
           {
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>

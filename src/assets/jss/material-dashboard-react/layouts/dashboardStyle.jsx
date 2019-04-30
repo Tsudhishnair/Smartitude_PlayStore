@@ -8,7 +8,9 @@ const appStyle = theme => ({
   wrapper: {
     position: "relative",
     top: "0",
-    height: "100vh"
+    margin: "0",
+    height: "100vh",
+    overflow: "hidden"
   },
   mainPanel: {
     [theme.breakpoints.up("md")]: {
@@ -25,7 +27,8 @@ const appStyle = theme => ({
   content: {
     marginTop: "70px",
     padding: "30px 15px",
-    minHeight: "calc(100vh - 123px)"
+    minHeight: `calc(100vh - 130px)`,
+    overflowY: "visible"
   },
   container,
   map: {

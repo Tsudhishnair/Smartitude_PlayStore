@@ -94,7 +94,7 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
       sections {
-        category{
+        category {
           _id
           name
         }
@@ -607,34 +607,37 @@ class QuizForm extends React.Component {
               onChipsCleared={() => this.chipsCleared(index)}
             />
           </GridItem>
-          {quizType ?
-             "": <Fragment>
-             <GridItem xs={12} sm={3} md={3} className={classes.container}>
-               <TextField
-                 id="standard-marks"
-                 label="+ Marks Per Question"
-                 margin="normal"
-                 type="number"
-                 name="marksPerQn"
-                 value={this.state.quizSectionWise[index].marksPerQn}
-                 onChange={e => this.handleSectionWiseFields(e, index)}
-                 fullWidth
-               />
-             </GridItem>
-             <GridItem xs={12} sm={3} md={3} className={classes.container}>
-               <TextField
-                 id="standard-negative-marks"
-                 label="- Marks per Question"
-                 margin="normal"
-                 type="number"
-                 name="negativeMarksPerQn"
-                 value={this.state.quizSectionWise[index].negativeMarksPerQn}
-                 onChange={e => this.handleSectionWiseFields(e, index)}
-                 fullWidth
-               />
-             </GridItem>
-           </Fragment>}
-          <GridItem xs={12} sm={2} md={6}>
+          {quizType ? (
+            ""
+          ) : (
+            <Fragment>
+              <GridItem xs={12} sm={3} md={3} className={classes.container}>
+                <TextField
+                  id="standard-marks"
+                  label="+ Marks Per Question"
+                  margin="normal"
+                  type="number"
+                  name="marksPerQn"
+                  value={this.state.quizSectionWise[index].marksPerQn}
+                  onChange={e => this.handleSectionWiseFields(e, index)}
+                  fullWidth
+                />
+              </GridItem>
+              <GridItem xs={12} sm={3} md={3} className={classes.container}>
+                <TextField
+                  id="standard-negative-marks"
+                  label="- Marks per Question"
+                  margin="normal"
+                  type="number"
+                  name="negativeMarksPerQn"
+                  value={this.state.quizSectionWise[index].negativeMarksPerQn}
+                  onChange={e => this.handleSectionWiseFields(e, index)}
+                  fullWidth
+                />
+              </GridItem>
+            </Fragment>
+          )}
+          <GridItem xs={12} sm={2} md={3}>
             <TextField
               id="standard-number"
               label="No. Of Quest."
@@ -646,7 +649,7 @@ class QuizForm extends React.Component {
               onChange={e => this.handleSectionWiseFields(e, index)}
             />
           </GridItem>
-          <GridItem xs={12} sm={2} md={6}>
+          <GridItem xs={12} sm={2} md={3}>
             <TextField
               id="standard-number"
               label="Time Limit (min)"
@@ -1054,7 +1057,8 @@ class QuizForm extends React.Component {
 }
 
 QuizForm.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  quizType: PropTypes.object
 };
 
 export default withStyles(styles)(QuizForm);
