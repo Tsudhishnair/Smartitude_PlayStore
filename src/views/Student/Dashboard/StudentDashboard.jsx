@@ -28,18 +28,22 @@ import { Link } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
+
+//mutation for generating random quiz questions
 const RANDOM_QUIZ = gql`
 mutation generateRandomQuiz{
   questions
 }`;
 
+//stores the questions 
 class StudentDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
     this.state = {
       value: 0,
-      RandomQuizQuestion: [],
+      RandomQuizQuestion:[],
+      //checks the state to redirect to next page
       redirector:false
     };
   }
@@ -51,16 +55,9 @@ class StudentDashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
-
-  // handleRandomQuiz = RandomMutaion => {
-  //   const data = RandomMutaion();
-  //   this.setState(prevState => ({
-  //     ...prevState,
-  //     RandomQuizQuestion: data,
-  //     redirector:true
-  //   }));
-  // };
-
+  handleRandomQuizCreate = generateRandomQuiz => {
+    // generateRandomQuiz;
+  };
   handleMutationComplete = data => {
     console.log(data);
     console.log("asdsbfhasd");
@@ -215,7 +212,7 @@ class StudentDashboard extends React.Component {
                                     marginLeft: "auto"
                                   }}
                                   onClick={
-                                    generateRandomQuiz}
+                                    this.handleRandomQuizCreate(generateRandomQuiz)}
                                 >
                                   Take Quiz
                                 </Button>
