@@ -9,6 +9,7 @@ const appStyle = theme => ({
     position: "relative",
     top: "0",
     margin: "0",
+    padding: "0",
     height: "100vh",
     overflow: "hidden"
   },

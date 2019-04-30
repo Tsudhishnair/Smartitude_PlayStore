@@ -137,7 +137,7 @@ class StudentManage extends React.Component {
     filterType: "checkbox",
     rowsPerPage: 100,
     elevation: 0,
-    responsive: "stacked",
+    responsive: "scroll",
     rowsPerPageOptions: [20, 30, 100, 200, 1000, 10000],
     onRowsSelect: (currentRowsSelected, allRowsSelected) => {
       this.rowSelected = allRowsSelected.length > 0;

@@ -220,7 +220,7 @@ smartitude-app-main
     │   │   └── FacultyPanel.jsx
     │   ├── Landing
     │   │   ├── Landing.jsx
-    │   │   └── ProductSection.jsx
+    │   │   └── ContentSection.jsx
     │   ├── Login
     │   │   ├── AdminLogin.jsx
     │   │   ├── FacultyLogin.jsx

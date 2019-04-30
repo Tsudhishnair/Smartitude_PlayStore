@@ -15,7 +15,7 @@ import BrandLogo from "assets/img/sidebar_smart_white.png";
 import Background from "assets/img/sidebarback.jpg";
 import LogOutIcon from "@material-ui/icons/ExitToApp";
 
-import sidebarStyle from "assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
+import sidebarStyle from "../../assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
 import Link from "react-router-dom/es/Link";
 
 class Sidebar extends Component {
@@ -136,7 +136,7 @@ class Sidebar extends Component {
                 style={{ backgroundImage: "url(" + Background + ")" }}
               />
             ) : null}
-          </Drawer>xx
+          </Drawer>
         </Hidden>
       </div>
     );

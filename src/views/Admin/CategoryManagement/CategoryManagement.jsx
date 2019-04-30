@@ -406,7 +406,17 @@ class CategoryManagement extends React.Component {
                               {/*</ListItemAvatar>*/}
                               <ListItemText
                                 primary={categoryDetail.category.name}
-                                secondary={categoryDetail.category.description}
+                                secondary={
+                                  <div
+                                    style={{
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      width: "70%"
+                                    }}
+                                  >
+                                    {categoryDetail.category.description}
+                                  </div>
+                                }
                               />
                               <ListItemSecondaryAction>
                                 <Tooltip title="Edit Category">
@@ -478,9 +488,29 @@ class CategoryManagement extends React.Component {
                                     onClick={this.handleCategoryDialogOpen}
                                   >
                                     <ListItemText
-                                      primary={subcategory.name}
+                                      primary={
+                                        <div
+                                          style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            width: "65%"
+                                          }}
+                                        >
+                                          {subcategory.name}
+                                        </div>
+                                      }
                                       color={"grey"}
-                                      secondary={subcategory.description}
+                                      secondary={
+                                        <div
+                                          style={{
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            width: "65%"
+                                          }}
+                                        >
+                                          {subcategory.description}
+                                        </div>
+                                      }
                                     />
                                     <Tooltip title="Edit SubCategory">
                                       <IconButton
