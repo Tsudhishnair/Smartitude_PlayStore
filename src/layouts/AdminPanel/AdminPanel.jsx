@@ -10,10 +10,10 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import Header from "components/Header/Header.jsx";
 import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import dashboardRoutes from "routes/admin_dashboard.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-import logo from "assets/img/reactlogo.png";
+import dashboardStyle from "../../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
+import logo from "../../assets/img/reactlogo.png";
 import MessageDialog from "../../components/Dialog/MessageDialog";
 import { loginHandler } from "../../Utils";
 

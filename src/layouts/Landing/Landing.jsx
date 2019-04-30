@@ -1,25 +1,17 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
 // import Button from "@material-ui/core/Button";
-import Button from "components/CustomButtons/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/HomeHeader/HomeHeader.jsx";
 import HeaderLinks from "../../components/HomeHeader/HeaderLinks.jsx";
-
-import lock from "../../assets/img/smart_white.png";
 import Spacing from "../../components/Spacing/Spacing";
 import GridContainer from "../../components/Grid/GridContainer";
 import GridItem from "../../components/Grid/GridItem";
 import Parallax from "../../components/Parallax/Parallax";
-import ProductSection from "../Landing/ProductSection";
+import ProductSection from "./ContentSection";
 
 import componentsStyle from "../../assets/jss/material-dashboard-react/views/landingPage.jsx";
 

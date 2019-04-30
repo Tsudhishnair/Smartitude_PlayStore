@@ -145,6 +145,18 @@ const headerStyle = {
     paddingRight: "0px",
     paddingLeft: "0",
     ...transition
+  },
+  logoImage: {
+    width: "150px",
+    display: "inline-block",
+    zIndex: "1100"
+  },
+  img: {
+    width: "140px",
+    marginTop: "-5px",
+    position: "absolute",
+    border: "0",
+    textDecoration: "none"
   }
 };
 
