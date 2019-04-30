@@ -57,7 +57,7 @@ const styles = theme => ({
   }
 });
 
-class QuizAnswer extends React.Component {
+class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -464,8 +464,8 @@ class QuizAnswer extends React.Component {
   }
 }
 
-QuizAnswer.propTypes = {
+QuizPanelView.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(QuizAnswer);
+export default withStyles(styles)(QuizPanelView);

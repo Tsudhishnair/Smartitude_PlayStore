@@ -10,7 +10,7 @@ import Results from "../views/Student/Results/Results.jsx";
 import PreQuizInfo from "../views/Student/QuizPanel/PreQuizInfo";
 import CustomQuizSetup from "../views/Student/QuizPanel/CustomQuizSetup";
 import AssignedQuizzes from "../views/Student/QuizPanel/AssignedQuizzes";
-import QuizAnswer from "../views/Student/QuizPanel/QuizAnswer.jsx";
+import QuizAnswer from "../views/Student/QuizPanel/QuizPanelView.jsx";
 
 const dashboardRoutes = [
   {

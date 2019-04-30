@@ -299,7 +299,7 @@ smartitude-app-main
         │   │   ├── AssignedQuizzes.jsx
         │   │   ├── CustomQuizSetup.jsx
         │   │   ├── PreQuizInfo.jsx
-        │   │   └── QuizAnswer.jsx
+        │   │   └── QuizPanelViewiew.jsx
         │   └── Results
         │       └── Results.jsx
         └── Unwanted
