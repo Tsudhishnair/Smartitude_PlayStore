@@ -15,7 +15,8 @@ import {
   Fab,
   StepLabel,
   Step,
-  Stepper
+  Stepper,
+  Hidden
 } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio/index";
 import RadioGroup from "@material-ui/core/RadioGroup/index";
@@ -320,6 +321,7 @@ class QuizPanelView extends React.Component {
         />
       );
     }
+
     return (
       <div className={classes.root}>
         <GridContainer>
@@ -334,6 +336,33 @@ class QuizPanelView extends React.Component {
             <Card>
               <form>
                 <CardContent>
+                  <Hidden mdUp implementation="css">
+                    <p>
+                      <Typography variant={"overline"}>
+                        Time Remaining:
+                      </Typography>
+                      <Typography variant={"h5"} className={classes.timer}>
+                        <b>
+                          <Timer
+                            initialTime={
+                              60000 * this.getTimeLimit(selectedSection)
+                            }
+                            direction="backward"
+                            onStop={this.handleSectionSubmit}
+                          >
+                            {(stop, getTimerState, getTime) => (
+                              <React.Fragment>
+                                <Timer.Minutes /> minutes <Timer.Seconds />{" "}
+                                seconds
+                                {getTimerState}
+                              </React.Fragment>
+                            )}
+                          </Timer>
+                        </b>
+                      </Typography>
+                    </p>
+                    <Spacing />
+                  </Hidden>
                   <Typography>
                     Question Number: <b>{this.getQuestionNumber()}</b>
                   </Typography>
@@ -422,26 +451,33 @@ class QuizPanelView extends React.Component {
           <GridItem xs={12} sm={12} md={4}>
             <Card>
               <CardContent>
-                <p>
-                  <Typography variant={"overline"}>Time Remaining:</Typography>
-                  <Typography variant={"h5"} className={classes.timer}>
-                    <b>
-                      <Timer
-                        initialTime={60000 * this.getTimeLimit(selectedSection)}
-                        direction="backward"
-                        onStop={this.handleSectionSubmit}
-                      >
-                        {(stop, getTimerState, getTime) => (
-                          <React.Fragment>
-                            <Timer.Minutes /> minutes <Timer.Seconds /> seconds
-                            {getTimerState}
-                          </React.Fragment>
-                        )}
-                      </Timer>
-                    </b>
-                  </Typography>
-                </p>
-                <Spacing />
+                <Hidden smDown implementation="css">
+                  <p>
+                    <Typography variant={"overline"}>
+                      Time Remaining:
+                    </Typography>
+                    <Typography variant={"h5"} className={classes.timer}>
+                      <b>
+                        <Timer
+                          initialTime={
+                            60000 * this.getTimeLimit(selectedSection)
+                          }
+                          direction="backward"
+                          onStop={this.handleSectionSubmit}
+                        >
+                          {(stop, getTimerState, getTime) => (
+                            <React.Fragment>
+                              <Timer.Minutes /> minutes <Timer.Seconds />{" "}
+                              seconds
+                              {getTimerState}
+                            </React.Fragment>
+                          )}
+                        </Timer>
+                      </b>
+                    </Typography>
+                  </p>
+                  <Spacing />
+                </Hidden>
                 <Typography variant={"overline"}>Questions:</Typography>
                 {this.generateQuestionJumpers(selectedSection, classes.fab)}
               </CardContent>
