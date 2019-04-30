@@ -5,9 +5,9 @@ import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import Person from "@material-ui/icons/Person";
 import School from "@material-ui/icons/School";
-import Message from "@material-ui/icons/Message"
+import Message from "@material-ui/icons/Message";
 import Report from "@material-ui/icons/Assignment";
-import Account from "@material-ui/icons/AccountBalance"
+import Account from "@material-ui/icons/AccountBalance";
 
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
@@ -49,13 +49,14 @@ const dashboardRoutes = [
     icon: NotificationIcon,
     component: QuizManage
   },
-  {
-    path: "/admin/question_management",
-    sidebarName: "Questions",
-    navbarName: "Questions",
-    icon: Message,
-    component: QuestionManage
-  },
+  // TODO: Question Management section yet to be completed
+  // {
+  //   path: "/admin/question_management",
+  //   sidebarName: "Questions",
+  //   navbarName: "Questions",
+  //   icon: Message,
+  //   component: QuestionManage
+  // },
   {
     path: "/admin/category_management",
     sidebarName: "Category",
