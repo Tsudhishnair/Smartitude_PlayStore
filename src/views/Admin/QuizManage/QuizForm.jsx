@@ -150,8 +150,6 @@ class QuizForm extends React.Component {
 
     //maintain list of batches
     this.batches = [];
-    //need negative marks or not for custom quiz
-    this.needNegative = false;
 
     //total number of sections in the quiz
     this.numberOfSections = 0;
@@ -178,6 +176,8 @@ class QuizForm extends React.Component {
       customQuizData: [],
       //to hanlde redirect on Custom Quiz Create
       redirecter: false,
+      //need negative marks or not for custom quiz
+      needNegative: false,
       //keeps separate data for separate sections
       quizSectionWise: [
         {
