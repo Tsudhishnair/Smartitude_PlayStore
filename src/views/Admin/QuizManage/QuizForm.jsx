@@ -840,7 +840,7 @@ class QuizForm extends React.Component {
   render() {
     // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
     const { classes, quizType } = this.props;
-    const loadingProgress = this.state;
+    const loadingProgress = this.state.loadingProgress;
     //to redirect after mutaion on custom quiz is called which is being manged using state
     if (this.state.redirecter === true) {
       return (
