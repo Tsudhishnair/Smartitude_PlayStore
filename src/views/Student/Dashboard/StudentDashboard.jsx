@@ -35,6 +35,15 @@ const RANDOM_QUIZ = gql`
       questions {
         _id
         question
+        options
+        correctOption
+        solution
+        category{
+          _id
+        }
+        subcategory{
+          _id
+        }
       }
     }
   }
@@ -64,8 +73,7 @@ class StudentDashboard extends React.Component {
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
-    console.log(data);
-    console.log("asdsbfhasd");
+
     this.setState(prevState => ({
       ...prevState,
       RandomQuizQuestion: data,
