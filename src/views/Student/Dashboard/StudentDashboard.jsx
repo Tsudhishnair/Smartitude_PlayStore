@@ -38,10 +38,10 @@ const RANDOM_QUIZ = gql`
         options
         correctOption
         solution
-        category{
+        category {
           _id
         }
-        subcategory{
+        subcategory {
           _id
         }
       }
@@ -73,10 +73,22 @@ class StudentDashboard extends React.Component {
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
-
+    const sectionFormattedData = {
+      sections: [
+        {
+          category: {
+            _id: "generalsectionid",
+            name: "General Section"
+          },
+          questions: data.questions
+        }
+      ]
+    };
+    console.log("Section wise formatted data: ");
+    console.log(sectionFormattedData);
     this.setState(prevState => ({
       ...prevState,
-      RandomQuizQuestion: data,
+      RandomQuizQuestion: sectionFormattedData,
       redirector: true
     }));
   };
