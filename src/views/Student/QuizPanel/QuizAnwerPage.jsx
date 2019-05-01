@@ -8,27 +8,24 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import {
   Card,
-  Button,
   CardContent,
   Typography,
   Divider,
-  Fab,
-  StepLabel,
-  Step,
-  Stepper
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ExpansionPanel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel
 } from "@material-ui/core";
-import Radio from "@material-ui/core/Radio/index";
-import RadioGroup from "@material-ui/core/RadioGroup/index";
-import FormControlLabel from "@material-ui/core/FormControlLabel/index";
-import FormControl from "@material-ui/core/FormControl/index";
-import FormLabel from "@material-ui/core/FormLabel/index";
+
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
-import Timer from "react-compound-timer/build/components/Timer/Timer";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+
+import green from "@material-ui/core/colors/green";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
@@ -59,18 +56,27 @@ const styles = theme => ({
   instructions: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit
-  }
+  },
+  radioPrimary: {
+    color: green[600],
+    "&$checked": {
+      color: green[500]
+    }
+  },
+  checked: {}
 });
 
 class QuizAnswer extends React.Component {
   constructor(props) {
     super(props);
 
+    //save data received in props
     this.data = this.props.location.state;
 
     console.log(this.data);
   }
 
+  //jsx for header
   renderHeader = () => {
     return (
       <GridContainer>
@@ -110,6 +116,7 @@ class QuizAnswer extends React.Component {
     );
   };
 
+  //create jsx for a single question
   createQuestionPiece = (sectionIndex, questionIndex, classes) => {
     const question = this.data.sections[sectionIndex].questions[questionIndex];
 
@@ -146,7 +153,14 @@ class QuizAnswer extends React.Component {
                       >
                         <FormControlLabel
                           value={1}
-                          control={<Radio />}
+                          control={
+                            <Radio
+                              classes={{
+                                root: classes.radioPrimary,
+                                checked: classes.checked
+                              }}
+                            />
+                          }
                           label={question.options[0]}
                         />
                         <FormControlLabel
@@ -183,6 +197,7 @@ class QuizAnswer extends React.Component {
     );
   };
 
+  //getting questions
   renderQuestions = classes => {
     let rowCounter = 0,
       columnCounter = 0;
@@ -212,6 +227,7 @@ class QuizAnswer extends React.Component {
     );
   };
 
+  //getting section title
   createSectionHeader = value => {
     return <Typography>Section {value}</Typography>;
   };
