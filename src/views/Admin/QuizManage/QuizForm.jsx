@@ -8,6 +8,7 @@ import Link from "react-router-dom/es/Link";
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
 import {
   Button,
+  CircularProgress,
   Divider,
   ExpansionPanelActions,
   FormControl,
@@ -32,6 +33,7 @@ import { Mutation, Query } from "react-apollo";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
 import PropTypes from "prop-types";
+import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
   formRoot: {
@@ -71,6 +73,18 @@ const styles = theme => ({
   },
   greyBackground: {
     background: "grey"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
   }
 });
 
@@ -136,8 +150,6 @@ class QuizForm extends React.Component {
 
     //maintain list of batches
     this.batches = [];
-    //need negative marks or not for custom quiz
-    this.needNegative = false;
 
     //total number of sections in the quiz
     this.numberOfSections = 0;
@@ -150,6 +162,7 @@ class QuizForm extends React.Component {
 
     this.state = {
       //maintain fields which are common to all sections
+      loadingProgress: false,
       quizCommon: {
         quizName: "",
         batch: "",
@@ -163,6 +176,8 @@ class QuizForm extends React.Component {
       customQuizData: [],
       //to hanlde redirect on Custom Quiz Create
       redirecter: false,
+      //need negative marks or not for custom quiz
+      needNegative: false,
       //keeps separate data for separate sections
       quizSectionWise: [
         {
@@ -607,11 +622,7 @@ class QuizForm extends React.Component {
               </FormControl>
             </GridItem>
             <GridItem xs={12} sm={8} md={8}>
-              <FormControl
-                required
-                fullWidth
-                className={classes.formControl}
-              >
+              <FormControl required fullWidth className={classes.formControl}>
                 <ReactChipInput
                   style={{ zIndex: 0 }}
                   data={this.state.quizSectionWise[index].subcategoryList}
@@ -777,6 +788,10 @@ class QuizForm extends React.Component {
       delete requestedSectionsArray[index].negativeMarksPerQn;
     }
     console.log(requestedSectionsArray);
+    // set loading state and start mutation. upon completion, change loading states
+    this.setState({
+      loadingProgress: true
+    });
     mutation({
       variables: {
         customQuizRequest: {
@@ -784,7 +799,34 @@ class QuizForm extends React.Component {
           negativeMarks: this.state.needNegative
         }
       }
-    });
+    })
+      .then(res => {
+        // on successful completion of the mutation
+        this.setState(prevState => ({
+          loadingProgress: false,
+          snackbar: {
+            ...prevState.snackbar,
+            open: true,
+            variant: "success",
+            message: "Custom Quiz Created!"
+          }
+        }));
+      })
+      .catch(err => {
+        //if error was returned
+        this.setState(prevState => ({
+          loadingProgress: false,
+          snackbar: {
+            ...prevState.snackbar,
+            open: true,
+            variant: "error",
+            duration: 10000,
+            message: "Error: " + err
+            // ? err.graphQLErrors[0].message
+            // : err.networkError[0].message
+          }
+        }));
+      });
   };
   //Function to handle redirect after Create Cutom Quiz Mutaion is invoked
   handleMutationComplete = data => {
@@ -867,19 +909,28 @@ class QuizForm extends React.Component {
                             <Divider />
                             <ExpansionPanelActions>
                               <Link to="/student/start_quiz">
-                                <Button
-                                  color="primary"
-                                  variant={"outlined"}
-                                  className={classes.button}
-                                  onClick={e =>
-                                    this.CustomQuizRequestedSectionVariable(
-                                      generateCustomQuiz,
-                                      e
-                                    )
-                                  }
-                                >
-                                  Create Custom Quiz
-                                </Button>
+                                <div className={classes.wrapper}>
+                                  <Button
+                                    color="primary"
+                                    variant={"outlined"}
+                                    className={classes.button}
+                                    disabled={this.state.loadingProgress}
+                                    onClick={e =>
+                                      this.CustomQuizRequestedSectionVariable(
+                                        generateCustomQuiz,
+                                        e
+                                      )
+                                    }
+                                  >
+                                    Create Custom Quiz
+                                  </Button>
+                                  {this.state.loadingProgress && (
+                                    <CircularProgress
+                                      size={24}
+                                      className={classes.buttonProgress}
+                                    />
+                                  )}
+                                </div>
                               </Link>
                             </ExpansionPanelActions>
                           </form>
