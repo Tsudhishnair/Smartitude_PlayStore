@@ -80,7 +80,6 @@ class StudentDashboard extends React.Component {
       sections: [
         {
           category: {
-            _id: "generalsectionid",
             name: "General Section"
           },
           questions: data.questions
