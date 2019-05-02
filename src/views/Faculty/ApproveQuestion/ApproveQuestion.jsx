@@ -186,7 +186,7 @@ class ApproveQuestion extends React.Component {
                 <Card className={classes.card}>
                   <CardBody>
                     <p>
-                      <b>Questions yet to approve:</b> XX
+                      <b>Questions yet to approve:</b> {data.questionsForIncharge.length}
                     </p>
                   </CardBody>
                 </Card>
