@@ -32,7 +32,11 @@ const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 1,
     marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: theme.spacing.unit * 1,
+      marginRight: theme.spacing.unit * 1
+    }
   },
   timer: {
     color: "green"
@@ -55,6 +59,12 @@ const styles = theme => ({
   instructions: {
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit
+  },
+  rightPanel: {
+    color: "green",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing.unit * 2,
+    }
   }
 });
 
@@ -494,7 +504,7 @@ class QuizPanelView extends React.Component {
             </Card>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
-            <Card>
+            <Card className={classes.rightPanel}>
               <CardContent>
                 <Hidden smDown implementation="css">
                   <p>
