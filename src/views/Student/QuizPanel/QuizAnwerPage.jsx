@@ -25,7 +25,7 @@ import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 
-import green from "@material-ui/core/colors/green";
+import { green, blue } from "@material-ui/core/colors";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
@@ -63,7 +63,14 @@ const styles = theme => ({
       color: green[500]
     }
   },
-  checked: {}
+  radioCorrect: {
+    color: blue[600],
+    "&$blueChecked": {
+      color: blue[500]
+    }
+  },
+  checked: {},
+  blueChecked: {}
 });
 
 class QuizAnswer extends React.Component {
@@ -118,6 +125,25 @@ class QuizAnswer extends React.Component {
 
   renderCheckbox = (sectionIndex, questionIndex, optionIndex, classes) => {
     if (
+      this.data.sections[sectionIndex].questions[questionIndex]
+        .correctOption ===
+        this.data.attemptedSections[sectionIndex].attemptedQuestions[
+          questionIndex
+        ].markedOption &&
+      this.data.sections[sectionIndex].questions[questionIndex]
+        .correctOption === optionIndex
+    ) {
+      return (
+        <Checkbox
+          value={optionIndex}
+          checked={true}
+          classes={{
+            root: classes.radioCorrect,
+            checked: classes.blueChecked
+          }}
+        />
+      );
+    } else if (
       optionIndex ===
       this.data.sections[sectionIndex].questions[questionIndex].correctOption
     ) {
