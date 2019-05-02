@@ -127,8 +127,8 @@ class QuizAnswer extends React.Component {
     if (
       this.data.sections[sectionIndex].questions[questionIndex]
         .correctOption ===
-        this.data.attemptedSections[sectionIndex].attemptedQuestions[
-          questionIndex
+      this.data.attemptedSections[sectionIndex].attemptedQuestions[
+        questionIndex
         ].markedOption &&
       this.data.sections[sectionIndex].questions[questionIndex]
         .correctOption === optionIndex
@@ -161,7 +161,7 @@ class QuizAnswer extends React.Component {
       optionIndex ===
       this.data.attemptedSections[sectionIndex].attemptedQuestions[
         questionIndex
-      ].markedOption
+        ].markedOption
     ) {
       return <Checkbox value={optionIndex} checked={true} />;
     } else {

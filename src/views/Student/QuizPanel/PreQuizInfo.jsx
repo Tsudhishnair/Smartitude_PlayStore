@@ -11,15 +11,16 @@ import {
   Button,
   CardContent,
   Typography,
-  Divider,
-  List,
-  ListItem
+  Divider
 } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Spacing from "../../../components/Spacing/Spacing";
-import Link from "react-router-dom/es/Link";
+
 import { Redirect } from "react-router-dom";
+
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
 const styles = theme => ({
   root: {
@@ -35,13 +36,24 @@ const styles = theme => ({
   }
 });
 
+const START_QUIZ = gql`
+  mutation startQuiz($quizId: ID!) {
+    startQuiz(quizId: $quizId) {
+      _id
+    }
+  }
+`;
+
 class PreQuizInfo extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: "option"
+      value: "option",
+      redirecter: false
     };
+
+    this.quiz = this.props.location.state;
   }
 
   handleChange = event => {
@@ -93,12 +105,42 @@ class PreQuizInfo extends React.Component {
     return totalQns;
   };
 
+  startQuiz = (startQuizMutation, id, event) => {
+    event.preventDefault();
+
+    startQuizMutation({
+      variables: {
+        quizId: id
+      }
+    })
+      .then(res => {
+        this.quiz._id = res._id;
+
+        this.setState(() => ({ redirecter: true }));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     const { classes } = this.props;
-    const quiz = this.props.location.state;
 
-    if (!quiz) {
+    if (!this.quiz) {
       return <Redirect to="/student/dashboard" />;
+    }
+
+    if (this.state.redirecter) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/student/quiz",
+            state: {
+              ...this.quiz
+            }
+          }}
+        />
+      );
     }
 
     return (
@@ -109,17 +151,19 @@ class PreQuizInfo extends React.Component {
               <form>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
-                    {quiz.name}
+                    {this.quiz.name}
                   </Typography>
-                  <Typography variant="body2">{quiz.description}</Typography>
                   <Typography
                     variant="h6"
                     gutterBottom
                     className={classes.textGrey}
                   >
-                    {this.getTotalNumberOfQns(quiz.sections)} Questions |{" "}
-                    {this.transformTimeLimit(quiz.sections)} Minutes |{" "}
-                    {this.getNumberOfSections(quiz.sections)} sections
+                    {this.getTotalNumberOfQns(this.quiz.sections)} Questions |
+                    {this.transformTimeLimit(this.quiz.sections)} Minutes |
+                    {this.getNumberOfSections(this.quiz.sections)} sections
+                  </Typography>
+                  <Typography variant="body2">
+                    {this.quiz.description}
                   </Typography>
                   <Spacing />
                   <Typography variant="h6" gutterBottom>
@@ -130,7 +174,7 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textDarkGrey}
                   >
-                    {this.transformInstructions(quiz.instructions)}
+                    {this.transformInstructions(this.quiz.instructions)}
                   </Typography>
                 </CardContent>
                 <CardBody>
@@ -157,25 +201,23 @@ class PreQuizInfo extends React.Component {
                 <CardFooter
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
-                  <Link
-                    to={{
-                      pathname: "/student/quiz",
-                      state: {
-                        ...quiz
-                      }
-                    }}
-                  >
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size={"large"}
-                      style={{ float: "center" }}
-                      type={"submit"}
-                      className={classes.button}
-                    >
-                      Start Quiz
-                    </Button>
-                  </Link>
+                  <Mutation mutation={START_QUIZ}>
+                    {startQuiz => (
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size={"large"}
+                        style={{ float: "center" }}
+                        type={"submit"}
+                        className={classes.button}
+                        onClick={event =>
+                          this.startQuiz(startQuiz, this.quiz._id, event)
+                        }
+                      >
+                        Start Quiz
+                      </Button>
+                    )}
+                  </Mutation>
                 </CardFooter>
               </form>
             </Card>

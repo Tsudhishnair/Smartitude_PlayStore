@@ -14,6 +14,7 @@ import Parallax from "../../components/Parallax/Parallax";
 import ProductSection from "./ContentSection";
 
 import componentsStyle from "../../assets/jss/material-dashboard-react/views/landingPage.jsx";
+import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
   "@global": {
@@ -63,33 +64,19 @@ function Landing(props) {
         fixed
         color="transparent"
         changeColorOnScroll={{
-          height: 400,
+          height: 500,
           color: "primary"
         }}
         {...rest}
       />
-      {/*<Parallax image={require("assets/img/bg5.jpg")}>*/}
-      {/*  <div className={classes.container}>*/}
-      {/*    <GridContainer>*/}
-      {/*      <GridItem>*/}
-      {/*        <div className={classes.brand}>*/}
-      {/*          <h1 className={classes.title}>*/}
-      {/*            <img width="500dp" align="" src={lock} alt="..." />*/}
-      {/*          </h1>*/}
-      {/*          <h3 className={classes.subtitle}>*/}
-      {/*            A Badass Aptitude Trainer.*/}
-      {/*          </h3>*/}
-      {/*        </div>*/}
-      {/*      </GridItem>*/}
-      {/*    </GridContainer>*/}
-      {/*  </div>*/}
-      {/*</Parallax>*/}
-      <Parallax image={require("assets/img/bg5.jpg")}>
+      <Parallax
+        image={require("assets/img/bg5.jpg")}
+      >
         <div className={classes.container}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={6}>
               <h1 className={classes.title}>Your Training Starts With Us.</h1>
-              <h4>
+              <h4 className={classes.subtitle}>
                 The Smartitude System assess a person’s core capability of
                 common skills, such as numerical, verbal and diagrammatic
                 reasoning. It offers a very effective mechanism for training
@@ -97,49 +84,11 @@ function Landing(props) {
                 process.
               </h4>
               <br />
-              {/*<Link to={"/student/login"}>*/}
-              {/*  <Button color="warning" size="lg">*/}
-              {/*    /!*<i className="fas fa-play" />*!/*/}
-              {/*    Student Login*/}
-              {/*  </Button>*/}
-              {/*</Link>*/}
             </GridItem>
           </GridContainer>
         </div>
       </Parallax>
-      {/*<AppBar position="static" color="default" className={classes.appBar}>*/}
-      {/*  <Toolbar>*/}
-      {/*    <Typography*/}
-      {/*      variant="h8"*/}
-      {/*      color="inherit"*/}
-      {/*      noWrap*/}
-      {/*      className={classes.toolbarTitle}*/}
-      {/*    >*/}
-      {/*      Smartitude*/}
-      {/*    </Typography>*/}
-      {/*    <Link to="faculty/login">*/}
-      {/*      <Button color="warning">Faculty Login</Button>*/}
-      {/*    </Link>*/}
-      {/*    <Link to="admin/login">*/}
-      {/*      <Button color="warning">Admin Login</Button>*/}
-      {/*    </Link>*/}
-      {/*  </Toolbar>*/}
-      {/*</AppBar>*/}
       <div className={classNames(classes.main, classes.mainRaised)}>
-        {/*<main className={classes.layout}>*/}
-        {/*  <img width="600dp" align="" src={lock} alt="..." />*/}
-        {/*  <Typography*/}
-        {/*    variant="h6"*/}
-        {/*    align="center"*/}
-        {/*    color="textSecondary"*/}
-        {/*    component="p"*/}
-        {/*  >*/}
-        {/*    Aptitude tests assess a person’s core capability of common skills,*/}
-        {/*    such as numerical, verbal and diagrammatic reasoning. They offer a*/}
-        {/*    very effective mechanism for selecting candidates so have become*/}
-        {/*    increasingly involved in the recruitment process.*/}
-        {/*  </Typography>*/}
-        {/*</main>*/}
         <div className={classes.container}>
           <ProductSection />
         </div>
