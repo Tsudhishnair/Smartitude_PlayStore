@@ -39,7 +39,6 @@ import image from "assets/img/bg5.jpg";
 import GridItem from "../../components/Grid/GridItem";
 
 import loginPageStyle from "../../assets/jss/material-dashboard-react/views/loginPage.jsx";
-import classNames from "classnames";
 
 // login mutation query
 const ADMIN_LOGIN = gql`

@@ -1,6 +1,6 @@
 import { title } from "assets/jss/material-kit-react.jsx";
 
-const productStyle = {
+const productStyle = theme => ({
   section: {
     padding: "70px 0",
     textAlign: "center"
@@ -13,8 +13,9 @@ const productStyle = {
     textDecoration: "none"
   },
   description: {
-    color: "#999"
+    color: "#999",
+    [theme.breakpoints.down("sm")]: { fontSize: "1.1rem", margin: "5px auto 0" }
   }
-};
+});
 
 export default productStyle;

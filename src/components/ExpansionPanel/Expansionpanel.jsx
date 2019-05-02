@@ -18,11 +18,13 @@ import {
   EXPANSION_DEPARTMENT_FORM,
   EXPANSION_FACULTY_BATCH,
   EXPANSION_FACULTY_FORM,
+  EXPANSION_MESSAGE_FORM,
   EXPANSION_QUIZ_FORM,
   EXPANSION_STUDENT_BATCH,
   EXPANSION_STUDENT_FORM,
   EXPANSION_SUBCATEGORY_FORM
 } from "../../Utils";
+import FormCreateMessage from "../../views/Admin/NotificationManager/FormCreateMessage";
 
 const styles = theme => ({
   root: {
@@ -60,7 +62,7 @@ class Expansionpanel extends Component {
     let layout;
 
     if (directingValue === EXPANSION_QUIZ_FORM) {
-      layout = <QuizForm quizType={false}/>;
+      layout = <QuizForm quizType={false} reloadList={this.props.reloadList}/>;
     } else if (directingValue === EXPANSION_FACULTY_FORM) {
       layout = (
         <CreateNewFacultyForm
@@ -87,6 +89,8 @@ class Expansionpanel extends Component {
       layout = <FormAddCategory reloadList={this.props.reloadList}/>;
     } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
       layout = <FormAddSubcategory categories={this.props.categories} reloadList={this.props.reloadList}/>;
+    } else if (directingValue === EXPANSION_MESSAGE_FORM) {
+      layout = <FormCreateMessage reloadList={this.props.reloadList}/>;
     }
 
     return (
