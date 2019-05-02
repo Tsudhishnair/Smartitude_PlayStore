@@ -17,47 +17,22 @@ import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import MUIDataTable from "mui-datatables";
-import CardBody from "../../../components/Card/CardBody";
+import { CircularProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
-let datalist = [];
-datalist = [
-  [
-    "1",
-    "Quiz 1",
-    "Be the top in this quiz and get place in Musigma",
-    "100",
-    "200"
-  ],
-  [
-    "1",
-    "Quiz 1",
-    "Be the top in this quiz and get place in Musigma",
-    "100",
-    "200"
-  ],
-  [
-    "1",
-    "Quiz 1",
-    "Be the top in this quiz and get place in Musigma",
-    "100",
-    "200"
-  ]
-];
+import { Query } from "react-apollo";
+
+let realscore = 0;
+let realAttemptedQuizNo = 0;
+let HeaderData = [];
+let totalScore=10;
+let realmaxScore=0;
 const MY_ATTEMPTED_QUIZ = gql`
-  mutation myAttemptedAdminQuizzes {
+  {
     myAttemptedAdminQuizzes {
       quiz {
         name
         description
-        sections {
-          category
-          questions {
-            question
-            options
-            correctOption
-            solution
-          }
-        }
       }
       totalScore
       totalMaximumScore
@@ -67,6 +42,11 @@ const MY_ATTEMPTED_QUIZ = gql`
 class Results extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      score: 0,
+      NoOfAttemptedQuiz: 0,
+      avgScore:0
+    };
     this.options = {
       filterType: "checkbox",
       rowsPerPage: 20,
@@ -78,27 +58,45 @@ class Results extends React.Component {
       filter: false,
       viewColumns: false,
       selectableRows: false,
-      rowsPerPageOptions: [20, 30, 100, 200],
-      onRowClick: (rowData, rowState) => {
-        if (!this.rowSelected) {
-          this.handleRowClick(rowState.dataIndex);
-        }
-      }
+      rowsPerPageOptions: [20, 30, 100, 200]
+      // onRowClick: (rowData, rowState) => {
+      //   if (!this.rowSelected) {
+      //     this.handleRowClick(rowState.dataIndex);
+      //   }
+      // }
     };
   }
+  //sets state of the header fields such as total no of attempted questions and total score
+  displayDataHeader = data => {
+    this.setState(prevState => ({
+      ...prevState,
+      score: data[0],
+      NoOfAttemptedQuiz: data[1],
+      avgScore:(data[0]/data[1]).toFixed(2)
+
+    }));
+  };
+// ScoreCal=()=>{
+// let scr = this.state.score;
+// let no = this.state.NoOfAttemptedQuiz;
+// let total = scr/no;
+// return total;
+// };
   render() {
     const { classes } = this.props;
+
+
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={6}>
             <Card Green>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
                   <Icon>grade</Icon>
                 </CardIcon>
-                <p className={classes.cardCategory}>Current Score</p>
-                <h3 className={classes.cardTitle}>4.9/10</h3>
+                <p className={classes.cardCategory}>Current Avg. Score</p>
+                <h3 className={classes.cardTitle}>{this.state.avgScore}</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -112,7 +110,7 @@ class Results extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          {/* <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
@@ -128,15 +126,17 @@ class Results extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          </GridItem> */}
+          <GridItem xs={12} sm={6} md={6}>
             <Card>
               <CardHeader color="danger" stats icon>
                 <CardIcon color="danger">
                   <Icon>info_outline</Icon>
                 </CardIcon>
                 <p className={classes.cardCategory}>Attempted Quizzes</p>
-                <h3 className={classes.cardTitle}>12</h3>
+                <h3 className={classes.cardTitle}>
+                  {this.state.NoOfAttemptedQuiz}
+                </h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -146,7 +146,7 @@ class Results extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          {/* <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="info" stats icon>
                 <CardIcon color="info">
@@ -162,7 +162,7 @@ class Results extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
+          </GridItem> */}
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -170,12 +170,55 @@ class Results extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Attempted Quizzes</h4>
               </CardHeader>
-              <MUIDataTable
-                title={""}
-                data={datalist}
-                columns={["No", "QuizName", "Description", "Score", "Rank"]}
-                options={this.options}
-              />
+              <Query query={MY_ATTEMPTED_QUIZ}>
+                {({ data, loading, error }) => {
+                  if (loading) {
+                    return <CircularProgress className={classes.progress} />;
+                  } else if (error) {
+                    return (
+                      <Typography>
+                        Error occured while fetching data.
+                      </Typography>
+                    );
+                  } else {
+                    let AttemptedQuizData = [];
+                    AttemptedQuizData = data.myAttemptedAdminQuizzes.map(
+                      (AttemptedData, index) => {
+                        let eachAttemptedQuiz = [];
+                        eachAttemptedQuiz.push(index + 1);
+                        eachAttemptedQuiz.push(AttemptedData.quiz.name);
+                        eachAttemptedQuiz.push(AttemptedData.quiz.description);
+                        eachAttemptedQuiz.push(AttemptedData.totalScore);
+                        eachAttemptedQuiz.push(AttemptedData.totalMaximumScore);
+                        return eachAttemptedQuiz;
+                      }
+                    );
+                    for (let index in AttemptedQuizData) {
+                      realscore = realscore + AttemptedQuizData[index][3];
+                      realAttemptedQuizNo = AttemptedQuizData[index][0];
+                    }
+                    HeaderData.push(realscore);
+                    HeaderData.push(realAttemptedQuizNo);
+                    if (this.state.NoOfAttemptedQuiz != HeaderData[1]) {
+                      this.displayDataHeader(HeaderData);
+                    }
+                    return (
+                      <MUIDataTable
+                        title={""}
+                        data={AttemptedQuizData}
+                        columns={[
+                          "NO",
+                          "Quiz Name",
+                          "Description",
+                          "Score Obtained",
+                          "Maximum Score"
+                        ]}
+                        options={this.options}
+                      />
+                    );
+                  }
+                }}
+              </Query>
             </Card>
           </GridItem>
         </GridContainer>
