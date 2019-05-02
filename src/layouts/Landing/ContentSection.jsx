@@ -12,7 +12,7 @@ import GridItem from "../../components/Grid/GridItem.jsx";
 import InfoArea from "../../components/InfoArea/InfoArea.jsx";
 import lock from "assets/img/drawable/smart_logo.png";
 
-import productStyle from "assets/jss/material-dashboard-react/components/productStyle.jsx";
+import productStyle from "../../assets/jss/material-dashboard-react/components/productStyle.jsx";
 import PropTypes from "prop-types";
 import Spacing from "../../components/Spacing/Spacing";
 
@@ -36,8 +36,12 @@ class ContentSection extends React.Component {
         <Spacing />
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={8}>
-            <div className="description">
-              <img width="350dp" src={lock} alt="..." />
+            <div className={classes.description}>
+              <img
+                style={{ width: "320px", maxWidth: "85%" }}
+                src={lock}
+                alt="..."
+              />
             </div>
           </GridItem>
         </GridContainer>
