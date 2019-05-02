@@ -1,23 +1,17 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import LogOutIcon from "@material-ui/icons/ExitToApp";
 import NotificationIcon from "@material-ui/icons/QuestionAnswer";
 import BubbleChart from "@material-ui/icons/BubbleChart";
 import Person from "@material-ui/icons/Person";
 import School from "@material-ui/icons/School";
-import Message from "@material-ui/icons/Message";
-import Report from "@material-ui/icons/Assignment";
 import Account from "@material-ui/icons/AccountBalance";
-
 // core components/views
 import DashboardPage from "../views/Admin/AdminDashboard/AdminDashboard.jsx";
 import StudentManage from "../views/Admin/StudentManage/StudentManage.jsx";
 import QuizManage from "../views/Admin/QuizManage/QuizManage";
-import QuestionManage from "../views/Admin/QuestionManage/QuestionManage";
-import NotificationManage from "../views/Admin/NotificationManager/NotificationManager.jsx";
+import NotificationManage from "../views/Admin/NotificationManager/MessageManager.jsx";
 import FacultyManage from "../views/Admin/FacultyManage/FacultyManage.jsx";
 import DeptManage from "../views/Admin/DeptManage/DeptManage";
-import ReportGen from "../views/Admin/ReportGen/ReportGen";
 import CategoryManagement from "../views/Admin/CategoryManagement/CategoryManagement.jsx";
 
 const dashboardRoutes = [
@@ -72,15 +66,15 @@ const dashboardRoutes = [
     icon: Account,
     component: DeptManage
   },
+  {
+    path: "/admin/notification_management",
+    sidebarName: "Notification",
+    navbarName: "Notitfication",
+    icon: NotificationIcon,
+    component: NotificationManage
+  },
   // Hiden only for evaluation purpose required to do the work after evaluation
   // ----------------------------------------------------------------------------------------------
-  // {
-  //   path: "/admin/notification_management",
-  //   sidebarName: "Notification",
-  //   navbarName: "Notitfication",
-  //   icon: NotificationIcon,
-  //   component: NotificationManage
-  // },
   // {
   //   path: "/admin/report_generation",
   //   sidebarName: "Report",

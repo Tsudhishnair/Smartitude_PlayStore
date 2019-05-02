@@ -255,7 +255,7 @@ smartitude-app-main
         │   │   ├── FacultyManage.jsx
         │   │   └── FormAddFacultyBatch.jsx
         │   ├── NotificationManager
-        │   │   └── NotificationManager.jsx
+        │   │   └── MessageManager.jsx
         │   ├── QuestionManage
         │   │   └── QuestionManage.jsx
         │   ├── QuizManage
@@ -299,7 +299,7 @@ smartitude-app-main
         │   │   ├── AssignedQuizzes.jsx
         │   │   ├── CustomQuizSetup.jsx
         │   │   ├── PreQuizInfo.jsx
-        │   │   └── QuizPanelViewiew.jsx
+        │   │   └── QuizAnswer.jsx
         │   └── Results
         │       └── Results.jsx
         └── Unwanted
@@ -310,7 +310,7 @@ smartitude-app-main
             ├── Typography
             │   └── Typography.jsx
             └── UpgradeToPro
-                ├── NotificationManager.jsx
+                ├── MessageManager.jsx
                 └── UpgradeToPro.jsx
 ```
 
