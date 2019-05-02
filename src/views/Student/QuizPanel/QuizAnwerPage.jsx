@@ -6,8 +6,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
+import combineStyles from "components/CombineStyles/CombineStyles.js";
 import {
-  Card,
   CardContent,
   Typography,
   Divider,
@@ -15,8 +15,8 @@ import {
   ExpansionPanelSummary,
   ExpansionPanel,
   FormControlLabel,
-  Checkbox,
-  FormGroup,
+  Radio,
+  RadioGroup,
   FormControl,
   FormLabel
 } from "@material-ui/core";
@@ -24,8 +24,20 @@ import {
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
+import Card from "../../../components/Card/Card";
 
-import { green, blue } from "@material-ui/core/colors";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+
+import Danger from "components/Typography/Danger.jsx";
+import Store from "@material-ui/icons/People";
+import Warning from "@material-ui/icons/Warning";
+import DateRange from "@material-ui/icons/DateRange";
+import LocalOffer from "@material-ui/icons/LocalOffer";
+import Icon from "@material-ui/core/Icon";
+import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
+import green from "@material-ui/core/colors/green";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
@@ -63,14 +75,7 @@ const styles = theme => ({
       color: green[500]
     }
   },
-  radioCorrect: {
-    color: blue[600],
-    "&$blueChecked": {
-      color: blue[500]
-    }
-  },
-  checked: {},
-  blueChecked: {}
+  checked: {}
 });
 
 class QuizAnswer extends React.Component {
@@ -85,88 +90,119 @@ class QuizAnswer extends React.Component {
 
   //jsx for header
   renderHeader = () => {
+    const { classes } = this.props;
     return (
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
-          <Card>
-            <CardContent>
-              <p>
-                <Typography variant={"overline"} />
-                <Typography variant={"h5"}>
-                  <center>
-                    <p>Congratulation</p>
-                  </center>
-                </Typography>
-              </p>
-            </CardContent>
-            <CardFooter>
-              <p>
-                <strong>Score:</strong>
-                25.5/50
-              </p>
-              <p>
-                <strong>Negative Marks:</strong>
-                24
-              </p>
-              <p>
-                <strong>Time Taken:</strong>
-                23.6 mins/30mins
-              </p>
-              <p>
-                <strong>Current Rank:</strong>
-                6th/150
-              </p>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <div>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardContent>
+                <p>
+                  <Typography variant={"overline"} />
+                  <Typography variant={"h5"}>
+                    <center>
+                      <p>Congratulation</p>
+                    </center>
+                  </Typography>
+                </p>
+              </CardContent>
+              <CardFooter>
+                <p>
+                  <strong>Score:</strong>
+                  25.5/50
+                </p>
+                <p>
+                  <strong>Negative Marks:</strong>
+                  24
+                </p>
+                <p>
+                  <strong>Time Taken:</strong>
+                  23.6 mins/30mins
+                </p>
+                <p>
+                  <strong>Current Rank:</strong>
+                  6th/150
+                </p>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={6} md={3}>
+            <Card Green>
+              <CardHeader color="warning" stats icon>
+                <CardIcon color="warning">
+                  <Icon>grade</Icon>
+                </CardIcon>
+                <p className={classes.cardCategory}>Current Score</p>
+                <h3 className={classes.cardTitle}>4.9/10</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <Danger>
+                    <Warning />
+                  </Danger>
+                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                    Prepare More
+                  </a>
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={3}>
+            <Card>
+              <CardHeader color="success" stats icon>
+                <CardIcon color="success">
+                  <Store />
+                </CardIcon>
+                <p className={classes.cardCategory}>Ranking</p>
+                <h3 className={classes.cardTitle}>420th</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <DateRange />
+                  Last 24 Hours
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={3}>
+            <Card>
+              <CardHeader color="danger" stats icon>
+                <CardIcon color="danger">
+                  <Icon>info_outline</Icon>
+                </CardIcon>
+                <p className={classes.cardCategory}>Attempted Quizzes</p>
+                <h3 className={classes.cardTitle}>12</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <LocalOffer />
+                  Last one at 11/04/19
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={3}>
+            <Card>
+              <CardHeader color="info" stats icon>
+                <CardIcon color="info">
+                  <LocalOffer />
+                </CardIcon>
+                <p className={classes.cardCategory}>Followers</p>
+                <h3 className={classes.cardTitle}>+245</h3>
+              </CardHeader>
+              <CardFooter stats>
+                <div className={classes.stats}>
+                  <LocalOffer />
+                  Just Updated
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
     );
-  };
-
-  renderCheckbox = (sectionIndex, questionIndex, optionIndex, classes) => {
-    if (
-      this.data.sections[sectionIndex].questions[questionIndex]
-        .correctOption ===
-        this.data.attemptedSections[sectionIndex].attemptedQuestions[
-          questionIndex
-        ].markedOption &&
-      this.data.sections[sectionIndex].questions[questionIndex]
-        .correctOption === optionIndex
-    ) {
-      return (
-        <Checkbox
-          value={optionIndex}
-          checked={true}
-          classes={{
-            root: classes.radioCorrect,
-            checked: classes.blueChecked
-          }}
-        />
-      );
-    } else if (
-      optionIndex ===
-      this.data.sections[sectionIndex].questions[questionIndex].correctOption
-    ) {
-      return (
-        <Checkbox
-          value={optionIndex}
-          checked={true}
-          classes={{
-            root: classes.radioPrimary,
-            checked: classes.checked
-          }}
-        />
-      );
-    } else if (
-      optionIndex ===
-      this.data.attemptedSections[sectionIndex].attemptedQuestions[
-        questionIndex
-      ].markedOption
-    ) {
-      return <Checkbox value={optionIndex} checked={true} />;
-    } else {
-      return <Checkbox value={optionIndex} checked={false} />;
-    }
   };
 
   //create jsx for a single question
@@ -195,48 +231,43 @@ class QuizAnswer extends React.Component {
                       className={classes.formControl}
                     >
                       <FormLabel component="legend">Marked Choice</FormLabel>
-                      <FormGroup
+                      <RadioGroup
                         aria-label="options"
                         name="option"
+                        value={
+                          this.data.attemptedSections[sectionIndex]
+                            .attemptedQuestions[questionIndex].markedOption
+                        }
                         className={classes.group}
                       >
                         <FormControlLabel
-                          control={this.renderCheckbox(
-                            sectionIndex,
-                            questionIndex,
-                            1,
-                            classes
-                          )}
+                          value={1}
+                          control={
+                            <Radio
+                              classes={{
+                                root: classes.radioPrimary,
+                                checked: classes.checked
+                              }}
+                            />
+                          }
                           label={question.options[0]}
                         />
                         <FormControlLabel
-                          control={this.renderCheckbox(
-                            sectionIndex,
-                            questionIndex,
-                            2,
-                            classes
-                          )}
+                          value={2}
+                          control={<Radio />}
                           label={question.options[1]}
                         />
                         <FormControlLabel
-                          control={this.renderCheckbox(
-                            sectionIndex,
-                            questionIndex,
-                            3,
-                            classes
-                          )}
+                          value={3}
+                          control={<Radio />}
                           label={question.options[2]}
                         />
                         <FormControlLabel
-                          control={this.renderCheckbox(
-                            sectionIndex,
-                            questionIndex,
-                            4,
-                            classes
-                          )}
+                          value={4}
+                          control={<Radio />}
                           label={question.options[3]}
                         />
-                      </FormGroup>
+                      </RadioGroup>
                     </FormControl>
                   </CardBody>
                   <Divider />
@@ -314,4 +345,6 @@ QuizAnswer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(QuizAnswer);
+const combinedStyles = combineStyles(styles, dashboardStyle);
+
+export default withStyles(combinedStyles)(QuizAnswer);
