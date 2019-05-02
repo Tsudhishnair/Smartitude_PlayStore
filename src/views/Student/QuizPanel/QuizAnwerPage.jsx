@@ -23,7 +23,7 @@ import {
   Avatar
 } from "@material-ui/core";
 
-import { TrendingUp, TrendingDown, Timer } from "@material-ui/icons";
+import { TrendingUp, TrendingDown, Timer, Timeline } from "@material-ui/icons";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
@@ -41,6 +41,14 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       margin: 0
     }
+  },
+  title: {
+    textAlign: "center",
+    fontWeight: "600",
+    color: blue[600]
+  },
+  subtitle: {
+    textAlign: "center"
   },
   timer: {
     color: "green"
@@ -64,27 +72,43 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit
   },
-  radioPrimary: {
-    color: green[600],
-    "&$checked": {
-      color: green[500]
-    }
-  },
+
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
     flexShrink: 0
   },
   avatar: {
+    backgroundColor: red[500]
+  },
+  headerAvatar: {
     backgroundColor: red[500],
-    position: "relative"
+    margin: 10,
+    width: 55,
+    height: 55,
+    float: "left"
   },
   descText: {
     color: red[500]
   },
   sectionCard: {
-    marginTop: theme.spacing.unit * 5,
+    marginTop: theme.spacing.unit * 6,
     marginBottom: theme.spacing.unit * 1
+  },
+  questionCard: {
+    marginTop: theme.spacing.unit * 1,
+    marginBottom: theme.spacing.unit * 1
+  },
+  markedInfo: {
+    marginTop: theme.spacing.unit * 1,
+    marginBottom: theme.spacing.unit * 1,
+    float: "right"
+  },
+  radioPrimary: {
+    color: green[600],
+    "&$checked": {
+      color: green[500]
+    }
   },
   radioCorrect: {
     color: blue[600],
@@ -109,54 +133,120 @@ class QuizAnswer extends React.Component {
   renderHeader = () => {
     const { classes } = this.props;
     return (
-      <Card>
-        <CardContent>
-          <Typography variant={"h5"}>Congratulation</Typography>
-        </CardContent>
-        <CardBody>
-          <GridContainer>
-            <GridItem xs={12} sm={4} md={3}>
-              <div justify={"center"}>
-                <Avatar aria-label="Icon" className={classes.avatar}>
-                  <TrendingUp />
-                </Avatar>
-                <p>
-                  <Typography variant={"overline"}>Score:</Typography>
-                  <Typography variant={"h5"} className={classes.descText}>
-                    25.5/50
-                  </Typography>
-                </p>
-              </div>
-            </GridItem>
-            <GridItem xs={12} sm={4} md={3}>
-              <div justify={"center"}>
-                <Avatar aria-label="Icon" className={classes.avatar}>
-                  <TrendingDown />
-                </Avatar>
-                <p>
-                  <Typography variant={"overline"}>Negative Marks:</Typography>
-                  <Typography variant={"h5"} className={classes.descText}>
-                    5
-                  </Typography>
-                </p>
-              </div>
-            </GridItem>
-            <GridItem xs={12} sm={4} md={3}>
-              <div justify={"center"}>
-                <Avatar aria-label="Icon" className={classes.avatar}>
-                  <Timer />
-                </Avatar>
-                <p>
-                  <Typography variant={"overline"}>Time Taken:</Typography>
-                  <Typography variant={"h5"} className={classes.descText}>
-                    23.6/30 Mins
-                  </Typography>
-                </p>
-              </div>
-            </GridItem>
-          </GridContainer>
-        </CardBody>
-      </Card>
+      <fragment>
+        <Card>
+          <CardContent>
+            <Typography variant={"h4"} className={classes.title}>
+              Quiz Completed!
+            </Typography>
+            <Typography variant={"h6"} className={classes.subtitle}>
+              Score Card
+            </Typography>
+          </CardContent>
+          <CardBody>
+            <GridContainer>
+              <GridItem xs={12} sm={3} md={3}>
+                <div justify={"center"}>
+                  <Avatar aria-label="Icon" className={classes.headerAvatar}>
+                    <TrendingUp />
+                  </Avatar>
+                  <p>
+                    <Typography variant={"overline"}>Score:</Typography>
+                    <Typography variant={"h5"} className={classes.descText}>
+                      25.5/50
+                    </Typography>
+                  </p>
+                </div>
+              </GridItem>
+              <GridItem xs={12} sm={3} md={3}>
+                <div justify={"center"}>
+                  <Avatar aria-label="Icon" className={classes.headerAvatar}>
+                    <TrendingDown />
+                  </Avatar>
+                  <p>
+                    <Typography variant={"overline"}>
+                      Negative Marks:
+                    </Typography>
+                    <Typography variant={"h5"} className={classes.descText}>
+                      5
+                    </Typography>
+                  </p>
+                </div>
+              </GridItem>
+              <GridItem xs={12} sm={3} md={3}>
+                <div justify={"center"}>
+                  <Avatar aria-label="Icon" className={classes.headerAvatar}>
+                    <Timer />
+                  </Avatar>
+                  <p>
+                    <Typography variant={"overline"}>Time Taken:</Typography>
+                    <Typography variant={"h5"} className={classes.descText}>
+                      23.6/30 Mins
+                    </Typography>
+                  </p>
+                </div>
+              </GridItem>
+              <GridItem xs={12} sm={3} md={3}>
+                <div justify={"center"}>
+                  <Avatar aria-label="Icon" className={classes.headerAvatar}>
+                    <Timeline />
+                  </Avatar>
+                  <p>
+                    <Typography variant={"overline"}>Percentile:</Typography>
+                    <Typography variant={"h5"} className={classes.descText}>
+                      82%
+                    </Typography>
+                  </p>
+                </div>
+              </GridItem>
+            </GridContainer>
+          </CardBody>
+          <CardFooter />
+        </Card>
+        <Card className={classes.questionCard}>
+          <CardContent>
+            <Typography>Option Chart</Typography>
+            <GridContainer>
+              <GridItem xs={12} sm={4} md={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={true}
+                      value="checkedB"
+                      classes={{
+                        root: classes.radioPrimary,
+                        checked: classes.checked
+                      }}
+                    />
+                  }
+                  label="Correct & Marked Option"
+                />
+              </GridItem>
+              <GridItem xs={12} sm={4} md={4}>
+                <FormControlLabel
+                  control={<Checkbox checked={true} value="checkedB" />}
+                  label="Marked Wrong Answer"
+                />
+              </GridItem>
+              <GridItem xs={12} sm={4} md={4}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={false}
+                      value="checkedB"
+                      classes={{
+                        root: classes.radioPrimary,
+                        checked: classes.checked
+                      }}
+                    />
+                  }
+                  label="Unmarked Correct Answer"
+                />
+              </GridItem>
+            </GridContainer>
+          </CardContent>
+        </Card>
+      </fragment>
     );
   };
 
@@ -174,9 +264,10 @@ class QuizAnswer extends React.Component {
         <Checkbox
           value={optionIndex}
           checked={true}
+          disabled={false}
           classes={{
-            root: classes.radioCorrect,
-            checked: classes.blueChecked
+            root: classes.radioPrimary,
+            checked: classes.checked
           }}
         />
       );
@@ -187,7 +278,8 @@ class QuizAnswer extends React.Component {
       return (
         <Checkbox
           value={optionIndex}
-          checked={true}
+          checked={false}
+          disabled={false}
           classes={{
             root: classes.radioPrimary,
             checked: classes.checked
@@ -200,9 +292,9 @@ class QuizAnswer extends React.Component {
         questionIndex
       ].markedOption
     ) {
-      return <Checkbox value={optionIndex} checked={true} />;
+      return <Checkbox value={optionIndex} disabled={false} checked={true} />;
     } else {
-      return <Checkbox value={optionIndex} checked={false} />;
+      return <Checkbox value={optionIndex} disabled={true} checked={false} />;
     }
   };
 
@@ -213,7 +305,7 @@ class QuizAnswer extends React.Component {
     console.log(question);
 
     return (
-      <Card>
+      <Card className={classes.questionCard}>
         <form>
           <CardContent>
             <Typography>
@@ -277,9 +369,12 @@ class QuizAnswer extends React.Component {
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <p>
-              <div>{question.solution}</div>
-            </p>
+            <div>
+              <p>{question.solution}</p>
+              <p>
+                Correct Option: <b>{question.correctOption}</b>
+              </p>
+            </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </Card>
