@@ -1,16 +1,18 @@
 /* eslint-disable */
-import React, { Fragment } from "react";
+import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
+import AddAlert from "@material-ui/icons/AddAlert";
 // core components
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
+import Snackbar from "components/Snackbar/Snackbar.jsx";
 import Card from "components/Card/Card.jsx";
-import gql from "graphql-tag";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import { Query } from "react-apollo";
-import { CircularProgress, Typography } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
 
 const styles = {
   cardCategoryWhite: {
@@ -42,41 +44,18 @@ const styles = {
   }
 };
 
-const columns = [
-  {
-    name: "Title",
-    options: {
-      filter: false,
-      sort: true
-    }
-  },
-  {
-    name: "Description",
-    options: {
-      filter: false,
-      sort: true
-    }
-  }
-];
-
-// Query to fetch all messages sent to all the batchs
-const MESSAGES_FETCH_QUERY = gql`
-  {
-    batchMessages {
-      _id
-      title
-      description
-    }
-  }
-`;
 class Notifications extends React.Component {
-  options = {
-    filterType: "checkbox",
-    rowsPerPage: 20,
-    elevation: 0,
-    selectableRows: false,
-    rowsPerPageOptions: [20, 30, 100, 200]
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      tl: false,
+      tc: false,
+      tr: false,
+      bl: false,
+      bc: false,
+      br: false
+    };
+  }
   // to stop the warning of calling setState of unmounted component
   componentWillUnmount() {
     var id = window.setTimeout(null, 0);
@@ -84,52 +63,58 @@ class Notifications extends React.Component {
       window.clearTimeout(id);
     }
   }
-
-  constructor(props) {
-    super(props);
-    this.messageList = [];
+  showNotification(place) {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this),
+      6000
+    );
   }
-
   render() {
     const { classes } = this.props;
     return (
       <Card>
         <CardHeader color="primary">
-          <h4 className={classes.cardTitleWhite}>Important</h4>
+          <h4 className={classes.cardTitleWhite}>Notifications</h4>
           <p className={classes.cardCategoryWhite}>
-            See the important notifications for your batch below.
+            Notification from admin and other imporatant messages
           </p>
         </CardHeader>
         <CardBody>
-          <Query query={MESSAGES_FETCH_QUERY}>
-            {({ data, loading, error, refetch }) => {
-              this.reloadList = refetch;
-              if (loading) {
-                return <CircularProgress className={classes.progress}/>;
-              } else if (error) {
-                return <Typography>Error occured while fetching data!</Typography>;
-              } else {
-                this.messages = data.batchMessages;
-                this.messageList = data.batchMessages.map(message => {
-                  let messageDetails = [];
-                  messageDetails.push(message.title);
-                  messageDetails.push(message.description);
-                  return messageDetails;
-                });
-                return (
-                  <Fragment>
-                    <MUIDataTable
-                      title={""}
-                      data={this.messageList}
-                      columns={columns}
-                      options={this.options}
-                    />
-                  </Fragment>
-                );
-              }
-            }
-            }
-          </Query>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <h5>General</h5>
+              <br />
+              <SnackbarContent
+                  message={"This is a plain notification"}
+                  color="info"/>
+              <SnackbarContent
+                message={"This is a notification with close button."}
+                color="info"
+              />
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <h5>Notifications States</h5>
+              <br />
+              <SnackbarContent
+                message={
+                  'New Quiz is Up Attempt Now! 2/05/2019'
+                }
+                color="warning"
+              />
+              <SnackbarContent
+                  message={
+                    'New Quiz is Up Attempt Now! 20/04/2019'
+                  }
+                  color="warning"
+              />
+            </GridItem>
+          </GridContainer>
         </CardBody>
       </Card>
     );

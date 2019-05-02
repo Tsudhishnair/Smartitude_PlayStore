@@ -7,7 +7,7 @@ import {
   defaultFont
 } from "assets/jss/material-dashboard-react.jsx";
 
-const signupPageStyle = {
+const loginPageStyle = {
   container: {
     zIndex: "5",
     margin: "0",
@@ -15,6 +15,7 @@ const signupPageStyle = {
     padding: "0",
     paddingTop: "15vh",
     color: "#FFFFFF",
+    overflow: "hidden"
   },
   cardHidden: {
     opacity: "0",
@@ -150,4 +151,4 @@ const signupPageStyle = {
   }
 };
 
-export default signupPageStyle;
+export default loginPageStyle;

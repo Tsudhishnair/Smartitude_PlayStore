@@ -28,6 +28,10 @@ import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Timer from "react-compound-timer/build/components/Timer/Timer";
 import { Redirect } from "react-router-dom";
+
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 1,
@@ -63,10 +67,20 @@ const styles = theme => ({
   rightPanel: {
     color: "green",
     [theme.breakpoints.down("sm")]: {
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 2
     }
   }
 });
+
+const FINISH_QUIZ = gql`
+  mutation submitAttemptedAdminQuiz(
+    $adminQuizSubmission: AttemptedAdminQuizInput!
+  ) {
+    submitAttemptedAdminQuiz(adminQuizSubmission: $adminQuizSubmission) {
+      _id
+    }
+  }
+`;
 
 class QuizPanelView extends React.Component {
   constructor(props) {
@@ -111,8 +125,8 @@ class QuizPanelView extends React.Component {
 
     //contains data to be submitted on submission of sections and quiz
     this.dataToSubmit = {
-      quizId: this.props.location.state._id,
-      attemptedAt: new Date(),
+      attemptedAdminQuizId: this.props.location.state._id,
+      submittedAt: new Date(),
       attemptedSections: []
     };
 
@@ -127,7 +141,7 @@ class QuizPanelView extends React.Component {
       while (j < this.props.location.state.sections[i].questions.length) {
         this.dataToSubmit.attemptedSections[i].attemptedQuestions.push({
           question: this.props.location.state.sections[i].questions[j]._id,
-          markedOption: "",
+          markedOption: -1,
           timeTakenToMark: 0
         });
         j++;
@@ -150,7 +164,7 @@ class QuizPanelView extends React.Component {
   };
 
   //called when section submit is called
-  handleSectionSubmit = quizSections => {
+  handleSectionSubmit = (quizSections, finishQuizMutation) => {
     //set qn index to 0 to start from first qn
     this.currentQnNum = 0;
 
@@ -163,12 +177,27 @@ class QuizPanelView extends React.Component {
       this.setFields(quizSections[this.currentSection]);
     } else {
       //call mutation for final section submission
-
       this.clearTimeTakenCounter();
-      // TODO: CALL MUTATION HERE
-      this.setState(() => ({
-        redirector: true
-      }));
+
+      console.log(this.dataToSubmit.attemptedAdminQuizId);
+
+      finishQuizMutation({
+        variables: {
+          adminQuizSubmission: {
+            ...this.dataToSubmit
+          }
+        }
+      })
+        .then(res => {
+          console.log("successfully submitted");
+
+          this.setState(() => ({
+            redirector: true
+          }));
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   };
 
@@ -379,199 +408,229 @@ class QuizPanelView extends React.Component {
 
     return (
       <div className={classes.root}>
-        <GridContainer>
-          <GridItem>
-            <Typography>
-              <h4>{quiz.name}</h4>
-            </Typography>
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={8}>
-            <Card>
-              <form>
-                <CardContent>
-                  <Hidden mdUp implementation="css">
-                    <p>
-                      <Typography variant={"overline"}>
-                        Time Remaining:
-                      </Typography>
-                      <Typography variant={"h5"} className={classes.timer}>
-                        <b>
-                          <Timer
-                            initialTime={
-                              60000 * this.getTimeLimit(selectedSection)
-                            }
-                            direction="backward"
-                            onStop={this.handleSectionSubmit}
-                          >
-                            {(stop, getTimerState, getTime) => (
-                              <React.Fragment>
-                                <Timer.Minutes /> minutes <Timer.Seconds />{" "}
-                                seconds
-                                {getTimerState}
-                              </React.Fragment>
-                            )}
-                          </Timer>
-                        </b>
-                      </Typography>
-                    </p>
-                    <Spacing />
-                  </Hidden>
+        <Mutation mutation={FINISH_QUIZ}>
+          {finishQuiz => (
+            <React.Fragment>
+              <GridContainer>
+                <GridItem>
                   <Typography>
-                    Question Number: <b>{this.getQuestionNumber()}</b>
+                    <h4>{quiz.name}</h4>
                   </Typography>
-                  <p>{this.state.fields.question}</p>
-                  <Divider />
-                </CardContent>
-                <CardBody>
-                  <FormControl
-                    component="fieldset"
-                    className={classes.formControl}
-                  >
-                    <FormLabel component="legend">
-                      Select your correct choice below
-                    </FormLabel>
-                    <RadioGroup
-                      aria-label="options"
-                      name="option"
-                      className={classes.group}
-                      value={this.state.markedOption}
-                      onChange={event =>
-                        this.handleChange(event, quiz.sections)
-                      }
-                    >
-                      <FormControlLabel
-                        value={1}
-                        control={<Radio />}
-                        label={this.state.fields.options["1"]}
-                      />
-                      <FormControlLabel
-                        value={2}
-                        control={<Radio />}
-                        label={this.state.fields.options["2"]}
-                      />
-                      <FormControlLabel
-                        value={3}
-                        control={<Radio />}
-                        label={this.state.fields.options["3"]}
-                      />
-                      <FormControlLabel
-                        value={4}
-                        control={<Radio />}
-                        label={this.state.fields.options["4"]}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                  <Button
-                    variant="outlined"
-                    color={"secondary"}
-                    size={"small"}
-                    disabled={this.state.prevButton}
-                    className={classes.button}
-                    onClick={event =>
-                      this.handlePreviousClick(event, selectedSection)
-                    }
-                  >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size={"small"}
-                    type={"reset"}
-                    className={classes.button}
-                    onClick={this.handleClearClick}
-                  >
-                    Clear Selection
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size={"small"}
-                    disabled={this.state.nextButton}
-                    className={classes.button}
-                    onClick={event =>
-                      this.handleNextClick(event, selectedSection)
-                    }
-                  >
-                    Next
-                  </Button>
-                </CardFooter>
-              </form>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card className={classes.rightPanel}>
-              <CardContent>
-                <Hidden smDown implementation="css">
-                  <p>
-                    <Typography variant={"overline"}>
-                      Time Remaining:
-                    </Typography>
-                    <Typography variant={"h5"} className={classes.timer}>
-                      <b>
-                        <Timer
-                          initialTime={
-                            60000 * this.getTimeLimit(selectedSection)
-                          }
-                          direction="backward"
-                          onStop={this.handleSectionSubmit}
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={8}>
+                  <Card>
+                    <form>
+                      <CardContent>
+                        <Hidden mdUp implementation="css">
+                          <p>
+                            <Typography variant={"overline"}>
+                              Time Remaining:
+                            </Typography>
+                            <Typography
+                              variant={"h5"}
+                              className={classes.timer}
+                            >
+                              <b>
+                                <Timer
+                                  initialTime={
+                                    60000 * this.getTimeLimit(selectedSection)
+                                  }
+                                  direction="backward"
+                                >
+                                  {({
+                                    start,
+                                    resume,
+                                    pause,
+                                    stop,
+                                    reset,
+                                    timerState
+                                  }) => (
+                                    <React.Fragment>
+                                      <Timer.Minutes /> minutes{" "}
+                                      <Timer.Seconds /> seconds
+                                      {timerState === "STOPPED"
+                                        ? this.handleSectionSubmit(
+                                            quiz.sections,
+                                            finishQuiz
+                                          )
+                                        : ""}
+                                    </React.Fragment>
+                                  )}
+                                </Timer>
+                              </b>
+                            </Typography>
+                          </p>
+                          <Spacing />
+                        </Hidden>
+                        <Typography>
+                          Question Number: <b>{this.getQuestionNumber()}</b>
+                        </Typography>
+                        <p>{this.state.fields.question}</p>
+                        <Divider />
+                      </CardContent>
+                      <CardBody>
+                        <FormControl
+                          component="fieldset"
+                          className={classes.formControl}
                         >
-                          {(stop, getTimerState, getTime) => (
-                            <React.Fragment>
-                              <Timer.Minutes /> minutes <Timer.Seconds />{" "}
-                              seconds
-                              {getTimerState}
-                            </React.Fragment>
-                          )}
-                        </Timer>
-                      </b>
-                    </Typography>
-                  </p>
-                  <Spacing />
-                </Hidden>
-                <Typography variant={"overline"}>Questions:</Typography>
-                {this.generateQuestionJumpers(selectedSection, classes.fab)}
-              </CardContent>
-              <CardFooter>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  type={"submit"}
-                  size={"small"}
-                  fullWidth
-                  className={classes.button}
-                  onClick={() => this.handleSectionSubmit(quiz.sections)}
-                >
-                  {activeStep === steps.length - 1
-                    ? "Finish Quiz"
-                    : "Submit Section"}
-                </Button>
-              </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
-        <Spacing />
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map(label => {
-                  const props = {};
-                  const labelProps = {};
-                  return (
-                    <Step key={label} {...props}>
-                      <StepLabel {...labelProps}>{label}</StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
-            </Card>
-          </GridItem>
-        </GridContainer>
+                          <FormLabel component="legend">
+                            Select your correct choice below
+                          </FormLabel>
+                          <RadioGroup
+                            aria-label="options"
+                            name="option"
+                            className={classes.group}
+                            value={this.state.markedOption}
+                            onChange={event =>
+                              this.handleChange(event, quiz.sections)
+                            }
+                          >
+                            <FormControlLabel
+                              value={1}
+                              control={<Radio />}
+                              label={this.state.fields.options["1"]}
+                            />
+                            <FormControlLabel
+                              value={2}
+                              control={<Radio />}
+                              label={this.state.fields.options["2"]}
+                            />
+                            <FormControlLabel
+                              value={3}
+                              control={<Radio />}
+                              label={this.state.fields.options["3"]}
+                            />
+                            <FormControlLabel
+                              value={4}
+                              control={<Radio />}
+                              label={this.state.fields.options["4"]}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </CardBody>
+                      <Divider />
+                      <CardFooter>
+                        <Button
+                          variant="outlined"
+                          color={"secondary"}
+                          size={"small"}
+                          disabled={this.state.prevButton}
+                          className={classes.button}
+                          onClick={event =>
+                            this.handlePreviousClick(event, selectedSection)
+                          }
+                        >
+                          Previous
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size={"small"}
+                          type={"reset"}
+                          className={classes.button}
+                          onClick={this.handleClearClick}
+                        >
+                          Clear Selection
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size={"small"}
+                          disabled={this.state.nextButton}
+                          className={classes.button}
+                          onClick={event =>
+                            this.handleNextClick(event, selectedSection)
+                          }
+                        >
+                          Next
+                        </Button>
+                      </CardFooter>
+                    </form>
+                  </Card>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={4}>
+                  <Card className={classes.rightPanel}>
+                    <CardContent>
+                      <Hidden smDown implementation="css">
+                        <p>
+                          <Typography variant={"overline"}>
+                            Time Remaining:
+                          </Typography>
+                          <Typography variant={"h5"} className={classes.timer}>
+                            <b>
+                              <Timer
+                                initialTime={
+                                  60000 * this.getTimeLimit(selectedSection)
+                                }
+                                direction="backward"
+                                onStop={() =>
+                                  this.handleSectionSubmit(
+                                    quiz.sections,
+                                    finishQuiz
+                                  )
+                                }
+                              >
+                                {(stop, getTimerState, getTime) => (
+                                  <React.Fragment>
+                                    <Timer.Minutes /> minutes <Timer.Seconds />
+                                    seconds
+                                    {getTimerState}
+                                  </React.Fragment>
+                                )}
+                              </Timer>
+                            </b>
+                          </Typography>
+                        </p>
+                        <Spacing />
+                      </Hidden>
+                      <Typography variant={"overline"}>Questions:</Typography>
+                      {this.generateQuestionJumpers(
+                        selectedSection,
+                        classes.fab
+                      )}
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        type={"submit"}
+                        size={"small"}
+                        fullWidth
+                        className={classes.button}
+                        onClick={() =>
+                          this.handleSectionSubmit(quiz.sections, finishQuiz)
+                        }
+                      >
+                        {activeStep === steps.length - 1
+                          ? "Finish Quiz"
+                          : "Submit Section"}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </GridItem>
+              </GridContainer>
+              <Spacing />
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <Card>
+                    <Stepper activeStep={activeStep} alternativeLabel>
+                      {steps.map(label => {
+                        const props = {};
+                        const labelProps = {};
+                        return (
+                          <Step key={label} {...props}>
+                            <StepLabel {...labelProps}>{label}</StepLabel>
+                          </Step>
+                        );
+                      })}
+                    </Stepper>
+                  </Card>
+                </GridItem>
+              </GridContainer>
+            </React.Fragment>
+          )}
+        </Mutation>
       </div>
     );
   }
