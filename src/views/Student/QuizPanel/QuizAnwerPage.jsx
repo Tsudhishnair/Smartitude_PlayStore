@@ -144,8 +144,8 @@ class QuizAnswer extends React.Component {
             </Typography>
           </CardContent>
           <CardBody>
-            <GridContainer>
-              <GridItem xs={12} sm={3} md={3}>
+            <GridContainer justify="center">
+              <GridItem xs={12} sm={3} md={3} justify="center">
                 <div justify={"center"}>
                   <Avatar aria-label="Icon" className={classes.headerAvatar}>
                     <TrendingUp />
