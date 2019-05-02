@@ -61,9 +61,9 @@ const DELETE_MULTIPLE_MESSAGES_QUERY = gql`
     deleteMultipleMessages(_ids: $_ids)
   }
 `;
-let messageList = [];
 
 class MessageManager extends React.Component {
+  messageList = [];
   constructor(props) {
     super(props);
     this.deleteMutation;
@@ -124,7 +124,7 @@ class MessageManager extends React.Component {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {
             this.messages = data.messages;
-            messageList = data.messages.map(message => {
+            this.messageList = data.messages.map(message => {
               let messageDetails = [];
               messageDetails.push(message.title);
               messageDetails.push(message.description);
@@ -161,7 +161,7 @@ class MessageManager extends React.Component {
                               <Fragment>
                                 <MUIDataTable
                                   title={""}
-                                  data={messageList}
+                                  data={this.messageList}
                                   columns={columns}
                                   options={this.options}
                                 />
