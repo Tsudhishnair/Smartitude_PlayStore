@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import { Query } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import { CircularProgress, Typography } from "@material-ui/core";
 import { EXPANSION_MESSAGE_FORM } from "../../../Utils";
 import GridContainer from "../../../components/Grid/GridContainer";
@@ -44,15 +44,6 @@ const columns = [
   }
 ];
 
-const options = {
-  filterType: "checkbox",
-  rowsPerPage: 20,
-  elevation: 0,
-  responsive: "scroll",
-  selectableRows: false,
-  rowsPerPageOptions: [20, 30, 100, 200]
-};
-
 // Query to fetch all messages sent to all the batchs
 const MESSAGES_FETCH_QUERY = gql`
   {
@@ -64,18 +55,60 @@ const MESSAGES_FETCH_QUERY = gql`
     }
   }
 `;
+
+const DELETE_MULTIPLE_MESSAGES_QUERY = gql`
+  mutation deleteMultipleMessages($_ids: [ID!]!) {
+    deleteMultipleMessages(_ids: $_ids)
+  }
+`;
 let messageList = [];
 
 class MessageManager extends React.Component {
-  reloadList = null;
-
   constructor(props) {
     super(props);
+    this.deleteMutation;
+    this.reloadList = null;
+    this.messages = [];
   }
 
   reloadMessagesList = () => {
     if (this.reloadList !== null) {
       this.reloadList();
+    }
+  };
+
+  //Deleting messages complete Details
+  handleDelete = deleteMessageIds => {
+    console.log(deleteMessageIds + "Deleted");
+    this.deleteMessagesMutation({
+      variables: {
+        _ids: deleteMessageIds
+      }
+    })
+      .then(res => {
+        // TODO: Show deletion complete messages here
+        this.reloadMessagesList();
+      })
+      .catch(err => {
+        // TODO: Show deletion error messages here.
+        this.reloadMessagesList();
+      });
+    this.reloadMessagesList();
+  };
+
+  options = {
+    filterType: "checkbox",
+    rowsPerPage: 20,
+    elevation: 0,
+    selectableRows: true,
+    rowsPerPageOptions: [20, 30, 100, 200],
+    onRowsDelete: rowsDeleted => {
+      let data = rowsDeleted.data;
+      const messagesToDelete = [];
+      for (let index in data) {
+        messagesToDelete.push(this.messages[data[index].dataIndex]._id);
+      }
+      this.handleDelete(messagesToDelete);
     }
   };
 
@@ -90,6 +123,7 @@ class MessageManager extends React.Component {
           } else if (error) {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {
+            this.messages = data.messages;
             messageList = data.messages.map(message => {
               let messageDetails = [];
               messageDetails.push(message.title);
@@ -120,12 +154,21 @@ class MessageManager extends React.Component {
                         <h4 className={classes.cardTitleWhite}>Messages</h4>
                       </CardHeader>
                       <CardBody>
-                        <MUIDataTable
-                          title={""}
-                          data={messageList}
-                          columns={columns}
-                          options={options}
-                        />
+                        <Mutation mutation={DELETE_MULTIPLE_MESSAGES_QUERY}>
+                          {deleteMultipleMessages => {
+                            this.deleteMessagesMutation = deleteMultipleMessages;
+                            return (
+                              <Fragment>
+                                <MUIDataTable
+                                  title={""}
+                                  data={messageList}
+                                  columns={columns}
+                                  options={this.options}
+                                />
+                              </Fragment>
+                            );
+                          }}
+                        </Mutation>
                       </CardBody>
                     </Card>
                   </GridItem>
