@@ -11,7 +11,9 @@ import {
   Button,
   CardContent,
   Typography,
-  Divider
+  Divider,
+  CircularProgress,
+  Snackbar
 } from "@material-ui/core";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
@@ -21,6 +23,8 @@ import { Redirect } from "react-router-dom";
 
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import green from "@material-ui/core/colors/green";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 const styles = theme => ({
   root: {
@@ -33,6 +37,18 @@ const styles = theme => ({
   },
   textDarkGrey: {
     color: "#696969"
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   }
 });
 
@@ -50,7 +66,14 @@ class PreQuizInfo extends React.Component {
 
     this.state = {
       value: "option",
-      redirecter: false
+      redirecter: false,
+      loading: false,
+      snackbar: {
+        open: false
+      },
+      error: {
+        message: ""
+      }
     };
 
     this.quiz = this.props.location.state;
@@ -75,6 +98,24 @@ class PreQuizInfo extends React.Component {
     }
 
     return instructionObject;
+  };
+
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
   };
 
   transformTimeLimit = sections => {
@@ -107,7 +148,7 @@ class PreQuizInfo extends React.Component {
 
   startQuiz = (startQuizMutation, id, event) => {
     event.preventDefault();
-
+    this.setState({ ...this.state, loading: true });
     startQuizMutation({
       variables: {
         quizId: id
@@ -121,11 +162,24 @@ class PreQuizInfo extends React.Component {
       })
       .catch(err => {
         console.log(err);
+        this.setState({
+          error: {
+            message: err.graphQLErrors[0]
+              ? err.graphQLErrors[0].message
+              : err.networkError
+          }
+        });
+
+        this.openSnackbar();
+      })
+      .finally(() => {
+        this.setState({ ...this.state, loading: false });
       });
   };
 
   render() {
     const { classes } = this.props;
+    const { loading, snackbar, error } = this.state;
 
     if (!this.quiz) {
       return <Redirect to="/student/dashboard" />;
@@ -204,19 +258,28 @@ class PreQuizInfo extends React.Component {
                 >
                   <Mutation mutation={START_QUIZ}>
                     {startQuiz => (
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size={"large"}
-                        style={{ float: "center" }}
-                        type={"submit"}
-                        className={classes.button}
-                        onClick={event =>
-                          this.startQuiz(startQuiz, this.quiz._id, event)
-                        }
-                      >
-                        Start Quiz
-                      </Button>
+                      <div className={classes.wrapper}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          size={"large"}
+                          style={{ float: "center" }}
+                          type={"submit"}
+                          disabled={loading}
+                          className={classes.button}
+                          onClick={event =>
+                            this.startQuiz(startQuiz, this.quiz._id, event)
+                          }
+                        >
+                          Start Quiz
+                        </Button>
+                        {loading && (
+                          <CircularProgress
+                            size={26}
+                            className={classes.buttonProgress}
+                          />
+                        )}
+                      </div>
                     )}
                   </Mutation>
                 </CardFooter>
@@ -224,6 +287,20 @@ class PreQuizInfo extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={snackbar.open}
+          autoHideDuration={6000}
+        >
+          <CustomSnackbar
+            onClose={this.closeSnackbar}
+            variant="error"
+            message={error.message}
+          />
+        </Snackbar>
       </div>
     );
   }
