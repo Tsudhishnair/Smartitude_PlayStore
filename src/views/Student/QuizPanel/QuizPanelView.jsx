@@ -438,18 +438,24 @@ class QuizPanelView extends React.Component {
                                     60000 * this.getTimeLimit(selectedSection)
                                   }
                                   direction="backward"
-                                  onStop={() =>
-                                    this.handleSectionSubmit(
-                                      quiz.sections,
-                                      finishQuiz
-                                    )
-                                  }
                                 >
-                                  {(stop, getTimerState, getTime) => (
+                                  {({
+                                    start,
+                                    resume,
+                                    pause,
+                                    stop,
+                                    reset,
+                                    timerState
+                                  }) => (
                                     <React.Fragment>
                                       <Timer.Minutes /> minutes{" "}
                                       <Timer.Seconds /> seconds
-                                      {getTimerState}
+                                      {timerState === "STOPPED"
+                                        ? this.handleSectionSubmit(
+                                            quiz.sections,
+                                            finishQuiz
+                                          )
+                                        : ""}
                                     </React.Fragment>
                                   )}
                                 </Timer>
