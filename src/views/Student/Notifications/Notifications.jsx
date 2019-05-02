@@ -10,7 +10,10 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import { Query } from "react-apollo";
 import { CircularProgress, Typography } from "@material-ui/core";
-import MUIDataTable from "mui-datatables";
+// core components
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 const styles = {
   cardCategoryWhite: {
@@ -109,22 +112,41 @@ class Notifications extends React.Component {
               } else if (error) {
                 return <Typography>Error occured while fetching data!</Typography>;
               } else {
-                this.messages = data.batchMessages;
-                this.messageList = data.batchMessages.map(message => {
-                  let messageDetails = [];
-                  messageDetails.push(message.title);
-                  messageDetails.push(message.description);
-                  return messageDetails;
+                // this.messages = data.batchMessages;
+                // this.messageList = data.batchMessages.map(message => {
+                //   let messageDetails = [];
+                //   messageDetails.push(message.title);
+                //   messageDetails.push(message.description);
+                //   return messageDetails;
+                // });
+                const snackbars = data.batchMessages.map(message => {
+                  const messageView = <Fragment>
+                    <b>
+                      {message.title}
+                    </b>
+                    <p>
+                      {message.description}
+                    </p>
+                  </Fragment>;
+                  return (
+
+                    <SnackbarContent
+                      message={messageView}
+                      color="warning"/>
+                  );
                 });
                 return (
-                  <Fragment>
-                    <MUIDataTable
-                      title={""}
-                      data={this.messageList}
-                      columns={columns}
-                      options={this.options}
-                    />
-                  </Fragment>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={6}>
+                      {snackbars}
+                      {/*<MUIDataTable*/}
+                      {/*  title={""}*/}
+                      {/*  data={this.messageList}*/}
+                      {/*  columns={columns}*/}
+                      {/*  options={this.options}*/}
+                      {/*/>*/}
+                    </GridItem>
+                  </GridContainer>
                 );
               }
             }
