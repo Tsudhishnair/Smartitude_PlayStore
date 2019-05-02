@@ -35,11 +35,23 @@ const RANDOM_QUIZ = gql`
       questions {
         _id
         question
+        options
+        correctOption
+        solution
+        category {
+          _id
+          name
+        }
+        subcategory {
+          _id
+          name
+        }
       }
     }
   }
 `;
-
+//stores the questions fto be passed in the array
+let sections=[];
 //stores the questions
 class StudentDashboard extends React.Component {
   constructor(props) {
@@ -64,17 +76,27 @@ class StudentDashboard extends React.Component {
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
-    console.log(data);
-    console.log("asdsbfhasd");
+    const sectionFormattedData = {
+      sections: [
+        {
+          category: {
+            name: "General Section"
+          },
+          questions: data.questions
+        }
+      ]
+    };
+    console.log("Section wise formatted data: ");
+    console.log(sectionFormattedData);
     this.setState(prevState => ({
       ...prevState,
-      RandomQuizQuestion: data,
+      RandomQuizQuestion: sectionFormattedData,
       redirector: true
     }));
   };
   render() {
     const { classes } = this.props;
-    if (this.state.redirecter === true) {
+    if (this.state.redirector === true) {
       return (
         <Redirect
           push
@@ -211,6 +233,12 @@ class StudentDashboard extends React.Component {
                               if (data) {
                                 console.log("Data fetched for random quiz: ");
                                 console.log(data);
+                                let dataarray=[];
+                                for(let index in data)
+                                {
+                                  sections.push(data[index]);
+                                }
+
                               }
                               return (
                                 <Button

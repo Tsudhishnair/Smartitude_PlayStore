@@ -4,14 +4,10 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
-import { Button, CardContent, Divider, Typography } from "@material-ui/core";
-import CardFooter from "../../../components/Card/CardFooter";
+import { CardContent, Divider, Typography } from "@material-ui/core";
 import Card from "components/Card/Card.jsx";
 import QuizForm from "../../Admin/QuizManage/QuizForm";
 import CardHeader from "../../../components/Card/CardHeader";
-import Spacing from "../../../components/Spacing/Spacing";
 import CardBody from "../../../components/Card/CardBody";
 
 const styles = theme => ({
