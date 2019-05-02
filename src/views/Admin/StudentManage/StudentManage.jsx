@@ -132,6 +132,7 @@ class StudentManage extends React.Component {
         _ids: deleteStudentId
       }
     });
+    this.refetchStudentsList();
   };
   tableOptions = {
     filterType: "checkbox",
