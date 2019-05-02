@@ -21,6 +21,12 @@ import { CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+
+let realscore = 0;
+let realAttemptedQuizNo = 0;
+let HeaderData = [];
+let totalScore=10;
+let realmaxScore=0;
 const MY_ATTEMPTED_QUIZ = gql`
   {
     myAttemptedAdminQuizzes {
@@ -38,7 +44,8 @@ class Results extends React.Component {
     super(props);
     this.state = {
       score: 0,
-      NoOfAttemptedQuiz: 0
+      NoOfAttemptedQuiz: 0,
+      avgScore:0
     };
     this.options = {
       filterType: "checkbox",
@@ -59,32 +66,37 @@ class Results extends React.Component {
       // }
     };
   }
+  //sets state of the header fields such as total no of attempted questions and total score
   displayDataHeader = data => {
     this.setState(prevState => ({
       ...prevState,
       score: data[0],
-      NoOfAttemptedQuiz: data[1]
+      NoOfAttemptedQuiz: data[1],
+      avgScore:(data[0]/data[1]).toFixed(2)
+
     }));
   };
-
+// ScoreCal=()=>{
+// let scr = this.state.score;
+// let no = this.state.NoOfAttemptedQuiz;
+// let total = scr/no;
+// return total;
+// };
   render() {
     const { classes } = this.props;
 
-    let realscore = 0;
-    let realAttemptedQuizNo = 0;
-    let HeaderData = [];
 
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={6}>
             <Card Green>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
                   <Icon>grade</Icon>
                 </CardIcon>
-                <p className={classes.cardCategory}>Current Score</p>
-                <h3 className={classes.cardTitle}>{this.state.score}/10</h3>
+                <p className={classes.cardCategory}>Current Avg. Score</p>
+                <h3 className={classes.cardTitle}>{this.state.avgScore}</h3>
               </CardHeader>
               <CardFooter stats>
                 <div className={classes.stats}>
@@ -98,7 +110,7 @@ class Results extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          {/* <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
@@ -114,8 +126,8 @@ class Results extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          </GridItem> */}
+          <GridItem xs={12} sm={6} md={6}>
             <Card>
               <CardHeader color="danger" stats icon>
                 <CardIcon color="danger">
@@ -134,7 +146,7 @@ class Results extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
+          {/* <GridItem xs={12} sm={6} md={3}>
             <Card>
               <CardHeader color="info" stats icon>
                 <CardIcon color="info">
@@ -150,7 +162,7 @@ class Results extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
+          </GridItem> */}
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -187,9 +199,6 @@ class Results extends React.Component {
                     }
                     HeaderData.push(realscore);
                     HeaderData.push(realAttemptedQuizNo);
-                    console.log(HeaderData);
-                    console.log(this.state.score);
-                    console.log(this.state.NoOfAttemptedQuiz);
                     if (this.state.NoOfAttemptedQuiz != HeaderData[1]) {
                       this.displayDataHeader(HeaderData);
                     }
