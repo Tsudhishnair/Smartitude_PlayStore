@@ -431,6 +431,9 @@ class QuizForm extends React.Component {
               message: "Quiz added successfully!"
             }
           }));
+          if (this.props.reloadList !== null) {
+            this.props.reloadList();
+          }
         })
         .catch(err => {
           //if error was returned
@@ -1144,7 +1147,8 @@ class QuizForm extends React.Component {
 
 QuizForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  quizType: PropTypes.object
+  quizType: PropTypes.object,
+  reloadList: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(QuizForm);

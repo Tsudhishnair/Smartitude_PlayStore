@@ -94,16 +94,24 @@ const options = {
 };
 
 class QuizManage extends React.Component {
+  reloadList = null;
   constructor(props) {
     super(props);
   }
+
+  reloadQuizList = () => {
+    if (this.reloadList !== null) {
+      this.reloadList();
+    }
+  };
 
   render() {
     const { classes } = this.props;
 
     return (
       <Query query={QUIZ_VIEW_QUERY}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
+          this.reloadList = refetch;
           if (loading) {
             return <CircularProgress className={classes.progress} />;
           } else if (error) {
@@ -131,6 +139,7 @@ class QuizManage extends React.Component {
                     <Expansionpanel
                       headers={header1}
                       header={header2}
+                      reloadList={this.reloadQuizList}
                       directingValue={EXPANSION_QUIZ_FORM}
                     />
                   </GridItem>
