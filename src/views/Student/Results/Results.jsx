@@ -170,14 +170,12 @@ class Results extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Attempted Quizzes</h4>
               </CardHeader>
-              <CardBody>
-                <MUIDataTable
-                  title={""}
-                  data={datalist}
-                  columns={["No", "QuizName", "Description", "Score", "Rank"]}
-                  // options={this.options}
-                />
-              </CardBody>
+              <MUIDataTable
+                title={""}
+                data={datalist}
+                columns={["No", "QuizName", "Description", "Score", "Rank"]}
+                options={this.options}
+              />
             </Card>
           </GridItem>
         </GridContainer>
