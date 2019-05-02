@@ -114,7 +114,8 @@ class PreQuizInfo extends React.Component {
       }
     })
       .then(res => {
-        this.quiz._id = res._id;
+        console.log(res);
+        this.quiz._id = res.data.startQuiz._id;
 
         this.setState(() => ({ redirecter: true }));
       })

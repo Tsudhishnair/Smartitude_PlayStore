@@ -23,10 +23,12 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
 import { emailsSubscriptionChart } from "variables/charts.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link, Redirect } from "react-router-dom";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import { CircularProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { Mutation, Query } from "react-apollo";
 
 //mutation for generating random quiz questions
 const RANDOM_QUIZ = gql`
@@ -55,8 +57,9 @@ const TOP_TEN_RANKERS = gql`
   {
     topTenRankers {
       name
-      department
-      batch
+      department {
+        name
+      }
       score
     }
   }
@@ -79,6 +82,7 @@ class StudentDashboard extends React.Component {
     super(props);
     this.props = props;
     this.state = {
+      loading: false,
       value: 0,
       RandomQuizQuestion: [],
       //checks the state to redirect to next page
@@ -94,6 +98,9 @@ class StudentDashboard extends React.Component {
     this.setState({ value: index });
   };
   handleRandomQuizCreate = generateRandomQuiz => {
+    this.setState({
+      loading: true
+    });
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
@@ -101,7 +108,7 @@ class StudentDashboard extends React.Component {
       sections: [
         {
           category: {
-            name: "General Section"
+            name: "Quick Random Quiz"
           },
           questions: data.questions
         }
@@ -117,6 +124,7 @@ class StudentDashboard extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
     if (this.state.redirector === true) {
       return (
         <Redirect
@@ -165,7 +173,7 @@ class StudentDashboard extends React.Component {
                 <p className={classes.cardCategory}>Ranking</p>
                 <h3 className={classes.cardTitle}>
                   420th
-                  <small> Postion</small>
+                  <small>Postion</small>
                 </h3>
               </CardHeader>
               <CardFooter stats>
@@ -252,21 +260,30 @@ class StudentDashboard extends React.Component {
                           >
                             {(generateRandomQuiz, { data }) => {
                               return (
-                                <Button
-                                  round
-                                  color="info"
-                                  style={{
-                                    background: "transparent",
-                                    marginLeft: "auto"
-                                  }}
-                                  onClick={e => {
-                                    this.handleRandomQuizCreate(
-                                      generateRandomQuiz
-                                    );
-                                  }}
-                                >
-                                  Take Quiz
-                                </Button>
+                                <div className={classes.wrapper}>
+                                  <Button
+                                    round
+                                    color="info"
+                                    disabled={loading}
+                                    style={{
+                                      background: "transparent",
+                                      marginLeft: "auto"
+                                    }}
+                                    onClick={e => {
+                                      this.handleRandomQuizCreate(
+                                        generateRandomQuiz
+                                      );
+                                    }}
+                                  >
+                                    Take Quiz
+                                  </Button>
+                                  {loading && (
+                                    <CircularProgress
+                                      size={26}
+                                      className={classes.buttonProgress}
+                                    />
+                                  )}
+                                </div>
                               );
                             }}
                           </Mutation>
@@ -319,7 +336,7 @@ class StudentDashboard extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
@@ -330,20 +347,40 @@ class StudentDashboard extends React.Component {
                 </p>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Score", "Class"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "8.7", "S7 EC A"],
-                    ["2", "Minerva Hooper", "8.65", "S7 CS A"],
-                    ["3", "Sage Rodriguez", "7.4", "S7 IT"],
-                    ["4", "Philip Chaney", "7.33", "S7 IT"]
-                  ]}
-                />
+                <Query query={TOP_TEN_RANKERS}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <CircularProgress className={classes.progress} />;
+                    } else if (error) {
+                      return (
+                        <Typography>
+                          Error occured while fetching data.
+                        </Typography>
+                      );
+                    } else {
+                      let toprankers = [];
+                      toprankers = data.topTenRankers.map((rankers, index) => {
+                        let student_rank = [];
+                        student_rank.push(index + 1);
+                        student_rank.push(rankers.name);
+                        student_rank.push(rankers.department.name);
+                        student_rank.push(rankers.score);
+                        return student_rank;
+                      });
+                      return (
+                        <Table
+                          tableHeaderColor="warning"
+                          tableHead={["No", "Name", "Department", "Score"]}
+                          tableData={toprankers}
+                        />
+                      );
+                    }
+                  }}
+                </Query>
               </CardBody>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          {/* <GridItem xs={12} sm={12} md={6}>
             <Card chart>
               <CardHeader color="success">
                 <ChartistGraph
@@ -365,7 +402,7 @@ class StudentDashboard extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
+          </GridItem> */}
         </GridContainer>
       </div>
     );

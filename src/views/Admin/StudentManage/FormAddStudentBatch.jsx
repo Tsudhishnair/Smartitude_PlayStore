@@ -8,7 +8,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import ReactDataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 
-import { Button, Typography } from "../../../../node_modules/@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
