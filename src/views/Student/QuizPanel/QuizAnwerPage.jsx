@@ -15,8 +15,8 @@ import {
   ExpansionPanelSummary,
   ExpansionPanel,
   FormControlLabel,
-  Radio,
-  RadioGroup,
+  Checkbox,
+  FormGroup,
   FormControl,
   FormLabel
 } from "@material-ui/core";
@@ -116,6 +116,33 @@ class QuizAnswer extends React.Component {
     );
   };
 
+  renderCheckbox = (sectionIndex, questionIndex, optionIndex, classes) => {
+    if (
+      optionIndex ===
+      this.data.sections[sectionIndex].questions[questionIndex].correctOption
+    ) {
+      return (
+        <Checkbox
+          value={optionIndex}
+          checked={true}
+          classes={{
+            root: classes.radioPrimary,
+            checked: classes.checked
+          }}
+        />
+      );
+    } else if (
+      optionIndex ===
+      this.data.attemptedSections[sectionIndex].attemptedQuestions[
+        questionIndex
+      ].markedOption
+    ) {
+      return <Checkbox value={optionIndex} checked={true} />;
+    } else {
+      return <Checkbox value={optionIndex} checked={false} />;
+    }
+  };
+
   //create jsx for a single question
   createQuestionPiece = (sectionIndex, questionIndex, classes) => {
     const question = this.data.sections[sectionIndex].questions[questionIndex];
@@ -142,43 +169,48 @@ class QuizAnswer extends React.Component {
                       className={classes.formControl}
                     >
                       <FormLabel component="legend">Marked Choice</FormLabel>
-                      <RadioGroup
+                      <FormGroup
                         aria-label="options"
                         name="option"
-                        value={
-                          this.data.attemptedSections[sectionIndex]
-                            .attemptedQuestions[questionIndex].markedOption
-                        }
                         className={classes.group}
                       >
                         <FormControlLabel
-                          value={1}
-                          control={
-                            <Radio
-                              classes={{
-                                root: classes.radioPrimary,
-                                checked: classes.checked
-                              }}
-                            />
-                          }
+                          control={this.renderCheckbox(
+                            sectionIndex,
+                            questionIndex,
+                            1,
+                            classes
+                          )}
                           label={question.options[0]}
                         />
                         <FormControlLabel
-                          value={2}
-                          control={<Radio />}
+                          control={this.renderCheckbox(
+                            sectionIndex,
+                            questionIndex,
+                            2,
+                            classes
+                          )}
                           label={question.options[1]}
                         />
                         <FormControlLabel
-                          value={3}
-                          control={<Radio />}
+                          control={this.renderCheckbox(
+                            sectionIndex,
+                            questionIndex,
+                            3,
+                            classes
+                          )}
                           label={question.options[2]}
                         />
                         <FormControlLabel
-                          value={4}
-                          control={<Radio />}
+                          control={this.renderCheckbox(
+                            sectionIndex,
+                            questionIndex,
+                            4,
+                            classes
+                          )}
                           label={question.options[3]}
                         />
-                      </RadioGroup>
+                      </FormGroup>
                     </FormControl>
                   </CardBody>
                   <Divider />
