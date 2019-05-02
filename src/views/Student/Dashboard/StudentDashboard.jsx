@@ -26,7 +26,9 @@ import { emailsSubscriptionChart } from "variables/charts.jsx";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link, Redirect } from "react-router-dom";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import { CircularProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { Mutation, Query } from "react-apollo";
 
 //mutation for generating random quiz questions
 const RANDOM_QUIZ = gql`
@@ -55,8 +57,9 @@ const TOP_TEN_RANKERS = gql`
   {
     topTenRankers {
       name
-      department
-      batch
+      department{
+        name        
+      }
       score
     }
   }
@@ -330,16 +333,35 @@ class StudentDashboard extends React.Component {
                 </p>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Score", "Class"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "8.7", "S7 EC A"],
-                    ["2", "Minerva Hooper", "8.65", "S7 CS A"],
-                    ["3", "Sage Rodriguez", "7.4", "S7 IT"],
-                    ["4", "Philip Chaney", "7.33", "S7 IT"]
-                  ]}
-                />
+                <Query query={TOP_TEN_RANKERS}>
+                  {({ data, loading, error}) => {
+                    if (loading) {
+                      return <CircularProgress className={classes.progress} />;
+                    } else if (error) {
+                      return (
+                        <Typography>
+                          Error occured while fetching data.
+                        </Typography>
+                      );
+                    } else {
+                      let toprankers = [];
+                      toprankers=data.topTenRankers.map((rankers,index)=>{
+                        let student_rank =[];
+                        student_rank.push(index+1);
+                        student_rank.push(rankers.name);
+                        student_rank.push(rankers.department.name);
+                        student_rank.push(rankers.score);
+                        return student_rank;
+                      });
+                      return(
+                      <Table
+                        tableHeaderColor="warning"
+                        tableHead={["No","Name","Department","Score"]}
+                        tableData={toprankers}
+                      />);
+                    }
+                  }}
+                </Query>
               </CardBody>
             </Card>
           </GridItem>
