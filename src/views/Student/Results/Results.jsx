@@ -18,6 +18,7 @@ import Icon from "@material-ui/core/Icon";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import MUIDataTable from "mui-datatables";
 import CardBody from "../../../components/Card/CardBody";
+import gql from "graphql-tag";
 let datalist = [];
 datalist = [
   [
@@ -42,6 +43,27 @@ datalist = [
     "200"
   ]
 ];
+const MY_ATTEMPTED_QUIZ = gql`
+  mutation myAttemptedAdminQuizzes {
+    myAttemptedAdminQuizzes {
+      quiz {
+        name
+        description
+        sections {
+          category
+          questions {
+            question
+            options
+            correctOption
+            solution
+          }
+        }
+      }
+      totalScore
+      totalMaximumScore
+    }
+  }
+`;
 class Results extends React.Component {
   constructor(props) {
     super(props);
