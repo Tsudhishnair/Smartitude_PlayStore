@@ -50,8 +50,29 @@ const RANDOM_QUIZ = gql`
     }
   }
 `;
-//stores the questions fto be passed in the array
-let sections=[];
+// Query to retrive top ten rankers
+const TOP_TEN_RANKERS = gql`
+  {
+    topTenRankers {
+      name
+      department
+      batch
+      score
+    }
+  }
+`;
+//date for displaying in top rankers
+// complete data month year time fields are included in todays_date
+let todays_date = new Date();
+//data_tdy contains todays day in integer
+let date_tdy = todays_date.getDate();
+
+//data_tdy contains current month in integer
+let month = todays_date.getMonth() + 1;
+
+//data_tdy contains current year in integer
+let year = todays_date.getFullYear();
+
 //stores the questions
 class StudentDashboard extends React.Component {
   constructor(props) {
@@ -230,16 +251,6 @@ class StudentDashboard extends React.Component {
                             }}
                           >
                             {(generateRandomQuiz, { data }) => {
-                              if (data) {
-                                console.log("Data fetched for random quiz: ");
-                                console.log(data);
-                                let dataarray=[];
-                                for(let index in data)
-                                {
-                                  sections.push(data[index]);
-                                }
-
-                              }
                               return (
                                 <Button
                                   round
@@ -313,7 +324,9 @@ class StudentDashboard extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
                 <p className={classes.cardCategoryWhite}>
-                  Top rankers on 15th January, 2019
+                  <strong>
+                    Top rankers as on {date_tdy}/{month} /{year}
+                  </strong>
                 </p>
               </CardHeader>
               <CardBody>
