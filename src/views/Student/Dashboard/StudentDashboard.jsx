@@ -23,7 +23,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
 import { emailsSubscriptionChart } from "variables/charts.jsx";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link, Redirect } from "react-router-dom";
 import gql from "graphql-tag";
 import { CircularProgress } from "@material-ui/core";
@@ -57,8 +57,8 @@ const TOP_TEN_RANKERS = gql`
   {
     topTenRankers {
       name
-      department{
-        name        
+      department {
+        name
       }
       score
     }
@@ -82,6 +82,7 @@ class StudentDashboard extends React.Component {
     super(props);
     this.props = props;
     this.state = {
+      loading: false,
       value: 0,
       RandomQuizQuestion: [],
       //checks the state to redirect to next page
@@ -97,6 +98,9 @@ class StudentDashboard extends React.Component {
     this.setState({ value: index });
   };
   handleRandomQuizCreate = generateRandomQuiz => {
+    this.setState({
+      loading: true
+    });
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
@@ -104,7 +108,7 @@ class StudentDashboard extends React.Component {
       sections: [
         {
           category: {
-            name: "General Section"
+            name: "Quick Random Quiz"
           },
           questions: data.questions
         }
@@ -120,6 +124,7 @@ class StudentDashboard extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
     if (this.state.redirector === true) {
       return (
         <Redirect
@@ -168,7 +173,7 @@ class StudentDashboard extends React.Component {
                 <p className={classes.cardCategory}>Ranking</p>
                 <h3 className={classes.cardTitle}>
                   420th
-                  <small> Postion</small>
+                  <small>Postion</small>
                 </h3>
               </CardHeader>
               <CardFooter stats>
@@ -255,21 +260,30 @@ class StudentDashboard extends React.Component {
                           >
                             {(generateRandomQuiz, { data }) => {
                               return (
-                                <Button
-                                  round
-                                  color="info"
-                                  style={{
-                                    background: "transparent",
-                                    marginLeft: "auto"
-                                  }}
-                                  onClick={e => {
-                                    this.handleRandomQuizCreate(
-                                      generateRandomQuiz
-                                    );
-                                  }}
-                                >
-                                  Take Quiz
-                                </Button>
+                                <div className={classes.wrapper}>
+                                  <Button
+                                    round
+                                    color="info"
+                                    disabled={loading}
+                                    style={{
+                                      background: "transparent",
+                                      marginLeft: "auto"
+                                    }}
+                                    onClick={e => {
+                                      this.handleRandomQuizCreate(
+                                        generateRandomQuiz
+                                      );
+                                    }}
+                                  >
+                                    Take Quiz
+                                  </Button>
+                                  {loading && (
+                                    <CircularProgress
+                                      size={26}
+                                      className={classes.buttonProgress}
+                                    />
+                                  )}
+                                </div>
                               );
                             }}
                           </Mutation>
@@ -334,7 +348,7 @@ class StudentDashboard extends React.Component {
               </CardHeader>
               <CardBody>
                 <Query query={TOP_TEN_RANKERS}>
-                  {({ data, loading, error}) => {
+                  {({ data, loading, error }) => {
                     if (loading) {
                       return <CircularProgress className={classes.progress} />;
                     } else if (error) {
@@ -345,20 +359,21 @@ class StudentDashboard extends React.Component {
                       );
                     } else {
                       let toprankers = [];
-                      toprankers=data.topTenRankers.map((rankers,index)=>{
-                        let student_rank =[];
-                        student_rank.push(index+1);
+                      toprankers = data.topTenRankers.map((rankers, index) => {
+                        let student_rank = [];
+                        student_rank.push(index + 1);
                         student_rank.push(rankers.name);
                         student_rank.push(rankers.department.name);
                         student_rank.push(rankers.score);
                         return student_rank;
                       });
-                      return(
-                      <Table
-                        tableHeaderColor="warning"
-                        tableHead={["No","Name","Department","Score"]}
-                        tableData={toprankers}
-                      />);
+                      return (
+                        <Table
+                          tableHeaderColor="warning"
+                          tableHead={["No", "Name", "Department", "Score"]}
+                          tableData={toprankers}
+                        />
+                      );
                     }
                   }}
                 </Query>

@@ -1,12 +1,25 @@
 import { successColor } from "assets/jss/material-dashboard-react.jsx";
+import green from "@material-ui/core/colors/green";
 
-const dashboardStyle = {
+const dashboardStyle = theme => ({
   successText: {
     color: successColor
   },
   upArrowCardCategory: {
     width: "16px",
     height: "16px"
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: "relative"
+  },
+  buttonProgress: {
+    color: "#fff",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
   },
   stats: {
     color: "#999999",
@@ -72,6 +85,6 @@ const dashboardStyle = {
       lineHeight: "1"
     }
   }
-};
+});
 
 export default dashboardStyle;
