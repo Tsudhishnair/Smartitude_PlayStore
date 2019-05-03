@@ -180,7 +180,8 @@ class QuizPanelView extends React.Component {
       this.clearTimeTakenCounter();
 
       console.log(this.dataToSubmit.attemptedAdminQuizId);
-
+      if(this.props.location.state._id!=null)
+      {
       finishQuizMutation({
         variables: {
           adminQuizSubmission: {
@@ -198,6 +199,12 @@ class QuizPanelView extends React.Component {
         .catch(err => {
           console.log(err);
         });
+      }
+      else{
+        this.setState(()=>({
+          redirector:true
+        }));
+      }
     }
   };
 
