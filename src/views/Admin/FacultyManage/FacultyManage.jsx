@@ -21,6 +21,7 @@ import {
 } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 import { CircularProgress } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
@@ -32,6 +33,17 @@ const styles = theme => ({
     marginLeft: "45%"
   }
 });
+
+const myTheme = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        maxHeight: "none"
+      }
+    }
+  }
+});
+
 const MULTIPLE_DELETE = gql`
   mutation deleteMultipleFaculties($_ids: [ID!]!) {
     deleteMultipleFaculties(_ids: $_ids)
@@ -285,12 +297,14 @@ class Dashboard extends React.Component {
                                               }
                                               departments={this.departments}
                                             />
-                                            <MUIDataTable
-                                              title={""}
-                                              data={facultiesList}
-                                              columns={columns}
-                                              options={options}
-                                            />
+                                            <MuiThemeProvider theme={myTheme}>
+                                              <MUIDataTable
+                                                title={""}
+                                                data={facultiesList}
+                                                columns={columns}
+                                                options={options}
+                                              />
+                                            </MuiThemeProvider>
                                           </Fragment>
                                         );
                                       }
