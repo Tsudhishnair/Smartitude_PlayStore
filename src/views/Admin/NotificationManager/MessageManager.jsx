@@ -16,6 +16,17 @@ import CardHeader from "../../../components/Card/CardHeader";
 import CardBody from "../../../components/Card/CardBody";
 import MUIDataTable from "mui-datatables";
 import gql from "graphql-tag";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+const myTheme = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        maxHeight: "none"
+      }
+    }
+  }
+});
 
 const header1 = "Create Message";
 const header2 = "Create & Send New Message";
@@ -100,7 +111,10 @@ class MessageManager extends React.Component {
     filterType: "checkbox",
     rowsPerPage: 20,
     elevation: 0,
-    selectableRows: true,
+    print: false,
+    download: false,
+    viewColumns: false,
+    selectableRows: false,
     rowsPerPageOptions: [20, 30, 100, 200],
     onRowsDelete: rowsDeleted => {
       let data = rowsDeleted.data;
@@ -119,7 +133,7 @@ class MessageManager extends React.Component {
         {({ data, loading, error, refetch }) => {
           this.reloadList = refetch;
           if (loading) {
-            return <CircularProgress className={classes.progress}/>;
+            return <CircularProgress className={classes.progress} />;
           } else if (error) {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {
@@ -146,7 +160,7 @@ class MessageManager extends React.Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Spacing/>
+                <Spacing />
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>
@@ -159,12 +173,14 @@ class MessageManager extends React.Component {
                             this.deleteMessagesMutation = deleteMultipleMessages;
                             return (
                               <Fragment>
-                                <MUIDataTable
-                                  title={""}
-                                  data={this.messageList}
-                                  columns={columns}
-                                  options={this.options}
-                                />
+                                <MuiThemeProvider theme={myTheme}>
+                                  <MUIDataTable
+                                    title={""}
+                                    data={this.messageList}
+                                    columns={columns}
+                                    options={this.options}
+                                  />
+                                </MuiThemeProvider>
                               </Fragment>
                             );
                           }}

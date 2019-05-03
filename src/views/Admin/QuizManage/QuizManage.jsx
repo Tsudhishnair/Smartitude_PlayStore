@@ -15,7 +15,17 @@ import CardHeader from "../../../components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
+const myTheme = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        maxHeight: "none"
+      }
+    }
+  }
+});
 const styles = theme => ({
   root: {
     width: "100%",
@@ -152,12 +162,14 @@ class QuizManage extends React.Component {
                         <h4 className={classes.cardTitleWhite}>Quizzes</h4>
                       </CardHeader>
                       <CardBody>
-                        <MUIDataTable
-                          title={""}
-                          data={quizList}
-                          columns={columns}
-                          options={options}
-                        />
+                        <MuiThemeProvider theme={myTheme}>
+                          <MUIDataTable
+                            title={""}
+                            data={quizList}
+                            columns={columns}
+                            options={options}
+                          />
+                        </MuiThemeProvider>
                       </CardBody>
                     </Card>
                   </GridItem>
