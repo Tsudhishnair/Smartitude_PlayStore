@@ -127,6 +127,10 @@ class QuizAnswer extends React.Component {
     //save data received in props
     this.data = this.props.location.state;
     console.log(this.data);
+
+    this.quizScore = this.getQuizScore();
+    this.totalQuizScore = this.getTotalQuizScore();
+    this.percentage = this.calculatePercentage();
   }
 
   //jsx for header
@@ -153,7 +157,7 @@ class QuizAnswer extends React.Component {
                   <p>
                     <Typography variant={"overline"}>Score:</Typography>
                     <Typography variant={"h5"} className={classes.descText}>
-                      25.5/50
+                      {this.quizScore}/{this.totalQuizScore}
                     </Typography>
                   </p>
                 </div>
@@ -168,7 +172,7 @@ class QuizAnswer extends React.Component {
                       Negative Marks:
                     </Typography>
                     <Typography variant={"h5"} className={classes.descText}>
-                      5
+                      {this.getTotalNegativeMarks()}
                     </Typography>
                   </p>
                 </div>
@@ -192,9 +196,9 @@ class QuizAnswer extends React.Component {
                     <Timeline />
                   </Avatar>
                   <p>
-                    <Typography variant={"overline"}>Percentile:</Typography>
+                    <Typography variant={"overline"}>Percentage:</Typography>
                     <Typography variant={"h5"} className={classes.descText}>
-                      82%
+                      {this.percentage}
                     </Typography>
                   </p>
                 </div>
@@ -302,8 +306,6 @@ class QuizAnswer extends React.Component {
   createQuestionPiece = (sectionIndex, questionIndex, classes) => {
     const question = this.data.sections[sectionIndex].questions[questionIndex];
 
-    console.log(question);
-
     return (
       <Card className={classes.questionCard}>
         <form>
@@ -391,7 +393,13 @@ class QuizAnswer extends React.Component {
     while (rowCounter < this.data.sections.length) {
       console.log(this.data.sections);
 
-      container.push(this.createSectionHeader(rowCounter + 1));
+      container.push(
+        this.createSectionHeader(
+          rowCounter + 1,
+          this.data.sections[rowCounter].questions.length,
+          rowCounter
+        )
+      );
 
       columnCounter = 0;
       while (columnCounter < this.data.sections[rowCounter].questions.length) {
@@ -411,9 +419,126 @@ class QuizAnswer extends React.Component {
     );
   };
 
+  isCorrectlyMarked = (sectionCounter, questionCounter) => {
+    return (
+      this.data.sections[sectionCounter].questions[questionCounter]
+        .correctOption ===
+      this.data.attemptedSections[sectionCounter].attemptedQuestions[
+        questionCounter
+      ].markedOption
+    );
+  };
+
+  isUnmarked = (sectionCounter, questionCounter) => {
+    return (
+      this.data.attemptedSections[sectionCounter].attemptedQuestions[
+        questionCounter
+      ].markedOption === -1
+    );
+  };
+
+  getSectionScore = sectionNumber => {
+    const marksPerQn = this.data.sections[sectionNumber].markPerQuestion;
+
+    let sectionScore = 0;
+    let totalSectionScore;
+    let questionCounter = 0;
+
+    while (questionCounter < this.getNumberOfQns(sectionNumber)) {
+      if (this.isCorrectlyMarked(sectionNumber, questionCounter)) {
+        sectionScore += marksPerQn;
+      }
+      questionCounter++;
+    }
+
+    totalSectionScore = this.getNumberOfQns(sectionNumber) * marksPerQn;
+
+    return `Score: ${sectionScore}/${totalSectionScore}`;
+  };
+
+  getNumberOfQns = sectionCounter => {
+    return this.data.sections[sectionCounter].questions.length;
+  };
+
+  getSectionLength = () => {
+    return this.data.sections.length;
+  };
+
+  getQuizScore = () => {
+    let sectionCounter = 0;
+    let questionCounter = 0;
+    let quizScore = 0;
+
+    while (sectionCounter < this.getSectionLength()) {
+      questionCounter = 0;
+      while (questionCounter < this.getNumberOfQns(sectionCounter)) {
+        if (this.isCorrectlyMarked(sectionCounter, questionCounter)) {
+          quizScore += this.data.sections[sectionCounter].markPerQuestion;
+        } else if (!this.isUnmarked(sectionCounter, questionCounter)) {
+          quizScore -= this.data.sections[sectionCounter]
+            .negativeMarkPerQuestion;
+        }
+        questionCounter++;
+      }
+      sectionCounter++;
+    }
+
+    return quizScore;
+  };
+
+  getTotalQuizScore = () => {
+    let sectionCounter = 0;
+    let totalQuizScore = 0;
+
+    while (sectionCounter < this.getSectionLength()) {
+      totalQuizScore +=
+        this.data.sections[sectionCounter].markPerQuestion *
+        this.getNumberOfQns(sectionCounter);
+      sectionCounter++;
+    }
+
+    return totalQuizScore;
+  };
+
+  getTotalNegativeMarks = () => {
+    let totalNegativeMarks = 0;
+    let sectionCounter = 0;
+    let questionCounter = 0;
+
+    while (sectionCounter < this.getSectionLength()) {
+      questionCounter = 0;
+      while (questionCounter < this.getNumberOfQns(sectionCounter)) {
+        if (
+          !this.isCorrectlyMarked(sectionCounter, questionCounter) &&
+          !this.isUnmarked(sectionCounter, questionCounter)
+        ) {
+          totalNegativeMarks += this.data.sections[sectionCounter]
+            .negativeMarkPerQuestion;
+        }
+        questionCounter++;
+      }
+      sectionCounter++;
+    }
+
+    return totalNegativeMarks;
+  };
+
+  calculatePercentage = () => {
+    return ((this.quizScore / this.totalQuizScore) * 100).toFixed(2);
+  };
+
+  getSectionSubtitle = sectionLength => {
+    if (sectionLength === 1) {
+      return sectionLength + " Question";
+    } else {
+      return sectionLength + " Questions";
+    }
+  };
+
   //getting section title
-  createSectionHeader = value => {
+  createSectionHeader = (value, sectionLength, sectionNumber) => {
     const { classes } = this.props;
+
     return (
       <Card className={classes.sectionCard}>
         <CardHeader
@@ -422,9 +547,13 @@ class QuizAnswer extends React.Component {
               {value}
             </Avatar>
           }
-          action={<Typography variant={"overline"}>Score: 12/20</Typography>}
+          action={
+            <Typography variant={"overline"}>
+              {this.getSectionScore(sectionNumber)}
+            </Typography>
+          }
           title="Section"
-          subheader="15 Questions"
+          subheader={this.getSectionSubtitle(sectionLength)}
         />
       </Card>
     );

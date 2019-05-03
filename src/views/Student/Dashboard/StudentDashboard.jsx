@@ -55,7 +55,7 @@ const RANDOM_QUIZ = gql`
 // Query to retrive top ten rankers
 const TOP_TEN_RANKERS = gql`
   {
-    topTenRankers {
+    topTenRankersStudent {
       name
       department {
         name
@@ -140,8 +140,8 @@ class StudentDashboard extends React.Component {
     }
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
+        {/* <GridContainer> */}
+          {/* <GridItem xs={12} sm={6} md={5}>
             <Card Green>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
@@ -163,8 +163,8 @@ class StudentDashboard extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={5}>
+          </GridItem> */}
+          {/* <GridItem xs={12} sm={6} md={5}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
@@ -183,8 +183,8 @@ class StudentDashboard extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-        </GridContainer>
+          </GridItem> */}
+        {/* </GridContainer> */}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -359,7 +359,7 @@ class StudentDashboard extends React.Component {
                       );
                     } else {
                       let toprankers = [];
-                      toprankers = data.topTenRankers.map((rankers, index) => {
+                      toprankers = data.topTenRankersStudent.map((rankers, index) => {
                         let student_rank = [];
                         student_rank.push(index + 1);
                         student_rank.push(rankers.name);

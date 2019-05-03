@@ -211,7 +211,7 @@ class Results extends React.Component {
                           "Quiz Name",
                           "Description",
                           "Score Obtained",
-                          "Maximum Score"
+                          "Max Score"
                         ]}
                         options={this.options}
                       />
