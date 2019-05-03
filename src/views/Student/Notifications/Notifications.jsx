@@ -120,24 +120,25 @@ class Notifications extends React.Component {
                 //   return messageDetails;
                 // });
                 const snackbars = data.batchMessages.map(message => {
-                  const messageView = <Fragment>
+                  const messageView =
+                  <p>
                     <b>
                       {message.title}
                     </b>
                     <p>
                       {message.description}
                     </p>
-                  </Fragment>;
+                    </p>;
                   return (
-
-                    <SnackbarContent
-                      message={messageView}
-                      color="warning"/>
+                    <GridItem xs={12} sm={12} md={6}>
+                      <SnackbarContent
+                        message={messageView}
+                        color="info"  />
+                    </GridItem>
                   );
                 });
                 return (
                   <GridContainer>
-                    <GridItem xs={12} sm={12} md={6}>
                       {snackbars}
                       {/*<MUIDataTable*/}
                       {/*  title={""}*/}
@@ -145,7 +146,6 @@ class Notifications extends React.Component {
                       {/*  columns={columns}*/}
                       {/*  options={this.options}*/}
                       {/*/>*/}
-                    </GridItem>
                   </GridContainer>
                 );
               }
