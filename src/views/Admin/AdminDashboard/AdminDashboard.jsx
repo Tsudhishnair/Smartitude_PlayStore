@@ -166,7 +166,7 @@ class AdminDashboard extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <GridContainer>
+        {/* <GridContainer>
           <GridItem xs={12} sm={6} md={5}>
             <Card Green>
               <CardHeader color="warning" stats icon>
@@ -209,7 +209,7 @@ class AdminDashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
+        </GridContainer> */}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
