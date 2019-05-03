@@ -140,8 +140,8 @@ class StudentDashboard extends React.Component {
     }
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
+        {/* <GridContainer> */}
+          {/* <GridItem xs={12} sm={6} md={5}>
             <Card Green>
               <CardHeader color="warning" stats icon>
                 <CardIcon color="warning">
@@ -163,8 +163,8 @@ class StudentDashboard extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={5}>
+          </GridItem> */}
+          {/* <GridItem xs={12} sm={6} md={5}>
             <Card>
               <CardHeader color="success" stats icon>
                 <CardIcon color="success">
@@ -183,8 +183,8 @@ class StudentDashboard extends React.Component {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
-        </GridContainer>
+          </GridItem> */}
+        {/* </GridContainer> */}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
