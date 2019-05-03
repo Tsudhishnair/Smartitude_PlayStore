@@ -21,8 +21,35 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
-
+import gql from "graphql-tag";
+import { CircularProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { Query } from "react-apollo";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
+// Query to retrive top ten rankers
+const TOP_TEN_RANKERS = gql`
+  {
+    topTenRankers {
+      name
+      department {
+        name
+      }
+      score
+    }
+  }
+`;
+//date for displaying in top rankers
+// complete data month year time fields are included in todays_date
+let todays_date = new Date();
+//data_tdy contains todays day in integer
+let date_tdy = todays_date.getDate();
+
+//data_tdy contains current month in integer
+let month = todays_date.getMonth() + 1;
+
+//data_tdy contains current year in integer
+let year = todays_date.getFullYear();
 
 class AdminDashboard extends React.Component {
   state = {
@@ -72,7 +99,8 @@ class AdminDashboard extends React.Component {
                               color="success"
                               style={{
                                 background: "transparent",
-                                marginLeft: "auto" }}
+                                marginLeft: "auto"
+                              }}
                             >
                               Manage
                             </Button>
@@ -166,7 +194,7 @@ class AdminDashboard extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <GridContainer>
+        {/* <GridContainer>
           <GridItem xs={12} sm={6} md={5}>
             <Card Green>
               <CardHeader color="warning" stats icon>
@@ -209,27 +237,51 @@ class AdminDashboard extends React.Component {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
+        </GridContainer> */}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
                 <p className={classes.cardCategoryWhite}>
-                  Top rankers on 15th January, 2019
+                  <strong>
+                    Top rankers as on {date_tdy}/{month} /{year}
+                  </strong>
                 </p>
               </CardHeader>
               <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Score", "Class"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "8.7", "S7 EC A"],
-                    ["2", "Minerva Hooper", "8.65", "S7 CS A"],
-                    ["3", "Sage Rodriguez", "7.4", "S7 IT"],
-                    ["4", "Philip Chaney", "7.33", "S7 IT"]
-                  ]}
-                />
+                <Query query={TOP_TEN_RANKERS}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <CircularProgress className={classes.progress} />;
+                    } else if (error) {
+                      return (
+                        <Typography>
+                          Error occured while fetching data.
+                        </Typography>
+                      );
+                    } else {
+                      let toprankers = [];
+                      toprankers = data.topTenRankers.map(
+                        (rankers, index) => {
+                          let student_rank = [];
+                          student_rank.push(index + 1);
+                          student_rank.push(rankers.name);
+                          student_rank.push(rankers.department.name);
+                          student_rank.push(rankers.score);
+                          return student_rank;
+                        }
+                      );
+                      return (
+                        <Table
+                          tableHeaderColor="warning"
+                          tableHead={["No", "Name", "Department", "Score"]}
+                          tableData={toprankers}
+                        />
+                      );
+                    }
+                  }}
+                </Query>
               </CardBody>
             </Card>
           </GridItem>

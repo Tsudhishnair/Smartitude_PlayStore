@@ -48,12 +48,6 @@ const ADMIN_LOGIN = gql`
 `;
 
 const styles = theme => ({
-  "@global": {
-    body: {
-      // backgroundColor: theme.palette.common.white,
-      // background: "linear-gradient(80deg,#ffa726,#fb8c00)"
-    }
-  },
   wrapper: {
     margin: theme.spacing.unit,
     position: "relative"
