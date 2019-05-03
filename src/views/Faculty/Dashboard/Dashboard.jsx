@@ -5,21 +5,46 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/People";
-import DateRange from "@material-ui/icons/DateRange";
 import Button from "components/CustomButtons/Button.jsx";
 // core components
+import Table from "components/Table/Table.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
+import gql from "graphql-tag";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link } from "react-router-dom";
+import { Query } from "react-apollo";
+import { CircularProgress } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+// Query to retrive top ten rankers
+const TOP_TEN_RANKERS = gql`
+  {
+    topTenRankers {
+      name
+      department {
+        name
+      }
+      score
+    }
+  }
+`;
+//date for displaying in top rankers
+// complete data month year time fields are included in todays_date
+let todays_date = new Date();
+//data_tdy contains todays day in integer
+let date_tdy = todays_date.getDate();
+
+//data_tdy contains current month in integer
+let month = todays_date.getMonth() + 1;
+
+//data_tdy contains current year in integer
+let year = todays_date.getFullYear();
 
 class Dashboard extends React.Component {
   state = {
@@ -37,24 +62,24 @@ class Dashboard extends React.Component {
 
     return (
       <div>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={5}>
-            <Card Green>
-              <CardHeader color="warning" stats icon>
-                <CardIcon color="warning">
-                  <Icon>grade</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>
-                  Pending Questions for Approval
-                </p>
-                <h3 className={classes.cardTitle}>
-                  10 <small>questions</small>
-                </h3>
-              </CardHeader>
-              <CardFooter> </CardFooter>
-            </Card>
-          </GridItem>
-        </GridContainer>
+        {/*<GridContainer>*/}
+        {/*  <GridItem xs={12} sm={6} md={5}>*/}
+        {/*    <Card Green>*/}
+        {/*      <CardHeader color="warning" stats icon>*/}
+        {/*        <CardIcon color="warning">*/}
+        {/*          <Icon>grade</Icon>*/}
+        {/*        </CardIcon>*/}
+        {/*        <p className={classes.cardCategory}>*/}
+        {/*          Pending Questions for Approval*/}
+        {/*        </p>*/}
+        {/*        <h3 className={classes.cardTitle}>*/}
+        {/*          10 <small>questions</small>*/}
+        {/*        </h3>*/}
+        {/*      </CardHeader>*/}
+        {/*      <CardFooter> </CardFooter>*/}
+        {/*    </Card>*/}
+        {/*  </GridItem>*/}
+        {/*</GridContainer>*/}
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -178,6 +203,52 @@ class Dashboard extends React.Component {
                     </Grow>
                   </GridItem>
                 </GridContainer>
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={12}>
+            <Card>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>Top Rankers</h4>
+                <p className={classes.cardCategoryWhite}>
+                  <strong>
+                    Top rankers as on {date_tdy}/{month} /{year}
+                  </strong>
+                </p>
+              </CardHeader>
+              <CardBody>
+                <Query query={TOP_TEN_RANKERS}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <CircularProgress className={classes.progress}/>;
+                    } else if (error) {
+                      return (
+                        <Typography>
+                          Error occured while fetching data.
+                        </Typography>
+                      );
+                    } else {
+                      let toprankers = [];
+                      toprankers = data.topTenRankers.map((rankers, index) => {
+                        let student_rank = [];
+                        student_rank.push(index + 1);
+                        student_rank.push(rankers.name);
+                        student_rank.push(rankers.department.name);
+                        student_rank.push(rankers.score);
+                        return student_rank;
+                      });
+                      return (
+                        <Table
+                          tableHeaderColor="warning"
+                          tableHead={["No", "Name", "Department", "Score"]}
+                          tableData={toprankers}
+                        />
+                      );
+                    }
+                  }}
+                </Query>
               </CardBody>
             </Card>
           </GridItem>

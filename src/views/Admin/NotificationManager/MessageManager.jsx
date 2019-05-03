@@ -100,6 +100,8 @@ class MessageManager extends React.Component {
     filterType: "checkbox",
     rowsPerPage: 20,
     elevation: 0,
+    print: false,
+    download: false,
     selectableRows: true,
     rowsPerPageOptions: [20, 30, 100, 200],
     onRowsDelete: rowsDeleted => {

@@ -1,23 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/People";
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
 import Button from "components/CustomButtons/Button.jsx";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Table from "components/Table/Table.jsx";
-import Danger from "components/Typography/Danger.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Grow from "@material-ui/core/Grow";
@@ -262,16 +256,14 @@ class AdminDashboard extends React.Component {
                       );
                     } else {
                       let toprankers = [];
-                      toprankers = data.topTenRankers.map(
-                        (rankers, index) => {
-                          let student_rank = [];
-                          student_rank.push(index + 1);
-                          student_rank.push(rankers.name);
-                          student_rank.push(rankers.department.name);
-                          student_rank.push(rankers.score);
-                          return student_rank;
-                        }
-                      );
+                      toprankers = data.topTenRankers.map((rankers, index) => {
+                        let student_rank = [];
+                        student_rank.push(index + 1);
+                        student_rank.push(rankers.name);
+                        student_rank.push(rankers.department.name);
+                        student_rank.push(rankers.score);
+                        return student_rank;
+                      });
                       return (
                         <Table
                           tableHeaderColor="warning"
