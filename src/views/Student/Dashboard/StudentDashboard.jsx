@@ -55,7 +55,7 @@ const RANDOM_QUIZ = gql`
 // Query to retrive top ten rankers
 const TOP_TEN_RANKERS = gql`
   {
-    topTenRankers {
+    topTenRankersStudent {
       name
       department {
         name
@@ -359,7 +359,7 @@ class StudentDashboard extends React.Component {
                       );
                     } else {
                       let toprankers = [];
-                      toprankers = data.topTenRankers.map((rankers, index) => {
+                      toprankers = data.topTenRankersStudent.map((rankers, index) => {
                         let student_rank = [];
                         student_rank.push(index + 1);
                         student_rank.push(rankers.name);
