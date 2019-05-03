@@ -186,6 +186,7 @@ class QuizAnswer extends React.Component {
                     <Typography variant={"overline"}>Time Taken:</Typography>
                     <Typography variant={"h5"} className={classes.descText}>
                       23.6/30 Mins
+                      {this.calculateTimeTaken()}
                     </Typography>
                   </p>
                 </div>
@@ -525,6 +526,11 @@ class QuizAnswer extends React.Component {
 
   calculatePercentage = () => {
     return ((this.quizScore / this.totalQuizScore) * 100).toFixed(2);
+  };
+
+  calculateTimeTaken = () => {
+    const timeTaken = this.data.submittedAt - this.data.startTime;
+    console.log(timeTaken);
   };
 
   getSectionSubtitle = sectionLength => {
