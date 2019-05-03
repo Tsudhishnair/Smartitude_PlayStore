@@ -364,7 +364,7 @@ class StudentDashboard extends React.Component {
                         student_rank.push(index + 1);
                         student_rank.push(rankers.name);
                         student_rank.push(rankers.department.name);
-                        student_rank.push(rankers.score);
+                        student_rank.push(rankers.score.toFixed(2));
                         return student_rank;
                       });
                       return (
