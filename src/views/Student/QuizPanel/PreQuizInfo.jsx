@@ -158,6 +158,12 @@ class PreQuizInfo extends React.Component {
         console.log(res);
         this.quiz._id = res.data.startQuiz._id;
 
+        this.setState(() => ({
+          startTime: {
+            startTime: new Date()
+          }
+        }));
+
         this.setState(() => ({ redirecter: true }));
       })
       .catch(err => {
@@ -191,7 +197,8 @@ class PreQuizInfo extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
-              ...this.quiz
+              ...this.quiz,
+              ...this.state.startTime
             }
           }}
         />
