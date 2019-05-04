@@ -10,9 +10,7 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 
 import Danger from "components/Typography/Danger.jsx";
-import Store from "@material-ui/icons/People";
 import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";

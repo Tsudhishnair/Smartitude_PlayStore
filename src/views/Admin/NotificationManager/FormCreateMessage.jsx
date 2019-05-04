@@ -173,7 +173,7 @@ class FormCreateMessage extends Component {
         );
       });
     } else {
-      return <Fragment />;
+      return <Fragment/>;
     }
   };
 
@@ -191,7 +191,7 @@ class FormCreateMessage extends Component {
       <Query query={FETCH_BATCHES_QUERY}>
         {({ data, loading, error }) => {
           if (loading) {
-            return <CircularProgress className={classes.progress} />;
+            return <CircularProgress className={classes.progress}/>;
           } else if (error) {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {

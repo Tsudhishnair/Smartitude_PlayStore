@@ -7,29 +7,29 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import {
+  Avatar,
   Card,
   CardContent,
-  Typography,
+  CardHeader,
+  Checkbox,
   Divider,
+  ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  ExpansionPanel,
-  FormControlLabel,
-  Checkbox,
-  FormGroup,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   FormLabel,
-  CardHeader,
-  Avatar
+  Typography
 } from "@material-ui/core";
 
-import { TrendingUp, TrendingDown, Timer, Timeline } from "@material-ui/icons";
+import { Timeline, Timer, TrendingDown, TrendingUp } from "@material-ui/icons";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 
-import { green, blue, red } from "@material-ui/core/colors";
+import { blue, green, red } from "@material-ui/core/colors";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 

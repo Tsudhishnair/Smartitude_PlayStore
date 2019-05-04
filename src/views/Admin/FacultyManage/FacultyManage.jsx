@@ -13,12 +13,9 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import { Query, Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import {
-  EXPANSION_FACULTY_BATCH,
-  EXPANSION_FACULTY_FORM
-} from "../../../Utils";
+import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 import { CircularProgress } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";

@@ -18,7 +18,7 @@ import gql from "graphql-tag";
 import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 const myTheme = createMuiTheme({
   overrides: {
