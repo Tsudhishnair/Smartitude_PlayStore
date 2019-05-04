@@ -23,8 +23,6 @@ import { Query } from "react-apollo";
 let realscore = 0;
 let realAttemptedQuizNo = 0;
 let HeaderData = [];
-let totalScore=10;
-let realmaxScore=0;
 const MY_ATTEMPTED_QUIZ = gql`
   {
     myAttemptedAdminQuizzes {
