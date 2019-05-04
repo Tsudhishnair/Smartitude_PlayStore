@@ -36,6 +36,7 @@ const MY_ATTEMPTED_QUIZ = gql`
       }
       totalScore
       totalMaximumScore
+      attemptedAt
     }
   }
 `;
@@ -45,7 +46,7 @@ class Results extends React.Component {
     this.state = {
       score: 0,
       NoOfAttemptedQuiz: 0,
-      avgScore:0
+      avgScore:0,
     };
     this.options = {
       filterType: "checkbox",
@@ -141,7 +142,7 @@ class Results extends React.Component {
               <CardFooter stats>
                 <div className={classes.stats}>
                   <LocalOffer />
-                  Last one at 11/04/19
+                  Last updated at 3/5/2019
                 </div>
               </CardFooter>
             </Card>
@@ -197,6 +198,7 @@ class Results extends React.Component {
                       realscore = realscore + AttemptedQuizData[index][3];
                       realAttemptedQuizNo = AttemptedQuizData[index][0];
                     }
+                    
                     HeaderData.push(realscore);
                     HeaderData.push(realAttemptedQuizNo);
                     if (this.state.NoOfAttemptedQuiz != HeaderData[1]) {

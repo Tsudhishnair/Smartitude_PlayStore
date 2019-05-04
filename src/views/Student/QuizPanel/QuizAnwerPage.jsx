@@ -185,8 +185,8 @@ class QuizAnswer extends React.Component {
                   <p>
                     <Typography variant={"overline"}>Time Taken:</Typography>
                     <Typography variant={"h5"} className={classes.descText}>
-                      23.6/30 Mins
-                      {this.calculateTimeTaken()}
+                      {this.calculateTimeTaken()}/{this.getTotalTimeLimit()}{" "}
+                      Mins
                     </Typography>
                   </p>
                 </div>
@@ -529,8 +529,21 @@ class QuizAnswer extends React.Component {
   };
 
   calculateTimeTaken = () => {
-    const timeTaken = this.data.submittedAt - this.data.startTime;
-    console.log(timeTaken);
+    const timeTakenInMillis = this.data.submittedAt - this.data.startTime;
+    console.log(timeTakenInMillis);
+    return Math.floor(timeTakenInMillis / 60000);
+  };
+
+  getTotalTimeLimit = () => {
+    let sectionCounter = 0;
+    let totalTime = 0;
+
+    while (sectionCounter < this.getSectionLength()) {
+      totalTime += this.data.sections[sectionCounter].timeLimit;
+      sectionCounter++;
+    }
+
+    return totalTime;
   };
 
   getSectionSubtitle = sectionLength => {

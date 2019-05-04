@@ -18,6 +18,17 @@ import gql from "graphql-tag";
 import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
 import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const myTheme = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        maxHeight: 'none'
+      }
+    }
+  }
+});
 
 const styles = theme => ({
   root: {
@@ -220,12 +231,14 @@ class StudentManage extends React.Component {
                             });
                             this.students = data.students;
                             return (
+                                <MuiThemeProvider theme={myTheme}>
                               <MUIDataTable
                                 title={""}
                                 data={studentsList}
                                 columns={columns}
                                 options={this.tableOptions}
                               />
+                                </MuiThemeProvider>
                             );
                           }
                         }}

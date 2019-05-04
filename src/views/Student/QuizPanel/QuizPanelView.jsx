@@ -179,30 +179,30 @@ class QuizPanelView extends React.Component {
       //call mutation for final section submission
       this.clearTimeTakenCounter();
 
-      console.log(this.dataToSubmit.attemptedAdminQuizId);
-      if(this.props.location.state._id!=null)
-      {
-      finishQuizMutation({
-        variables: {
-          adminQuizSubmission: {
-            ...this.dataToSubmit
-          }
-        }
-      })
-        .then(res => {
-          console.log("successfully submitted");
+      this.dataToSubmit.submittedAt = new Date();
 
-          this.setState(() => ({
-            redirector: true
-          }));
+      console.log(this.dataToSubmit.attemptedAdminQuizId);
+      if (this.props.location.state._id != null) {
+        finishQuizMutation({
+          variables: {
+            adminQuizSubmission: {
+              ...this.dataToSubmit
+            }
+          }
         })
-        .catch(err => {
-          console.log(err);
-        });
-      }
-      else{
-        this.setState(()=>({
-          redirector:true
+          .then(res => {
+            console.log("successfully submitted");
+
+            this.setState(() => ({
+              redirector: true
+            }));
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        this.setState(() => ({
+          redirector: true
         }));
       }
     }

@@ -173,7 +173,7 @@ class FormCreateMessage extends Component {
         );
       });
     } else {
-      return <Fragment/>;
+      return <Fragment />;
     }
   };
 
@@ -191,7 +191,7 @@ class FormCreateMessage extends Component {
       <Query query={FETCH_BATCHES_QUERY}>
         {({ data, loading, error }) => {
           if (loading) {
-            return <CircularProgress className={classes.progress}/>;
+            return <CircularProgress className={classes.progress} />;
           } else if (error) {
             return <Typography>Error occured while fetching data!</Typography>;
           } else {
@@ -231,27 +231,6 @@ class FormCreateMessage extends Component {
                               required
                             />
                           </GridItem>
-                        </GridContainer>
-                        <GridContainer>
-                          <GridItem xs={12} sm={12} md={12}>
-                            <TextField
-                              autoFocus
-                              margin="dense"
-                              id="description"
-                              name="description"
-                              placeholder={
-                                "Enter a description for the message here"
-                              }
-                              label="Message Description"
-                              type="text"
-                              value={this.state.description}
-                              onChange={this.handleChange}
-                              multiline={true}
-                              rows={2}
-                              fullWidth
-                              required
-                            />
-                          </GridItem>
                           <GridItem xs={12} sm={3} md={3}>
                             <FormControl
                               required
@@ -274,6 +253,25 @@ class FormCreateMessage extends Component {
                                 {this.renderBatchDropdown()}
                               </Select>
                             </FormControl>
+                          </GridItem>
+                          <GridItem xs={12} sm={12} md={12}>
+                            <TextField
+                              autoFocus
+                              margin="dense"
+                              id="description"
+                              name="description"
+                              placeholder={
+                                "Enter a description for the message here"
+                              }
+                              label="Message Description"
+                              type="text"
+                              value={this.state.description}
+                              onChange={this.handleChange}
+                              multiline={true}
+                              rows={2}
+                              fullWidth
+                              required
+                            />
                           </GridItem>
                         </GridContainer>
                         <ExpansionPanelActions>
