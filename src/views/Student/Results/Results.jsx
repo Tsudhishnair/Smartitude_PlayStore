@@ -29,8 +29,34 @@ const MY_ATTEMPTED_QUIZ = gql`
       quiz {
         name
         description
+        sections {
+          questions {
+            question
+            options
+            correctOption
+            solution
+          }
+          markPerQuestion
+          negativeMarkPerQuestion
+        }
       }
       totalScore
+      attemptedSections {
+        category {
+          name
+        }
+        timeTaken
+        attemptedQuestions {
+          question{
+            question
+          }
+          markedOption
+          correctness
+          mark
+        }
+        sectionScore
+        sectionMaximumScore
+      }
       totalMaximumScore
       attemptedAt
     }
@@ -42,7 +68,7 @@ class Results extends React.Component {
     this.state = {
       score: 0,
       NoOfAttemptedQuiz: 0,
-      avgScore:0,
+      avgScore: 0
     };
     this.options = {
       filterType: "checkbox",
@@ -69,19 +95,17 @@ class Results extends React.Component {
       ...prevState,
       score: data[0],
       NoOfAttemptedQuiz: data[1],
-      avgScore:(data[0]/data[1]).toFixed(2)
-
+      avgScore: (data[0] / data[1]).toFixed(2)
     }));
   };
-// ScoreCal=()=>{
-// let scr = this.state.score;
-// let no = this.state.NoOfAttemptedQuiz;
-// let total = scr/no;
-// return total;
-// };
+  // ScoreCal=()=>{
+  // let scr = this.state.score;
+  // let no = this.state.NoOfAttemptedQuiz;
+  // let total = scr/no;
+  // return total;
+  // };
   render() {
     const { classes } = this.props;
-
 
     return (
       <div>
@@ -194,7 +218,7 @@ class Results extends React.Component {
                       realscore = realscore + AttemptedQuizData[index][3];
                       realAttemptedQuizNo = AttemptedQuizData[index][0];
                     }
-                    
+
                     HeaderData.push(realscore);
                     HeaderData.push(realAttemptedQuizNo);
                     if (this.state.NoOfAttemptedQuiz != HeaderData[1]) {
