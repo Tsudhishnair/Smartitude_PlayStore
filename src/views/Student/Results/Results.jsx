@@ -19,10 +19,13 @@ import { CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-
+// RealScore is used for calulating the average score and displaying them
 let realscore = 0;
+//RealAttemptedQuizNo is used for calulating and displaying the number of admin assigned quizes
 let realAttemptedQuizNo = 0;
+// Header Data is used to stores the avg score and no of admin quizes atempted
 let HeaderData = [];
+// Query to obtain the enitre data on the set of quizes which the student have attended
 const MY_ATTEMPTED_QUIZ = gql`
   {
     myAttemptedAdminQuizzes {
@@ -66,6 +69,7 @@ class Results extends React.Component {
       NoOfAttemptedQuiz: 0,
       avgScore: 0
     };
+    // Properties of the miui data table used for displaying the attempted quizes
     this.options = {
       filterType: "checkbox",
       rowsPerPage: 20,
@@ -94,12 +98,6 @@ class Results extends React.Component {
       avgScore: (data[0] / data[1]).toFixed(2)
     }));
   };
-  // ScoreCal=()=>{
-  // let scr = this.state.score;
-  // let no = this.state.NoOfAttemptedQuiz;
-  // let total = scr/no;
-  // return total;
-  // };
   render() {
     const { classes } = this.props;
 
