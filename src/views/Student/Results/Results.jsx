@@ -84,14 +84,16 @@ class Results extends React.Component {
       filter: false,
       viewColumns: false,
       selectableRows: false,
-      rowsPerPageOptions: [20, 30, 100, 200]
-      // onRowClick: (rowData, rowState) => {
-      //   if (!this.rowSelected) {
-      //     this.handleRowClick(rowState.dataIndex);
-      //   }
-      // }
+      rowsPerPageOptions: [20, 30, 100, 200],
+      onRowClick: (rowData, rowState) => {
+        this.handleRowClick(rowData);
+      }
     };
   }
+  // This function handles the row click and passes the index of the data to be retrieved
+  handleRowClick = dataitem => {
+    dataitem[0] - 1;
+  };
   // Function to structure the data in the format which is required by the QuizAnswerPage
   handleQuizStructure = data => {
     const structuredData = {
@@ -237,12 +239,13 @@ class Results extends React.Component {
                       </Typography>
                     );
                   } else {
-                    console.log({ data });
-                    // this.handleQuizStructure(data);
+                    // EntireQueryData is the object that stores the enitre data of all quizes from which selected data is passeed as per onclick
+                    EntireQueryData = { item: {data}, };
                     let AttemptedQuizData = [];
                     AttemptedQuizData = data.myAttemptedAdminQuizzes.map(
                       (AttemptedData, index) => {
                         let eachAttemptedQuiz = [];
+
                         eachAttemptedQuiz.push(index + 1);
                         eachAttemptedQuiz.push(AttemptedData.quiz.name);
                         eachAttemptedQuiz.push(AttemptedData.quiz.description);

@@ -74,7 +74,7 @@ class Dashboard extends React.Component {
         }
       }
     ];
-
+    // Query to get the complete details of the faculties 
     const dataList = gql`
       {
         faculties {
@@ -111,7 +111,7 @@ class Dashboard extends React.Component {
         console.log(rowsSelected, allRows);
       },
       onRowClick: (rowData, rowState) => {
-        console.log(rowData, rowState);
+        console.log(rowData);
         this.child.handleClickOpen(rowData);
       }
     };
