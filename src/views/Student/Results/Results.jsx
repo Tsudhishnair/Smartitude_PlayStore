@@ -30,12 +30,6 @@ const MY_ATTEMPTED_QUIZ = gql`
         name
         description
         sections {
-          questions {
-            question
-            options
-            correctOption
-            solution
-          }
           markPerQuestion
           negativeMarkPerQuestion
         }
@@ -49,10 +43,12 @@ const MY_ATTEMPTED_QUIZ = gql`
         attemptedQuestions {
           question{
             question
+            options
+            correctOption
+            solution 
           }
           markedOption
           correctness
-          mark
         }
         sectionScore
         sectionMaximumScore

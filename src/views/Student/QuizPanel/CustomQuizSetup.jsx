@@ -81,7 +81,7 @@ class CustomQuizSetup extends React.Component {
         </Card>
       </div>
     );
-  }
+}
 }
 
 CustomQuizSetup.propTypes = {
