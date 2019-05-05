@@ -25,6 +25,8 @@ let realscore = 0;
 let realAttemptedQuizNo = 0;
 // Header Data is used to stores the avg score and no of admin quizes atempted
 let HeaderData = [];
+// EntireQueryData stores the enitre data from the query as per required in the QuizAnswer Page
+let EntireQueryData = {};
 // Query to obtain the enitre data on the set of quizes which the student have attended
 const MY_ATTEMPTED_QUIZ = gql`
   {
@@ -44,11 +46,11 @@ const MY_ATTEMPTED_QUIZ = gql`
         }
         timeTaken
         attemptedQuestions {
-          question{
+          question {
             question
             options
             correctOption
-            solution 
+            solution
           }
           markedOption
           correctness
@@ -61,6 +63,7 @@ const MY_ATTEMPTED_QUIZ = gql`
     }
   }
 `;
+
 class Results extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +92,44 @@ class Results extends React.Component {
       // }
     };
   }
+  // Function to structure the data in the format which is required by the QuizAnswerPage
+  handleQuizStructure = data => {
+    const structuredData = {
+      attemptedAdminQuiz: "",
+      attemptedSections: [
+        {
+          attemptedQuestions: [
+            {
+              question: "",
+              markedOption: "",
+              timeTakenToMark: ""
+            }
+          ]
+        }
+      ],
+      sections: [
+        {
+          category: {
+            name: ""
+          },
+          questions: [
+            {
+              category: {
+                _id: "",
+                name: "",
+                _typename: ""
+              },
+              correctOption: "",
+              options: [],
+              question: "",
+              solution: ""
+            }
+          ]
+        }
+      ],
+      submittedAt: data.myAttemptedAdminQuizzess.attemptedAt
+    };
+  };
   //sets state of the header fields such as total no of attempted questions and total score
   displayDataHeader = data => {
     this.setState(prevState => ({
@@ -196,6 +237,8 @@ class Results extends React.Component {
                       </Typography>
                     );
                   } else {
+                    console.log({ data });
+                    // this.handleQuizStructure(data);
                     let AttemptedQuizData = [];
                     AttemptedQuizData = data.myAttemptedAdminQuizzes.map(
                       (AttemptedData, index) => {
