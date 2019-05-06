@@ -35,7 +35,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "../../components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 
-import image from "assets/img/bg5.jpg";
+import image from "assets/img/bg.jpg";
 import GridItem from "../../components/Grid/GridItem";
 
 import loginPageStyle from "assets/jss/material-dashboard-react/views/loginPage.jsx";
