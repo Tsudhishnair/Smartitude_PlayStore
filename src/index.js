@@ -40,14 +40,14 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: token ? `Bearer ${token}` : ''
+      Authorization: token ? `Bearer ${token}` : ""
     }
   };
 });
 
 const httpLink = createHttpLink({
   // uri: "http://localhost:4000/graphql"
-  uri: 'https://smartitude-graphql.herokuapp.com/graphql'
+  uri: "https://smartitude-graphql.herokuapp.com/graphql"
 });
 
 const client = new ApolloClient({
@@ -68,10 +68,9 @@ ReactDOM.render(
           <PrivateRoute path="/faculty/" component={FacultyPanel} />
           <PrivateRoute
             path="/faculty/questions/add"
-            component={<AddQuestion isEdit={false}/>}
+            component={<AddQuestion isEdit={false} />}
           />
-          <Route path="/student/" component={StudentPanel} />
-
+          <PrivateRoute path="/student/" component={StudentPanel} />
           <Route path="/" component={Landing} />
         </Switch>
       </HashRouter>

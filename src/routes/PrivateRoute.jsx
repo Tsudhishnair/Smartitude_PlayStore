@@ -1,5 +1,5 @@
 import { loginHandler } from "../Utils";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import React from "react";
 
 export const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -21,6 +21,12 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
           loginHandler.userType === "faculty"
         ) {
           return <Component {...props} />;
+        } // if student is faculty and usertype is student, return component
+        else if (
+          route[1] === "student" &&
+          loginHandler.userType === "student"
+        ) {
+          return <Component {...props} />;
         } else {
           // malicious cases such as those where usertype is faculty and trying to access routes for admin
 
@@ -31,6 +37,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             return <Redirect to="/admin/login" />;
           } else if (route[1] === "faculty") {
             return <Redirect to="/faculty/login" />;
+          } else if (route[1] === "student") {
+            return <Redirect to="/student/login" />;
           }
         }
       } else {
@@ -39,6 +47,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
           return <Redirect to="/admin/login" />;
         } else if (route[1] === "faculty") {
           return <Redirect to="/faculty/login" />;
+        } else if (route[1] === "student") {
+          return <Redirect to="/student/login" />;
         }
       }
     }}
