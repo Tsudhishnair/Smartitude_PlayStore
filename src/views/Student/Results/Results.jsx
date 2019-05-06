@@ -31,32 +31,35 @@ let EntireQueryData = {};
 const MY_ATTEMPTED_QUIZ = gql`
   {
     myAttemptedAdminQuizzes {
+      _id
       quiz {
         name
         description
         sections {
+          category {
+            _id
+            name
+          }
           markPerQuestion
           negativeMarkPerQuestion
-        }
-      }
-      totalScore
-      attemptedSections {
-        category {
-          name
-        }
-        timeTaken
-        attemptedQuestions {
-          question {
+          questions {
+            _id
             question
             options
             correctOption
             solution
           }
-          markedOption
-          correctness
         }
-        sectionScore
-        sectionMaximumScore
+      }
+      totalScore
+      attemptedSections {
+        attemptedQuestions {
+          question {
+            _id
+          }
+          timeTakenToMark
+          markedOption
+        }
       }
       totalMaximumScore
       attemptedAt
@@ -92,46 +95,27 @@ class Results extends React.Component {
   }
   // This function handles the row click and passes the index of the data to be retrieved
   handleRowClick = dataitem => {
-    this.handleQuizStructure(EntireQueryData.item.data,(dataitem[0] - 1));
-  
+    this.handleQuizStructure(EntireQueryData.item.data, dataitem[0] - 1);
   };
   // Function to structure the data in the format which is required by the QuizAnswerPage
-  handleQuizStructure = (data,index) => {
+  handleQuizStructure = (data, index) => {
     console.log(data);
-    const structuredData = {
-      attemptedAdminQuiz: "",
-      attemptedSections: [
-        {
-          attemptedQuestions: [
-            {
-              question:"data.my",
-              markedOption: "",
-              timeTakenToMark: ""
-            }
-          ]
-        }
-      ],
+    const dataToSunmit = {
+      attemptedAdminQuizId: data.myAttemptedAdminQuizzes[index]._id,
+      attemptedSections: data.myAttemptedAdminQuizzes[index].attemptedSections,
+      submittedAt: data.myAttemptedAdminQuizzes[index].attemptedAt,
+    };
+
+    const quiz = {
       sections: [
         {
-          category: {
-            name: ""
-          },
-          questions: [
-            {
-              category: {
-                _id: "",
-                name: "",
-                _typename: ""
-              },
-              correctOption: "",
-              options: [],
-              question: "",
-              solution:"",
-            }
-          ]
+          category:"" ,
+          questions:[],
+          timLimit:"",
+          markPerQuestion:"",
+          negativeMarkPerQuestion:"",
         }
-      ],
-      submittedAt: data.myAttemptedAdminQuizzes[index].attemptedAt
+      ]
     };
   };
   //sets state of the header fields such as total no of attempted questions and total score
@@ -242,7 +226,7 @@ class Results extends React.Component {
                     );
                   } else {
                     // EntireQueryData is the object that stores the enitre data of all quizes from which selected data is passeed as per onclick
-                    EntireQueryData = { item: {data}, };
+                    EntireQueryData = { item: { data } };
                     let AttemptedQuizData = [];
                     AttemptedQuizData = data.myAttemptedAdminQuizzes.map(
                       (AttemptedData, index) => {
