@@ -14,7 +14,6 @@ import Parallax from "../../components/Parallax/Parallax";
 import ProductSection from "./ContentSection";
 
 import componentsStyle from "../../assets/jss/material-dashboard-react/views/landingPage.jsx";
-import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
   "@global": {
@@ -70,7 +69,7 @@ function Landing(props) {
         {...rest}
       />
       <Parallax
-        image={require("assets/img/bg5.jpg")}
+        image={require("assets/img/bg.jpg")}
       >
         <div className={classes.container}>
           <GridContainer>

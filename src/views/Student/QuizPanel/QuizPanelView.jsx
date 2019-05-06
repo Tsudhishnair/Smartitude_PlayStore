@@ -27,10 +27,13 @@ import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Timer from "react-compound-timer/build/components/Timer/Timer";
+import shuffle from "../../../components/ShuffleArray/ShuffleArray";
 import { Redirect } from "react-router-dom";
 
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 const styles = theme => ({
   root: {
@@ -86,7 +89,7 @@ class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
 
-    //currentSecion is an index value of the section that is being attempted currently
+    //currentSection is an index value of the section that is being attempted currently
     this.currentSection = 0;
 
     //maintaining index value of current question being answered
@@ -97,6 +100,8 @@ class QuizPanelView extends React.Component {
       .questions[this.currentQnNum];
 
     this.state = {
+      //handle visibility of dialog
+      isVisible: false,
       //index value of step that is active
       activeStep: 0,
       //maintain value of fields of question
@@ -107,7 +112,8 @@ class QuizPanelView extends React.Component {
           2: currentQn.options[1],
           3: currentQn.options[2],
           4: currentQn.options[3]
-        }
+        },
+        shuffled: false
       },
       //integer value of option marked by user
       markedOption: "",
@@ -386,16 +392,49 @@ class QuizPanelView extends React.Component {
     );
   };
 
+  toggleDialogVisibility = () => {
+    this.setState(prevState => ({
+      isVisible: !prevState.isVisible
+    }));
+  };
+
   render() {
     const { classes } = this.props;
     const quiz = this.props.location.state;
     const selectedSection = quiz.sections[this.currentSection];
-    const { activeStep } = this.state;
+    const { activeStep, isVisible } = this.state;
 
     const steps = this.getSteps(quiz.sections);
 
-    console.log(quiz);
+    const options = [
+      <FormControlLabel
+        key={1}
+        value={1}
+        control={<Radio />}
+        label={this.state.fields.options["1"]}
+      />,
+      <FormControlLabel
+        value={2}
+        key={2}
+        control={<Radio />}
+        label={this.state.fields.options["2"]}
+      />,
+      <FormControlLabel
+        value={3}
+        key={3}
+        control={<Radio />}
+        label={this.state.fields.options["3"]}
+      />,
+      <FormControlLabel
+        value={4}
+        key={4}
+        control={<Radio />}
+        label={this.state.fields.options["4"]}
+      />
+    ];
+    shuffle(options);
 
+    console.log(quiz);
     console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
@@ -433,7 +472,9 @@ class QuizPanelView extends React.Component {
                         <Hidden mdUp implementation="css">
                           <p>
                             <Typography variant={"overline"}>
-                              Time Remaining:
+                              {this.getTimeLimit(selectedSection)
+                                ? "Time Remaining:"
+                                : "Time Taken:"}
                             </Typography>
                             <Typography
                               variant={"h5"}
@@ -442,9 +483,16 @@ class QuizPanelView extends React.Component {
                               <b>
                                 <Timer
                                   initialTime={
-                                    60000 * this.getTimeLimit(selectedSection)
+                                    this.getTimeLimit(selectedSection)
+                                      ? 60000 *
+                                        this.getTimeLimit(selectedSection)
+                                      : 0
                                   }
-                                  direction="backward"
+                                  direction={
+                                    this.getTimeLimit(selectedSection)
+                                      ? "backward"
+                                      : "forward"
+                                  }
                                 >
                                   {({
                                     start,
@@ -494,35 +542,36 @@ class QuizPanelView extends React.Component {
                               this.handleChange(event, quiz.sections)
                             }
                           >
-                            <FormControlLabel
-                              value={1}
-                              control={<Radio />}
-                              label={this.state.fields.options["1"]}
-                            />
-                            <FormControlLabel
-                              value={2}
-                              control={<Radio />}
-                              label={this.state.fields.options["2"]}
-                            />
-                            <FormControlLabel
-                              value={3}
-                              control={<Radio />}
-                              label={this.state.fields.options["3"]}
-                            />
-                            <FormControlLabel
-                              value={4}
-                              control={<Radio />}
-                              label={this.state.fields.options["4"]}
-                            />
+                            {/*<FormControlLabel*/}
+                            {/*  value={1}*/}
+                            {/*  control={<Radio />}*/}
+                            {/*  label={this.state.fields.options["1"]}*/}
+                            {/*/>*/}
+                            {/*<FormControlLabel*/}
+                            {/*  value={2}*/}
+                            {/*  control={<Radio />}*/}
+                            {/*  label={this.state.fields.options["2"]}*/}
+                            {/*/>*/}
+                            {/*<FormControlLabel*/}
+                            {/*  value={3}*/}
+                            {/*  control={<Radio />}*/}
+                            {/*  label={this.state.fields.options["3"]}*/}
+                            {/*/>*/}
+                            {/*<FormControlLabel*/}
+                            {/*  value={4}*/}
+                            {/*  control={<Radio />}*/}
+                            {/*  label={this.state.fields.options["4"]}*/}
+                            {/*/>*/}
+                            {options}
                           </RadioGroup>
                         </FormControl>
                       </CardBody>
                       <Divider />
                       <CardFooter>
                         <Button
-                          variant="outlined"
                           color={"secondary"}
                           size={"small"}
+                          variant="outlined"
                           disabled={this.state.prevButton}
                           className={classes.button}
                           onClick={event =>
@@ -541,8 +590,8 @@ class QuizPanelView extends React.Component {
                           Clear Selection
                         </Button>
                         <Button
-                          variant="outlined"
                           color="primary"
+                          variant="outlined"
                           size={"small"}
                           disabled={this.state.nextButton}
                           className={classes.button}
@@ -562,15 +611,23 @@ class QuizPanelView extends React.Component {
                       <Hidden smDown implementation="css">
                         <p>
                           <Typography variant={"overline"}>
-                            Time Remaining:
+                            {this.getTimeLimit(selectedSection)
+                              ? "Time Remaining:"
+                              : "Time Taken:"}
                           </Typography>
                           <Typography variant={"h5"} className={classes.timer}>
                             <b>
                               <Timer
                                 initialTime={
-                                  60000 * this.getTimeLimit(selectedSection)
+                                  this.getTimeLimit(selectedSection)
+                                    ? 60000 * this.getTimeLimit(selectedSection)
+                                    : 0
                                 }
-                                direction="backward"
+                                direction={
+                                  this.getTimeLimit(selectedSection)
+                                    ? "backward"
+                                    : "forward"
+                                }
                                 onStop={() =>
                                   this.handleSectionSubmit(
                                     quiz.sections,
@@ -605,15 +662,35 @@ class QuizPanelView extends React.Component {
                         size={"small"}
                         fullWidth
                         className={classes.button}
-                        onClick={() =>
-                          this.handleSectionSubmit(quiz.sections, finishQuiz)
-                        }
+                        onClick={this.toggleDialogVisibility}
                       >
                         {activeStep === steps.length - 1
                           ? "Finish Quiz"
                           : "Submit Section"}
                       </Button>
                     </CardFooter>
+                    {isVisible ? (
+                      <MessageDialog
+                        title={
+                          activeStep === steps.length - 1
+                            ? "Finish Quiz"
+                            : "Submit Section"
+                        }
+                        content={
+                          activeStep === steps.length - 1
+                            ? "Are you sure you want to finish this quiz?"
+                            : "Are you sure you want to submit this section?"
+                        }
+                        positiveAction={
+                          activeStep === steps.length - 1 ? "Finish" : "Submit"
+                        }
+                        negativeAction="Cancel"
+                        action={() => {
+                          this.handleSectionSubmit(quiz.sections, finishQuiz);
+                        }}
+                        onClose={this.toggleDialogVisibility}
+                      />
+                    ) : null}
                   </Card>
                 </GridItem>
               </GridContainer>
