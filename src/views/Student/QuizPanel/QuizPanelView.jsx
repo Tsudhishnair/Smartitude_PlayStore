@@ -701,7 +701,7 @@ class QuizPanelView extends React.Component {
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map(label => {
                         const props = {};
-                        const labelProps = {};
+                        const labelProps = {}
                         return (
                           <Step key={label} {...props}>
                             <StepLabel {...labelProps}>{label}</StepLabel>
