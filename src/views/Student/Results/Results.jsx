@@ -92,17 +92,19 @@ class Results extends React.Component {
   }
   // This function handles the row click and passes the index of the data to be retrieved
   handleRowClick = dataitem => {
-    dataitem[0] - 1;
+    this.handleQuizStructure(EntireQueryData.item.data,(dataitem[0] - 1));
+  
   };
   // Function to structure the data in the format which is required by the QuizAnswerPage
-  handleQuizStructure = data => {
+  handleQuizStructure = (data,index) => {
+    console.log(data);
     const structuredData = {
       attemptedAdminQuiz: "",
       attemptedSections: [
         {
           attemptedQuestions: [
             {
-              question: "",
+              question:"data.my",
               markedOption: "",
               timeTakenToMark: ""
             }
@@ -124,12 +126,12 @@ class Results extends React.Component {
               correctOption: "",
               options: [],
               question: "",
-              solution: ""
+              solution:"",
             }
           ]
         }
       ],
-      submittedAt: data.myAttemptedAdminQuizzess.attemptedAt
+      submittedAt: data.myAttemptedAdminQuizzes[index].attemptedAt
     };
   };
   //sets state of the header fields such as total no of attempted questions and total score
