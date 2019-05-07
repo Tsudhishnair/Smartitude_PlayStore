@@ -8,9 +8,9 @@ import { AppBar, Hidden, IconButton, Toolbar } from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
-import Button from "components/CustomButtons/Button.jsx";
+import Button from "../../components/CustomButtons/Button.jsx";
 
-import headerStyle from "assets/jss/material-dashboard-react/components/headerStyle.jsx";
+import headerStyle from "../../assets/jss/material-dashboard-react/components/headerStyle.jsx";
 import AdminNavbarLinks from "./HeaderLinks.jsx";
 
 function Header({ ...props }) {

@@ -13,7 +13,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Slide,
   TextField,
   Typography
 } from "@material-ui/core";

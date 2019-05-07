@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types, react/jsx-handler-names */
-
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Select from "react-select";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import NoSsr from "@material-ui/core/NoSsr";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Chip from "@material-ui/core/Chip";
-import MenuItem from "@material-ui/core/MenuItem";
+import {
+  MenuItem,
+  Chip,
+  Paper,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 
@@ -188,17 +189,23 @@ class ReactChipSelect extends React.Component {
     isInitialValueSet: false
   };
 
-  handleChange = name => async value => {    
+  handleChange = name => async value => {
     await this.setState({
       [name]: value
     });
-    this.props.getSelectedObjects(this.state.multi)
+    this.props.getSelectedObjects(this.state.multi);
   };
 
-
   render() {
-    const { classes, theme, getSelectedObjects, clearChips, isDisabled, onChipsCleared } = this.props;
-    if(clearChips) {
+    const {
+      classes,
+      theme,
+      getSelectedObjects,
+      clearChips,
+      isDisabled,
+      onChipsCleared
+    } = this.props;
+    if (clearChips) {
       this.setState({
         ...this.state,
         multi: null
