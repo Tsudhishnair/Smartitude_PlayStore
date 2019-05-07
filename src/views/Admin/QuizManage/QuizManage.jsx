@@ -105,9 +105,6 @@ const options = {
 
 class QuizManage extends React.Component {
   reloadList = null;
-  constructor(props) {
-    super(props);
-  }
 
   reloadQuizList = () => {
     if (this.reloadList !== null) {
