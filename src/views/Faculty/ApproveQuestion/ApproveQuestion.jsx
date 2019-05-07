@@ -125,7 +125,7 @@ class ApproveQuestion extends React.Component {
         _id: this.state.question._id
       }
     });
-    this.closeDialog;
+    this.closeDialog();
   };
 
   performApproval = approveQuestion => {

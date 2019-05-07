@@ -66,14 +66,10 @@ const styles = theme => ({
   }
 });
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
-
 // edit student query
 const EDIT_STUDENT = gql`
-  mutation editStudent( $studentEditInput: StudentEditInput!) {
-    editStudent( studentEditInput: $studentEditInput) {
+  mutation editStudent($studentEditInput: StudentEditInput!) {
+    editStudent(studentEditInput: $studentEditInput) {
       _id
     }
   }
