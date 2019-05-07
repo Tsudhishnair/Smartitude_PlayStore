@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import {
+  Popper,
   Icon,
   Divider,
   Grow,
@@ -15,7 +16,6 @@ import {
   MenuList,
   MenuItem
 } from "@material-ui/core";
-import Popper from "@material-ui/core/Popper";
 
 // core components
 import Button from "../../components/CustomButtons/Button.jsx";
@@ -114,8 +114,8 @@ class CustomDropdown extends React.Component {
                 ? "top-start"
                 : "top"
               : left
-              ? "bottom-start"
-              : "bottom"
+                ? "bottom-start"
+                : "bottom"
           }
           className={classNames({
             [classes.popperClose]: !open,
