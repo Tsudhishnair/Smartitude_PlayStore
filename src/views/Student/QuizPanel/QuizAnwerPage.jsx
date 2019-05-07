@@ -128,6 +128,7 @@ class QuizAnswer extends React.Component {
     this.data = this.props.location.state;
     console.log(this.data);
 
+    console.log(this.data.sections);
     this.quizScore = this.getQuizScore();
     this.totalQuizScore = this.getTotalQuizScore();
     this.percentage = this.calculatePercentage();

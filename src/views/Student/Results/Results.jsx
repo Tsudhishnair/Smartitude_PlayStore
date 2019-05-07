@@ -2,14 +2,14 @@ import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 // core components
-import GridItem from "../../../components/Grid/GridItem.jsx";
-import GridContainer from "../../../components/Grid/GridContainer.jsx";
-import Card from "../../../components/Card/Card.jsx";
-import CardHeader from "../../../components/Card/CardHeader.jsx";
-import CardFooter from "../../../components/Card/CardFooter.jsx";
-import CardIcon from "../../../components/Card/CardIcon.jsx";
-
-import Danger from "../../../components/Typography/Danger.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import Card from "components/Card/Card.jsx";
+import CardHeader from "components/Card/CardHeader.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import CardIcon from "components/Card/CardIcon.jsx";
+import { Redirect } from "react-router-dom";
+import Danger from "components/Typography/Danger.jsx";
 import Warning from "@material-ui/icons/Warning";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
@@ -28,36 +28,42 @@ let realAttemptedQuizNo = 0;
 let HeaderData = [];
 // EntireQueryData stores the entire data from the query as per required in the QuizAnswer Page
 let EntireQueryData = {};
-// Query to obtain the entire data on the set of quizzes which the student have attended
+// Query to obtain the enitre data on the set of quizes which the student have attended
+let quiz = {};
+let dataToSubmit = {};
 const MY_ATTEMPTED_QUIZ = gql`
   {
     myAttemptedAdminQuizzes {
+      _id
       quiz {
+        _id
         name
         description
         sections {
+          category {
+            _id
+          }
           markPerQuestion
           negativeMarkPerQuestion
-        }
-      }
-      totalScore
-      attemptedSections {
-        category {
-          name
-        }
-        timeTaken
-        attemptedQuestions {
-          question {
+          questions {
+            _id
             question
             options
             correctOption
             solution
           }
-          markedOption
-          correctness
         }
-        sectionScore
-        sectionMaximumScore
+      }
+      totalScore
+      attemptedSections {
+        timeLimit
+        attemptedQuestions {
+          question {
+            _id
+          }
+          timeTakenToMark
+          markedOption
+        }
       }
       totalMaximumScore
       attemptedAt
@@ -71,7 +77,8 @@ class Results extends React.Component {
     this.state = {
       score: 0,
       NoOfAttemptedQuiz: 0,
-      avgScore: 0
+      avgScore: 0,
+      redirector: false
     };
     // Properties of the miui data table used for displaying the attempted quizes
     this.options = {
@@ -93,46 +100,34 @@ class Results extends React.Component {
   }
   // This function handles the row click and passes the index of the data to be retrieved
   handleRowClick = dataitem => {
-    this.handleQuizStructure(EntireQueryData.item.data, dataitem[0] - 1);
+    this.handleQuizStructure(EntireQueryData.item.data,(dataitem[0] - 1));
+  
   };
   // Function to structure the data in the format which is required by the QuizAnswerPage
   handleQuizStructure = (data, index) => {
     console.log(data);
-    const structuredData = {
-      attemptedAdminQuiz: "",
-      attemptedSections: [
-        {
-          attemptedQuestions: [
-            {
-              question: "data.my",
-              markedOption: "",
-              timeTakenToMark: ""
-            }
-          ]
-        }
-      ],
-      sections: [
-        {
-          category: {
-            name: ""
-          },
-          questions: [
-            {
-              category: {
-                _id: "",
-                name: "",
-                _typename: ""
-              },
-              correctOption: "",
-              options: [],
-              question: "",
-              solution: ""
-            }
-          ]
-        }
-      ],
+    dataToSubmit = {
+      attemptedAdminQuizId: data.myAttemptedAdminQuizzes[index].quiz._id,
+      attemptedSections: data.myAttemptedAdminQuizzes[index].attemptedSections,
       submittedAt: data.myAttemptedAdminQuizzes[index].attemptedAt
     };
+    quiz = {
+      sections: data.myAttemptedAdminQuizzes[index].quiz.sections.map((section,pos) => {
+        let sectionData = {
+          category: section.category,
+          questions: section.questions,
+          markPerQuestion: section.markPerQuestion,
+          negativeMarkPerQuestion: section.negativeMarkPerQuestion,
+          timeLimit: data.myAttemptedAdminQuizzes[index].attemptedSections[pos].timeLimit
+        }
+        return sectionData;
+      })
+   };
+    console.log(quiz);
+    this.setState(prevState => ({
+      ...prevState,
+      redirector: true
+    }));
   };
   //sets state of the header fields such as total no of attempted questions and total score
   displayDataHeader = data => {
@@ -145,6 +140,20 @@ class Results extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    if (this.state.redirector === true) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/student/quiz_answer",
+            state: {
+              ...dataToSubmit,
+              sections: quiz.sections
+            }
+          }}
+        />
+      );
+    }
 
     return (
       <div>
