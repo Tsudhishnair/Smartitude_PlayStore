@@ -6,19 +6,21 @@ import PropTypes from "prop-types";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Paper from "@material-ui/core/Paper";
-import Grow from "@material-ui/core/Grow";
-import Divider from "@material-ui/core/Divider";
-import Icon from "@material-ui/core/Icon";
-import Popper from "@material-ui/core/Popper";
+import {
+  Popper,
+  Icon,
+  Divider,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+  MenuItem
+} from "@material-ui/core";
 
 // core components
-import Button from "components/CustomButtons/Button.jsx";
+import Button from "../../components/CustomButtons/Button.jsx";
 
-import customDropdownStyle from "assets/jss/material-dashboard-react/components/customDropdownStyle.jsx";
+import customDropdownStyle from "../../assets/jss/material-dashboard-react/components/customDropdownStyle.jsx";
 
 class CustomDropdown extends React.Component {
   constructor(props) {
@@ -112,8 +114,8 @@ class CustomDropdown extends React.Component {
                 ? "top-start"
                 : "top"
               : left
-              ? "bottom-start"
-              : "bottom"
+                ? "bottom-start"
+                : "bottom"
           }
           className={classNames({
             [classes.popperClose]: !open,

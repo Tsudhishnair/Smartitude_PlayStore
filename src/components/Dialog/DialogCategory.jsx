@@ -10,12 +10,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Slide,
-  FormControl
+  Slide
 } from "@material-ui/core";
 
-import GridItem from "components/Grid/GridItem.jsx";
-import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "../../components/Grid/GridItem.jsx";
+import GridContainer from "../../components/Grid/GridContainer.jsx";
 
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
@@ -54,9 +53,6 @@ const styles = theme => ({
     margin: theme.spacing.unit * 4
   }
 });
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
 
 // edit category mutation query
 const EDIT_CATEGORY = gql`
@@ -174,8 +170,7 @@ class DialogCategory extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { type, object, positiveAction, negativeAction, action } = this.props;
+    const { positiveAction, negativeAction } = this.props;
 
     return (
       <div>

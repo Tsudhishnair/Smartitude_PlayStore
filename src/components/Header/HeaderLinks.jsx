@@ -1,29 +1,18 @@
 import React from "react";
-import classNames from "classnames";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Hidden from "@material-ui/core/Hidden";
-import Poppers from "@material-ui/core/Popper";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
-import Notifications from "@material-ui/icons/Notifications";
-import Dashboard from "@material-ui/icons/Dashboard";
-import Search from "@material-ui/icons/Search";
 // core components
-import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
-import headerLinksStyle from "assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
+import headerLinksStyle from "../../assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
 
 import { Query } from "../../../node_modules/react-apollo";
 import gql from "graphql-tag";
 import { loginHandler } from "../../Utils";
 import { Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 class HeaderLinks extends React.Component {
   state = {
@@ -43,7 +32,6 @@ class HeaderLinks extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { open } = this.state;
 
     const adminInfo = gql`
       {
@@ -151,5 +139,9 @@ class HeaderLinks extends React.Component {
     );
   }
 }
+
+HeaderLinks.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(headerLinksStyle)(HeaderLinks);

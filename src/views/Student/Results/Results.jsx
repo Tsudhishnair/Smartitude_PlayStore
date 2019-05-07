@@ -13,19 +13,20 @@ import Danger from "components/Typography/Danger.jsx";
 import Warning from "@material-ui/icons/Warning";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
-import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import MUIDataTable from "mui-datatables";
 import { CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-// RealScore is used for calulating the average score and displaying them
+import CardBody from "../../../components/Card/CardBody";
+// RealScore is used for calculating the average score and displaying them
 let realscore = 0;
-//RealAttemptedQuizNo is used for calulating and displaying the number of admin assigned quizes
+//RealAttemptedQuizNo is used for calculating and displaying the number of admin assigned quizzes
 let realAttemptedQuizNo = 0;
-// Header Data is used to stores the avg score and no of admin quizes atempted
+// Header Data is used to stores the avg score and no of admin quizzes attempted
 let HeaderData = [];
-// EntireQueryData stores the enitre data from the query as per required in the QuizAnswer Page
+// EntireQueryData stores the entire data from the query as per required in the QuizAnswer Page
 let EntireQueryData = {};
 // Query to obtain the enitre data on the set of quizes which the student have attended
 let quiz = {};
@@ -99,7 +100,8 @@ class Results extends React.Component {
   }
   // This function handles the row click and passes the index of the data to be retrieved
   handleRowClick = dataitem => {
-    this.handleQuizStructure(EntireQueryData.item.data, dataitem[0] - 1);
+    this.handleQuizStructure(EntireQueryData.item.data,(dataitem[0] - 1));
+  
   };
   // Function to structure the data in the format which is required by the QuizAnswerPage
   handleQuizStructure = (data, index) => {
@@ -270,22 +272,24 @@ class Results extends React.Component {
 
                     HeaderData.push(realscore);
                     HeaderData.push(realAttemptedQuizNo);
-                    if (this.state.NoOfAttemptedQuiz != HeaderData[1]) {
+                    if (this.state.NoOfAttemptedQuiz !== HeaderData[1]) {
                       this.displayDataHeader(HeaderData);
                     }
                     return (
-                      <MUIDataTable
-                        title={""}
-                        data={AttemptedQuizData}
-                        columns={[
-                          "NO",
-                          "Quiz Name",
-                          "Description",
-                          "Score Obtained",
-                          "Max Score"
-                        ]}
-                        options={this.options}
-                      />
+                      <CardBody>
+                        <MUIDataTable
+                          title={""}
+                          data={AttemptedQuizData}
+                          columns={[
+                            "NO",
+                            "Quiz Name",
+                            "Description",
+                            "Score Obtained",
+                            "Max Score"
+                          ]}
+                          options={this.options}
+                        />
+                      </CardBody>
                     );
                   }
                 }}

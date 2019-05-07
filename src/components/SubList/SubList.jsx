@@ -3,21 +3,18 @@ import PropTypes from "prop-types";
 // react plugin for creating charts
 
 // @material-ui/core
-import Card from "components/Card/Card.jsx";
-import Typography from "@material-ui/core/Typography";
+import Card from "../../components/Card/Card.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
-
-import GridContainer from "components/Grid/GridContainer.jsx";
+import GridContainer from "../../components/Grid/GridContainer.jsx";
 
 // @material-ui/icons
-
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 // core components
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 
 const styles = theme => ({
   root: {

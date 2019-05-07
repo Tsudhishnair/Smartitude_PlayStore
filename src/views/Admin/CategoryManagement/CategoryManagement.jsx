@@ -1,9 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "components/Card/Card.jsx";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
-
 import {
   CircularProgress,
   Collapse,
@@ -13,14 +10,15 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Snackbar,
-  Typography
+  Typography,
+  Tooltip
 } from "@material-ui/core";
-
 import { Delete, Edit, ExpandLess, ExpandMore } from "@material-ui/icons";
+import Card from "components/Card/Card.jsx";
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import Tooltip from "@material-ui/core/Tooltip";
+import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 
 import {
   EXPANSION_CATEGORY_FORM,
@@ -374,13 +372,13 @@ class CategoryManagement extends React.Component {
                 <React.Fragment>
                   {this.renderEditDialog(this.state.editDialog)}
                   {this.renderDeleteDialog(this.state.deleteDialog)}
-                  <Expansionpanel
+                  <ExpansionPanel
                     headers="Category"
                     header="Add new category"
                     reloadList={this.reloadCategoryDetailsList}
                     directingValue={EXPANSION_CATEGORY_FORM}
                   />
-                  <Expansionpanel
+                  <ExpansionPanel
                     reloadList={this.reloadCategoryDetailsList}
                     categories={categoriesList}
                     headers="Sub-Category"

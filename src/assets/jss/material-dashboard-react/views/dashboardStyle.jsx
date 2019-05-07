@@ -21,6 +21,10 @@ const dashboardStyle = theme => ({
     marginTop: -12,
     marginLeft: -12
   },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginLeft: "45%"
+  },
   stats: {
     color: "#999999",
     display: "inline-flex",

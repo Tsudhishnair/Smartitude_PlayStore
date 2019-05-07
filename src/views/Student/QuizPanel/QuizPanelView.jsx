@@ -32,7 +32,6 @@ import { Redirect } from "react-router-dom";
 
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 const styles = theme => ({
@@ -136,7 +135,16 @@ class QuizPanelView extends React.Component {
       attemptedSections: []
     };
 
-    //populate dataToSubmit with empty data to protect against undefined values
+    this.quiz = this.props.location.state;
+
+    this.initialiseDataArray();
+
+    //start time counter
+    this.manageTimeTakenCounter();
+  }
+
+  //populate dataToSubmit with empty data to protect against undefined values
+  initialiseDataArray = () => {
     let i = 0;
     while (i < this.props.location.state.sections.length) {
       this.dataToSubmit.attemptedSections.push({
@@ -150,14 +158,15 @@ class QuizPanelView extends React.Component {
           markedOption: -1,
           timeTakenToMark: 0
         });
+
+        console.log(this.props.location.state.sections[i].questions[j]);
+        shuffle(this.quiz.sections[i].questions[j].options);
+
         j++;
       }
       i++;
     }
-
-    //start time counter
-    this.manageTimeTakenCounter();
-  }
+  };
 
   //check if qn is the first of the section
   isNotFirstQn = () => {
@@ -400,39 +409,11 @@ class QuizPanelView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const quiz = this.props.location.state;
+    const quiz = this.quiz;
     const selectedSection = quiz.sections[this.currentSection];
     const { activeStep, isVisible } = this.state;
 
     const steps = this.getSteps(quiz.sections);
-
-    const options = [
-      <FormControlLabel
-        key={1}
-        value={1}
-        control={<Radio />}
-        label={this.state.fields.options["1"]}
-      />,
-      <FormControlLabel
-        value={2}
-        key={2}
-        control={<Radio />}
-        label={this.state.fields.options["2"]}
-      />,
-      <FormControlLabel
-        value={3}
-        key={3}
-        control={<Radio />}
-        label={this.state.fields.options["3"]}
-      />,
-      <FormControlLabel
-        value={4}
-        key={4}
-        control={<Radio />}
-        label={this.state.fields.options["4"]}
-      />
-    ];
-    shuffle(options);
 
     console.log(quiz);
     console.log(this.dataToSubmit);
@@ -542,27 +523,26 @@ class QuizPanelView extends React.Component {
                               this.handleChange(event, quiz.sections)
                             }
                           >
-                            {/*<FormControlLabel*/}
-                            {/*  value={1}*/}
-                            {/*  control={<Radio />}*/}
-                            {/*  label={this.state.fields.options["1"]}*/}
-                            {/*/>*/}
-                            {/*<FormControlLabel*/}
-                            {/*  value={2}*/}
-                            {/*  control={<Radio />}*/}
-                            {/*  label={this.state.fields.options["2"]}*/}
-                            {/*/>*/}
-                            {/*<FormControlLabel*/}
-                            {/*  value={3}*/}
-                            {/*  control={<Radio />}*/}
-                            {/*  label={this.state.fields.options["3"]}*/}
-                            {/*/>*/}
-                            {/*<FormControlLabel*/}
-                            {/*  value={4}*/}
-                            {/*  control={<Radio />}*/}
-                            {/*  label={this.state.fields.options["4"]}*/}
-                            {/*/>*/}
-                            {options}
+                            <FormControlLabel
+                              value={1}
+                              control={<Radio />}
+                              label={this.state.fields.options["1"]}
+                            />
+                            <FormControlLabel
+                              value={2}
+                              control={<Radio />}
+                              label={this.state.fields.options["2"]}
+                            />
+                            <FormControlLabel
+                              value={3}
+                              control={<Radio />}
+                              label={this.state.fields.options["3"]}
+                            />
+                            <FormControlLabel
+                              value={4}
+                              control={<Radio />}
+                              label={this.state.fields.options["4"]}
+                            />
                           </RadioGroup>
                         </FormControl>
                       </CardBody>
