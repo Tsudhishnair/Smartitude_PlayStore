@@ -5,19 +5,13 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
-import Drawer from "@material-ui/core/Drawer";
-
+import { Drawer, Hidden, IconButton, Toolbar, AppBar } from "@material-ui/core";
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 // core components
 import headerStyle from "../../assets/jss/material-dashboard-react/views/headerStyle.jsx";
 import BrandLogo from "../../assets/img/sidebar_smart_white.png";
-import { Icon, ListItem } from "@material-ui/core";
+
 import Link from "react-router-dom/es/Link";
 
 class HomeHeader extends React.Component {
@@ -67,7 +61,6 @@ class HomeHeader extends React.Component {
       color,
       rightLinks,
       leftLinks,
-      brand,
       fixed,
       absolute
     } = this.props;
