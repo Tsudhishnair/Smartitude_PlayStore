@@ -159,7 +159,6 @@ class QuizPanelView extends React.Component {
           timeTakenToMark: 0
         });
 
-        console.log(this.props.location.state.sections[i].questions[j]);
         shuffle(this.quiz.sections[i].questions[j].options);
 
         j++;
@@ -196,7 +195,6 @@ class QuizPanelView extends React.Component {
 
       this.dataToSubmit.submittedAt = new Date();
 
-      console.log(this.dataToSubmit.attemptedAdminQuizId);
       if (this.props.location.state._id != null) {
         finishQuizMutation({
           variables: {
@@ -376,6 +374,13 @@ class QuizPanelView extends React.Component {
         quizJumpers.push(
           this.generateJumper(i, "primary", styles, quizSection)
         );
+      } else if (
+        this.dataToSubmit.attemptedSections[this.currentSection]
+          .attemptedQuestions[i].markedOption !== -1
+      ) {
+        quizJumpers.push(
+          this.generateJumper(i, "secondary", styles, quizSection)
+        );
       } else {
         quizJumpers.push(this.generateJumper(i, "white", styles, quizSection));
       }
@@ -415,8 +420,8 @@ class QuizPanelView extends React.Component {
 
     const steps = this.getSteps(quiz.sections);
 
-    console.log(quiz);
-    console.log(this.dataToSubmit);
+    // console.log(quiz);
+    // console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
       return (
@@ -681,7 +686,7 @@ class QuizPanelView extends React.Component {
                     <Stepper activeStep={activeStep} alternativeLabel>
                       {steps.map(label => {
                         const props = {};
-                        const labelProps = {}
+                        const labelProps = {};
                         return (
                           <Step key={label} {...props}>
                             <StepLabel {...labelProps}>{label}</StepLabel>
