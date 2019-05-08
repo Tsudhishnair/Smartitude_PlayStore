@@ -128,11 +128,6 @@ class QuestionDetails extends Component {
             <b>Category/Subcategory: </b>
             {question.category.name} - {question.subcategory.name}
             <br />
-            <b>Times Attempted: </b>
-            {question.timesAttempted}
-            &nbsp; &nbsp; &nbsp;
-            <b>Times Solved: </b>
-            {question.timesSolved}
           </p>
         </CardBody>
         {showActions ? (

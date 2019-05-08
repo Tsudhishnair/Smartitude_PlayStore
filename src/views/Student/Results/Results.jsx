@@ -123,7 +123,6 @@ class Results extends React.Component {
         return sectionData;
       })
    };
-    console.log(quiz);
     this.setState(prevState => ({
       ...prevState,
       redirector: true
