@@ -100,7 +100,10 @@ const options = {
   elevation: 0,
   responsive: "scroll",
   selectableRows: false,
-  rowsPerPageOptions: [20, 30, 100, 200]
+  rowsPerPageOptions: [20, 30, 100, 200],
+  onRowClick: (rowData, rowState) => {
+    console.log(rowData);
+  }
 };
 
 class QuizManage extends React.Component {
