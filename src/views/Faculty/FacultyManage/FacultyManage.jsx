@@ -106,12 +106,7 @@ class Dashboard extends React.Component {
       rowsPerPage: 20,
       elevation: 0,
       rowsPerPageOptions: [20, 30, 100, 200],
-
-      onRowsSelect: (rowsSelected, allRows) => {
-        console.log(rowsSelected, allRows);
-      },
       onRowClick: (rowData, rowState) => {
-        console.log(rowData);
         this.child.handleClickOpen(rowData);
       }
     };
