@@ -220,8 +220,8 @@ class PreQuizInfo extends React.Component {
                     gutterBottom
                     className={classes.textGrey}
                   >
-                    {this.getTotalNumberOfQns(this.quiz.sections)} Questions |
-                    {this.transformTimeLimit(this.quiz.sections)} Minutes |
+                    {this.getTotalNumberOfQns(this.quiz.sections)} Questions |{" "}
+                    {this.transformTimeLimit(this.quiz.sections)} Minutes |{" "}
                     {this.getNumberOfSections(this.quiz.sections)} sections
                   </Typography>
                   <Typography variant="body2">

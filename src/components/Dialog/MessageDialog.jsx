@@ -56,11 +56,11 @@ class MessageDialog extends React.Component {
   };
 
   handleDialogOpen = () => {
-    this.setState({ open: true });
+    this.setState(() => ({ open: true }));
   };
 
   handleDialogClose = () => {
-    this.setState({ open: false });
+    this.setState(() => ({ open: false }));
     this.props.onClose();
   };
 
