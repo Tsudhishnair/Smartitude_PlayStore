@@ -126,6 +126,12 @@ class QuizPanelView extends React.Component {
     //maintain interval for timeTaken field
     this.timer;
 
+    this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
+    console.log("Before shuffle");
+    console.log(this.quiz);
+
+    this.key;
+
     //contains data to be submitted on submission of sections and quiz
     this.dataToSubmit = {
       attemptedAdminQuizId: this.props.location.state._id,
@@ -133,7 +139,32 @@ class QuizPanelView extends React.Component {
       attemptedSections: []
     };
 
-    //populate dataToSubmit with empty data to protect against undefined values
+    this.initialiseDataArray();
+
+    let i = 0;
+    while (i < this.props.location.state.sections.length) {
+      let j = 0;
+      while (j < this.props.location.state.sections[i].questions.length) {
+        this.quiz.sections[i].questions[j].options = this.shuffle(
+          this.key,
+          this.quiz.sections[i].questions[j].options
+        );
+        j++;
+      }
+      i++;
+    }
+
+    console.log("After shuffle");
+    console.log(this.quiz);
+
+    //start time counter
+    this.manageTimeTakenCounter();
+  }
+
+  //populate dataToSubmit with empty data to protect against undefined values
+  initialiseDataArray = () => {
+    this.key = this.getRandomInt(4);
+
     let i = 0;
     while (i < this.props.location.state.sections.length) {
       this.dataToSubmit.attemptedSections.push({
@@ -151,10 +182,36 @@ class QuizPanelView extends React.Component {
       }
       i++;
     }
+  };
 
-    //start time counter
-    this.manageTimeTakenCounter();
-  }
+  shuffle = (key, options) => {
+    let newOptions = [];
+    for (let i = 0; i < options.length; i++) {
+      let newIndex = (i + key) % 4;
+      newOptions[newIndex] = options[i];
+    }
+
+    console.log(options);
+    console.log(newOptions);
+    return newOptions;
+  };
+
+  unshuffle = (key, options) => {
+    let oldOptions = [];
+    for	(let i = 0; i < options.length; i++) {
+      let newIndex = i - key;
+      if (newIndex < 0) newIndex = options.length + newIndex;
+
+      oldOptions[newIndex] = options[i];
+    }
+    console.log(options);
+    console.log(oldOptions);
+    return oldOptions;
+  };
+
+  getRandomInt = max => {
+    return Math.floor(Math.random() * Math.floor(max));
+  };
 
   //check if qn is the first of the section
   isNotFirstQn = () => {
@@ -183,6 +240,19 @@ class QuizPanelView extends React.Component {
       this.clearTimeTakenCounter();
 
       this.dataToSubmit.submittedAt = new Date();
+
+      let i = 0;
+      while (i < this.props.location.state.sections.length) {
+        let j = 0;
+        while (j < this.props.location.state.sections[i].questions.length) {
+          this.quiz.sections[i].questions[j].options = this.unshuffle(
+            this.key,
+            this.quiz.sections[i].questions[j].options
+          );
+          j++;
+        }
+        i++;
+      };
 
       console.log(this.dataToSubmit.attemptedAdminQuizId);
       if (this.props.location.state._id != null) {
@@ -292,7 +362,7 @@ class QuizPanelView extends React.Component {
 
   //return timeLimit of the section
   getTimeLimit = section => {
-    if (!!section) return section.timeLimit;
+    if (section) return section.timeLimit;
     else return "";
   };
 
@@ -405,7 +475,7 @@ class QuizPanelView extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const quiz = this.props.location.state;
+    const quiz = this.quiz;
     const selectedSection = quiz.sections[this.currentSection];
     const { activeStep, isVisible } = this.state;
 
@@ -413,6 +483,7 @@ class QuizPanelView extends React.Component {
 
     console.log(quiz);
 
+    console.log("data to submit object");
     console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
