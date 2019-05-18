@@ -16,6 +16,7 @@ import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import FullScreenDialog from "../../../components/Dialog/FullScreenDialog";
 
 const myTheme = createMuiTheme({
   overrides: {
@@ -94,30 +95,54 @@ const columns = [
   }
 ];
 
-const options = {
-  filterType: "checkbox",
-  rowsPerPage: 20,
-  elevation: 0,
-  responsive: "scroll",
-  selectableRows: false,
-  rowsPerPageOptions: [20, 30, 100, 200],
-  onRowClick: (rowData, rowState) => {
-    console.log(rowData);
-  }
-};
 
 class QuizManage extends React.Component {
   reloadList = null;
 
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      open: false
+    };
+  }
+  options = {
+    filterType: "checkbox",
+    rowsPerPage: 20,
+    responsive: "scroll",
+    selectableRows: false,
+    elevation: 0,
+    rowsPerPageOptions: [20, 30, 100, 200, 700],
+    onRowClick: (rowData, rowState) => {
+      console.log(rowData);
+      this.handleDialogState();
+    }
+  };
   reloadQuizList = () => {
     if (this.reloadList !== null) {
       this.reloadList();
     }
   };
+  handleDialogState = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      open: true
+    }));
+  };
+  handleRowDataDialog = isVisible => {
+    if (isVisible) {
+      return (
+        <div>
+          <FullScreenDialog />
+        </div>
+      );
+    }
+  };
+
 
   render() {
     const { classes } = this.props;
-
+    
     return (
       <Query query={QUIZ_VIEW_QUERY}>
         {({ data, loading, error, refetch }) => {
@@ -132,16 +157,14 @@ class QuizManage extends React.Component {
               quizData.push(data.name);
               quizData.push(data.description);
               quizData.push(data.target);
-
               data.active ? quizData.push("Yes") : quizData.push("No");
-
               quizData.push(transformDateString(data.activeTo));
-
               return quizData;
             });
             return (
               <Fragment>
-                {console.log(data)}
+                {this.handleRowDataDialog(this.state.open)}
+                {/*{console.log(data)}*/}
                 {/* not needed to use for quiz */}
                 {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
                 <GridContainer>
@@ -167,7 +190,7 @@ class QuizManage extends React.Component {
                             title={""}
                             data={quizList}
                             columns={columns}
-                            options={options}
+                            options={this.options}
                           />
                         </MuiThemeProvider>
                       </CardBody>
