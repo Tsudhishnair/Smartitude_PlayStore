@@ -441,6 +441,8 @@ class QuizAnswer extends React.Component {
 
   getSectionScore = sectionNumber => {
     const marksPerQn = this.data.sections[sectionNumber].markPerQuestion;
+    const negMarksPerQn = this.data.sections[sectionNumber]
+      .negativeMarkPerQuestion;
 
     let sectionScore = 0;
     let totalSectionScore;
@@ -449,6 +451,8 @@ class QuizAnswer extends React.Component {
     while (questionCounter < this.getNumberOfQns(sectionNumber)) {
       if (this.isCorrectlyMarked(sectionNumber, questionCounter)) {
         sectionScore += marksPerQn;
+      } else if (!this.isUnmarked(sectionNumber, questionCounter)) {
+        sectionScore -= negMarksPerQn;
       }
       questionCounter++;
     }
@@ -526,7 +530,8 @@ class QuizAnswer extends React.Component {
   };
 
   calculatePercentage = () => {
-    return ((this.quizScore / this.totalQuizScore) * 100).toFixed(2);
+    if (this.quizScore < 0) return 0;
+    else return ((this.quizScore / this.totalQuizScore) * 100).toFixed(2);
   };
 
   calculateTimeTaken = () => {
