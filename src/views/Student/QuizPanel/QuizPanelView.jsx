@@ -145,10 +145,10 @@ class QuizPanelView extends React.Component {
     while (i < this.props.location.state.sections.length) {
       let j = 0;
       while (j < this.props.location.state.sections[i].questions.length) {
-        this.quiz.sections[i].questions[j].options = this.shuffle(
-          this.key,
-          this.quiz.sections[i].questions[j].options
-        );
+        // this.quiz.sections[i].questions[j].options = this.shuffle(
+        //   this.key,
+        //   this.quiz.sections[i].questions[j].options
+        // );
         j++;
       }
       i++;
@@ -245,10 +245,10 @@ class QuizPanelView extends React.Component {
       while (i < this.props.location.state.sections.length) {
         let j = 0;
         while (j < this.props.location.state.sections[i].questions.length) {
-          this.quiz.sections[i].questions[j].options = this.unshuffle(
-            this.key,
-            this.quiz.sections[i].questions[j].options
-          );
+          // this.quiz.sections[i].questions[j].options = this.unshuffle(
+          //   this.key,
+          //   this.quiz.sections[i].questions[j].options
+          // );
           j++;
         }
         i++;
