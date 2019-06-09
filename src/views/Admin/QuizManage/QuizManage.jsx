@@ -16,7 +16,7 @@ import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { EXPANSION_QUIZ_FORM, transformDateString } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import FullScreenDialog from "../../../components/Dialog/FullScreenDialog";
+import QuizzesDialog from "../../../components/Dialog/DialogQuizzes";
 
 const myTheme = createMuiTheme({
   overrides: {
@@ -95,7 +95,6 @@ const columns = [
   }
 ];
 
-
 class QuizManage extends React.Component {
   reloadList = null;
 
@@ -105,7 +104,11 @@ class QuizManage extends React.Component {
     this.state = {
       open: false
     };
+
+    this.quizzes;
+    this.selectedQuiz;
   }
+
   options = {
     filterType: "checkbox",
     rowsPerPage: 20,
@@ -114,94 +117,99 @@ class QuizManage extends React.Component {
     elevation: 0,
     rowsPerPageOptions: [20, 30, 100, 200, 700],
     onRowClick: (rowData, rowState) => {
-      console.log(rowData);
-      this.handleDialogState();
+      this.selectedQuiz = this.quizzes[rowState.dataIndex];
+      this.toggleQuizzesDialog();
     }
   };
+
   reloadQuizList = () => {
     if (this.reloadList !== null) {
       this.reloadList();
     }
   };
-  handleDialogState = () => {
+
+  toggleQuizzesDialog = () => {
     this.setState(prevState => ({
       ...prevState,
-      open: true
+      open: !prevState.open
     }));
   };
-  handleRowDataDialog = isVisible => {
+
+  renderQuizDialog = isVisible => {
     if (isVisible) {
       return (
-        <div>
-          <FullScreenDialog />
-        </div>
+        <QuizzesDialog
+          object={this.selectedQuiz}
+          onClose={this.toggleQuizzesDialog}
+        />
       );
     }
   };
 
-
   render() {
     const { classes } = this.props;
-    
+
     return (
-      <Query query={QUIZ_VIEW_QUERY}>
-        {({ data, loading, error, refetch }) => {
-          this.reloadList = refetch;
-          if (loading) {
-            return <CircularProgress className={classes.progress} />;
-          } else if (error) {
-            return <Typography>Error occured while fetching data!</Typography>;
-          } else {
-            quizList = data.adminQuizzes.map(data => {
-              let quizData = [];
-              quizData.push(data.name);
-              quizData.push(data.description);
-              quizData.push(data.target);
-              data.active ? quizData.push("Yes") : quizData.push("No");
-              quizData.push(transformDateString(data.activeTo));
-              return quizData;
-            });
-            return (
-              <Fragment>
-                {this.handleRowDataDialog(this.state.open)}
-                {/*{console.log(data)}*/}
-                {/* not needed to use for quiz */}
-                {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Expansionpanel
-                      headers={header1}
-                      header={header2}
-                      reloadList={this.reloadQuizList}
-                      directingValue={EXPANSION_QUIZ_FORM}
-                    />
-                  </GridItem>
-                </GridContainer>
-                <Spacing />
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <Card className={classes.root}>
-                      <CardHeader color="warning">
-                        <h4 className={classes.cardTitleWhite}>Quizzes</h4>
-                      </CardHeader>
-                      <CardBody>
-                        <MuiThemeProvider theme={myTheme}>
-                          <MUIDataTable
-                            title={""}
-                            data={quizList}
-                            columns={columns}
-                            options={this.options}
-                          />
-                        </MuiThemeProvider>
-                      </CardBody>
-                    </Card>
-                  </GridItem>
-                </GridContainer>
-              </Fragment>
-            );
-          }
-        }}
-      </Query>
+      <React.Fragment>
+        {this.renderQuizDialog(this.state.open)}
+        <Query query={QUIZ_VIEW_QUERY}>
+          {({ data, loading, error, refetch }) => {
+            this.reloadList = refetch;
+            if (loading) {
+              return <CircularProgress className={classes.progress}/>;
+            } else if (error) {
+              return <Typography>Error occured while fetching data!</Typography>;
+            } else {
+              quizList = data.adminQuizzes.map(data => {
+                let quizData = [];
+                quizData.push(data.name);
+                quizData.push(data.description);
+                quizData.push(data.target);
+                data.active ? quizData.push("Yes") : quizData.push("No");
+                quizData.push(transformDateString(data.activeTo));
+                return quizData;
+              });
+
+              this.quizzes = data.adminQuizzes;
+
+              return (
+                <Fragment>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Expansionpanel
+                        headers={header1}
+                        header={header2}
+                        reloadList={this.reloadQuizList}
+                        directingValue={EXPANSION_QUIZ_FORM}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                  <Spacing/>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <Card className={classes.root}>
+                        <CardHeader color="warning">
+                          <h4 className={classes.cardTitleWhite}>Quizzes</h4>
+                        </CardHeader>
+                        <CardBody>
+                          <MuiThemeProvider theme={myTheme}>
+                            <MUIDataTable
+                              title={""}
+                              data={quizList}
+                              columns={columns}
+                              options={this.options}
+                            />
+                          </MuiThemeProvider>
+                        </CardBody>
+                      </Card>
+                    </GridItem>
+                  </GridContainer>
+                </Fragment>
+              );
+            }
+          }}
+        </Query>
+      </React.Fragment>
     );
   }
 }
