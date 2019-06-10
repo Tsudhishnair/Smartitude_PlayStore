@@ -13,8 +13,13 @@ import {
   DialogTitle,
   CircularProgress,
   Typography,
-  Slide
+  Slide,
+  IconButton,
+  Toolbar,
+  AppBar
 } from "@material-ui/core";
+
+import { Close } from "@material-ui/icons";
 
 import GridItem from "../../components/Grid/GridItem.jsx";
 import GridContainer from "../../components/Grid/GridContainer.jsx";
@@ -140,7 +145,7 @@ class QuizzesDialog extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, object} = this.props;
 
     const variables = {
       quizId: this.props.object._id
@@ -158,8 +163,24 @@ class QuizzesDialog extends React.Component {
           fullWidth={true}
           maxWidth={"xs"}
         >
-          {/* assign labels depending on type */}
-          <DialogTitle id="form-dialog-title">Category</DialogTitle>
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                onClick={this.handleDialogClose}
+                aria-label="Close"
+              >
+                <Close />
+              </IconButton>
+              <Typography variant="h6" color="inherit" className={classes.flex}>
+                {object.name}
+              </Typography>
+              <Button color="inherit" onClick={this.handleDialogClose}>
+                Ok
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <DialogTitle id="form-dialog-title" />
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
@@ -215,7 +236,8 @@ class QuizzesDialog extends React.Component {
 
 QuizzesDialog.propTypes = {
   onClose: PropTypes.func,
-  object: PropTypes.object.isRequired
+  object: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(QuizzesDialog);

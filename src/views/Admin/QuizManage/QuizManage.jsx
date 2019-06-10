@@ -156,9 +156,11 @@ class QuizManage extends React.Component {
           {({ data, loading, error, refetch }) => {
             this.reloadList = refetch;
             if (loading) {
-              return <CircularProgress className={classes.progress}/>;
+              return <CircularProgress className={classes.progress} />;
             } else if (error) {
-              return <Typography>Error occured while fetching data!</Typography>;
+              return (
+                <Typography>Error occured while fetching data!</Typography>
+              );
             } else {
               quizList = data.adminQuizzes.map(data => {
                 let quizData = [];
