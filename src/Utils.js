@@ -24,7 +24,11 @@ export const transformDateString = dateString => {
   const newDate = new Date(dateString);
 
   return `${newDate.getDate()}/${newDate.getMonth() +
-    1}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}`;
+    1}/${newDate.getFullYear()} ${
+    newDate.getHours() > 9 ? newDate.getHours() : "0" + newDate.getHours()
+  }:${
+    newDate.getMinutes() > 9 ? newDate.getMinutes() : "0" + newDate.getMinutes()
+  }`;
 };
 
 export const EXPANSION_QUIZ_FORM = 1;
