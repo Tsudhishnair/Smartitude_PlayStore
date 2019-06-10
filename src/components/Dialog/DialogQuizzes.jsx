@@ -145,7 +145,7 @@ class QuizzesDialog extends React.Component {
   };
 
   render() {
-    const { classes, object} = this.props;
+    const { classes, object } = this.props;
 
     const variables = {
       quizId: this.props.object._id
@@ -170,7 +170,7 @@ class QuizzesDialog extends React.Component {
                 onClick={this.handleDialogClose}
                 aria-label="Close"
               >
-                <Close />
+                <Close/>
               </IconButton>
               <Typography variant="h6" color="inherit" className={classes.flex}>
                 {object.name}
@@ -180,7 +180,7 @@ class QuizzesDialog extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <DialogTitle id="form-dialog-title" />
+          <DialogTitle id="form-dialog-title"/>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
@@ -189,12 +189,12 @@ class QuizzesDialog extends React.Component {
                     {({ loading, error, data }) => {
                       if (loading) {
                         return (
-                          <CircularProgress className={classes.progress} />
+                          <CircularProgress className={classes.progress}/>
                         );
                       } else if (error) {
                         return (
                           <Typography>
-                            Error occured while fetching data.
+                            Error occurred while fetching data.
                           </Typography>
                         );
                       } else {
@@ -209,12 +209,22 @@ class QuizzesDialog extends React.Component {
                         });
 
                         return (
-                          <MUIDataTable
-                            title={data.name}
-                            data={quizList}
-                            columns={columns}
-                            options={this.options}
-                          />
+                          <React.Fragment>
+                            <GridContainer>
+                              <GridItem xs={12} md={6}>
+                                <Typography>{quizList.length} students have attempted this quiz</Typography>
+                              </GridItem>
+                              <GridItem xs={12} md={6}>
+                                <Typography>Maximum score: {object.totalMaximumScore}</Typography>
+                              </GridItem>
+                            </GridContainer>
+                            <MUIDataTable
+                              title={data.name}
+                              data={quizList}
+                              columns={columns}
+                              options={this.options}
+                            />
+                          </React.Fragment>
                         );
                       }
                     }}
