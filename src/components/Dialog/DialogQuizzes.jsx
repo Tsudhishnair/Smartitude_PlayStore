@@ -120,6 +120,11 @@ const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   }
 `;
 
+const options = {
+  selectableRows: false,
+  rowsPerPageOptions: [20, 30, 100, 200, 700]
+};
+
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -239,7 +244,7 @@ class QuizzesDialog extends React.Component {
                               title={data.name}
                               data={quizList}
                               columns={columns}
-                              options={this.options}
+                              options={options}
                             />
                           </React.Fragment>
                         );
