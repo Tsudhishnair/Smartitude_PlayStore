@@ -82,7 +82,12 @@ const FINISH_QUIZ = gql`
     }
   }
 `;
-
+const CUSTOM_QUIZ =   gql`
+mutation submitCustomQuiz($customQuizSubmission: AttemptedCustomQuizInput!){
+  submitCustomQuiz(customQuizSubmission:$customQuizSubmission){
+    _id
+  }
+}`;
 class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
@@ -137,6 +142,12 @@ class QuizPanelView extends React.Component {
       attemptedAdminQuizId: this.props.location.state._id,
       submittedAt: new Date(),
       attemptedSections: []
+    };
+    //contains data to be submitted for custom quiz
+    this.customDataToSubmit = {
+      customQuizId:this.props.location.state._id,
+      submittedAt:this.dataToSubmit.submittedAt,
+      attemptedSections:this.dataToSubmit.attemptedSections
     };
 
     this.initialiseDataArray();
@@ -255,7 +266,7 @@ class QuizPanelView extends React.Component {
       };
 
       console.log(this.dataToSubmit.attemptedAdminQuizId);
-      if (this.props.location.state._id != null) {
+      if (this.props.location.state._id != null && this.props.location.state.isQuiz===1) {
         finishQuizMutation({
           variables: {
             adminQuizSubmission: {
@@ -264,7 +275,7 @@ class QuizPanelView extends React.Component {
           }
         })
           .then(res => {
-            console.log("successfully submitted");
+            console.log("successfully submitted Admin Quiz");
 
             this.setState(() => ({
               redirector: true
@@ -273,7 +284,26 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      } else {
+      }else if (this.props.location.state._id != null && this.props.location.state.isQuiz===2){
+        console.log("Successfully submitted custome quiz");
+        finishQuizMutation({
+          variables:{
+            customQuizSubmission:{
+              ...this.customDataToSubmit
+            }
+          }
+        })
+        .then(res => {
+          this.setState(() => ({
+            redirector: true
+          }));
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      } 
+      else {
+        console.log("successfully submitted random quiz");
         this.setState(() => ({
           redirector: true
         }));
@@ -504,7 +534,7 @@ class QuizPanelView extends React.Component {
       console.log("rendering normally");
       return (
         <div className={classes.root}>
-          <Mutation mutation={FINISH_QUIZ}>
+          <Mutation mutation={this.props.location.state.isQuiz===1?FINISH_QUIZ:CUSTOM_QUIZ}>
             {finishQuiz => (
               <React.Fragment>
                 <GridContainer>

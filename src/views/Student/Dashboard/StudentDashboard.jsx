@@ -76,6 +76,7 @@ class StudentDashboard extends React.Component {
     this.state = {
       loading: false,
       value: 0,
+      _id:0,
       RandomQuizQuestion: [],
       //checks the state to redirect to next page
       redirector: false
@@ -96,6 +97,7 @@ class StudentDashboard extends React.Component {
     generateRandomQuiz();
   };
   handleMutationComplete = data => {
+    const quizIdVal = data._id;
     const sectionFormattedData = {
       sections: [
         {
@@ -110,6 +112,7 @@ class StudentDashboard extends React.Component {
     console.log(sectionFormattedData);
     this.setState(prevState => ({
       ...prevState,
+      _id:quizIdVal,
       RandomQuizQuestion: sectionFormattedData,
       redirector: true
     }));
@@ -124,6 +127,7 @@ class StudentDashboard extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
+              
               ...this.state.RandomQuizQuestion
             }
           }}

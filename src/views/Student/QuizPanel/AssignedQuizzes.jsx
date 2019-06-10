@@ -85,6 +85,7 @@ const ADMIN_QUIZZES_BATCH = gql`
   }
 `;
 
+
 class AssignedQuizzes extends React.Component {
   constructor(props) {
     super(props);
@@ -118,12 +119,15 @@ class AssignedQuizzes extends React.Component {
 
   handleRowClick = clickedIndex => {
     this.clickedQuiz = this.quizList[clickedIndex];
-
-    this.setState(() => ({
+    this.AdminAssignedFlag={
+      isQuiz:1
+    };
+      this.setState(() => ({
       redirecter: true
     }));
+    
+    {console.log(this.state.isQuiz)}
   };
-
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
@@ -138,6 +142,7 @@ class AssignedQuizzes extends React.Component {
           to={{
             pathname: "/student/start_quiz",
             state: {
+              ...this.AdminAssignedFlag,
               ...this.clickedQuiz
             }
           }}
@@ -148,6 +153,8 @@ class AssignedQuizzes extends React.Component {
     return (
       <div className={classes.root}>
         <GridContainer>
+          
+      {console.log(this.state.isQuiz)}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <form>

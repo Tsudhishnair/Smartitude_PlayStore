@@ -116,6 +116,11 @@ const ADD_QUIZ = gql`
 const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
+      _id
+      createdBy{
+        _id
+        name
+      }
       sections {
         category {
           _id
@@ -165,6 +170,9 @@ class QuizForm extends React.Component {
     this.state = {
       //maintain fields which are common to all sections
       loadingProgress: false,
+      quizIdCheck:{
+        isQuiz:2
+      },
       quizCommon: {
         quizName: "",
         batch: "",
@@ -853,6 +861,7 @@ class QuizForm extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
+              ...this.state.quizIdCheck,
               ...this.state.customQuizData
             }
           }}
