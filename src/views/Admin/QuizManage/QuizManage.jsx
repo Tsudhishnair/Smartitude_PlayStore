@@ -184,7 +184,7 @@ class QuizManage extends React.Component {
                       />
                     </GridItem>
                   </GridContainer>
-                  <Spacing/>
+                  <Spacing />
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <Card className={classes.root}>
