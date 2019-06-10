@@ -23,6 +23,7 @@ import { Close } from "@material-ui/icons";
 
 import GridItem from "../../components/Grid/GridItem.jsx";
 import GridContainer from "../../components/Grid/GridContainer.jsx";
+import Spacing from "../../components/Spacing/Spacing.jsx";
 
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
@@ -102,7 +103,7 @@ const columns = [
   }
 ];
 
-// list all attempts made by student for the quiz chosen
+// list all attempts made by students for the quiz chosen
 const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   query getAdminQuizAttempts($quizId: ID!) {
     getAdminQuizAttempts(quizId: $quizId) {
@@ -119,6 +120,13 @@ const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   }
 `;
 
+//mui datatable options
+const options = {
+  selectableRows: false,
+  rowsPerPageOptions: [20, 30, 100, 200, 700]
+};
+
+//transition component for the dialog box
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -147,6 +155,7 @@ class QuizzesDialog extends React.Component {
   render() {
     const { classes, object } = this.props;
 
+    //store variable to be passed for query
     const variables = {
       quizId: this.props.object._id
     };
@@ -163,6 +172,7 @@ class QuizzesDialog extends React.Component {
           fullWidth={true}
           maxWidth={"xs"}
         >
+          {/* appbar used to display orange top banner */}
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton
@@ -170,7 +180,7 @@ class QuizzesDialog extends React.Component {
                 onClick={this.handleDialogClose}
                 aria-label="Close"
               >
-                <Close/>
+                <Close />
               </IconButton>
               <Typography variant="h6" color="inherit" className={classes.flex}>
                 {object.name}
@@ -180,7 +190,8 @@ class QuizzesDialog extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
-          <DialogTitle id="form-dialog-title"/>
+          {/* empty dialog title used to introduce spacing */}
+          <DialogTitle id="form-dialog-title" />
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
@@ -189,7 +200,7 @@ class QuizzesDialog extends React.Component {
                     {({ loading, error, data }) => {
                       if (loading) {
                         return (
-                          <CircularProgress className={classes.progress}/>
+                          <CircularProgress className={classes.progress} />
                         );
                       } else if (error) {
                         return (
@@ -198,6 +209,8 @@ class QuizzesDialog extends React.Component {
                           </Typography>
                         );
                       } else {
+
+                        //transform data for datatable
                         let quizList;
                         quizList = data.getAdminQuizAttempts.map(quiz => {
                           let quizData = [];
@@ -212,17 +225,31 @@ class QuizzesDialog extends React.Component {
                           <React.Fragment>
                             <GridContainer>
                               <GridItem xs={12} md={6}>
-                                <Typography>{quizList.length} students have attempted this quiz</Typography>
+                                <Typography align="left" variant="h6" inline>
+                                  {quizList.length}
+                                </Typography>
+                                <Typography inline>
+                                  {"  "}
+                                  students have attempted this quiz
+                                </Typography>
                               </GridItem>
                               <GridItem xs={12} md={6}>
-                                <Typography>Maximum score: {object.totalMaximumScore}</Typography>
+                                <Typography inline>Maximum score:</Typography>
+                                <Typography variant="h6" inline>
+                                  {"   "}
+                                  {
+                                    data.getAdminQuizAttempts[0]
+                                      .totalMaximumScore
+                                  }
+                                </Typography>
                               </GridItem>
                             </GridContainer>
+                            <Spacing />
                             <MUIDataTable
                               title={data.name}
                               data={quizList}
                               columns={columns}
-                              options={this.options}
+                              options={options}
                             />
                           </React.Fragment>
                         );
