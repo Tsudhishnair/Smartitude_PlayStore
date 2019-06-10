@@ -103,7 +103,7 @@ const columns = [
   }
 ];
 
-// list all attempts made by student for the quiz chosen
+// list all attempts made by students for the quiz chosen
 const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   query getAdminQuizAttempts($quizId: ID!) {
     getAdminQuizAttempts(quizId: $quizId) {
@@ -120,11 +120,13 @@ const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   }
 `;
 
+//mui datatable options
 const options = {
   selectableRows: false,
   rowsPerPageOptions: [20, 30, 100, 200, 700]
 };
 
+//transition component for the dialog box
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -153,6 +155,7 @@ class QuizzesDialog extends React.Component {
   render() {
     const { classes, object } = this.props;
 
+    //store variable to be passed for query
     const variables = {
       quizId: this.props.object._id
     };
@@ -169,6 +172,7 @@ class QuizzesDialog extends React.Component {
           fullWidth={true}
           maxWidth={"xs"}
         >
+          {/* appbar used to display orange top banner */}
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton
@@ -186,6 +190,7 @@ class QuizzesDialog extends React.Component {
               </Button>
             </Toolbar>
           </AppBar>
+          {/* empty dialog title used to introduce spacing */}
           <DialogTitle id="form-dialog-title" />
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -204,6 +209,8 @@ class QuizzesDialog extends React.Component {
                           </Typography>
                         );
                       } else {
+
+                        //transform data for datatable
                         let quizList;
                         quizList = data.getAdminQuizAttempts.map(quiz => {
                           let quizData = [];
@@ -213,8 +220,6 @@ class QuizzesDialog extends React.Component {
                           quizData.push(transformDateString(quiz.submittedAt));
                           return quizData;
                         });
-
-                        console.log(data);
 
                         return (
                           <React.Fragment>
