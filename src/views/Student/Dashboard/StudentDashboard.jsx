@@ -26,6 +26,7 @@ import { Mutation, Query } from "react-apollo";
 const RANDOM_QUIZ = gql`
   mutation generateRandomQuiz {
     generateRandomQuiz {
+      _id
       questions {
         _id
         question

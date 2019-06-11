@@ -834,7 +834,7 @@ class QuizForm extends React.Component {
             open: true,
             variant: "error",
             duration: 10000,
-            message: "Error: " + err
+            message: "Error: " + "Invalid Field Entered"
             // ? err.graphQLErrors[0].message
             // : err.networkError[0].message
           }
