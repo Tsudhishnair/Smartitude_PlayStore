@@ -128,7 +128,6 @@ class QuizAnswer extends React.Component {
     this.data = this.props.location.state;
     console.log(this.data);
 
-    console.log(this.data.sections);
     this.quizScore = this.getQuizScore();
     this.totalQuizScore = this.getTotalQuizScore();
     this.percentage = this.calculatePercentage();
@@ -393,8 +392,6 @@ class QuizAnswer extends React.Component {
     let container = [];
 
     while (rowCounter < this.data.sections.length) {
-      console.log(this.data.sections);
-
       container.push(
         this.createSectionHeader(
           rowCounter + 1,
@@ -535,7 +532,8 @@ class QuizAnswer extends React.Component {
   };
 
   calculateTimeTaken = () => {
-    const timeTakenInMillis = this.data.submittedAt - this.data.startTime;
+    const timeTakenInMillis =
+      this.data.submittedAt - new Date(this.data.startTime);
     console.log(timeTakenInMillis);
     return Math.floor(timeTakenInMillis / 60000);
   };

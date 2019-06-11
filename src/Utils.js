@@ -43,3 +43,7 @@ export const EXPANSION_FACULTY_BATCH = 6;
 export const EXPANSION_CATEGORY_FORM = 7;
 export const EXPANSION_SUBCATEGORY_FORM = 8;
 export const EXPANSION_MESSAGE_FORM = 9;
+
+export const ASSIGNED_QUIZ_CONSTANT = 1;
+export const CUSTOM_QUIZ_CONSTANT = 2;
+export const RANDOM_QUIZ_CONSTANT = 3;

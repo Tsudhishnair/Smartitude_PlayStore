@@ -117,7 +117,6 @@ class ApprovedQuestionsManage extends React.Component {
                               key={question._id}
                               question={question}
                               showActions={true}
-
                               actionButtonText={"Manage Question"}
                               actionFunction={this.triggerQuestionManageDialog}
                               showDeleteIcon={false}
