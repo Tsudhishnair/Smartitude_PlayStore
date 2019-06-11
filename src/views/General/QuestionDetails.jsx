@@ -119,7 +119,7 @@ class QuestionDetails extends Component {
         <CardBody>
           <h4>
             <p>Question</p>
-            <b>Q:</b>
+            <b>Q: </b>
             <Latex text={question.question}/>
             {/*<div>{question.question}</div>*/}
           </h4>

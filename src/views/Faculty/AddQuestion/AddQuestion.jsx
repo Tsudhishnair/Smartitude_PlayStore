@@ -242,6 +242,10 @@ class AddQuestion extends React.Component {
       })
         .then(response => {
           this.handleReset();
+          if (this.props.action) {
+            console.log("Action called booo");
+            this.props.action();
+          }
           this.setState(
             {
               loading: false,
@@ -683,7 +687,8 @@ class AddQuestion extends React.Component {
 AddQuestion.propTypes = {
   classes: PropTypes.object.isRequired,
   question: PropTypes.object,
-  isEdit: PropTypes.object.isRequired
+  isEdit: PropTypes.object.isRequired,
+  action: PropTypes.func
 };
 
 export default withStyles(styles)(AddQuestion);
