@@ -35,6 +35,7 @@ const REJECT_QUESTION = gql`
 class ApproveQuestion extends React.Component {
   constructor(props) {
     super(props);
+    this.reloadList = undefined;
     this.state = {
       open: false,
       approve: false,
@@ -125,6 +126,7 @@ class ApproveQuestion extends React.Component {
         _id: this.state.question._id
       }
     });
+    this.reloadList();
     this.closeDialog();
   };
 
@@ -135,6 +137,7 @@ class ApproveQuestion extends React.Component {
         _id: this.state.question._id
       }
     });
+    this.reloadList();
     this.closeDialog;
   };
 
@@ -173,7 +176,8 @@ class ApproveQuestion extends React.Component {
     //------------------------------------------------------------------------
     return (
       <Query query={RETRIVE_QUESTIONS} variables={{ approvalStatus: 0 }}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
+          this.reloadList = refetch;
           if (loading) {
             return <Typography>Loading...</Typography>;
           } else if (error) {

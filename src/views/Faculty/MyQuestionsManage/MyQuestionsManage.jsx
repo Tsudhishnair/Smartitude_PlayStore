@@ -13,8 +13,6 @@ import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
 import Fuse from "fuse.js";
-
-import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
@@ -45,7 +43,7 @@ const styles = theme => ({
 class MyQuestionsManage extends React.Component {
   constructor(props) {
     super(props);
-
+    this.reloadList = undefined;
     this.state = {
       open: false
     };
@@ -57,6 +55,7 @@ class MyQuestionsManage extends React.Component {
       return (
         <DialogQuestion
           question={this.state.question}
+          onSuccess={this.reloadQuestionsList}
           onClose={this.hideQuestionManageDialog}
         />
       );
@@ -67,6 +66,7 @@ class MyQuestionsManage extends React.Component {
     this.setState({
       open: false
     });
+    this.reloadQuestionsList();
   };
   triggerQuestionManageDialog = question => {
     this.setState({
@@ -76,6 +76,12 @@ class MyQuestionsManage extends React.Component {
     });
   };
 
+  reloadQuestionsList() {
+    if (this.reloadList !== null) {
+      this.reloadList();
+      this.firstLoad = true;
+    }
+  }
   render() {
     const { classes } = this.props;
 
@@ -125,7 +131,8 @@ class MyQuestionsManage extends React.Component {
 
     return (
       <Query query={RETRIVE_QUESTIONS}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
+          this.reloadList = refetch;
           if (loading) {
             return <Typography>Loading...</Typography>;
           } else if (error) {

@@ -19,6 +19,7 @@ import { Query } from "react-apollo";
 class ApprovedQuestionsManage extends React.Component {
   constructor(props) {
     super(props);
+    this.reloadList = undefined;
     this.state = {
       open: false
     };
@@ -40,6 +41,7 @@ class ApprovedQuestionsManage extends React.Component {
     this.setState({
       open: false
     });
+    this.reloadQuestionsList();
   };
   triggerQuestionManageDialog = question => {
     this.setState({
@@ -49,6 +51,11 @@ class ApprovedQuestionsManage extends React.Component {
     });
   };
 
+  reloadQuestionsList() {
+    if (this.reloadList) {
+      this.reloadList();
+    }
+  }
   render() {
     const { classes } = this.props;
 
@@ -86,7 +93,8 @@ class ApprovedQuestionsManage extends React.Component {
 
     return (
       <Query query={RETRIVE_QUESTIONS} variables={{ approvalStatus: 2 }}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
+          this.reloadList = refetch;
           if (loading) {
             return <Typography>Loading...</Typography>;
           } else if (error) {

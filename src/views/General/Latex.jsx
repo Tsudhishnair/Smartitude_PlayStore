@@ -26,9 +26,9 @@ class Latex extends Component {
   render() {
     const text = this.props.text;
     return (
-      <div ref={this.node}>
+      <span ref={this.node}>
         {text}
-      </div>
+      </span>
     );
   }
 }
