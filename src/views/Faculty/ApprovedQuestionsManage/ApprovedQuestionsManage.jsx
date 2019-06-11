@@ -91,7 +91,7 @@ class ApprovedQuestionsManage extends React.Component {
           if (loading) {
             return <Typography>Loading...</Typography>;
           } else if (error) {
-            return <Typography>Error occured!!!</Typography>;
+            return <Typography>{error.message}</Typography>;
           } else {
             return (
               <div>
