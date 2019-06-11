@@ -212,7 +212,6 @@ class AddQuestion extends React.Component {
         variables = {
           questionInput: {
             question: this.state.question,
-            createdBy: facultyId,
             category: this.state.category._id,
             subcategory: this.state.subcategory._id,
             difficulty: parseInt(this.state.difficulty),

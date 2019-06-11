@@ -5,12 +5,7 @@ import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import {
-  Button,
-  CircularProgress,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -162,7 +157,7 @@ class FormAddDepartment extends React.Component {
               snackbar: {
                 ...this.state.snackbar,
                 variant: "success",
-                message: this.state.form.name + "department added successfully!"
+                message: this.state.form.name + "Department added successfully!"
               }
             },
             () => this.openSnackbar()
