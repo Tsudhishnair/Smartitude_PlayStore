@@ -10,6 +10,22 @@
           manifest.json provides metadata used when your web app is added to the
           homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
         -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"
+                type="text/javascript">
+        </script>
+        <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true,
+      showMathMenu: false
+    }
+  });
+
+        </script>
+
+
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
         <link rel="shortcut icon" href="%PUBLIC_URL%/apple-icon.png">
         <link rel="apple-touch-icon" sizes="76x76" href="%PUBLIC_URL%/apple-icon.png">
