@@ -4,10 +4,13 @@ import PropTypes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 import GridContainer from "components/Grid/GridContainer.jsx";
-import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import lock from "assets/img/drawable/error404.png";
 import Button from "components/CustomButtons/Button.jsx";
 import Spacing from "../../components/Spacing/Spacing";
+import { Link } from "react-router-dom";
+import {Card, Typography} from "@material-ui/core";
+import GridItem from "../../components/Grid/GridItem";
+import componentsStyle from "../../assets/jss/material-dashboard-react/views/landingPage.jsx";
 
 class ErrorPage extends React.Component {
   state = {
@@ -19,17 +22,23 @@ class ErrorPage extends React.Component {
     return (
       <div>
         <Spacing />
-        <GridContainer justify="center">
+        <GridContainer justify="center" className={classes.container}>
           <img
-            style={{ width: "620px", maxWidth: "85%", height: "400px" }}
+            style={{ width: "608px", height: "400px"}}
             src={lock}
-            alt="..."
+            alt="ERROR 404"
           />
+          <GridItem xs={12} sm={12} md={12} justify="center">
+              <Typography variant={"h5"} align={"center"} className={classes.subtitle}>Page not found!</Typography>
+            <br />
+          </GridItem>
         </GridContainer>
         <GridContainer justify="center">
-          <Button round color="warning">
-           Go Home
-          </Button>
+          <Link to="/">
+            <Button round color="warning">
+              Go Home
+            </Button>
+          </Link>
         </GridContainer>
       </div>
     );
@@ -40,4 +49,4 @@ ErrorPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(dashboardStyle)(ErrorPage);
+export default withStyles(componentsStyle)(ErrorPage);
