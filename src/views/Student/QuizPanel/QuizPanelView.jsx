@@ -132,6 +132,10 @@ class QuizPanelView extends React.Component {
     //maintain interval for timeTaken field
     this.timer;
 
+    this.startTime = {
+      startTime: new Date()
+    };
+
     this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
     console.log("Before shuffle");
     console.log(this.quiz);
@@ -530,7 +534,8 @@ class QuizPanelView extends React.Component {
             pathname: "/student/quiz_answer",
             state: {
               ...this.dataToSubmit,
-              ...quiz
+              ...quiz,
+              ...this.startTime
             }
           }}
         />
