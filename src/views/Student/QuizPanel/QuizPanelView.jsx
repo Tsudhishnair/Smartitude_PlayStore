@@ -32,7 +32,7 @@ import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
-import { ASSIGNED_QUIZ_CONSTANT, CUSTOM_QUIZ_CONSTANT } from "../../../Utils";
+import { ASSIGNED_QUIZ_CONSTANT, CUSTOM_QUIZ_CONSTANT, RANDOM_QUIZ_CONSTANT } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -83,6 +83,7 @@ const FINISH_QUIZ = gql`
     }
   }
 `;
+
 const CUSTOM_QUIZ = gql`
   mutation submitCustomQuiz($customQuizSubmission: AttemptedCustomQuizInput!) {
     submitCustomQuiz(customQuizSubmission: $customQuizSubmission) {
@@ -90,6 +91,7 @@ const CUSTOM_QUIZ = gql`
     }
   }
 `;
+
 class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
@@ -135,6 +137,12 @@ class QuizPanelView extends React.Component {
 
     this.startTime = {
       startTime: new Date()
+    };
+
+    this.quizType = this.props.location.state.isQuiz;
+
+    this.quizTypeObject = {
+      quizType: this.quizType
     };
 
     this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
@@ -274,7 +282,7 @@ class QuizPanelView extends React.Component {
       console.log(this.dataToSubmit.attemptedAdminQuizId);
       if (
         this.props.location.state._id != null &&
-        this.props.location.state.isQuiz === ASSIGNED_QUIZ_CONSTANT
+        this.quizType === ASSIGNED_QUIZ_CONSTANT
       ) {
         finishQuizMutation({
           variables: {
@@ -295,7 +303,7 @@ class QuizPanelView extends React.Component {
           });
       } else if (
         this.props.location.state._id != null &&
-        this.props.location.state.isQuiz === CUSTOM_QUIZ_CONSTANT
+        this.quizType === CUSTOM_QUIZ_CONSTANT
       ) {
         console.log("Successfully submitted custome quiz");
         finishQuizMutation({
@@ -313,7 +321,7 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      } else {
+      } else if (this.quizType === RANDOM_QUIZ_CONSTANT) {
         console.log("successfully submitted random quiz");
         this.setState(() => ({
           redirector: true
@@ -534,6 +542,7 @@ class QuizPanelView extends React.Component {
           to={{
             pathname: "/student/quiz_answer",
             state: {
+              ...this.quizTypeObject,
               ...this.dataToSubmit,
               ...quiz,
               ...this.startTime
@@ -546,7 +555,7 @@ class QuizPanelView extends React.Component {
         <div className={classes.root}>
           <Mutation
             mutation={
-              this.props.location.state.isQuiz === 1 ? FINISH_QUIZ : CUSTOM_QUIZ
+              this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ
             }
           >
             {finishQuiz => (

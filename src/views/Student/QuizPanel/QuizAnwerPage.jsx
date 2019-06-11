@@ -476,6 +476,7 @@ class QuizAnswer extends React.Component {
       questionCounter = 0;
       while (questionCounter < this.getNumberOfQns(sectionCounter)) {
         if (this.isCorrectlyMarked(sectionCounter, questionCounter)) {
+          console.log();
           quizScore += this.data.sections[sectionCounter].markPerQuestion;
         } else if (!this.isUnmarked(sectionCounter, questionCounter)) {
           quizScore -= this.data.sections[sectionCounter]
@@ -534,7 +535,6 @@ class QuizAnswer extends React.Component {
   calculateTimeTaken = () => {
     const timeTakenInMillis =
       this.data.submittedAt - new Date(this.data.startTime);
-    console.log(timeTakenInMillis);
     return Math.floor(timeTakenInMillis / 60000);
   };
 
