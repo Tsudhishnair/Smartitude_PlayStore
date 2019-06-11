@@ -14,6 +14,7 @@ import { createHttpLink } from "apollo-link-http";
 import AdminLogin from "./layouts/Login/AdminLogin";
 import FacultyLogin from "./layouts/Login/FacultyLogin";
 import StudentLogin from "./layouts/Login/StudentLogin";
+import ErrorPage from "./views/General/ErrorPage";
 import AdminPanel from "./layouts/AdminPanel/AdminPanel";
 import StudentPanel from "./layouts/StudentPanel/StudentPanel";
 import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
@@ -64,6 +65,7 @@ ReactDOM.render(
           <Route path="/faculty/login" component={FacultyLogin} />
           <Route path="/student/login" component={StudentLogin} />
           <Route path="/student/quiz" component={QuizPanel} />
+          <Route path="/error" component={ErrorPage} />
           <PrivateRoute path="/admin/" component={AdminPanel} />
           <PrivateRoute path="/faculty/" component={FacultyPanel} />
           <PrivateRoute
