@@ -7,16 +7,16 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import {
-  Card,
   Button,
+  Card,
   CardContent,
-  Typography,
   Divider,
   Fab,
-  StepLabel,
+  Hidden,
   Step,
+  StepLabel,
   Stepper,
-  Hidden
+  Typography
 } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio/index";
 import RadioGroup from "@material-ui/core/RadioGroup/index";
@@ -33,6 +33,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import { ASSIGNED_QUIZ_CONSTANT, CUSTOM_QUIZ_CONSTANT, RANDOM_QUIZ_CONSTANT } from "../../../Utils";
+import Latex from "../../General/Latex";
 
 const styles = theme => ({
   root: {
@@ -625,7 +626,7 @@ class QuizPanelView extends React.Component {
                           <Typography>
                             Question Number: <b>{this.getQuestionNumber()}</b>
                           </Typography>
-                          <p>{this.state.fields.question}</p>
+                          <Latex text={this.state.fields.question}/>
                           <Divider />
                         </CardContent>
                         <CardBody>
@@ -648,22 +649,22 @@ class QuizPanelView extends React.Component {
                               <FormControlLabel
                                 value={1}
                                 control={<Radio />}
-                                label={this.state.fields.options["1"]}
+                                label={<Latex text={this.state.fields.options["1"]}/>}
                               />
                               <FormControlLabel
                                 value={2}
+                                label={<Latex text={this.state.fields.options["2"]}/>}
                                 control={<Radio />}
-                                label={this.state.fields.options["2"]}
                               />
                               <FormControlLabel
                                 value={3}
                                 control={<Radio />}
-                                label={this.state.fields.options["3"]}
+                                label={<Latex text={this.state.fields.options["3"]}/>}
                               />
                               <FormControlLabel
                                 value={4}
                                 control={<Radio />}
-                                label={this.state.fields.options["4"]}
+                                label={<Latex text={this.state.fields.options["4"]}/>}
                               />
                             </RadioGroup>
                           </FormControl>

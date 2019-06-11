@@ -32,6 +32,7 @@ import CardBody from "../../../components/Card/CardBody";
 import { blue, green, red } from "@material-ui/core/colors";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Latex from "../../General/Latex";
 
 const styles = theme => ({
   root: {
@@ -320,7 +321,7 @@ class QuizAnswer extends React.Component {
             <Typography>
               Question Number: <b>{questionIndex + 1}</b>
             </Typography>
-            <p>{question.question}</p>
+            <Latex text={question.question}/>
           </CardContent>
           <Divider />
           <CardBody>
@@ -338,7 +339,7 @@ class QuizAnswer extends React.Component {
                     1,
                     classes
                   )}
-                  label={question.options[0]}
+                  label={<Latex text={question.options[0]}/>}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -347,7 +348,7 @@ class QuizAnswer extends React.Component {
                     2,
                     classes
                   )}
-                  label={question.options[1]}
+                  label={<Latex text={question.options[1]}/>}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -356,7 +357,7 @@ class QuizAnswer extends React.Component {
                     3,
                     classes
                   )}
-                  label={question.options[2]}
+                  label={<Latex text={question.options[2]}/>}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -365,7 +366,7 @@ class QuizAnswer extends React.Component {
                     4,
                     classes
                   )}
-                  label={question.options[3]}
+                  label={<Latex text={question.options[3]}/>}
                 />
               </FormGroup>
             </FormControl>
@@ -379,7 +380,7 @@ class QuizAnswer extends React.Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div>
-              <p>{question.solution}</p>
+              <Latex text={question.solution}/>
               <p>
                 Correct Option: <b>{question.correctOption}</b>
               </p>
