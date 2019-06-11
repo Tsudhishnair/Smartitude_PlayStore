@@ -6,6 +6,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Link from "react-router-dom/es/Link";
 import ReactChipInput from "../../../components/AutoChip/ReactChipSelect";
+
 import {
   Button,
   CircularProgress,
@@ -34,6 +35,7 @@ import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
 import PropTypes from "prop-types";
 import green from "@material-ui/core/colors/green";
+import { CUSTOM_QUIZ_CONSTANT } from "../../../Utils";
 
 const styles = theme => ({
   formRoot: {
@@ -170,8 +172,8 @@ class QuizForm extends React.Component {
     this.state = {
       //maintain fields which are common to all sections
       loadingProgress: false,
-      quizIdCheck:{
-        isQuiz:2
+      quizIdCheck: {
+        isQuiz: CUSTOM_QUIZ_CONSTANT
       },
       quizCommon: {
         quizName: "",
@@ -791,7 +793,8 @@ class QuizForm extends React.Component {
       }
     });
   };
-  //Function to create the required type of array for passing as argument for createing custom quiz and for invoking mutation
+
+  //Function to create the required type of array for passing as argument for creating custom quiz and for invoking mutation
   CustomQuizRequestedSectionVariable = (mutation, e) => {
     e.preventDefault();
     // console.log("data initiation begins in 3,2,1............");
@@ -855,6 +858,7 @@ class QuizForm extends React.Component {
     const { classes, quizType } = this.props;
     //to redirect after mutaion on custom quiz is called which is being manged using state
     if (this.state.redirecter === true) {
+      console.log(this.state.customQuizData);
       return (
         <Redirect
           push

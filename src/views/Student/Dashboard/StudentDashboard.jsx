@@ -91,12 +91,14 @@ class StudentDashboard extends React.Component {
   handleChangeIndex = index => {
     this.setState({ value: index });
   };
+
   handleRandomQuizCreate = generateRandomQuiz => {
     this.setState({
       loading: true
     });
     generateRandomQuiz();
   };
+
   handleMutationComplete = data => {
     const quizIdVal = data._id;
     const sectionFormattedData = {

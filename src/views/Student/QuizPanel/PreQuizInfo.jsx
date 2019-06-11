@@ -191,7 +191,7 @@ class PreQuizInfo extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
-              ...this.quiz,
+              ...this.quiz
             }
           }}
         />

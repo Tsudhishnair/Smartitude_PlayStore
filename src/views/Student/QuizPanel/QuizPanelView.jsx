@@ -32,6 +32,7 @@ import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
+import { ASSIGNED_QUIZ_CONSTANT, CUSTOM_QUIZ_CONSTANT } from "../../../Utils";
 
 const styles = theme => ({
   root: {
@@ -273,7 +274,7 @@ class QuizPanelView extends React.Component {
       console.log(this.dataToSubmit.attemptedAdminQuizId);
       if (
         this.props.location.state._id != null &&
-        this.props.location.state.isQuiz === 1
+        this.props.location.state.isQuiz === ASSIGNED_QUIZ_CONSTANT
       ) {
         finishQuizMutation({
           variables: {
@@ -294,7 +295,7 @@ class QuizPanelView extends React.Component {
           });
       } else if (
         this.props.location.state._id != null &&
-        this.props.location.state.isQuiz === 2
+        this.props.location.state.isQuiz === CUSTOM_QUIZ_CONSTANT
       ) {
         console.log("Successfully submitted custome quiz");
         finishQuizMutation({
@@ -541,7 +542,6 @@ class QuizPanelView extends React.Component {
         />
       );
     } else {
-      console.log("rendering normally");
       return (
         <div className={classes.root}>
           <Mutation

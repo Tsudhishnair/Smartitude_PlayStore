@@ -15,7 +15,7 @@ import MUIDataTable from "mui-datatables";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import { transformDateString } from "../../../Utils";
+import { ASSIGNED_QUIZ_CONSTANT, transformDateString } from "../../../Utils";
 import { Redirect } from "react-router-dom";
 import { CircularProgress } from "@material-ui/core";
 
@@ -118,13 +118,16 @@ class AssignedQuizzes extends React.Component {
 
   handleRowClick = clickedIndex => {
     this.clickedQuiz = this.quizList[clickedIndex];
-    this.AdminAssignedFlag = {
-      isQuiz: 1
+
+    this.quizType = {
+      quizType: ASSIGNED_QUIZ_CONSTANT
     };
+
     this.setState(() => ({
       redirecter: true
     }));
   };
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
@@ -139,7 +142,7 @@ class AssignedQuizzes extends React.Component {
           to={{
             pathname: "/student/start_quiz",
             state: {
-              ...this.AdminAssignedFlag,
+              ...this.quizType,
               ...this.clickedQuiz
             }
           }}
@@ -150,7 +153,6 @@ class AssignedQuizzes extends React.Component {
     return (
       <div className={classes.root}>
         <GridContainer>
-          {console.log(this.state.isQuiz)}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <form>
