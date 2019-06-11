@@ -17,7 +17,7 @@ import gql from "graphql-tag";
 
 import { transformDateString } from "../../../Utils";
 import { Redirect } from "react-router-dom";
-import {CircularProgress} from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -85,7 +85,6 @@ const ADMIN_QUIZZES_BATCH = gql`
   }
 `;
 
-
 class AssignedQuizzes extends React.Component {
   constructor(props) {
     super(props);
@@ -119,14 +118,12 @@ class AssignedQuizzes extends React.Component {
 
   handleRowClick = clickedIndex => {
     this.clickedQuiz = this.quizList[clickedIndex];
-    this.AdminAssignedFlag={
-      isQuiz:1
+    this.AdminAssignedFlag = {
+      isQuiz: 1
     };
-      this.setState(() => ({
+    this.setState(() => ({
       redirecter: true
     }));
-    
-    {console.log(this.state.isQuiz)}
   };
   handleChange = event => {
     this.setState({ value: event.target.value });
@@ -153,8 +150,7 @@ class AssignedQuizzes extends React.Component {
     return (
       <div className={classes.root}>
         <GridContainer>
-          
-      {console.log(this.state.isQuiz)}
+          {console.log(this.state.isQuiz)}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <form>
