@@ -14,7 +14,7 @@ import { createHttpLink } from "apollo-link-http";
 import AdminLogin from "./layouts/Login/AdminLogin";
 import FacultyLogin from "./layouts/Login/FacultyLogin";
 import StudentLogin from "./layouts/Login/StudentLogin";
-import ErrorPage from "./views/General/ErrorPage";
+import ErrorBoundary from "./views/General/ErrorBoundary";
 import AdminPanel from "./layouts/AdminPanel/AdminPanel";
 import StudentPanel from "./layouts/StudentPanel/StudentPanel";
 import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
@@ -60,21 +60,24 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider theme={theme}>
       <HashRouter>
-        <Switch>
-          <Route path="/admin/login" component={AdminLogin} />
-          <Route path="/faculty/login" component={FacultyLogin} />
-          <Route path="/student/login" component={StudentLogin} />
-          <Route path="/student/quiz" component={QuizPanel} />
-          <Route path="/error" component={ErrorPage} />
-          <PrivateRoute path="/admin/" component={AdminPanel} />
-          <PrivateRoute path="/faculty/" component={FacultyPanel} />
-          <PrivateRoute
-            path="/faculty/questions/add"
-            component={<AddQuestion isEdit={false} />}
-          />
-          <PrivateRoute path="/student/" component={StudentPanel} />
-          <Route path="/" component={Landing} />
-        </Switch>
+        <ErrorBoundary>
+
+          <Switch>
+            <Route path="/admin/login" component={AdminLogin}/>
+            <Route path="/faculty/login" component={FacultyLogin}/>
+            <Route path="/student/login" component={StudentLogin}/>
+            <Route path="/student/quiz" component={QuizPanel}/>
+            <Route path="/error" component={ErrorBoundary}/>
+            <PrivateRoute path="/admin/" component={AdminPanel}/>
+            <PrivateRoute path="/faculty/" component={FacultyPanel}/>
+            <PrivateRoute
+              path="/faculty/questions/add"
+              component={<AddQuestion isEdit={false}/>}
+            />
+            <PrivateRoute path="/student/" component={StudentPanel}/>
+            <Route path="/" component={Landing}/>
+          </Switch>
+        </ErrorBoundary>
       </HashRouter>
     </MuiThemeProvider>
   </ApolloProvider>,
