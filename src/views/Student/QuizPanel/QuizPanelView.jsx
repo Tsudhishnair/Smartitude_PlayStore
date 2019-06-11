@@ -82,12 +82,13 @@ const FINISH_QUIZ = gql`
     }
   }
 `;
-const CUSTOM_QUIZ =   gql`
-mutation submitCustomQuiz($customQuizSubmission: AttemptedCustomQuizInput!){
-  submitCustomQuiz(customQuizSubmission:$customQuizSubmission){
-    _id
+const CUSTOM_QUIZ = gql`
+  mutation submitCustomQuiz($customQuizSubmission: AttemptedCustomQuizInput!) {
+    submitCustomQuiz(customQuizSubmission: $customQuizSubmission) {
+      _id
+    }
   }
-}`;
+`;
 class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
@@ -145,9 +146,9 @@ class QuizPanelView extends React.Component {
     };
     //contains data to be submitted for custom quiz
     this.customDataToSubmit = {
-      customQuizId:this.props.location.state._id,
-      submittedAt:this.dataToSubmit.submittedAt,
-      attemptedSections:this.dataToSubmit.attemptedSections
+      customQuizId: this.props.location.state._id,
+      submittedAt: this.dataToSubmit.submittedAt,
+      attemptedSections: this.dataToSubmit.attemptedSections
     };
 
     this.initialiseDataArray();
@@ -209,7 +210,7 @@ class QuizPanelView extends React.Component {
 
   unshuffle = (key, options) => {
     let oldOptions = [];
-    for	(let i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       let newIndex = i - key;
       if (newIndex < 0) newIndex = options.length + newIndex;
 
@@ -263,10 +264,13 @@ class QuizPanelView extends React.Component {
           j++;
         }
         i++;
-      };
+      }
 
       console.log(this.dataToSubmit.attemptedAdminQuizId);
-      if (this.props.location.state._id != null && this.props.location.state.isQuiz===1) {
+      if (
+        this.props.location.state._id != null &&
+        this.props.location.state.isQuiz === 1
+      ) {
         finishQuizMutation({
           variables: {
             adminQuizSubmission: {
@@ -284,25 +288,27 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      }else if (this.props.location.state._id != null && this.props.location.state.isQuiz===2){
+      } else if (
+        this.props.location.state._id != null &&
+        this.props.location.state.isQuiz === 2
+      ) {
         console.log("Successfully submitted custome quiz");
         finishQuizMutation({
-          variables:{
-            customQuizSubmission:{
+          variables: {
+            customQuizSubmission: {
               ...this.customDataToSubmit
             }
           }
         })
-        .then(res => {
-          this.setState(() => ({
-            redirector: true
-          }));
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      } 
-      else {
+          .then(res => {
+            this.setState(() => ({
+              redirector: true
+            }));
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
         console.log("successfully submitted random quiz");
         this.setState(() => ({
           redirector: true
@@ -520,7 +526,6 @@ class QuizPanelView extends React.Component {
       console.log("redirecting");
       return (
         <Redirect
-          push
           to={{
             pathname: "/student/quiz_answer",
             state: {
@@ -534,7 +539,11 @@ class QuizPanelView extends React.Component {
       console.log("rendering normally");
       return (
         <div className={classes.root}>
-          <Mutation mutation={this.props.location.state.isQuiz===1?FINISH_QUIZ:CUSTOM_QUIZ}>
+          <Mutation
+            mutation={
+              this.props.location.state.isQuiz === 1 ? FINISH_QUIZ : CUSTOM_QUIZ
+            }
+          >
             {finishQuiz => (
               <React.Fragment>
                 <GridContainer>

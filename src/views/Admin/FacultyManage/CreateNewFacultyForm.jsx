@@ -309,6 +309,16 @@ class CreateNewFacultyForm extends Component {
           if (this.props.reloadFacultiesList !== null) {
             this.props.reloadFacultiesList();
           }
+          this.setState(
+            {
+              snackbar: {
+                ...this.state.snackbar,
+                varient:"error",
+                message: "User alredy exists" 
+              }
+            },
+            () => this.openSnackbar()
+          );
         });
     }
   };
