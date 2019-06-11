@@ -1,6 +1,7 @@
 // Component to handle quiz management both in faculty as well as admin quiz management
 
 import React, { Component } from "react";
+
 import PropTypes from "prop-types";
 import { Button, Divider, IconButton } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
@@ -11,6 +12,7 @@ import gql from "graphql-tag";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import MessageDialog from "../../components/Dialog/MessageDialog";
+import Latex from "./Latex";
 
 class QuestionDetails extends Component {
   constructor(props) {
@@ -23,6 +25,8 @@ class QuestionDetails extends Component {
 
     // stores mutation call of question
     this.questionDeleteMutation;
+
+    this.node = React.createRef();
   }
 
   handleDelete = (func, data) => {
@@ -69,7 +73,7 @@ class QuestionDetails extends Component {
             {data.map((opt, index) => {
               return (
                 <GridItem>
-                  <strong>Option {index + 1}:</strong> {opt}
+                  <strong>Option {index + 1}:</strong> <Latex text={opt}/>
                 </GridItem>
               );
             })}
@@ -109,12 +113,15 @@ class QuestionDetails extends Component {
       showAllDetails
     } = this.props;
     return (
-      <GridItem xs={12} sm={12} md={12}>
+      <GridItem xs={12} sm={12} md={12} ref={this.node}>
         {this.renderDeleteDialog(this.state.dialogDelete)}
         {console.log(question)}
         <CardBody>
           <h4>
-            <b>Q:</b> {question.question}
+            <p>Question</p>
+            <b>Q:</b>
+            <Latex text={question.question}/>
+            {/*<div>{question.question}</div>*/}
           </h4>
           {this.approveQuestionOptions(
             showAllDetails,

@@ -9,16 +9,27 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { EXPANSION_FACULTY_BATCH, EXPANSION_FACULTY_FORM } from "../../../Utils";
+import {
+  EXPANSION_FACULTY_BATCH,
+  EXPANSION_FACULTY_FORM
+} from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
-import { CircularProgress } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
+import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 const styles = theme => ({
   root: {
@@ -50,6 +61,15 @@ const MULTIPLE_DELETE = gql`
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      //handle visibility of dialog
+      isVisible: false,
+      snackbar: {
+        open: false,
+        variant: "success",
+        message: ""
+      }
+    };
     this.faculties = [];
     this.departments = [];
     this.categories = [];
@@ -59,12 +79,42 @@ class Dashboard extends React.Component {
     this.deleteFacultiesList = [];
     this.deleteMutation;
   }
-
+  toggleDialogVisibility = () => {
+    this.setState(prevState => ({
+      isVisible: !prevState.isVisible
+    }));
+  };
   reloadFacultiesList = () => {
     console.log("reloadFacultiesList called");
     if (this.refetchFacultiesList !== null) {
       this.refetchFacultiesList();
     }
+  };
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
+  };
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
   };
   //Deleting Faculties complete Details
   handleDelete = deleteFacultyIds => {
@@ -73,10 +123,26 @@ class Dashboard extends React.Component {
       variables: {
         _ids: deleteFacultyIds
       }
-    });
+    })
+      .then(res => {
+        this.setState(
+          {
+            snackbar: {
+              ...this.state.snackbar,
+              message: "Faculty Deleted Successfully !"
+            }
+          },
+          () => this.openSnackbar()
+        );
+        this.reloadFacultiesList();
+      })
+      .catch(err => {
+       console.log(err);
+      });
   };
   render() {
     const { classes } = this.props;
+    const { loading, snackbar } = this.state;
     const header1 = "Faculty";
     const header2 = "Add a new faculty member";
     const columns = [
@@ -194,7 +260,7 @@ class Dashboard extends React.Component {
             this.faculties[data[index].dataIndex]._id
           );
         }
-        this.handleDelete(this.deleteFacultiesList);
+        this.toggleDialogVisibility();
       },
       onRowClick: (rowData, rowMeta) => {
         if (!this.rowSelected) {
@@ -213,6 +279,18 @@ class Dashboard extends React.Component {
           return (
             <Fragment>
               {(this.deleteMutation = deleteMultipleFaculties)}
+              {this.state.isVisible ? (
+                <MessageDialog
+                  title="Faculty Delete"
+                  content="Are you sure you want to Delete. Deletion may result in unrecoverable state of the details of the faculty"
+                  positiveAction="Delete"
+                  negativeAction="Cancel"
+                  action={() => {
+                    this.handleDelete(this.deleteFacultiesList);
+                  }}
+                  onClose={this.toggleDialogVisibility}
+                />
+              ) : null}
               <Query query={FETCH_DATA}>
                 {({ data, loading, error }) => {
                   if (loading) {
@@ -311,6 +389,21 @@ class Dashboard extends React.Component {
                               </Card>
                             </GridItem>
                           </GridContainer>
+                          <Snackbar
+                            anchorOrigin={{
+                              vertical: "top",
+                              horizontal: "right"
+                            }}
+                            open={snackbar.open}
+                            auto
+                            autoHideDuration={6000}
+                          >
+                            <CustomSnackbar
+                              onClose={this.closeSnackbar}
+                              variant={snackbar.variant}
+                              message={snackbar.message}
+                            />
+                          </Snackbar>
                         </Fragment>
                       );
                     }
