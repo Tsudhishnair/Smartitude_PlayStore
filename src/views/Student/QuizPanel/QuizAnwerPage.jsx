@@ -184,10 +184,16 @@ class QuizAnswer extends React.Component {
                   </Avatar>
                   <p>
                     <Typography variant={"overline"}>Time Taken:</Typography>
-                    <Typography variant={"h5"} className={classes.descText}>
-                      {this.calculateTimeTaken()}/{this.getTotalTimeLimit()}{" "}
-                      Mins
-                    </Typography>
+                    {this.data.quizType === 3 ? (
+                      <Typography variant={"h5"} className={classes.descText}>
+                        {this.calculateTimeTaken()} Mins
+                      </Typography>
+                    ) : (
+                      <Typography variant={"h5"} className={classes.descText}>
+                        {this.calculateTimeTaken()}/{this.getTotalTimeLimit()}{" "}
+                        Mins
+                      </Typography>
+                    )}
                   </p>
                 </div>
               </GridItem>
@@ -476,6 +482,7 @@ class QuizAnswer extends React.Component {
       questionCounter = 0;
       while (questionCounter < this.getNumberOfQns(sectionCounter)) {
         if (this.isCorrectlyMarked(sectionCounter, questionCounter)) {
+          console.log();
           quizScore += this.data.sections[sectionCounter].markPerQuestion;
         } else if (!this.isUnmarked(sectionCounter, questionCounter)) {
           quizScore -= this.data.sections[sectionCounter]
@@ -534,7 +541,8 @@ class QuizAnswer extends React.Component {
   calculateTimeTaken = () => {
     const timeTakenInMillis =
       this.data.submittedAt - new Date(this.data.startTime);
-    console.log(timeTakenInMillis);
+    console.log(this.data.submittedAt);
+    console.log(this.data.startTime);
     return Math.floor(timeTakenInMillis / 60000);
   };
 

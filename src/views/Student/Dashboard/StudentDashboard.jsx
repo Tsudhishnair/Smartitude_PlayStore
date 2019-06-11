@@ -21,6 +21,7 @@ import gql from "graphql-tag";
 import { CircularProgress } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { Mutation, Query } from "react-apollo";
+import { RANDOM_QUIZ_CONSTANT } from "../../../Utils";
 
 //mutation for generating random quiz questions
 const RANDOM_QUIZ = gql`
@@ -45,6 +46,7 @@ const RANDOM_QUIZ = gql`
     }
   }
 `;
+
 // Query to retrive top ten rankers
 const TOP_TEN_RANKERS = gql`
   {
@@ -69,6 +71,10 @@ let month = todays_date.getMonth() + 1;
 //data_tdy contains current year in integer
 let year = todays_date.getFullYear();
 
+const quizType = {
+  isQuiz: RANDOM_QUIZ_CONSTANT
+};
+
 //stores the questions
 class StudentDashboard extends React.Component {
   constructor(props) {
@@ -78,7 +84,7 @@ class StudentDashboard extends React.Component {
       loading: false,
       value: 0,
       _id:0,
-      RandomQuizQuestion: [],
+      randomQuizQuestions: [],
       //checks the state to redirect to next page
       redirector: false
     };
@@ -101,28 +107,33 @@ class StudentDashboard extends React.Component {
 
   handleMutationComplete = data => {
     const quizIdVal = data._id;
-    const sectionFormattedData = {
+    let sectionFormattedData = {
       sections: [
         {
           category: {
             name: "Quick Random Quiz"
           },
-          questions: data.questions
+          questions: data.questions,
+          markPerQuestion: 1,
+          negativeMarkPerQuestion: 0.5
         }
       ]
     };
+
     console.log("Section wise formatted data: ");
     console.log(sectionFormattedData);
     this.setState(prevState => ({
       ...prevState,
       _id:quizIdVal,
-      RandomQuizQuestion: sectionFormattedData,
+      randomQuizQuestions: sectionFormattedData,
       redirector: true
     }));
   };
+
   render() {
     const { classes } = this.props;
     const { loading } = this.state;
+
     if (this.state.redirector === true) {
       return (
         <Redirect
@@ -130,13 +141,14 @@ class StudentDashboard extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
-              
-              ...this.state.RandomQuizQuestion
+              ...quizType,
+              ...this.state.randomQuizQuestions
             }
           }}
         />
       );
     }
+
     return (
       <div>
         {/* <GridContainer> */}
