@@ -314,7 +314,7 @@ class CreateNewFacultyForm extends Component {
               snackbar: {
                 ...this.state.snackbar,
                 varient:"warning",
-                message: "User Already Exists!" 
+                message: "Error" + err.message
               }
             },
             () => this.openSnackbar()

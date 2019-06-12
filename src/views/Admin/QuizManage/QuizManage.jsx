@@ -160,6 +160,7 @@ class QuizManage extends React.Component {
             } else if (error) {
               return (
                 <Typography>Error occured while fetching data!</Typography>
+
               );
             } else {
               quizList = data.adminQuizzes.map(data => {

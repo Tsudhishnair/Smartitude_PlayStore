@@ -13,13 +13,7 @@ import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 
-import {
-  Button,
-  CircularProgress,
-  Divider,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { Button, CircularProgress, Divider, ExpansionPanelActions, Snackbar } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
 
@@ -250,9 +244,17 @@ class FormAddStudent extends Component {
         })
         .catch(err => {
           this.setState({
-            loading: false
-          });
-          this.closeSnackbar();
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "error",
+                message: "Student Adding Failed!" + err.message
+              }
+            },
+            () => {
+              this.openSnackbar();
+            });
+          // this.closeSnackbar();
         });
     }
   };
@@ -330,14 +332,26 @@ class FormAddStudent extends Component {
                     md={4}
                     className={classes.elementPadding}
                   >
+                    {/*<TextField*/}
+                    {/*  autoFocus*/}
+                    {/*  margin="dense"*/}
+                    {/*  id="email"*/}
+                    {/*  label="Email Address"*/}
+                    {/*  type="email"*/}
+                    {/*  name="email"*/}
+                    {/*  required*/}
+                    {/*  onChange={this.handleValueChange}*/}
+                    {/*  value={this.state.assignval.email}*/}
+                    {/*  fullWidth*/}
+                    {/*/>*/}
                     <TextField
                       autoFocus
+                      required
                       margin="dense"
                       id="email"
                       label="Email Address"
                       type="email"
                       name="email"
-                      required
                       onChange={this.handleValueChange}
                       value={this.state.assignval.email}
                       fullWidth

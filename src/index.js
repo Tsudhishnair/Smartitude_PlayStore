@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Route, Switch, HashRouter } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import "assets/css/material-dashboard-react.css?v=1.5.0";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
@@ -60,7 +60,7 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <MuiThemeProvider theme={theme}>
       <HashRouter>
-        <ErrorBoundary>
+        {/*<ErrorBoundary>*/}
 
           <Switch>
             <Route path="/admin/login" component={AdminLogin}/>
@@ -77,7 +77,7 @@ ReactDOM.render(
             <PrivateRoute path="/student/" component={StudentPanel}/>
             <Route path="/" component={Landing}/>
           </Switch>
-        </ErrorBoundary>
+        {/*</ErrorBoundary>*/}
       </HashRouter>
     </MuiThemeProvider>
   </ApolloProvider>,

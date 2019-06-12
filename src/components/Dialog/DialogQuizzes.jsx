@@ -5,18 +5,18 @@ import { withStyles } from "@material-ui/core/styles";
 import MUIDataTable from "mui-datatables";
 
 import {
+  AppBar,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  CircularProgress,
-  Typography,
-  Slide,
   IconButton,
+  Slide,
   Toolbar,
-  AppBar
+  Typography
 } from "@material-ui/core";
 
 import { Close } from "@material-ui/icons";
@@ -205,7 +205,7 @@ class QuizzesDialog extends React.Component {
                       } else if (error) {
                         return (
                           <Typography>
-                            Error occurred while fetching data.
+                            No students has attempted this quiz yet!
                           </Typography>
                         );
                       } else {
