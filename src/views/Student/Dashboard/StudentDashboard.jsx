@@ -72,7 +72,7 @@ let month = todays_date.getMonth() + 1;
 let year = todays_date.getFullYear();
 
 const quizType = {
-  isQuiz: RANDOM_QUIZ_CONSTANT
+  quizType: RANDOM_QUIZ_CONSTANT
 };
 
 //stores the questions
