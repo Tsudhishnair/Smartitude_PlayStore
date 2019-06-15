@@ -146,7 +146,13 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
 //constants to handle from & to dates
 const DATE_FROM = 1;
 const DATE_TO = 2;
+
 let requestedSectionsArray = [];
+
+const quizConstant = {
+  quizType: CUSTOM_QUIZ_CONSTANT
+};
+
 class QuizForm extends React.Component {
   //selectedDate --> state to store date
   constructor(props) {
@@ -172,9 +178,6 @@ class QuizForm extends React.Component {
     this.state = {
       //maintain fields which are common to all sections
       loadingProgress: false,
-      quizIdCheck: {
-        isQuiz: CUSTOM_QUIZ_CONSTANT
-      },
       quizCommon: {
         quizName: "",
         batch: "",
@@ -865,7 +868,7 @@ class QuizForm extends React.Component {
           to={{
             pathname: "/student/quiz",
             state: {
-              ...this.state.quizIdCheck,
+              ...quizConstant,
               ...this.state.customQuizData
             }
           }}
