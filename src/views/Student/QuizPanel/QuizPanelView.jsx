@@ -140,7 +140,7 @@ class QuizPanelView extends React.Component {
       startTime: new Date()
     };
 
-    this.quizType = this.props.location.state.isQuiz;
+    this.quizType = this.props.location.state.quizType;
 
     this.quizTypeObject = {
       quizType: this.quizType
@@ -304,7 +304,7 @@ class QuizPanelView extends React.Component {
           });
       } else if (
         this.props.location.state._id != null &&
-        this.quizType === CUSTOM_QUIZ_CONSTANT
+        this.props.location.state.isQuiz === CUSTOM_QUIZ_CONSTANT
       ) {
         console.log("Successfully submitted custome quiz");
         finishQuizMutation({
@@ -322,7 +322,7 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      } else if (this.quizType === RANDOM_QUIZ_CONSTANT) {
+      } else if (this.props.location.state.isQuiz === RANDOM_QUIZ_CONSTANT) {
         console.log("successfully submitted random quiz");
         this.setState(() => ({
           redirector: true

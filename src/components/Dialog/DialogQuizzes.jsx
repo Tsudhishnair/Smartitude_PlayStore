@@ -239,7 +239,8 @@ class QuizzesDialog extends React.Component {
                                   {"   "}
                                   {
                                     data.getAdminQuizAttempts[0]
-                                      .totalMaximumScore
+                                      ? data.getAdminQuizAttempts[0]
+                                        .totalMaximumScore : "No Submissions"
                                   }
                                 </Typography>
                               </GridItem>

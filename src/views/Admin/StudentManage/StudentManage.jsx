@@ -13,13 +13,11 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import {
-  EXPANSION_STUDENT_BATCH,
-  EXPANSION_STUDENT_FORM
-} from "../../../Utils";
-import { CircularProgress } from "@material-ui/core";
+import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
+import { CircularProgress, Snackbar } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 const myTheme = createMuiTheme({
   overrides: {
@@ -123,6 +121,13 @@ const columns = [
 class StudentManage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      snackbar: {
+        open: false,
+        variant: "success",
+        message: ""
+      }
+    };
     this.deleteStudentList = [];
     this.students = [];
     this.rowSelected = false;
@@ -136,6 +141,33 @@ class StudentManage extends React.Component {
     }
   };
 
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
+  };
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
   //Deleting students complete Details
   handleDelete = deleteStudentId => {
     console.log(deleteStudentId + "Deleted");
@@ -143,7 +175,21 @@ class StudentManage extends React.Component {
       variables: {
         _ids: deleteStudentId
       }
-    });
+    }).then(res => {
+      this.setState(
+        {
+          snackbar: {
+            ...this.state.snackbar,
+            message: "Student Deleted Successfully !"
+          }
+        },
+        () => this.openSnackbar()
+      );
+      this.reloadStudentsList();
+    })
+      .catch(err => {
+        console.log(err);
+      });
     this.refetchStudentsList();
   };
   tableOptions = {
@@ -174,6 +220,7 @@ class StudentManage extends React.Component {
   };
 
   render() {
+    const { snackbar } = this.state;
     const { classes } = this.props;
     const header1 = "Student";
     const header2 = "Add a new student";
@@ -248,6 +295,21 @@ class StudentManage extends React.Component {
                   </Card>
                 </GridItem>
               </GridContainer>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right"
+                }}
+                open={snackbar.open}
+                auto
+                autoHideDuration={6000}
+              >
+                <CustomSnackbar
+                  onClose={this.closeSnackbar}
+                  variant={snackbar.variant}
+                  message={snackbar.message}
+                />
+              </Snackbar>
             </Fragment>
           );
         }}
