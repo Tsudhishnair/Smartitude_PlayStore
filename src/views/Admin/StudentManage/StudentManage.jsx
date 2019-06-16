@@ -251,7 +251,7 @@ class StudentManage extends React.Component {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <Card className={classes.root}>
-                    <CardHeader color="warning">
+                    <CardHeader color="success">
                       <h4 className={classes.cardTitleWhite}>Student List</h4>
                     </CardHeader>
                     <CardBody>

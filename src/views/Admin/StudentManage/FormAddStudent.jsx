@@ -13,7 +13,13 @@ import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 
-import { Button, CircularProgress, Divider, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
 
@@ -243,7 +249,8 @@ class FormAddStudent extends Component {
           );
         })
         .catch(err => {
-          this.setState({
+          this.setState(
+            {
               loading: false,
               snackbar: {
                 ...this.state.snackbar,
@@ -253,7 +260,8 @@ class FormAddStudent extends Component {
             },
             () => {
               this.openSnackbar();
-            });
+            }
+          );
           // this.closeSnackbar();
         });
     }
@@ -279,10 +287,10 @@ class FormAddStudent extends Component {
     `;
     return (
       <Mutation mutation={Add_Student}>
-        {(addStudent,{data}) => {
+        {(addStudent, { data }) => {
           return (
             <div className={classes.root}>
-            {console.log(data)}
+              {console.log(data)}
               <form>
                 <Typography>
                   <strong>Basic Info</strong>
@@ -290,8 +298,8 @@ class FormAddStudent extends Component {
                 <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={4}
-                    md={4}
+                    sm={3}
+                    md={3}
                     className={classes.elementPadding}
                   >
                     <TextField
@@ -309,41 +317,30 @@ class FormAddStudent extends Component {
                   </GridItem>
                   <GridItem
                     xs={12}
-                    sm={4}
-                    md={4}
+                    sm={3}
+                    md={3}
                     className={classes.elementPadding}
                   >
                     <TextField
                       autoFocus
                       margin="dense"
-                      id="username"
-                      label="Username"
+                      id="phone"
+                      label="Phone Number"
+                      type="phone"
+                      name="phoneNumber"
                       required
-                      type="text"
-                      name="username"
                       onChange={this.handleValueChange}
-                      value={this.state.assignval.username}
+                      value={this.state.assignval.phoneNumber}
                       fullWidth
                     />
                   </GridItem>
+
                   <GridItem
                     xs={12}
                     sm={4}
                     md={4}
                     className={classes.elementPadding}
                   >
-                    {/*<TextField*/}
-                    {/*  autoFocus*/}
-                    {/*  margin="dense"*/}
-                    {/*  id="email"*/}
-                    {/*  label="Email Address"*/}
-                    {/*  type="email"*/}
-                    {/*  name="email"*/}
-                    {/*  required*/}
-                    {/*  onChange={this.handleValueChange}*/}
-                    {/*  value={this.state.assignval.email}*/}
-                    {/*  fullWidth*/}
-                    {/*/>*/}
                     <TextField
                       autoFocus
                       required
@@ -360,8 +357,8 @@ class FormAddStudent extends Component {
 
                   <GridItem
                     xs={12}
-                    sm={4}
-                    md={4}
+                    sm={2}
+                    md={2}
                     className={classes.elementPadding}
                   >
                     <TextField
@@ -392,16 +389,17 @@ class FormAddStudent extends Component {
                     <TextField
                       autoFocus
                       margin="dense"
-                      id="phone"
-                      label="Phone Number"
-                      type="phone"
-                      name="phoneNumber"
+                      id="username"
+                      label="Username"
                       required
+                      type="text"
+                      name="username"
                       onChange={this.handleValueChange}
-                      value={this.state.assignval.phoneNumber}
+                      value={this.state.assignval.username}
                       fullWidth
                     />
                   </GridItem>
+
                   <GridItem
                     xs={12}
                     sm={4}
@@ -465,7 +463,7 @@ class FormAddStudent extends Component {
                       autoFocus
                       margin="dense"
                       id="phone"
-                      label="batch"
+                      label="Batch"
                       required
                       placeholder="20XX"
                       type="number"
@@ -476,7 +474,6 @@ class FormAddStudent extends Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Divider />
                 <ExpansionPanelActions>
                   <Button
                     size="small"

@@ -191,7 +191,7 @@ class QuizManage extends React.Component {
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                       <Card className={classes.root}>
-                        <CardHeader color="warning">
+                        <CardHeader color="danger">
                           <h4 className={classes.cardTitleWhite}>Quizzes</h4>
                         </CardHeader>
                         <CardBody>

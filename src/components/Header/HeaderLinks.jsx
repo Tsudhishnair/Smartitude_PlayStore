@@ -1,6 +1,7 @@
 import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import classNames from "classnames";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 // core components
@@ -13,6 +14,12 @@ import gql from "graphql-tag";
 import { loginHandler } from "../../Utils";
 import { Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Poppers from "@material-ui/core/Popper";
 
 class HeaderLinks extends React.Component {
   state = {
@@ -22,16 +29,17 @@ class HeaderLinks extends React.Component {
     this.setState(state => ({ open: !state.open }));
   };
 
-  handleClose = event => {
-    if (this.anchorEl.contains(event.target)) {
-      return;
-    }
-
-    this.setState({ open: false });
-  };
+  // handleClose = event => {
+  //   if (this.anchorEl.contains(event.target)) {
+  //     return;
+  //   }
+  //
+  //   this.setState({ open: false });
+  // };
 
   render() {
     const { classes } = this.props;
+    const { open } = this.state;
 
     const adminInfo = gql`
       {
@@ -60,28 +68,12 @@ class HeaderLinks extends React.Component {
       }
     `;
     return (
-      <div>
-        {/*<div className={classes.searchWrapper}>*/}
-        {/*  <CustomInput*/}
-        {/*    formControlProps={{*/}
-        {/*      className: classes.margin + " " + classes.search*/}
-        {/*    }}*/}
-        {/*    inputProps={{*/}
-        {/*      placeholder: "Search",*/}
-        {/*      inputProps: {*/}
-        {/*        "aria-label": "Search"*/}
-        {/*      }*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*  <Button color="white" aria-label="edit" justIcon round>*/}
-        {/*    <Search />*/}
-        {/*  </Button>*/}
-        {/*</div>*/}
+      <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
           aria-label="Person"
-          disabled
           className={classes.buttonLink}
+          onClick={this.handleToggle}
         >
           <Person className={classes.icons} />
           <p className={classes.linkText}>
@@ -135,6 +127,53 @@ class HeaderLinks extends React.Component {
             )}
           </p>
         </Button>
+        <Poppers
+          open={open}
+          anchorEl={this.anchorEl}
+          transition
+          disablePortal
+          className={
+            classNames({ [classes.popperClose]: !open }) +
+            " " +
+            classes.pooperNav
+          }
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              id="menu-list-grow"
+              style={{
+                transformOrigin:
+                  placement === "left bottom" ? "left top" : "left bottom"
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={this.handleClose}>
+                  <MenuList role="menu">
+                    <MenuItem
+                      onClick={this.handleClose}
+                      className={classes.dropdownItem}
+                    >
+                      Change Password
+                    </MenuItem>
+                    <MenuItem
+                      onClick={this.handleClose}
+                      className={classes.dropdownItem}
+                    >
+                      Help & Support
+                    </MenuItem>
+                    <MenuItem
+                      onClick={this.handleClose}
+                      className={classes.dropdownItem}
+                    >
+                      Log Out
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Poppers>
       </div>
     );
   }

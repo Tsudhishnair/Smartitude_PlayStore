@@ -164,7 +164,7 @@ class MessageManager extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>
-                      <CardHeader color="warning">
+                      <CardHeader color="info">
                         <h4 className={classes.cardTitleWhite}>Messages</h4>
                       </CardHeader>
                       <CardBody>
