@@ -16,7 +16,8 @@ import {
   Step,
   StepLabel,
   Stepper,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio/index";
 import RadioGroup from "@material-ui/core/RadioGroup/index";
@@ -32,7 +33,11 @@ import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
-import { ASSIGNED_QUIZ_CONSTANT, CUSTOM_QUIZ_CONSTANT, RANDOM_QUIZ_CONSTANT } from "../../../Utils";
+import {
+  ASSIGNED_QUIZ_CONSTANT,
+  CUSTOM_QUIZ_CONSTANT,
+  RANDOM_QUIZ_CONSTANT
+} from "../../../Utils";
 import Latex from "../../General/Latex";
 
 const styles = theme => ({
@@ -72,6 +77,11 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       marginTop: theme.spacing.unit * 2
     }
+  },
+  progress: {
+    margin: theme.spacing.unit * 10,
+    marginTop: "10%",
+    marginLeft: "45%"
   }
 });
 
@@ -130,7 +140,8 @@ class QuizPanelView extends React.Component {
         this.props.location.state.sections[this.currentSection]
       ),
       //used to redirect from quizPanel to answers view
-      redirector: false
+      redirector: false,
+      submitLoading: false
     };
 
     //maintain interval for timeTaken field
@@ -264,6 +275,11 @@ class QuizPanelView extends React.Component {
     } else {
       //call mutation for final section submission
       this.clearTimeTakenCounter();
+
+      this.setState(prevState => ({
+        ...prevState,
+        submitLoading: true
+      }));
 
       this.dataToSubmit.submittedAt = new Date();
 
@@ -554,11 +570,7 @@ class QuizPanelView extends React.Component {
     } else {
       return (
         <div className={classes.root}>
-          <Mutation
-            mutation={
-              this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ
-            }
-          >
+          <Mutation mutation={this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ}>
             {finishQuiz => (
               <React.Fragment>
                 <GridContainer>
@@ -574,59 +586,63 @@ class QuizPanelView extends React.Component {
                       <form>
                         <CardContent>
                           <Hidden mdUp implementation="css">
-                            <p>
-                              <Typography variant={"overline"}>
-                                {this.getTimeLimit(selectedSection)
-                                  ? "Time Remaining:"
-                                  : "Time Taken:"}
-                              </Typography>
-                              <Typography
-                                variant={"h5"}
-                                className={classes.timer}
-                              >
-                                <b>
-                                  <Timer
-                                    initialTime={
-                                      this.getTimeLimit(selectedSection)
-                                        ? 60000 *
+                            {this.state.submitLoading ? (
+                              <CircularProgress className={classes.progress} />
+                            ) : (
+                              <p>
+                                <Typography variant={"overline"}>
+                                  {this.getTimeLimit(selectedSection)
+                                    ? "Time Remaining:"
+                                    : "Time Taken:"}
+                                </Typography>
+                                <Typography
+                                  variant={"h5"}
+                                  className={classes.timer}
+                                >
+                                  <b>
+                                    <Timer
+                                      initialTime={
+                                        this.getTimeLimit(selectedSection)
+                                          ? 60000 *
                                           this.getTimeLimit(selectedSection)
-                                        : 0
-                                    }
-                                    direction={
-                                      this.getTimeLimit(selectedSection)
-                                        ? "backward"
-                                        : "forward"
-                                    }
-                                  >
-                                    {({
-                                      start,
-                                      resume,
-                                      pause,
-                                      stop,
-                                      reset,
-                                      timerState
-                                    }) => (
-                                      <React.Fragment>
-                                        <Timer.Minutes /> minutes{" "}
-                                        <Timer.Seconds /> seconds
-                                        {timerState === "STOPPED"
-                                          ? this.handleSectionSubmit(
+                                          : 0
+                                      }
+                                      direction={
+                                        this.getTimeLimit(selectedSection)
+                                          ? "backward"
+                                          : "forward"
+                                      }
+                                    >
+                                      {({
+                                          start,
+                                          resume,
+                                          pause,
+                                          stop,
+                                          reset,
+                                          timerState
+                                        }) => (
+                                        <React.Fragment>
+                                          <Timer.Minutes /> minutes{" "}
+                                          <Timer.Seconds /> seconds
+                                          {timerState === "STOPPED"
+                                            ? this.handleSectionSubmit(
                                               quiz.sections,
                                               finishQuiz
                                             )
-                                          : ""}
-                                      </React.Fragment>
-                                    )}
-                                  </Timer>
-                                </b>
-                              </Typography>
-                            </p>
+                                            : ""}
+                                        </React.Fragment>
+                                      )}
+                                    </Timer>
+                                  </b>
+                                </Typography>
+                              </p>
+                            )}
                             <Spacing />
                           </Hidden>
                           <Typography>
                             Question Number: <b>{this.getQuestionNumber()}</b>
                           </Typography>
-                          <Latex text={this.state.fields.question}/>
+                          <Latex text={this.state.fields.question} />
                           <Divider />
                         </CardContent>
                         <CardBody>
@@ -649,22 +665,38 @@ class QuizPanelView extends React.Component {
                               <FormControlLabel
                                 value={1}
                                 control={<Radio />}
-                                label={<Latex text={this.state.fields.options["1"]}/>}
+                                label={
+                                  <Latex
+                                    text={this.state.fields.options["1"]}
+                                  />
+                                }
                               />
                               <FormControlLabel
                                 value={2}
-                                label={<Latex text={this.state.fields.options["2"]}/>}
+                                label={
+                                  <Latex
+                                    text={this.state.fields.options["2"]}
+                                  />
+                                }
                                 control={<Radio />}
                               />
                               <FormControlLabel
                                 value={3}
                                 control={<Radio />}
-                                label={<Latex text={this.state.fields.options["3"]}/>}
+                                label={
+                                  <Latex
+                                    text={this.state.fields.options["3"]}
+                                  />
+                                }
                               />
                               <FormControlLabel
                                 value={4}
                                 control={<Radio />}
-                                label={<Latex text={this.state.fields.options["4"]}/>}
+                                label={
+                                  <Latex
+                                    text={this.state.fields.options["4"]}
+                                  />
+                                }
                               />
                             </RadioGroup>
                           </FormControl>
@@ -710,97 +742,81 @@ class QuizPanelView extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <Card className={classes.rightPanel}>
-                      <CardContent>
-                        <Hidden smDown implementation="css">
-                          <p>
-                            <Typography variant={"overline"}>
-                              {this.getTimeLimit(selectedSection)
-                                ? "Time Remaining:"
-                                : "Time Taken:"}
-                            </Typography>
-                            <Typography
-                              variant={"h5"}
-                              className={classes.timer}
-                            >
-                              <b>
-                                <Timer
-                                  initialTime={
-                                    this.getTimeLimit(selectedSection)
-                                      ? 60000 *
-                                        this.getTimeLimit(selectedSection)
-                                      : 0
-                                  }
-                                  direction={
-                                    this.getTimeLimit(selectedSection)
-                                      ? "backward"
-                                      : "forward"
-                                  }
-                                  onStop={() =>
-                                    this.handleSectionSubmit(
-                                      quiz.sections,
-                                      finishQuiz
-                                    )
-                                  }
+                      {this.state.submitLoading ? (
+                        <CircularProgress className={classes.progress} />
+                      ) : (
+                        <React.Fragment>
+                          <CardContent>
+                            <Hidden smDown implementation="css">
+                              <p>
+                                <Typography variant={"overline"}>
+                                  {this.getTimeLimit(selectedSection)
+                                    ? "Time Remaining:"
+                                    : "Time Taken:"}
+                                </Typography>
+                                <Typography
+                                  variant={"h5"}
+                                  className={classes.timer}
                                 >
-                                  {(stop, getTimerState, getTime) => (
-                                    <React.Fragment>
-                                      <Timer.Minutes /> minutes{" "}
-                                      <Timer.Seconds />
-                                      seconds
-                                      {getTimerState}
-                                    </React.Fragment>
-                                  )}
-                                </Timer>
-                              </b>
+                                  <b>
+                                    <Timer
+                                      initialTime={
+                                        this.getTimeLimit(selectedSection)
+                                          ? 60000 *
+                                            this.getTimeLimit(selectedSection)
+                                          : 0
+                                      }
+                                      direction={
+                                        this.getTimeLimit(selectedSection)
+                                          ? "backward"
+                                          : "forward"
+                                      }
+                                      onStop={() =>
+                                        this.handleSectionSubmit(
+                                          quiz.sections,
+                                          finishQuiz
+                                        )
+                                      }
+                                    >
+                                      {(stop, getTimerState, getTime) => (
+                                        <React.Fragment>
+                                          <Timer.Minutes /> minutes{" "}
+                                          <Timer.Seconds />
+                                          seconds
+                                          {getTimerState}
+                                        </React.Fragment>
+                                      )}
+                                    </Timer>
+                                  </b>
+                                </Typography>
+                              </p>
+                              <Spacing />
+                            </Hidden>
+                            <Typography variant={"overline"}>
+                              Questions:
                             </Typography>
-                          </p>
-                          <Spacing />
-                        </Hidden>
-                        <Typography variant={"overline"}>Questions:</Typography>
-                        {this.generateQuestionJumpers(
-                          selectedSection,
-                          classes.fab
-                        )}
-                      </CardContent>
-                      <CardFooter>
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          type={"submit"}
-                          size={"small"}
-                          fullWidth
-                          className={classes.button}
-                          onClick={this.toggleDialogVisibility}
-                        >
-                          {activeStep === steps.length - 1
-                            ? "Finish Quiz"
-                            : "Submit Section"}
-                        </Button>
-                      </CardFooter>
-                      {isVisible ? (
-                        <MessageDialog
-                          title={
-                            activeStep === steps.length - 1
-                              ? "Finish Quiz"
-                              : "Submit Section"
-                          }
-                          content={
-                            activeStep === steps.length - 1
-                              ? "Are you sure you want to finish this quiz?"
-                              : "Are you sure you want to submit this section?"
-                          }
-                          positiveAction={
-                            activeStep === steps.length - 1
-                              ? "Finish"
-                              : "Submit"
-                          }
-                          negativeAction="Cancel"
-                          action={() => {
-                            this.handleSectionSubmit(quiz.sections, finishQuiz);
-                          }}
-                          onClose={this.toggleDialogVisibility}
-                        />
-                      ) : null}
+                            {this.generateQuestionJumpers(
+                              selectedSection,
+                              classes.fab
+                            )}
+                          </CardContent>
+                          <CardFooter>
+                            <Button
+                              variant="outlined"
+                              color="primary"
+                              type={"submit"}
+                              size={"small"}
+                              fullWidth
+                              className={classes.button}
+                              onClick={this.toggleDialogVisibility}
+                            >
+                              {activeStep === steps.length - 1
+                                ? "Finish Quiz"
+                                : "Submit Section"}
+                            </Button>
+                          </CardFooter>
+                        </React.Fragment>
+                      )}
                     </Card>
                   </GridItem>
                 </GridContainer>
@@ -822,6 +838,28 @@ class QuizPanelView extends React.Component {
                     </Card>
                   </GridItem>
                 </GridContainer>
+                {isVisible ? (
+                  <MessageDialog
+                    title={
+                      activeStep === steps.length - 1
+                        ? "Finish Quiz"
+                        : "Submit Section"
+                    }
+                    content={
+                      activeStep === steps.length - 1
+                        ? "Are you sure you want to finish this quiz?"
+                        : "Are you sure you want to submit this section?"
+                    }
+                    positiveAction={
+                      activeStep === steps.length - 1 ? "Finish" : "Submit"
+                    }
+                    negativeAction="Cancel"
+                    action={() => {
+                      this.handleSectionSubmit(quiz.sections, finishQuiz);
+                    }}
+                    onClose={this.toggleDialogVisibility}
+                  />
+                ) : null}
               </React.Fragment>
             )}
           </Mutation>
