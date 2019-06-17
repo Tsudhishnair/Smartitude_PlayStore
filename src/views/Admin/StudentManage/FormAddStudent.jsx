@@ -291,7 +291,7 @@ class FormAddStudent extends Component {
           return (
             <div className={classes.root}>
               {console.log(data)}
-              <form>
+              <form onSubmit={e => this.handleClick(addStudent, e)}>
                 <Typography>
                   <strong>Basic Info</strong>
                 </Typography>
@@ -490,7 +490,6 @@ class FormAddStudent extends Component {
                       color="primary"
                       variant="outlined"
                       type={"submit"}
-                      onClick={e => this.handleClick(addStudent, e)}
                       disabled={loading}
                     >
                       Assign

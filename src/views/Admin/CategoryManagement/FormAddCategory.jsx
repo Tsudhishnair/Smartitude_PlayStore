@@ -3,7 +3,12 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar
+} from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -130,17 +135,20 @@ class FormAddCategory extends Component {
           }
         })
         .catch(err => {
-          this.setState({
-            loading: false
-          });
-          this.closeSnackbar();
-          if (this.props.reloadList !== null) {
-            this.props.reloadList();
-          }
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "warning",
+                message: "Error" + err.message
+              }
+            },
+            () => this.openSnackbar()
+          );
         });
     }
   };
-
 
   render() {
     const ADD_CATEGORY = gql`

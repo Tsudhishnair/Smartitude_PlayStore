@@ -13,7 +13,10 @@ import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
-import { EXPANSION_STUDENT_BATCH, EXPANSION_STUDENT_FORM } from "../../../Utils";
+import {
+  EXPANSION_STUDENT_BATCH,
+  EXPANSION_STUDENT_FORM
+} from "../../../Utils";
 import { CircularProgress, Snackbar } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -175,18 +178,19 @@ class StudentManage extends React.Component {
       variables: {
         _ids: deleteStudentId
       }
-    }).then(res => {
-      this.setState(
-        {
-          snackbar: {
-            ...this.state.snackbar,
-            message: "Student Deleted Successfully !"
-          }
-        },
-        () => this.openSnackbar()
-      );
-      this.reloadStudentsList();
     })
+      .then(res => {
+        this.setState(
+          {
+            snackbar: {
+              ...this.state.snackbar,
+              message: "Student Deleted Successfully !"
+            }
+          },
+          () => this.openSnackbar()
+        );
+        this.reloadStudentsList();
+      })
       .catch(err => {
         console.log(err);
       });
@@ -219,6 +223,38 @@ class StudentManage extends React.Component {
     }
   };
 
+  toggleDialogVisibility = () => {
+    this.setState(prevState => ({
+      TableDialog: !prevState.TableDialog
+    }));
+  };
+
+  handleDialogClose = (type, message) => {
+    if (type === "success") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: "Student successfully updated"
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    } else if (type === "error") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: message.graphQLErrors[0].message
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    }
+  };
+
   render() {
     const { snackbar } = this.state;
     const { classes } = this.props;
@@ -231,7 +267,12 @@ class StudentManage extends React.Component {
           return (
             <Fragment>
               {(this.deleteMutation = deleteMultipleStudents)}
-              <TableDialog onRef={ref => (this.child = ref)} />
+              <TableDialog
+                onRef={ref => (this.child = ref)}
+                onClose={(type, message) =>
+                  this.handleDialogClose(type, message)
+                }
+              />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <ExpansionPanel

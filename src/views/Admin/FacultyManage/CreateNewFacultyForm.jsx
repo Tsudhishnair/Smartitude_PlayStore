@@ -313,7 +313,7 @@ class CreateNewFacultyForm extends Component {
             {
               snackbar: {
                 ...this.state.snackbar,
-                varient:"warning",
+                variant: "warning",
                 message: "Error" + err.message
               }
             },

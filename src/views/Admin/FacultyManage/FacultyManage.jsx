@@ -9,13 +9,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import {
-  Button,
-  CircularProgress,
-  Divider,
-  ExpansionPanelActions,
-  Snackbar
-} from "@material-ui/core";
+import { CircularProgress, Snackbar } from "@material-ui/core";
 import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
@@ -137,9 +131,36 @@ class Dashboard extends React.Component {
         this.reloadFacultiesList();
       })
       .catch(err => {
-       console.log(err);
+        console.log(err);
       });
   };
+
+  handleDialogClose = (type, message) => {
+    if (type === "success") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: "Faculty successfully updated"
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    } else if (type === "error") {
+      this.setState(
+        prevState => ({
+          snackbar: {
+            ...prevState.snackbar,
+            variant: type,
+            message: message.graphQLErrors[0].message
+          }
+        }),
+        () => this.openSnackbar()
+      );
+    }
+  };
+
   render() {
     const { classes } = this.props;
     const { loading, snackbar } = this.state;
@@ -369,6 +390,12 @@ class Dashboard extends React.Component {
                                               onRef={ref => (this.child = ref)}
                                               categoryDetails={
                                                 this.categoryDetails
+                                              }
+                                              onClose={(type, message) =>
+                                                this.handleDialogClose(
+                                                  type,
+                                                  message
+                                                )
                                               }
                                               departments={this.departments}
                                             />
