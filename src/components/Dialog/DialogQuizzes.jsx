@@ -88,7 +88,7 @@ const columns = [
   {
     name: "Score",
     options: {
-      filter: true,
+      filter: false,
       display: true,
       sort: true
     }
@@ -96,7 +96,7 @@ const columns = [
   {
     name: "Submitted At",
     options: {
-      filter: true,
+      filter: false,
       display: true,
       sort: true
     }
@@ -123,7 +123,10 @@ const GET_ADMIN_QUIZ_ATTEMPTS = gql`
 //mui datatable options
 const options = {
   selectableRows: false,
-  rowsPerPageOptions: [20, 30, 100, 200, 700]
+  elevation: 0,
+  responsive: "scroll",
+  rowsPerPage: 100,
+  rowsPerPageOptions: [20, 30, 100, 200, 1000]
 };
 
 //transition component for the dialog box
@@ -175,17 +178,25 @@ class QuizzesDialog extends React.Component {
           {/* appbar used to display orange top banner */}
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <IconButton
-                color="inherit"
-                onClick={this.handleDialogClose}
-                aria-label="Close"
+              {/*<IconButton*/}
+              {/*  color="inherit"*/}
+              {/*  onClick={this.handleDialogClose}*/}
+              {/*  aria-label="Close"*/}
+              {/*>*/}
+              {/*  <Close />*/}
+              {/*</IconButton>*/}
+              <Typography
+                variant="h6"
+                style={{ color: "white" }}
+                className={classes.flex}
               >
-                <Close />
-              </IconButton>
-              <Typography variant="h6" color="inherit" className={classes.flex}>
                 {object.name}
               </Typography>
-              <Button color="inherit" onClick={this.handleDialogClose}>
+              <Button
+                color="inherit"
+                style={{ color: "white" }}
+                onClick={this.handleDialogClose}
+              >
                 Ok
               </Button>
             </Toolbar>
@@ -209,7 +220,6 @@ class QuizzesDialog extends React.Component {
                           </Typography>
                         );
                       } else {
-
                         //transform data for datatable
                         let quizList;
                         quizList = data.getAdminQuizAttempts.map(quiz => {
@@ -237,11 +247,10 @@ class QuizzesDialog extends React.Component {
                                 <Typography inline>Maximum score:</Typography>
                                 <Typography variant="h6" inline>
                                   {"   "}
-                                  {
-                                    data.getAdminQuizAttempts[0]
-                                      ? data.getAdminQuizAttempts[0]
-                                        .totalMaximumScore : "No Submissions"
-                                  }
+                                  {data.getAdminQuizAttempts[0]
+                                    ? data.getAdminQuizAttempts[0]
+                                        .totalMaximumScore
+                                    : "No Submissions"}
                                 </Typography>
                               </GridItem>
                             </GridContainer>

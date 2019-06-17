@@ -162,7 +162,7 @@ class CategoryManagement extends React.Component {
           open: false
         }
       });
-    }, 4000);
+    }, 8000);
   };
 
   closeSnackbar = () => {
@@ -274,6 +274,7 @@ class CategoryManagement extends React.Component {
           () => this.openSnackbar()
         );
         this.reloadCategoryDetailsList();
+        this.reloadCategoryDetailsList();
       })
       .catch(err => {
         this.setState(
@@ -282,7 +283,7 @@ class CategoryManagement extends React.Component {
             snackbar: {
               ...this.state.snackbar,
               variant: "error",
-              message: "Could not perform delete request!"
+              message: err.graphQLErrors[0].message
             }
           },
           () => this.openSnackbar()
