@@ -285,39 +285,49 @@ class AddQuestion extends React.Component {
     }
   };
 
+  //used to validate csv file uploaded for batch questions
   isCategoryAndSubcategoryValid = (category, subcategory) => {
+    //loop through the array of all categories & subcategories fetched using query
     let i = 0;
     while (i < this.categoryAndSubCategoryList.length) {
       let row = this.categoryAndSubCategoryList[i];
 
+      //check for category matching
       if (
         category.toLowerCase().trim() === row.category.name.toLowerCase().trim()
       ) {
+        //if category matches, now check for subcategory match
         let j = 0;
         while (j < row.subcategory.length) {
+          //subcategoryObject represents a subcategory object from the array
           let subcategoryObject = row.subcategory[j];
 
+          //check subcategory match
           if (
             subcategory.toLowerCase().trim() ===
             subcategoryObject.name.toLowerCase().trim()
           ) {
+            //return true if both subcategory an category are matching
             return true;
           }
-
           j++;
         }
       }
       i++;
     }
+    //if no matches can be made, return false
     return false;
   };
 
+  //handles qn batch uploads
   handleBatchUpload = result => {
     let i = 0;
 
+    //iterate through all qns
     while (i < result.length - 1) {
-      console.log(i);
+      //row stores each qn in the csv file
       let row = result[i];
+      //check if correct option field is an integer
       if (isNaN(row[INDEX_CORRECT_OPTION])) {
         this.setState(
           prevState => ({
@@ -329,7 +339,9 @@ class AddQuestion extends React.Component {
           () => this.openSnackbar()
         );
         break;
-      } else if (
+      }
+      //check if difficulty field is a valid integer and is in the range of 0 & 5
+      else if (
         isNaN(row[INDEX_DIFFICULTY]) ||
         row[INDEX_DIFFICULTY] < 0 ||
         row[INDEX_DIFFICULTY] > 5
@@ -344,7 +356,9 @@ class AddQuestion extends React.Component {
           () => this.openSnackbar()
         );
         break;
-      } else if (
+      }
+      //validate the category and subcategory provided
+      else if (
         !this.isCategoryAndSubcategoryValid(
           row[INDEX_CATEGORY],
           row[INDEX_SUBCATEGORY]
@@ -360,7 +374,9 @@ class AddQuestion extends React.Component {
           () => this.openSnackbar()
         );
         break;
-      } else {
+      }
+      //run mutation
+      else {
         console.log("no error");
         console.log(result[i]);
       }
