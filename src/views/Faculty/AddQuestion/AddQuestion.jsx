@@ -105,6 +105,7 @@ class AddQuestion extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
+
     this.state = {
       _id: "",
       question: "",
@@ -129,6 +130,9 @@ class AddQuestion extends React.Component {
         message: ""
       }
     };
+
+    this.firstRender = true;
+    this.categoryAndSubCategoryList = [];
   }
   //Handle Snackbar Controls
   // open snackbar
@@ -281,12 +285,40 @@ class AddQuestion extends React.Component {
     }
   };
 
+  isCategoryAndSubcategoryValid = (category, subcategory) => {
+    let i = 0;
+    while (i < this.categoryAndSubCategoryList.length) {
+      let row = this.categoryAndSubCategoryList[i];
+
+      if (
+        category.toLowerCase().trim() === row.category.name.toLowerCase().trim()
+      ) {
+        let j = 0;
+        while (j < row.subcategory.length) {
+          let subcategoryObject = row.subcategory[j];
+
+          if (
+            subcategory.toLowerCase().trim() ===
+            subcategoryObject.name.toLowerCase().trim()
+          ) {
+            return true;
+          }
+
+          j++;
+        }
+      }
+      i++;
+    }
+    return false;
+  };
+
   handleBatchUpload = result => {
     let i = 0;
 
     while (i < result.length - 1) {
       console.log(i);
-      if (isNaN(result[i][INDEX_CORRECT_OPTION])) {
+      let row = result[i];
+      if (isNaN(row[INDEX_CORRECT_OPTION])) {
         this.setState(
           prevState => ({
             snackbar: {
@@ -296,10 +328,11 @@ class AddQuestion extends React.Component {
           }),
           () => this.openSnackbar()
         );
+        break;
       } else if (
-        isNaN(result[i][INDEX_DIFFICULTY]) ||
-        result[i][INDEX_DIFFICULTY] < 0 ||
-        result[i][INDEX_DIFFICULTY] > 5
+        isNaN(row[INDEX_DIFFICULTY]) ||
+        row[INDEX_DIFFICULTY] < 0 ||
+        row[INDEX_DIFFICULTY] > 5
       ) {
         this.setState(
           prevState => ({
@@ -310,6 +343,23 @@ class AddQuestion extends React.Component {
           }),
           () => this.openSnackbar()
         );
+        break;
+      } else if (
+        !this.isCategoryAndSubcategoryValid(
+          row[INDEX_CATEGORY],
+          row[INDEX_SUBCATEGORY]
+        )
+      ) {
+        this.setState(
+          prevState => ({
+            snackbar: {
+              ...prevState.snackbar,
+              message: `Invalid category/subcategory given at row ${i + 1}`
+            }
+          }),
+          () => this.openSnackbar()
+        );
+        break;
       } else {
         console.log("no error");
         console.log(result[i]);
@@ -319,12 +369,12 @@ class AddQuestion extends React.Component {
     }
   };
 
-  //-----------------------------------------------------------------
   // handle Category List
   handleCategorySelect = event => {
     const categoryDetail = event.target.value;
 
     let availableSubcategories = categoryDetail.subcategory;
+
     this.setState({
       ...this.state,
       [event.target.name]: categoryDetail.category,
@@ -332,9 +382,7 @@ class AddQuestion extends React.Component {
       subcategory: ""
     });
   };
-  //-------------------------------------------------------------
 
-  //--------------------------------------------------------------
   //Common State Management Function
   handleChange = event => {
     this.setState({
@@ -342,7 +390,7 @@ class AddQuestion extends React.Component {
       [event.target.name]: event.target.value
     });
   };
-  //-------------------------------------------------------------
+
   // Setting Option into Options Array and correct option
   handleOption = event => {
     this.optionArray = [
@@ -356,15 +404,11 @@ class AddQuestion extends React.Component {
       correctOption: event.target.value
     });
   };
-  //-------------------------------------------------------------
 
-  //-------------------------------------------------------------
   //Handling State reset
-
   handleReset = e => {
     this.setState({
       question: "",
-
       option1: "",
       option2: "",
       option3: "",
@@ -399,10 +443,10 @@ class AddQuestion extends React.Component {
       dataLoaded: true
     });
   }
-  //-------------------------------------------------------------
+
   render() {
     const { classes, question, isEdit } = this.props;
-    const { loading, snackbar, batchLoading } = this.state;
+    const { loading, snackbar } = this.state;
     if (question && !this.state.dataLoaded) {
       this.setQuestions(question);
     }
@@ -433,20 +477,12 @@ class AddQuestion extends React.Component {
             <React.Fragment>
               <GridContainer className={classes.root}>
                 <GridItem xs={12} md={4} direction={"row-reverse"}>
-                  <Button
-                    color={"primary"}
-                    variant={"outlined"}
-                    type="submit"
-                    disabled={batchLoading}
-                    onClick={this.handleBatchUpload}
-                  >
-                    <CSVReader
-                      label="Batch Upload by CSV"
-                      onFileLoaded={result => this.handleBatchUpload(result)}
-                      inputId="csvUpload"
-                      inputStyle={{ color: "red" }}
-                    />
-                  </Button>
+                  <CSVReader
+                    label="Batch Upload by CSV"
+                    onFileLoaded={result => this.handleBatchUpload(result)}
+                    inputId="csvUpload"
+                    inputStyle={{ color: "red" }}
+                  />
                 </GridItem>
                 <GridItem xs={12}>
                   <Card>
@@ -611,9 +647,6 @@ class AddQuestion extends React.Component {
                               ); })}
                             </Select>
                           </GridItem>
-
-                          {/* Category and SubCategory
-            ------------------------------------------------------------------------------- */}
                           <Query query={FETCH_FORM_FIELDS}>
                             {({ data, loading, error }) => {
                               if (loading) {
@@ -643,6 +676,15 @@ class AddQuestion extends React.Component {
                                       >
                                         {data.categoryDetailsList.map(
                                           categoryDetail => {
+                                            if (this.firstRender) {
+                                              this.categoryAndSubCategoryList.push(
+                                                categoryDetail
+                                              );
+                                              console.log(
+                                                this.categoryAndSubCategoryList
+                                              );
+                                            }
+
                                             return (
                                               <MenuItem value={categoryDetail}>
                                                 {categoryDetail.category.name}
@@ -650,6 +692,7 @@ class AddQuestion extends React.Component {
                                             );
                                           }
                                         )}
+                                        {(this.firstRender = false)}
                                       </Select>
                                     </GridItem>
                                     <GridItem xs={12} sm={6} md={6}>
@@ -687,8 +730,6 @@ class AddQuestion extends React.Component {
                               }
                             }}
                           </Query>
-                          {/* ------------------------------------------------------------------------------- */}
-
                           <GridItem xs={12} sm={3} md={3}>
                             <InputLabel htmlFor="age-simple" fullWidth>
                               Difficulty
