@@ -221,6 +221,7 @@ class QuizPanelView extends React.Component {
     }
   };
 
+  //rearrange options using additive(caesar) cipher
   shuffle = (key, options) => {
     let newOptions = [];
     for (let i = 0; i < options.length; i++) {
@@ -233,6 +234,7 @@ class QuizPanelView extends React.Component {
     return newOptions;
   };
 
+  //rearrange options to original form
   unshuffle = (key, options) => {
     let oldOptions = [];
     for (let i = 0; i < options.length; i++) {
@@ -246,6 +248,7 @@ class QuizPanelView extends React.Component {
     return oldOptions;
   };
 
+  //generate random integer within specified limit
   getRandomInt = max => {
     return Math.floor(Math.random() * Math.floor(max));
   };
@@ -281,8 +284,10 @@ class QuizPanelView extends React.Component {
         submitLoading: true
       }));
 
+      //set submitted time to the current time
       this.dataToSubmit.submittedAt = new Date();
 
+      //unshuffle options and change marked options to match with db
       let i = 0;
       while (i < this.props.location.state.sections.length) {
         let j = 0;
@@ -292,6 +297,7 @@ class QuizPanelView extends React.Component {
             this.quiz.sections[i].questions[j].options
           );
 
+          //change marked option selection only for options that have been marked
           if (this.getMarkedOptionAtPosn(i, j) !== -1) {
             const numberOfOptions = this.quiz.sections[0].questions[0].options
               .length;
@@ -306,6 +312,7 @@ class QuizPanelView extends React.Component {
         i++;
       }
 
+      //if quiz is an assigned(admin quiz) then call corresponding mutation
       if (
         this.props.location.state._id != null &&
         this.quizType === ASSIGNED_QUIZ_CONSTANT
@@ -327,7 +334,9 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      } else if (
+      }
+      //check for custom quiz selection and id field
+      else if (
         this.props.location.state._id != null &&
         this.quizType === CUSTOM_QUIZ_CONSTANT
       ) {
@@ -347,7 +356,9 @@ class QuizPanelView extends React.Component {
           .catch(err => {
             console.log(err);
           });
-      } else if (this.quizType === RANDOM_QUIZ_CONSTANT) {
+      }
+      //for random quizzes
+      else if (this.quizType === RANDOM_QUIZ_CONSTANT) {
         console.log("successfully submitted random quiz");
         this.setState(() => ({
           redirector: true
@@ -408,17 +419,9 @@ class QuizPanelView extends React.Component {
   };
 
   //called when an option is clicked in a question
-  handleChange = (event, quizSections) => {
+  handleChange = event => {
     event.persist();
 
-    //change marked option to the new option
-    // let option;
-    // const numberOfOptions = quizSections[0].questions[0].options.length;
-    // option = event.target.value - this.key;
-    //
-    // if (option < 0) option = numberOfOptions + option;
-    // else if (option === 0) option = 4;
-    //
     this.setMarkedOption(event.target.value);
     this.setState(() => ({
       markedOption: Number(event.target.value)
@@ -685,9 +688,7 @@ class QuizPanelView extends React.Component {
                               name="option"
                               className={classes.group}
                               value={this.state.markedOption}
-                              onChange={event =>
-                                this.handleChange(event, quiz.sections)
-                              }
+                              onChange={event => this.handleChange(event)}
                             >
                               <FormControlLabel
                                 value={1}
