@@ -483,7 +483,6 @@ class QuizAnswer extends React.Component {
       questionCounter = 0;
       while (questionCounter < this.getNumberOfQns(sectionCounter)) {
         if (this.isCorrectlyMarked(sectionCounter, questionCounter)) {
-          console.log();
           quizScore += this.data.sections[sectionCounter].markPerQuestion;
         } else if (!this.isUnmarked(sectionCounter, questionCounter)) {
           quizScore -= this.data.sections[sectionCounter]

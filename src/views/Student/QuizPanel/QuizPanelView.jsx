@@ -182,10 +182,10 @@ class QuizPanelView extends React.Component {
     while (i < this.props.location.state.sections.length) {
       let j = 0;
       while (j < this.props.location.state.sections[i].questions.length) {
-        // this.quiz.sections[i].questions[j].options = this.shuffle(
-        //   this.key,
-        //   this.quiz.sections[i].questions[j].options
-        // );
+        this.quiz.sections[i].questions[j].options = this.shuffle(
+          this.key,
+          this.quiz.sections[i].questions[j].options
+        );
         j++;
       }
       i++;
@@ -287,16 +287,25 @@ class QuizPanelView extends React.Component {
       while (i < this.props.location.state.sections.length) {
         let j = 0;
         while (j < this.props.location.state.sections[i].questions.length) {
-          // this.quiz.sections[i].questions[j].options = this.unshuffle(
-          //   this.key,
-          //   this.quiz.sections[i].questions[j].options
-          // );
+          this.quiz.sections[i].questions[j].options = this.unshuffle(
+            this.key,
+            this.quiz.sections[i].questions[j].options
+          );
+
+          if (this.getMarkedOptionAtPosn(i, j) !== -1) {
+            const numberOfOptions = this.quiz.sections[0].questions[0].options
+              .length;
+            let option = this.getMarkedOptionAtPosn(i, j) - this.key;
+            if (option < 0) option = numberOfOptions + option;
+            else if (option === 0) option = 4;
+            this.setMarkedOptionAtPosn(i, j, option);
+          }
+
           j++;
         }
         i++;
       }
 
-      console.log(this.dataToSubmit.attemptedAdminQuizId);
       if (
         this.props.location.state._id != null &&
         this.quizType === ASSIGNED_QUIZ_CONSTANT
@@ -399,12 +408,18 @@ class QuizPanelView extends React.Component {
   };
 
   //called when an option is clicked in a question
-  handleChange = event => {
+  handleChange = (event, quizSections) => {
     event.persist();
 
     //change marked option to the new option
+    // let option;
+    // const numberOfOptions = quizSections[0].questions[0].options.length;
+    // option = event.target.value - this.key;
+    //
+    // if (option < 0) option = numberOfOptions + option;
+    // else if (option === 0) option = 4;
+    //
     this.setMarkedOption(event.target.value);
-
     this.setState(() => ({
       markedOption: Number(event.target.value)
     }));
@@ -468,6 +483,19 @@ class QuizPanelView extends React.Component {
   getMarkedOption = () => {
     return this.dataToSubmit.attemptedSections[this.currentSection]
       .attemptedQuestions[this.currentQnNum].markedOption;
+  };
+
+  //set Marked option at index value
+  setMarkedOptionAtPosn = (i, j, value) => {
+    this.dataToSubmit.attemptedSections[i].attemptedQuestions[
+      j
+    ].markedOption = Number(value);
+  };
+
+  //return marked option at index value
+  getMarkedOptionAtPosn = (i, j) => {
+    return this.dataToSubmit.attemptedSections[i].attemptedQuestions[j]
+      .markedOption;
   };
 
   //start counter. this counter sets value for timeTakenToMark field in the array to be submitted according to the current section and Qno
@@ -547,13 +575,12 @@ class QuizPanelView extends React.Component {
 
     const steps = this.getSteps(quiz.sections);
 
-    console.log(quiz);
-
     console.log("data to submit object");
     console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
       console.log("redirecting");
+
       return (
         <Redirect
           to={{
@@ -604,7 +631,7 @@ class QuizPanelView extends React.Component {
                                       initialTime={
                                         this.getTimeLimit(selectedSection)
                                           ? 60000 *
-                                          this.getTimeLimit(selectedSection)
+                                            this.getTimeLimit(selectedSection)
                                           : 0
                                       }
                                       direction={
@@ -614,21 +641,21 @@ class QuizPanelView extends React.Component {
                                       }
                                     >
                                       {({
-                                          start,
-                                          resume,
-                                          pause,
-                                          stop,
-                                          reset,
-                                          timerState
-                                        }) => (
+                                        start,
+                                        resume,
+                                        pause,
+                                        stop,
+                                        reset,
+                                        timerState
+                                      }) => (
                                         <React.Fragment>
                                           <Timer.Minutes /> minutes{" "}
                                           <Timer.Seconds /> seconds
                                           {timerState === "STOPPED"
                                             ? this.handleSectionSubmit(
-                                              quiz.sections,
-                                              finishQuiz
-                                            )
+                                                quiz.sections,
+                                                finishQuiz
+                                              )
                                             : ""}
                                         </React.Fragment>
                                       )}
