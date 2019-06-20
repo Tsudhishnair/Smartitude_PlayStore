@@ -18,7 +18,13 @@ import Spacing from "../../../components/Spacing/Spacing";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions,
+  Snackbar,
+  Tooltip
+} from "@material-ui/core";
 import green from "@material-ui/core/colors/green";
 
 const styles = theme => ({
@@ -66,6 +72,8 @@ class CreateNewFacultyForm extends Component {
     super(props);
     this.props = props;
     this.state = {
+      toolOpen: false,
+      setOpen: false,
       subcategories: [],
       department: {
         name: ""
@@ -323,9 +331,21 @@ class CreateNewFacultyForm extends Component {
     }
   };
 
+  handleTooltipClose = () => {
+    this.setState({
+      toolOpen: true
+    });
+  };
+
+  handleTooltipOpen = () => {
+    this.setState({
+      toolOpen: false
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { loading, snackbar } = this.state;
+    const { loading, snackbar, toolOpen } = this.state;
     const ADD_FACULTY = gql`
       mutation addFaculty($facultyInput: FacultyInput!) {
         addFaculty(facultyInput: $facultyInput) {
@@ -426,28 +446,31 @@ class CreateNewFacultyForm extends Component {
                     md={4}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="password"
-                      label="Password"
-                      type="password"
-                      name="password"
-                      onChange={this.handleValueChange}
-                      value={this.state.password}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="At least 8 characters & a mixture of letters and numbers recommended"
+                    >
+                      <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="password"
+                        label="Password"
+                        type="password"
+                        name="password"
+                        onChange={this.handleValueChange}
+                        value={this.state.password}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
-                </GridContainer>
-                <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={6}
-                    md={6}
+                    sm={4}
+                    md={4}
                     className={classes.formControl}
                   >
-                    <FormControl fullWidth>
+                    <FormControl required fullWidth>
                       <InputLabel htmlFor="department">Department</InputLabel>
                       <Select
                         required
@@ -472,10 +495,16 @@ class CreateNewFacultyForm extends Component {
                       </Select>
                     </FormControl>
                   </GridItem>
+                </GridContainer>
+                <Spacing />
+                <Typography>
+                  <strong>In-charge Info</strong>
+                </Typography>
+                <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={6}
-                    md={6}
+                    sm={2}
+                    md={2}
                     className={classes.formControl}
                   >
                     <FormControlLabel
@@ -491,16 +520,13 @@ class CreateNewFacultyForm extends Component {
                       label="In-charge"
                     />
                   </GridItem>
-                </GridContainer>
-                <Spacing />
-                <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={4}
-                    md={4}
+                    sm={9}
+                    md={9}
                     className={classes.formControl}
                   >
-                    <FormControl fullWidth>
+                    <FormControl required fullWidth>
                       <InputLabel htmlFor="category">Category</InputLabel>
                       <Select
                         onChange={this.handleCategorySelect}
@@ -520,8 +546,8 @@ class CreateNewFacultyForm extends Component {
                   </GridItem>
                   <GridItem
                     xs={12}
-                    sm={8}
-                    md={8}
+                    sm={12}
+                    md={12}
                     className={classes.elementPadding}
                   >
                     <ReactChipInput
@@ -537,20 +563,24 @@ class CreateNewFacultyForm extends Component {
                   <Spacing />
                   <GridItem
                     xs={12}
-                    sm={8}
-                    md={8}
+                    sm={12}
+                    md={12}
                     className={classes.elementPadding}
                   >
-                    <ReactChipInput
-                      style={{ zIndex: 0 }}
-                      label="In-charge Sub-Categories"
-                      hintText="Select in-charge sub-categories"
-                      data={this.state.subcategoryList}
-                      getSelectedObjects={this.getSelectedInchargeSubcategories}
-                      clearChips={this.state.clearInchargeSubcategoryChips}
-                      isDisabled={!this.state.isInCharge}
-                      onChipsCleared={this.chipsCleared}
-                    />
+                    {this.state.isInCharge ? (
+                      <ReactChipInput
+                        style={{ zIndex: 0 }}
+                        label="In-charge Sub-Categories"
+                        hintText="Select in-charge sub-categories"
+                        data={this.state.subcategoryList}
+                        getSelectedObjects={
+                          this.getSelectedInchargeSubcategories
+                        }
+                        clearChips={this.state.clearInchargeSubcategoryChips}
+                        isDisabled={!this.state.isInCharge}
+                        onChipsCleared={this.chipsCleared}
+                      />
+                    ) : null}
                   </GridItem>
                 </GridContainer>
                 <ExpansionPanelActions>

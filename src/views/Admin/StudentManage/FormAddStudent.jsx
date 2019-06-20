@@ -18,7 +18,8 @@ import {
   CircularProgress,
   Divider,
   ExpansionPanelActions,
-  Snackbar
+  Snackbar,
+  Tooltip
 } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
@@ -361,18 +362,23 @@ class FormAddStudent extends Component {
                     md={2}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="password"
-                      label="Password"
-                      type="password"
-                      name="password"
-                      required
-                      onChange={this.handleValueChange}
-                      value={this.state.assignval.password}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="At least 8 characters & a mixture of letters and numbers recommended"
+                    >
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="password"
+                        label="Password"
+                        type="password"
+                        name="password"
+                        required
+                        onChange={this.handleValueChange}
+                        value={this.state.assignval.password}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
                 </GridContainer>
                 <Spacing />
@@ -406,7 +412,7 @@ class FormAddStudent extends Component {
                     md={4}
                     className={classes.formControl}
                   >
-                    <FormControl fullWidth>
+                    <FormControl required fullWidth>
                       <InputLabel htmlFor="department">Department</InputLabel>
                       <Select
                         open={this.state.deptdrop.open}

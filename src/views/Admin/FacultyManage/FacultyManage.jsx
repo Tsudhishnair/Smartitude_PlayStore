@@ -303,7 +303,7 @@ class Dashboard extends React.Component {
               {this.state.isVisible ? (
                 <MessageDialog
                   title="Faculty Delete"
-                  content="Are you sure you want to Delete. Deletion may result in unrecoverable state of the details of the faculty"
+                  content="Are you sure you want to delete? Deletion may result in unrecoverable state of details of the faculty"
                   positiveAction="Delete"
                   negativeAction="Cancel"
                   action={() => {
