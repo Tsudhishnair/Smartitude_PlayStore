@@ -20,26 +20,27 @@ import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Poppers from "@material-ui/core/Popper";
+import DialogChangePassword from "../Dialog/DialogChangePassword";
 
 class HeaderLinks extends React.Component {
   state = {
-    open: false
+    openMenu: false
   };
-  handleToggle = () => {
-    this.setState(state => ({ open: !state.open }));
+  handleToggleMenu = () => {
+    this.setState(state => ({ openMenu: !state.openMenu }));
   };
 
-  // handleClose = event => {
-  //   if (this.anchorEl.contains(event.target)) {
-  //     return;
-  //   }
-  //
-  //   this.setState({ open: false });
-  // };
+  handleCloseMenu = event => {
+    if (this.anchorMenu.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ openMenu: false });
+  };
 
   render() {
     const { classes } = this.props;
-    const { open } = this.state;
+    const { openMenu } = this.state;
 
     const adminInfo = gql`
       {
@@ -68,112 +69,120 @@ class HeaderLinks extends React.Component {
       }
     `;
     return (
-      <div className={classes.manager}>
-        <Button
-          color={window.innerWidth > 959 ? "transparent" : "white"}
-          aria-label="Person"
-          className={classes.buttonLink}
-          onClick={this.handleToggle}
-        >
-          <Person className={classes.icons} />
-          <p className={classes.linkText}>
-            {loginHandler.userType === "admin" ? (
-              <Query query={adminInfo}>
-                {({ data, loading, error }) => {
-                  if (loading) {
-                    return <Typography>Loading...</Typography>;
-                  } else if (error) {
-                    return <Typography>Error Occurred!</Typography>;
-                  } else {
-                    localStorage.setItem("admin", data.meAdmin._id);
-                    return !loading ? `${data.meAdmin.name}` : "";
-                  }
+      <div>
+        <DialogChangePassword onRef={ref => (this.child = ref)} />
+        <div className={classes.manager}>
+          <Button
+            color={window.innerWidth > 959 ? "transparent" : "white"}
+            aria-label="Person"
+            buttonRef={node => {
+              this.anchorMenu = node;
+            }}
+            className={classes.buttonLink}
+            onClick={this.handleToggleMenu}
+            aria-haspopup="true"
+            aria-owns={openMenu ? "notification-menu-list-grow" : null}
+          >
+            <Person className={classes.icons} />
+            <p onClick={this.handleToggleMenu} className={classes.linkText}>
+              {loginHandler.userType === "admin" ? (
+                <Query query={adminInfo}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <Typography>Loading...</Typography>;
+                    } else if (error) {
+                      return <Typography>Error Occurred!</Typography>;
+                    } else {
+                      localStorage.setItem("admin", data.meAdmin._id);
+                      return !loading ? `${data.meAdmin.name}` : "";
+                    }
+                  }}
+                </Query>
+              ) : (
+                ""
+              )}
+              {loginHandler.userType === "faculty" ? (
+                <Query query={facultyInfo}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <Typography>Loading...</Typography>;
+                    } else if (error) {
+                      return <Typography>Error Occurred!</Typography>;
+                    } else {
+                      localStorage.setItem("faculty", data.meFaculty._id);
+                      return !loading ? `${data.meFaculty.name}` : "";
+                    }
+                  }}
+                </Query>
+              ) : (
+                ""
+              )}
+              {loginHandler.userType === "student" ? (
+                <Query query={studentInfo}>
+                  {({ data, loading, error }) => {
+                    if (loading) {
+                      return <Typography>Loading...</Typography>;
+                    } else if (error) {
+                      return <Typography>Error Occurred!</Typography>;
+                    } else {
+                      localStorage.setItem("student", data.meStudent._id);
+                      return !loading ? `${data.meStudent.name}` : "";
+                    }
+                  }}
+                </Query>
+              ) : (
+                ""
+              )}
+            </p>
+          </Button>
+          <Poppers
+            open={openMenu}
+            transition
+            disablePortal
+            anchorEl={this.anchorMenu}
+            className={
+              classNames({ [classes.popperClose]: !openMenu }) +
+              " " +
+              classes.pooperNav
+            }
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                id="menu-list-grow"
+                style={{
+                  transformOrigin:
+                    placement === "bottom" ? "center top" : "center bottom"
                 }}
-              </Query>
-            ) : (
-              ""
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={this.handleCloseMenu}>
+                    <MenuList role="menu">
+                      <MenuItem
+                        onClick={this.child.handleClickOpen()}
+                        className={classes.dropdownItem}
+                      >
+                        Change Password
+                      </MenuItem>
+                      <MenuItem
+                        onClick={this.handleCloseMenu}
+                        className={classes.dropdownItem}
+                      >
+                        Help & Support
+                      </MenuItem>
+                      {/*<MenuItem*/}
+                      {/*  onClick={this.handleClose}*/}
+                      {/*  className={classes.dropdownItem}*/}
+                      {/*>*/}
+                      {/*  Log Out*/}
+                      {/*</MenuItem>*/}
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
             )}
-            {loginHandler.userType === "faculty" ? (
-              <Query query={facultyInfo}>
-                {({ data, loading, error }) => {
-                  if (loading) {
-                    return <Typography>Loading...</Typography>;
-                  } else if (error) {
-                    return <Typography>Error Occurred!</Typography>;
-                  } else {
-                    localStorage.setItem("faculty", data.meFaculty._id);
-                    return !loading ? `${data.meFaculty.name}` : "";
-                  }
-                }}
-              </Query>
-            ) : (
-              ""
-            )}
-            {loginHandler.userType === "student" ? (
-              <Query query={studentInfo}>
-                {({ data, loading, error }) => {
-                  if (loading) {
-                    return <Typography>Loading...</Typography>;
-                  } else if (error) {
-                    return <Typography>Error Occurred!</Typography>;
-                  } else {
-                    localStorage.setItem("student", data.meStudent._id);
-                    return !loading ? `${data.meStudent.name}` : "";
-                  }
-                }}
-              </Query>
-            ) : (
-              ""
-            )}
-          </p>
-        </Button>
-        <Poppers
-          open={open}
-          anchorEl={this.anchorEl}
-          transition
-          disablePortal
-          className={
-            classNames({ [classes.popperClose]: !open }) +
-            " " +
-            classes.pooperNav
-          }
-        >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              id="menu-list-grow"
-              style={{
-                transformOrigin:
-                  placement === "left bottom" ? "left top" : "left bottom"
-              }}
-            >
-              <Paper>
-                <ClickAwayListener onClickAway={this.handleClose}>
-                  <MenuList role="menu">
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={classes.dropdownItem}
-                    >
-                      Change Password
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={classes.dropdownItem}
-                    >
-                      Help & Support
-                    </MenuItem>
-                    <MenuItem
-                      onClick={this.handleClose}
-                      className={classes.dropdownItem}
-                    >
-                      Log Out
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Poppers>
+          </Poppers>
+        </div>
       </div>
     );
   }

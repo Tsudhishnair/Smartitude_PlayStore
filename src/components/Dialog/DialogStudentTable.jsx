@@ -459,7 +459,8 @@ class StudentDialog extends React.Component {
 
 StudentDialog.propTypes = {
   classes: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  onRef: PropTypes.object
 };
 
 export default withStyles(styles)(StudentDialog);

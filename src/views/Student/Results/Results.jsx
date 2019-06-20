@@ -119,7 +119,7 @@ class Results extends React.Component {
           markPerQuestion: section.markPerQuestion,
           negativeMarkPerQuestion: section.negativeMarkPerQuestion,
           timeLimit: data.myAttemptedAdminQuizzes[index].attemptedSections[pos].timeLimit
-        }
+        };
         return sectionData;
       })
    };

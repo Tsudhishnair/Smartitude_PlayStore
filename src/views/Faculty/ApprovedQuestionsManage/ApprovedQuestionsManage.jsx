@@ -27,7 +27,6 @@ class ApprovedQuestionsManage extends React.Component {
 
   showQuestionManageDialog = isOpen => {
     if (isOpen) {
-      console.log("render dialog called");
       return (
         <DialogQuestion
           question={this.state.question}

@@ -141,8 +141,6 @@ class AdminLogin extends Component {
         });
 
         this.openSnackbar();
-        console.log(err.graphQLErrors);
-        console.log(err.networkError);
       })
       .finally(() => {
         this.setState({ ...this.state, loading: false });

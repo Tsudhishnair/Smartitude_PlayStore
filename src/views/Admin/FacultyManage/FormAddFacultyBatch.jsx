@@ -34,11 +34,6 @@ const styles = theme => ({
     flexGrow: 1,
     marginLeft: 10
   },
-  // TODO: duplicate ????
-  formControl: {
-    margin: theme.spacing.unit * 2,
-    minWidth: 120
-  },
   button: {
     margin: theme.spacing.unit * 4
   }

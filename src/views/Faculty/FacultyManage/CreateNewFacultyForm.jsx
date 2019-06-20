@@ -73,18 +73,18 @@ class CreateNewFacultyForm extends Component {
   getSelectedSubcategories = (selectedSubcategories) => {
     const subcategories = selectedSubcategories.map(selectedSubcategory => {
       return selectedSubcategory.value
-    })
+    });
     this.setState({
       ...this.state,
       subcategories,
     });    
-  }
+  };
   chipsCleared = () => {
     this.setState({
       ...this.state,
       clearSubcategoryChips: false,
     })
-  }
+  };
   handleRole = event => {
     this.setState({ isInChargeText: event.target.value });
     if (event.target.value === "Incharge") {
