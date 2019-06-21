@@ -38,6 +38,7 @@ import MessageDialog from "../../../components/Dialog/MessageDialog";
 import {
   ASSIGNED_QUIZ_CONSTANT,
   CUSTOM_QUIZ_CONSTANT,
+  getTabStatus,
   padDigit,
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
@@ -208,14 +209,23 @@ class QuizPanelView extends React.Component {
     console.log("After shuffle");
     console.log(this.quiz);
 
+    this.browserStatus = getTabStatus()[0];
+    this.visibilityStatus = getTabStatus()[1];
     //start time counter
     this.manageTimeTakenCounter();
   }
 
-  //initialise the timer component and interval function
   componentDidMount = () => {
+    //initialise the timer component and interval function
     this.manageTimerComponent(
       this.props.location.state.sections[this.currentSection]
+    );
+
+    //listener for tab change
+    document.addEventListener(
+      this.visibilityStatus,
+      this.handleVisibilityChange,
+      false
     );
   };
 
@@ -227,6 +237,21 @@ class QuizPanelView extends React.Component {
   //remove event listener for tab close/refresh
   componentWillUnmount = () => {
     window.onbeforeunload = undefined;
+
+    //remove tab change listener
+    document.removeEventListener(
+      this.visibilityStatus,
+      this.handleVisibilityChange
+    );
+  };
+
+  //called when tab visibility status changes
+  handleVisibilityChange = () => {
+    //change currentSection integer to make it as if the quiz is abput to be submitted finally and then complete submission
+    if (document[this.browserStatus]) {
+      this.currentSection = this.sections.length;
+      this.handleSectionSubmit(this.sections, this.mutation);
+    }
   };
 
   //populate dataToSubmit with empty data to protect against undefined values
@@ -707,8 +732,8 @@ class QuizPanelView extends React.Component {
 
     const steps = this.getSteps(quiz.sections);
 
-    // console.log("data to submit object");
-    // console.log(this.dataToSubmit);
+    console.log("data to submit object");
+    console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
       console.log("redirecting");
