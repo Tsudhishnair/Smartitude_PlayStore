@@ -117,12 +117,61 @@ class QuizPanelView extends React.Component {
     //maintaining index value of current question being answered
     this.currentQnNum = 0;
 
+    //maintain interval for timeTaken field
+    this.timeTakenInterval;
+
+    //maintain timer field
+    this.timer;
+
+    this.startTime = {
+      startTime: new Date()
+    };
+
+    this.quizType = this.props.location.state.quizType;
+
+    this.quizTypeObject = {
+      quizType: this.quizType
+    };
+
+    this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
+
+    this.key;
+
+    //contains data to be submitted on submission of sections and quiz
+    this.dataToSubmit = {
+      attemptedAdminQuizId: this.props.location.state._id,
+      submittedAt: new Date(),
+      attemptedSections: []
+    };
+    //contains data to be submitted for custom quiz
+    this.customDataToSubmit = {
+      customQuizId: this.props.location.state._id,
+      submittedAt: this.dataToSubmit.submittedAt,
+      attemptedSections: this.dataToSubmit.attemptedSections
+    };
+
+    this.initialiseDataArray();
+
+    let i = 0;
+    while (i < this.props.location.state.sections.length) {
+      let j = 0;
+      while (j < this.props.location.state.sections[i].questions.length) {
+        this.quiz.sections[i].questions[j].options = this.shuffle(
+          this.key,
+          this.quiz.sections[i].questions[j].options
+        );
+        j++;
+      }
+      i++;
+    }
+
     //get object of current question being answered
-    const currentQn = this.props.location.state.sections[this.currentSection]
-      .questions[this.currentQnNum];
+    const currentQn = this.quiz.sections[this.currentSection].questions[
+      this.currentQnNum
+    ];
 
     //the following variables are used exclusively used by timer functions to prevent the passing around of excessive number of params
-    this.sections = this.props.location.state.sections;
+    this.sections = this.quiz.sections;
     this.mutation;
 
     this.state = {
@@ -155,59 +204,6 @@ class QuizPanelView extends React.Component {
         seconds: 0
       }
     };
-
-    //maintain interval for timeTaken field
-    this.timeTakenInterval;
-
-    //maintain timer field
-    this.timer;
-
-    this.startTime = {
-      startTime: new Date()
-    };
-
-    this.quizType = this.props.location.state.quizType;
-
-    this.quizTypeObject = {
-      quizType: this.quizType
-    };
-
-    this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
-    console.log("Before shuffle");
-    console.log(this.quiz);
-
-    this.key;
-
-    //contains data to be submitted on submission of sections and quiz
-    this.dataToSubmit = {
-      attemptedAdminQuizId: this.props.location.state._id,
-      submittedAt: new Date(),
-      attemptedSections: []
-    };
-    //contains data to be submitted for custom quiz
-    this.customDataToSubmit = {
-      customQuizId: this.props.location.state._id,
-      submittedAt: this.dataToSubmit.submittedAt,
-      attemptedSections: this.dataToSubmit.attemptedSections
-    };
-
-    this.initialiseDataArray();
-
-    let i = 0;
-    while (i < this.props.location.state.sections.length) {
-      let j = 0;
-      while (j < this.props.location.state.sections[i].questions.length) {
-        this.quiz.sections[i].questions[j].options = this.shuffle(
-          this.key,
-          this.quiz.sections[i].questions[j].options
-        );
-        j++;
-      }
-      i++;
-    }
-
-    console.log("After shuffle");
-    console.log(this.quiz);
 
     this.browserStatus = getTabStatus()[0];
     this.visibilityStatus = getTabStatus()[1];
@@ -285,8 +281,6 @@ class QuizPanelView extends React.Component {
       newOptions[newIndex] = options[i];
     }
 
-    // console.log(options);
-    // console.log(newOptions);
     return newOptions;
   };
 
@@ -299,8 +293,7 @@ class QuizPanelView extends React.Component {
 
       oldOptions[newIndex] = options[i];
     }
-    // console.log(options);
-    // console.log(oldOptions);
+
     return oldOptions;
   };
 
@@ -731,9 +724,6 @@ class QuizPanelView extends React.Component {
     const { activeStep, isVisible } = this.state;
 
     const steps = this.getSteps(quiz.sections);
-
-    console.log("data to submit object");
-    console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
       console.log("redirecting");
