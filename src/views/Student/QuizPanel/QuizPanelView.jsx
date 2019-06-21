@@ -32,19 +32,15 @@ import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-import Countdown from "react-countdown-now";
-
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import {
   ASSIGNED_QUIZ_CONSTANT,
   CUSTOM_QUIZ_CONSTANT,
-  isEquivalent,
   padDigit,
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
 import Latex from "../../General/Latex";
-import Timer from "../../../components/Timer/Timer";
 
 const styles = theme => ({
   root: {
@@ -122,6 +118,10 @@ class QuizPanelView extends React.Component {
     //get object of current question being answered
     const currentQn = this.props.location.state.sections[this.currentSection]
       .questions[this.currentQnNum];
+
+    //the following variables are used exclusively used by timer functions to prevent the passing around of excessive number of params
+    this.sections = this.props.location.state.sections;
+    this.mutation;
 
     this.state = {
       //handle visibility of dialog
@@ -315,6 +315,7 @@ class QuizPanelView extends React.Component {
   decrementTime = () => {
     if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
       this.stopTimer();
+      this.handleSectionSubmit(this.sections, this.mutation);
     } else if (this.state.timer.seconds === 0) {
       this.setState(prevState => ({
         timer: {
@@ -355,59 +356,6 @@ class QuizPanelView extends React.Component {
     }
   };
 
-  createTimerComponent = (selectedSection, quizSections, finishQuiz) => {
-    console.log("createtimer method called");
-    console.log(selectedSection);
-
-    let isRandomQuiz = true;
-    if (this.getTimeLimit(selectedSection)) {
-      isRandomQuiz = false;
-    }
-
-    if (!isRandomQuiz) {
-      for (let i = 0; i < quizSections.length; i++) {
-        if (isEquivalent(selectedSection, quizSections[i])) {
-          console.log(this.getTimeLimit(selectedSection));
-          return (
-            <Countdown
-              date={Date.now() + 60000 * this.getTimeLimit(selectedSection)}
-              // onComplete={() => this.handleSectionSubmit(quizSections, finishQuiz)}
-              autoStart={true}
-            />
-          );
-        }
-      }
-      // return (
-      // <Timer
-      //   initialTime={60000 * this.getTimeLimit(selectedSection)}
-      //   direction={"backward"}
-      // >
-      //   {({ start, resume, pause, stop, reset, timerState }) => (
-      //     <React.Fragment>
-      //       <Timer.Minutes /> minutes <Timer.Seconds /> seconds
-      //       {timerState === "STOPPED" ? reset : ""}
-      //       */
-      //       {timerState === "STOPPED"
-      //         ? this.handleSectionSubmit(quizSections, finishQuiz)
-      //         : ""}
-      {
-        /*{timerState === "STOPPED" ? start : ""}*/
-      }
-      {
-        /*</React.Fragment>*/
-      }
-      {
-        /*)}*/
-      }
-      {
-        /*</Timer>*/
-      }
-      // );
-    } else {
-      return <div />;
-    }
-  };
-
   //called when section submit is called
   handleSectionSubmit = (quizSections, finishQuizMutation) => {
     console.log("section submit called");
@@ -420,7 +368,9 @@ class QuizPanelView extends React.Component {
         ...prevState,
         activeStep: prevState.activeStep + 1
       }));
-
+      this.stopTimer();
+      this.setInitialTime(this.getTimeLimit(quizSections[this.currentSection]));
+      this.startBackwardTimer();
       this.setFields(quizSections[this.currentSection]);
     } else {
       //call mutation for final section submission
@@ -750,6 +700,7 @@ class QuizPanelView extends React.Component {
           <Mutation mutation={this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ}>
             {finishQuiz => (
               <React.Fragment>
+                {(this.mutation = finishQuiz)}
                 <GridContainer>
                   <GridItem>
                     <Typography>
