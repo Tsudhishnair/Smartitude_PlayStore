@@ -17,13 +17,14 @@ import {
   StepLabel,
   Stepper,
   Typography,
-  CircularProgress
+  CircularProgress,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel
 } from "@material-ui/core";
-import Radio from "@material-ui/core/Radio/index";
-import RadioGroup from "@material-ui/core/RadioGroup/index";
-import FormControlLabel from "@material-ui/core/FormControlLabel/index";
-import FormControl from "@material-ui/core/FormControl/index";
-import FormLabel from "@material-ui/core/FormLabel/index";
+
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
@@ -216,6 +217,16 @@ class QuizPanelView extends React.Component {
     this.manageTimerComponent(
       this.props.location.state.sections[this.currentSection]
     );
+  };
+
+  //set up alert for close/refresh
+  componentDidUpdate = () => {
+    window.onbeforeunload = () => true;
+  };
+
+  //remove event listener for tab close/refresh
+  componentWillUnmount = () => {
+    window.onbeforeunload = undefined;
   };
 
   //populate dataToSubmit with empty data to protect against undefined values
