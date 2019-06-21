@@ -211,6 +211,7 @@ class QuizPanelView extends React.Component {
     this.manageTimeTakenCounter();
   }
 
+  //initialise the timer component and interval function
   componentDidMount = () => {
     this.manageTimerComponent(
       this.props.location.state.sections[this.currentSection]
@@ -282,19 +283,24 @@ class QuizPanelView extends React.Component {
     return this.currentQnNum !== selectedSection.questions.length - 1;
   };
 
+  //start running timer in forward dirn
   startForwardTimer = () => {
     this.timer = setInterval(this.incrementTime, 1000);
   };
 
+  //start running timer in backward dirn
   startBackwardTimer = () => {
     this.timer = setInterval(this.decrementTime, 1000);
   };
 
+  //stop timer interval
   stopTimer = () => {
     clearInterval(this.timer);
   };
 
+  //executed every second for the timer interval fn
   incrementTime = () => {
+    //move to the next minute
     if (this.state.timer.seconds === 59) {
       this.setState(prevState => ({
         timer: {
@@ -302,7 +308,9 @@ class QuizPanelView extends React.Component {
           seconds: 0
         }
       }));
-    } else {
+    }
+    //handle normal cases
+    else {
       this.setState(prevState => ({
         timer: {
           ...prevState.timer,
@@ -312,18 +320,24 @@ class QuizPanelView extends React.Component {
     }
   };
 
+  //executed every second during backward dirn interval
   decrementTime = () => {
+    //stopping condition, stop timer & submit
     if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
       this.stopTimer();
       this.handleSectionSubmit(this.sections, this.mutation);
-    } else if (this.state.timer.seconds === 0) {
+    }
+    //handle minute decrement condn
+    else if (this.state.timer.seconds === 0) {
       this.setState(prevState => ({
         timer: {
           minutes: prevState.timer.minutes - 1,
           seconds: 59
         }
       }));
-    } else {
+    }
+    //handle normal cases
+    else {
       this.setState(prevState => ({
         timer: {
           ...prevState.timer,
@@ -333,6 +347,7 @@ class QuizPanelView extends React.Component {
     }
   };
 
+  //set initial time of timer
   setInitialTime = timeLimit => {
     this.setState(() => ({
       timer: {
@@ -342,12 +357,14 @@ class QuizPanelView extends React.Component {
     }));
   };
 
-  manageTimerComponent = (selectedSection, quizSections, finishQuiz) => {
+  manageTimerComponent = selectedSection => {
+    //determine the type of the quiz
     let isRandomQuiz = true;
     if (this.getTimeLimit(selectedSection)) {
       isRandomQuiz = false;
     }
 
+    //change timer type depending on the type of the quiz
     if (!isRandomQuiz) {
       this.setInitialTime(this.getTimeLimit(selectedSection));
       this.startBackwardTimer();
@@ -368,9 +385,13 @@ class QuizPanelView extends React.Component {
         ...prevState,
         activeStep: prevState.activeStep + 1
       }));
+
+      //stop the timer, set another time and start timer again
       this.stopTimer();
       this.setInitialTime(this.getTimeLimit(quizSections[this.currentSection]));
       this.startBackwardTimer();
+
+      //set qn fields
       this.setFields(quizSections[this.currentSection]);
     } else {
       //call mutation for final section submission
@@ -713,6 +734,36 @@ class QuizPanelView extends React.Component {
                     <Card>
                       <form>
                         <CardContent>
+                          <Hidden mdUp implementation="css">
+                            {this.state.submitLoading ? (
+                              <CircularProgress className={classes.progress} />
+                            ) : (
+                              <p>
+                                <Typography variant={"overline"}>
+                                  {this.getTimeLimit(selectedSection)
+                                    ? "Time Remaining:"
+                                    : "Time Taken:"}
+                                </Typography>
+                                <Typography
+                                  variant={"h5"}
+                                  className={classes.timer}
+                                >
+                                  <b>
+                                    <div>
+                                      <span>
+                                        {padDigit(this.state.timer.minutes)}
+                                      </span>
+                                      <span> : </span>
+                                      <span>
+                                        {padDigit(this.state.timer.seconds)}
+                                      </span>
+                                    </div>
+                                  </b>
+                                </Typography>
+                              </p>
+                            )}
+                            <Spacing />
+                          </Hidden>
                           <Typography>
                             Question Number: <b>{this.getQuestionNumber()}</b>
                           </Typography>

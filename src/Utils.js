@@ -34,6 +34,7 @@ export const transformDateString = dateString => {
   }`;
 };
 
+//pad digits with a 0 in front of them
 export const padDigit = digit => {
   if (digit < 10) return `0${digit}`;
   else return digit;
