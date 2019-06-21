@@ -27,18 +27,24 @@ import FormLabel from "@material-ui/core/FormLabel/index";
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
-import Timer from "react-compound-timer/build/components/Timer/Timer";
 import { Redirect } from "react-router-dom";
 
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+
+import Countdown from "react-countdown-now";
+
 import MessageDialog from "../../../components/Dialog/MessageDialog";
+
 import {
   ASSIGNED_QUIZ_CONSTANT,
   CUSTOM_QUIZ_CONSTANT,
+  isEquivalent,
+  padDigit,
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
 import Latex from "../../General/Latex";
+import Timer from "../../../components/Timer/Timer";
 
 const styles = theme => ({
   root: {
@@ -141,10 +147,17 @@ class QuizPanelView extends React.Component {
       ),
       //used to redirect from quizPanel to answers view
       redirector: false,
-      submitLoading: false
+      submitLoading: false,
+      timer: {
+        minutes: 0,
+        seconds: 0
+      }
     };
 
     //maintain interval for timeTaken field
+    this.timeTakenInterval;
+
+    //maintain timer field
     this.timer;
 
     this.startTime = {
@@ -198,6 +211,12 @@ class QuizPanelView extends React.Component {
     this.manageTimeTakenCounter();
   }
 
+  componentDidMount = () => {
+    this.manageTimerComponent(
+      this.props.location.state.sections[this.currentSection]
+    );
+  };
+
   //populate dataToSubmit with empty data to protect against undefined values
   initialiseDataArray = () => {
     this.key = this.getRandomInt(4);
@@ -229,8 +248,8 @@ class QuizPanelView extends React.Component {
       newOptions[newIndex] = options[i];
     }
 
-    console.log(options);
-    console.log(newOptions);
+    // console.log(options);
+    // console.log(newOptions);
     return newOptions;
   };
 
@@ -243,8 +262,8 @@ class QuizPanelView extends React.Component {
 
       oldOptions[newIndex] = options[i];
     }
-    console.log(options);
-    console.log(oldOptions);
+    // console.log(options);
+    // console.log(oldOptions);
     return oldOptions;
   };
 
@@ -263,14 +282,142 @@ class QuizPanelView extends React.Component {
     return this.currentQnNum !== selectedSection.questions.length - 1;
   };
 
+  startForwardTimer = () => {
+    this.timer = setInterval(this.incrementTime, 1000);
+  };
+
+  startBackwardTimer = () => {
+    this.timer = setInterval(this.decrementTime, 1000);
+  };
+
+  stopTimer = () => {
+    clearInterval(this.timer);
+  };
+
+  incrementTime = () => {
+    if (this.state.timer.seconds === 59) {
+      this.setState(prevState => ({
+        timer: {
+          minutes: prevState.timer.minutes + 1,
+          seconds: 0
+        }
+      }));
+    } else {
+      this.setState(prevState => ({
+        timer: {
+          ...prevState.timer,
+          seconds: prevState.timer.seconds + 1
+        }
+      }));
+    }
+  };
+
+  decrementTime = () => {
+    if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
+      this.stopTimer();
+    } else if (this.state.timer.seconds === 0) {
+      this.setState(prevState => ({
+        timer: {
+          minutes: prevState.timer.minutes - 1,
+          seconds: 59
+        }
+      }));
+    } else {
+      this.setState(prevState => ({
+        timer: {
+          ...prevState.timer,
+          seconds: prevState.timer.seconds - 1
+        }
+      }));
+    }
+  };
+
+  setInitialTime = timeLimit => {
+    this.setState(() => ({
+      timer: {
+        minutes: timeLimit,
+        seconds: 0
+      }
+    }));
+  };
+
+  manageTimerComponent = (selectedSection, quizSections, finishQuiz) => {
+    let isRandomQuiz = true;
+    if (this.getTimeLimit(selectedSection)) {
+      isRandomQuiz = false;
+    }
+
+    if (!isRandomQuiz) {
+      this.setInitialTime(this.getTimeLimit(selectedSection));
+      this.startBackwardTimer();
+    } else {
+      this.startForwardTimer();
+    }
+  };
+
+  createTimerComponent = (selectedSection, quizSections, finishQuiz) => {
+    console.log("createtimer method called");
+    console.log(selectedSection);
+
+    let isRandomQuiz = true;
+    if (this.getTimeLimit(selectedSection)) {
+      isRandomQuiz = false;
+    }
+
+    if (!isRandomQuiz) {
+      for (let i = 0; i < quizSections.length; i++) {
+        if (isEquivalent(selectedSection, quizSections[i])) {
+          console.log(this.getTimeLimit(selectedSection));
+          return (
+            <Countdown
+              date={Date.now() + 60000 * this.getTimeLimit(selectedSection)}
+              // onComplete={() => this.handleSectionSubmit(quizSections, finishQuiz)}
+              autoStart={true}
+            />
+          );
+        }
+      }
+      // return (
+      // <Timer
+      //   initialTime={60000 * this.getTimeLimit(selectedSection)}
+      //   direction={"backward"}
+      // >
+      //   {({ start, resume, pause, stop, reset, timerState }) => (
+      //     <React.Fragment>
+      //       <Timer.Minutes /> minutes <Timer.Seconds /> seconds
+      //       {timerState === "STOPPED" ? reset : ""}
+      //       */
+      //       {timerState === "STOPPED"
+      //         ? this.handleSectionSubmit(quizSections, finishQuiz)
+      //         : ""}
+      {
+        /*{timerState === "STOPPED" ? start : ""}*/
+      }
+      {
+        /*</React.Fragment>*/
+      }
+      {
+        /*)}*/
+      }
+      {
+        /*</Timer>*/
+      }
+      // );
+    } else {
+      return <div />;
+    }
+  };
+
   //called when section submit is called
   handleSectionSubmit = (quizSections, finishQuizMutation) => {
+    console.log("section submit called");
     //set qn index to 0 to start from first qn
     this.currentQnNum = 0;
 
     //check if section is the last one, if not, change activeStep and change fields
     if (++this.currentSection < quizSections.length) {
       this.setState(prevState => ({
+        ...prevState,
         activeStep: prevState.activeStep + 1
       }));
 
@@ -503,14 +650,14 @@ class QuizPanelView extends React.Component {
 
   //start counter. this counter sets value for timeTakenToMark field in the array to be submitted according to the current section and Qno
   manageTimeTakenCounter = () => {
-    this.timer = setInterval(() => {
+    this.timeTakenInterval = setInterval(() => {
       this.dataToSubmit.attemptedSections[this.currentSection]
         .attemptedQuestions[this.currentQnNum].timeTakenToMark++;
     }, 1000);
   };
 
   clearTimeTakenCounter = () => {
-    clearInterval(this.timer);
+    clearInterval(this.timeTakenInterval);
   };
 
   //generate jumpers
@@ -578,8 +725,8 @@ class QuizPanelView extends React.Component {
 
     const steps = this.getSteps(quiz.sections);
 
-    console.log("data to submit object");
-    console.log(this.dataToSubmit);
+    // console.log("data to submit object");
+    // console.log(this.dataToSubmit);
 
     if (this.state.redirector === true) {
       console.log("redirecting");
@@ -615,60 +762,6 @@ class QuizPanelView extends React.Component {
                     <Card>
                       <form>
                         <CardContent>
-                          <Hidden mdUp implementation="css">
-                            {this.state.submitLoading ? (
-                              <CircularProgress className={classes.progress} />
-                            ) : (
-                              <p>
-                                <Typography variant={"overline"}>
-                                  {this.getTimeLimit(selectedSection)
-                                    ? "Time Remaining:"
-                                    : "Time Taken:"}
-                                </Typography>
-                                <Typography
-                                  variant={"h5"}
-                                  className={classes.timer}
-                                >
-                                  <b>
-                                    <Timer
-                                      initialTime={
-                                        this.getTimeLimit(selectedSection)
-                                          ? 60000 *
-                                            this.getTimeLimit(selectedSection)
-                                          : 0
-                                      }
-                                      direction={
-                                        this.getTimeLimit(selectedSection)
-                                          ? "backward"
-                                          : "forward"
-                                      }
-                                    >
-                                      {({
-                                        start,
-                                        resume,
-                                        pause,
-                                        stop,
-                                        reset,
-                                        timerState
-                                      }) => (
-                                        <React.Fragment>
-                                          <Timer.Minutes /> minutes{" "}
-                                          <Timer.Seconds /> seconds
-                                          {timerState === "STOPPED"
-                                            ? this.handleSectionSubmit(
-                                                quiz.sections,
-                                                finishQuiz
-                                              )
-                                            : ""}
-                                        </React.Fragment>
-                                      )}
-                                    </Timer>
-                                  </b>
-                                </Typography>
-                              </p>
-                            )}
-                            <Spacing />
-                          </Hidden>
                           <Typography>
                             Question Number: <b>{this.getQuestionNumber()}</b>
                           </Typography>
@@ -787,34 +880,15 @@ class QuizPanelView extends React.Component {
                                   className={classes.timer}
                                 >
                                   <b>
-                                    <Timer
-                                      initialTime={
-                                        this.getTimeLimit(selectedSection)
-                                          ? 60000 *
-                                            this.getTimeLimit(selectedSection)
-                                          : 0
-                                      }
-                                      direction={
-                                        this.getTimeLimit(selectedSection)
-                                          ? "backward"
-                                          : "forward"
-                                      }
-                                      onStop={() =>
-                                        this.handleSectionSubmit(
-                                          quiz.sections,
-                                          finishQuiz
-                                        )
-                                      }
-                                    >
-                                      {(stop, getTimerState, getTime) => (
-                                        <React.Fragment>
-                                          <Timer.Minutes /> minutes{" "}
-                                          <Timer.Seconds />
-                                          seconds
-                                          {getTimerState}
-                                        </React.Fragment>
-                                      )}
-                                    </Timer>
+                                    <div>
+                                      <span>
+                                        {padDigit(this.state.timer.minutes)}
+                                      </span>
+                                      <span> : </span>
+                                      <span>
+                                        {padDigit(this.state.timer.seconds)}
+                                      </span>
+                                    </div>
                                   </b>
                                 </Typography>
                               </p>

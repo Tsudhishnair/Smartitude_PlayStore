@@ -707,7 +707,7 @@ class AddQuestion extends React.Component {
                         <MenuItem value={2}>Option 2</MenuItem>
                         <MenuItem value={3}>Option 3</MenuItem>
                         <MenuItem value={4}>Option 4</MenuItem>
-                        ); })}
+                        );
                       </Select>
                     </GridItem>
                     <Query query={FETCH_FORM_FIELDS}>
