@@ -389,7 +389,6 @@ class CreateNewFacultyForm extends Component {
                   >
                     <TextField
                       autoFocus
-                      margin="dense"
                       id="phone"
                       required
                       label="Phone Number"
@@ -413,7 +412,6 @@ class CreateNewFacultyForm extends Component {
                       <TextField
                         autoFocus
                         required
-                        margin="dense"
                         id="password"
                         label="Password"
                         type="password"
@@ -463,8 +461,8 @@ class CreateNewFacultyForm extends Component {
                 <GridContainer>
                   <GridItem
                     xs={12}
-                    sm={2}
-                    md={2}
+                    sm={3}
+                    md={3}
                     className={classes.formControl}
                   >
                     <FormControlLabel
@@ -527,7 +525,7 @@ class CreateNewFacultyForm extends Component {
                     md={12}
                     className={classes.elementPadding}
                   >
-                    {this.state.isInCharge ? (
+                    {this.state.isInCharge && (
                       <ReactChipInput
                         style={{ zIndex: 0 }}
                         label="In-charge Sub-Categories"
@@ -540,7 +538,7 @@ class CreateNewFacultyForm extends Component {
                         isDisabled={!this.state.isInCharge}
                         onChipsCleared={this.chipsCleared}
                       />
-                    ) : null}
+                    )}
                   </GridItem>
                 </GridContainer>
                 <ExpansionPanelActions>

@@ -79,7 +79,6 @@ class Dashboard extends React.Component {
     }));
   };
   reloadFacultiesList = () => {
-    console.log("reloadFacultiesList called");
     if (this.refetchFacultiesList !== null) {
       this.refetchFacultiesList();
     }
@@ -99,7 +98,7 @@ class Dashboard extends React.Component {
           open: false
         }
       });
-    }, 4000);
+    }, 8000);
   };
   // close snackbar by changing open state
   closeSnackbar = () => {
@@ -163,7 +162,7 @@ class Dashboard extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { loading, snackbar } = this.state;
+    const { snackbar } = this.state;
     const header1 = "Faculty";
     const header2 = "Add a new faculty member";
     const columns = [

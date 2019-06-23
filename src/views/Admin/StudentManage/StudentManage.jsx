@@ -159,7 +159,7 @@ class StudentManage extends React.Component {
           open: false
         }
       });
-    }, 4000);
+    }, 8000);
   };
   // close snackbar by changing open state
   closeSnackbar = () => {

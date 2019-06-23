@@ -2,61 +2,33 @@ import gql from "graphql-tag";
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Slide from "@material-ui/core/Slide";
+import formControlStyle from "../../assets/jss/form-control";
+
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Switch,
+  FormControlLabel,
+  Slide,
+  Typography
+} from "@material-ui/core";
+
 import ReactChipInput from "../AutoChip/ReactChipSelect";
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import { Mutation } from "react-apollo";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from "@material-ui/core/FormControl";
 import Spacing from "../Spacing/Spacing";
 
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -78,6 +50,7 @@ class DialogFacultyTable extends React.Component {
     super(props);
     this.props = props;
     this.state = {
+      loading: false,
       open: false,
       name: "",
       username: "",
@@ -240,7 +213,6 @@ class DialogFacultyTable extends React.Component {
         this.props.onClose("success");
       })
       .catch(err => {
-        // TODO: Set snackbar for edit error here
         console.log("catch called");
         console.log(err);
         if (this.reloadFacultiesList !== null) {
@@ -286,6 +258,9 @@ class DialogFacultyTable extends React.Component {
   };
   updateAndClose = async (editFaculty, e) => {
     e.preventDefault();
+    this.setState({
+      loading: true
+    });
     let facultyEditInput;
     if (this.state.isInCharge) {
       facultyEditInput = {
@@ -318,29 +293,29 @@ class DialogFacultyTable extends React.Component {
       }
     })
       .then(response => {
-        console.log("then called");
-        // TODO: Set snackbar for edit here
+        this.setState({
+          loading: false
+        });
         if (this.reloadFacultiesList !== null) {
           this.reloadFacultiesList();
         }
         this.props.onClose("success");
+        this.handleClose();
       })
       .catch(err => {
-        // TODO: Set snackbar for edit error here
-        console.log("catch called");
-        console.log(err);
+        this.setState({
+          loading: false
+        });
         if (this.reloadFacultiesList !== null) {
           this.reloadFacultiesList();
         }
         this.props.onClose("error", err);
-      })
-      .finally(() => {
-        this.setState({ open: false });
       });
   };
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
 
     const EDIT_FACULTY_QUERY = gql`
       mutation editFaculty($_id: ID!, $facultyEditInput: FacultyEditInput!) {
@@ -357,6 +332,7 @@ class DialogFacultyTable extends React.Component {
               <Dialog
                 open={this.state.open}
                 onClose={this.handleClose}
+                scroll={"body"}
                 aria-labelledby="form-dialog-title"
               >
                 <DialogTitle id="form-dialog-title">
@@ -405,6 +381,7 @@ class DialogFacultyTable extends React.Component {
                                 }
                                 fullWidth
                                 color="primary"
+                                disabled={loading}
                               >
                                 Delete Faculty
                               </Button>
@@ -427,12 +404,12 @@ class DialogFacultyTable extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
-                            margin="dense"
                             id="name"
                             label="Name"
                             name="name"
                             type="name"
+                            required
+                            disabled={loading}
                             onChange={this.handleValueChange}
                             value={this.state.name}
                             fullWidth
@@ -445,10 +422,10 @@ class DialogFacultyTable extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
-                            margin="dense"
                             id="username"
                             name="username"
+                            required
+                            disabled={loading}
                             onChange={this.handleValueChange}
                             label="Username"
                             type="name"
@@ -463,11 +440,11 @@ class DialogFacultyTable extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
-                            margin="dense"
                             id="email"
                             onChange={this.handleValueChange}
                             name="email"
+                            required
+                            disabled={loading}
                             label="Email Address"
                             type="email"
                             value={this.state.email}
@@ -475,6 +452,7 @@ class DialogFacultyTable extends React.Component {
                           />
                         </GridItem>
                       </GridContainer>
+                      <Spacing />
                       <GridContainer>
                         <GridItem
                           xs={12}
@@ -482,13 +460,14 @@ class DialogFacultyTable extends React.Component {
                           md={6}
                           className={classes.formControl}
                         >
-                          <FormControl fullWidth>
+                          <FormControl fullWidth disabled={loading}>
                             <InputLabel htmlFor="age-simple">
                               Department
                             </InputLabel>
                             <Select
                               onChange={this.handleValueChange}
                               value={this.state.department.name}
+                              disabled={loading}
                               renderValue={department => {
                                 return department;
                               }}
@@ -517,11 +496,37 @@ class DialogFacultyTable extends React.Component {
                           md={6}
                           className={classes.elementPadding}
                         >
+                          <TextField
+                            onChange={this.handleValueChange}
+                            id="phoneNumber"
+                            label="Phone Number"
+                            required
+                            disabled={loading}
+                            type="number"
+                            name="phoneNumber"
+                            fullWidth
+                            value={this.state.phoneNumber}
+                          />
+                        </GridItem>
+                      </GridContainer>
+                      <Spacing />
+                      <Typography>
+                        {" "}
+                        <strong>In-charge Info</strong>
+                      </Typography>
+                      <GridContainer>
+                        <GridItem
+                          xs={12}
+                          sm={4}
+                          md={4}
+                          className={classes.elementPadding}
+                        >
                           <FormControlLabel
                             control={
                               <Switch
                                 name="isInCharge"
                                 checked={this.state.isInCharge}
+                                disabled={loading}
                                 onChange={this.toggleInChargeSwitch}
                                 value={this.state.isInCharge}
                                 color="primary"
@@ -532,28 +537,8 @@ class DialogFacultyTable extends React.Component {
                         </GridItem>
                         <GridItem
                           xs={12}
-                          sm={6}
-                          md={6}
-                          className={classes.elementPadding}
-                        >
-                          <TextField
-                            autoFocus
-                            margin="dense"
-                            onChange={this.handleValueChange}
-                            id="phoneNumber"
-                            label="Phone Number"
-                            type="phone"
-                            name="phoneNumber"
-                            fullWidth
-                            value={this.state.phoneNumber}
-                          />
-                        </GridItem>
-                      </GridContainer>
-                      <GridContainer>
-                        <GridItem
-                          xs={12}
-                          sm={4}
-                          md={4}
+                          sm={8}
+                          md={8}
                           className={classes.formControl}
                         >
                           <FormControl fullWidth>
@@ -561,6 +546,8 @@ class DialogFacultyTable extends React.Component {
                             <Select
                               onChange={this.handleCategorySelect}
                               value={this.state.category.name}
+                              disabled={loading}
+                              required
                               renderValue={value => {
                                 return value;
                               }}
@@ -589,52 +576,69 @@ class DialogFacultyTable extends React.Component {
                             style={{ zIndex: 0 }}
                             data={this.state.subcategoryList}
                             label="Sub-Categories"
+                            required
+                            isDisabled={loading}
                             hintText="Select sub-categories"
                             getSelectedObjects={this.getSelectedSubcategories}
                             clearChips={this.state.clearSubcategoryChips}
                             onChipsCleared={this.chipsCleared}
                           />
                         </GridItem>
-                        <GridItem
-                          xs={12}
-                          sm={8}
-                          md={8}
-                          className={classes.elementPadding}
-                        >
-                          <ReactChipInput
-                            initialValues={
-                              this.initialInChargeSubcategories
-                                ? this.initialInChargeSubcategories
-                                : undefined
-                            }
-                            style={{ zIndex: 0 }}
-                            label="In-charge Sub-Categories"
-                            hintText="Select in-charge sub-categories"
-                            isDisabled={!this.state.isInCharge}
-                            data={this.state.subcategoryList}
-                            getSelectedObjects={
-                              this.getSelectedInchargeSubcategories
-                            }
-                            clearChips={
-                              this.state.clearInchargeSubcategoryChips
-                            }
-                            onChipsCleared={this.chipsCleared}
-                          />
-                        </GridItem>
+                      </GridContainer>
+                      <Spacing />
+                      <GridContainer>
+                        {this.state.isInCharge && (
+                          <GridItem
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            className={classes.elementPadding}
+                          >
+                            <ReactChipInput
+                              initialValues={
+                                this.initialInChargeSubcategories
+                                  ? this.initialInChargeSubcategories
+                                  : undefined
+                              }
+                              style={{ zIndex: 0 }}
+                              label="In-charge Sub-Categories"
+                              hintText="Select in-charge sub-categories"
+                              isDisabled={!this.state.isInCharge || loading}
+                              data={this.state.subcategoryList}
+                              getSelectedObjects={
+                                this.getSelectedInchargeSubcategories
+                              }
+                              clearChips={
+                                this.state.clearInchargeSubcategoryChips
+                              }
+                              onChipsCleared={this.chipsCleared}
+                            />
+                          </GridItem>
+                        )}
                       </GridContainer>
                     </div>
                   </DialogContent>
                   <DialogActions>
-                    <Button
-                      size={"small"}
-                      onClick={this.handleClose}
-                      color="primary"
-                    >
+                    <Button size={"small"} onClick={this.handleClose}>
                       Cancel
                     </Button>
-                    <Button size={"small"} color="primary" type={"submit"}>
-                      Save
-                    </Button>
+                    <div className={classes.wrapper}>
+                      <Button
+                        size={"small"}
+                        color="primary"
+                        variant={"outlined"}
+                        type={"submit"}
+                        disabled={loading}
+                      >
+                        Save
+                      </Button>
+                      {loading && (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </div>
                   </DialogActions>
                 </form>
               </Dialog>
@@ -653,4 +657,4 @@ DialogFacultyTable.propTypes = {
   onClose: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(DialogFacultyTable);
+export default withStyles(formControlStyle)(DialogFacultyTable);

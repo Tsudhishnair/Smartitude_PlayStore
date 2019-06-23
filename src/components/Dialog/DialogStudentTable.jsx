@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import formControlStyle from "../../assets/jss/form-control";
 
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -19,13 +21,10 @@ import {
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-
 import Spacing from "../Spacing/Spacing";
 // react apollo
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-
-import formControlStyle from "../../assets/jss/form-control";
 
 // edit student query
 const EDIT_STUDENT = gql`
@@ -62,8 +61,8 @@ class StudentDialog extends React.Component {
     super(props);
     this.props = props;
     this.state = {
+      loading: false,
       open: false,
-
       department: {
         name: "",
         _id: ""
@@ -129,6 +128,9 @@ class StudentDialog extends React.Component {
   };
   handleClick = (editStudent, e) => {
     e.preventDefault();
+    this.setState({
+      loading: true
+    });
     editStudent({
       variables: {
         studentEditInput: {
@@ -143,7 +145,9 @@ class StudentDialog extends React.Component {
       }
     })
       .then(response => {
-        // TODO: Set snackbar
+        this.setState({
+          loading: false
+        });
         if (this.reloadStudentsList !== null) {
           this.reloadStudentsList();
         }
@@ -151,18 +155,19 @@ class StudentDialog extends React.Component {
         this.handleClose();
       })
       .catch(err => {
-        // TODO: Set snackbar
-        console.log(err);
+        this.setState({
+          loading: false
+        });
         if (this.reloadStudentsList !== null) {
           this.reloadStudentsList();
         }
         this.props.onClose("error", err);
-        this.handleClose();
       });
   };
 
   render() {
     const { classes } = this.props;
+    const { loading } = this.state;
 
     return (
       <Mutation mutation={EDIT_STUDENT} onCompleted={this.handleClose}>
@@ -172,6 +177,7 @@ class StudentDialog extends React.Component {
               <Dialog
                 open={this.state.open}
                 onClose={this.handleClose}
+                scroll={"body"}
                 aria-labelledby="form-dialog-title"
               >
                 <DialogTitle id="form-dialog-title">
@@ -230,6 +236,7 @@ class StudentDialog extends React.Component {
                               <Button
                                 onClick={e => this.handleDelete(deleteStudent)}
                                 fullWidth
+                                disabled={loading}
                                 color="primary"
                               >
                                 Delete Student
@@ -252,12 +259,12 @@ class StudentDialog extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
                             label="Name"
                             type="name"
                             name="name"
+                            disabled={loading}
                             required
                             onChange={this.handleValueChange}
                             value={this.state.name}
@@ -271,12 +278,12 @@ class StudentDialog extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
                             margin="dense"
                             id="username"
                             label="Username"
                             type="name"
                             name="username"
+                            disabled={loading}
                             required
                             onChange={this.handleValueChange}
                             value={this.state.username}
@@ -290,12 +297,12 @@ class StudentDialog extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
                             margin="dense"
                             id="email"
                             name="email"
                             label="Email Address"
                             type="email"
+                            disabled={loading}
                             required
                             value={this.state.email}
                             onChange={this.handleValueChange}
@@ -315,15 +322,14 @@ class StudentDialog extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
-                            margin="dense"
                             name="phoneNumber"
                             id="phoneNumber"
                             label="Phone Number"
                             required
+                            disabled={loading}
                             value={this.state.phoneNumber}
                             onChange={this.handleValueChange}
-                            type="phone"
+                            type="number"
                             fullWidth
                           />
                         </GridItem>
@@ -340,13 +346,14 @@ class StudentDialog extends React.Component {
                                   md={4}
                                   className={classes.formControl}
                                 >
-                                  <FormControl fullWidth>
+                                  <FormControl fullWidth disabled={loading}>
                                     <InputLabel htmlFor="department">
                                       Department
                                     </InputLabel>
                                     <Select
                                       onChange={this.handleValueChange}
                                       value={this.state.department.name}
+                                      disabled={loading}
                                       renderValue={department => {
                                         return department;
                                       }}
@@ -381,12 +388,11 @@ class StudentDialog extends React.Component {
                           className={classes.elementPadding}
                         >
                           <TextField
-                            autoFocus
-                            margin="dense"
                             id="batch"
                             label="Batch"
                             name="batch"
                             required
+                            disabled={loading}
                             onChange={this.handleValueChange}
                             value={this.state.batch}
                             type="text"
@@ -398,16 +404,26 @@ class StudentDialog extends React.Component {
                     </div>
                   </DialogContent>
                   <DialogActions>
-                    <Button
-                      size={"small"}
-                      onClick={this.handleClose}
-                      color="primary"
-                    >
+                    <Button size={"small"} onClick={this.handleClose}>
                       Cancel
                     </Button>
-                    <Button size="small" color="primary" type={"submit"}>
-                      Save
-                    </Button>
+                    <div className={classes.wrapper}>
+                      <Button
+                        size="small"
+                        color="primary"
+                        type={"submit"}
+                        disabled={loading}
+                        variant={"outlined"}
+                      >
+                        Save
+                      </Button>
+                      {loading && (
+                        <CircularProgress
+                          size={24}
+                          className={classes.buttonProgress}
+                        />
+                      )}
+                    </div>
                   </DialogActions>
                 </form>
               </Dialog>
