@@ -21,13 +21,12 @@ import FacultyPanel from "./layouts/FacultyPanel/FacultyPanel";
 import Landing from "./layouts/Landing/Landing";
 import QuizPanel from "./views/Student/QuizPanel/QuizPanelView";
 import { PrivateRoute } from "./routes/PrivateRoute";
-
 import AddQuestion from "./views/Faculty/AddQuestion/AddQuestion";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#f5af19" }, // Purple and green play nicely together.
-    secondary: { main: "#f12711" } // This is just green.A700 as hex.
+    primary: { main: "#f5af19" },
+    secondary: { main: "#f12711" }
   },
   typography: { useNextVariants: true }
 });

@@ -333,6 +333,7 @@ class DialogFacultyTable extends React.Component {
                 open={this.state.open}
                 onClose={this.handleClose}
                 scroll={"body"}
+                TransitionComponent={Transition}
                 aria-labelledby="form-dialog-title"
               >
                 <DialogTitle id="form-dialog-title">

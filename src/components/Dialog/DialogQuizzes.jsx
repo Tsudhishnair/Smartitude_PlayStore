@@ -6,10 +6,8 @@ import MUIDataTable from "mui-datatables";
 
 import {
   AppBar,
-  Button,
   CircularProgress,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -178,27 +176,20 @@ class QuizzesDialog extends React.Component {
           {/* appbar used to display orange top banner */}
           <AppBar className={classes.appBar}>
             <Toolbar>
-              {/*<IconButton*/}
-              {/*  color="inherit"*/}
-              {/*  onClick={this.handleDialogClose}*/}
-              {/*  aria-label="Close"*/}
-              {/*>*/}
-              {/*  <Close />*/}
-              {/*</IconButton>*/}
+              <IconButton
+                  style={{color: "white"}}
+                onClick={this.handleDialogClose}
+                aria-label="Close"
+              >
+                <Close />
+              </IconButton>
               <Typography
                 variant="h6"
-                style={{ color: "white" }}
+                style={{ color: "white", textTransform: "capitalize"}}
                 className={classes.flex}
               >
                 {object.name}
               </Typography>
-              <Button
-                color="inherit"
-                style={{ color: "white" }}
-                onClick={this.handleDialogClose}
-              >
-                Ok
-              </Button>
             </Toolbar>
           </AppBar>
           {/* empty dialog title used to introduce spacing */}
@@ -270,11 +261,6 @@ class QuizzesDialog extends React.Component {
               </GridContainer>
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleDialogClose} color="primary">
-              {"OK"}
-            </Button>
-          </DialogActions>
         </Dialog>
       </div>
     );

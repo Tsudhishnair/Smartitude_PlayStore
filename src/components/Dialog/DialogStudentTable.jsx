@@ -14,7 +14,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
+  Select, Slide,
   TextField,
   Typography
 } from "@material-ui/core";
@@ -25,6 +25,10 @@ import Spacing from "../Spacing/Spacing";
 // react apollo
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 // edit student query
 const EDIT_STUDENT = gql`
@@ -178,6 +182,7 @@ class StudentDialog extends React.Component {
                 open={this.state.open}
                 onClose={this.handleClose}
                 scroll={"body"}
+                TransitionComponent={Transition}
                 aria-labelledby="form-dialog-title"
               >
                 <DialogTitle id="form-dialog-title">
