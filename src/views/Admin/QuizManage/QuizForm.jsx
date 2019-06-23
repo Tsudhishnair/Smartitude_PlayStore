@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-
+import { withStyles } from "@material-ui/core/styles";
 import { DateTimePicker, MuiPickersUtilsProvider } from "material-ui-pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -22,8 +22,7 @@ import {
   Switch,
   TextField,
   Tooltip,
-  Typography,
-  withStyles
+  Typography
 } from "@material-ui/core";
 
 import { Delete } from "@material-ui/icons";
@@ -34,61 +33,8 @@ import { Mutation, Query } from "react-apollo";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import Spacing from "../../../components/Spacing/Spacing";
 import PropTypes from "prop-types";
-import green from "@material-ui/core/colors/green";
 import { CUSTOM_QUIZ_CONSTANT } from "../../../Utils";
-
-const styles = theme => ({
-  formRoot: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  container: {
-    display: "flex",
-    flexGrow: 1
-  },
-  root: {
-    display: "flex",
-    flexWrap: "nowrap",
-    autoWidth: true
-  },
-  date_root: {
-    marginTop: theme.spacing.unit * 2,
-    display: "flex",
-    flexWrap: "nowrap",
-    autoWidth: true
-  },
-  formControl: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    minWidth: 120,
-    display: "flex",
-    flexGrow: 1,
-    margin: "18px 0 0 0",
-    position: "relative"
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  },
-  delete: {
-    margin: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 4
-  },
-  greyBackground: {
-    background: "grey"
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
+import formControlStyle from "../../../assets/jss/form-control";
 
 //Query to access Batch Category and SubCategory details
 const ALL_QUERY = gql`
@@ -119,7 +65,7 @@ const CREATE_CUSTOM_QUIZ_QUERY = gql`
   mutation generateCustomQuiz($customQuizRequest: CustomQuizRequest!) {
     generateCustomQuiz(customQuizRequest: $customQuizRequest) {
       _id
-      createdBy{
+      createdBy {
         _id
         name
       }
@@ -970,24 +916,22 @@ class QuizForm extends React.Component {
                         <strong>Quiz Info</strong>
                       </Typography>
                       <GridContainer>
-                        <GridItem xs={12} sm={3} md={3}>
-                          <FormControl
+                        <GridItem
+                          xs={12}
+                          sm={3}
+                          md={3}
+                        >
+                          <TextField
+                            id="standard-search"
+                            label="Quiz Name"
+                            type="text"
+                            margin={"dense"}
+                            name="quizName"
                             required
+                            value={this.state.quizCommon.quizName}
+                            onChange={e => this.handleCommonFieldChanges(e)}
                             fullWidth
-                            className={classes.formControl}
-                            style={{ marginTop: "-4px" }}
-                          >
-                            <TextField
-                              id="standard-search"
-                              label="Quiz Name"
-                              type="input"
-                              margin="normal"
-                              name="quizName"
-                              value={this.state.quizCommon.quizName}
-                              onChange={e => this.handleCommonFieldChanges(e)}
-                              fullWidth
-                            />
-                          </FormControl>
+                          />
                         </GridItem>
                         <GridItem xs={12} sm={3} md={3}>
                           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -1169,4 +1113,4 @@ QuizForm.propTypes = {
   reloadList: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(QuizForm);
+export default withStyles(formControlStyle)(QuizForm);

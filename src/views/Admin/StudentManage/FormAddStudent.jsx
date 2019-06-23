@@ -12,58 +12,15 @@ import Spacing from "../../../components/Spacing/Spacing";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
-
 import {
   Button,
   CircularProgress,
-  Divider,
   ExpansionPanelActions,
   Snackbar,
   Tooltip
 } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import green from "@material-ui/core/colors/green";
-
-const styles = theme => ({
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    wrap: "nowrap",
-    minWidth: 120
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
+import formControlStyle from "../../../assets/jss/form-control";
 
 class FormAddStudent extends Component {
   state = {
@@ -287,7 +244,7 @@ class FormAddStudent extends Component {
       }
     `;
     return (
-      <Mutation mutation={Add_Student}>
+      <Mutation mutation={Add_Student} onCompleted={this.handleReset}>
         {(addStudent, { data }) => {
           return (
             <div className={classes.root}>
@@ -324,18 +281,18 @@ class FormAddStudent extends Component {
                   >
                     <TextField
                       autoFocus
-                      margin="dense"
                       id="phone"
                       label="Phone Number"
-                      type="phone"
+                      margin={"dense"}
+                      type="number"
                       name="phoneNumber"
                       required
+                      InputProps={{ inputProps: { min: 6000000000, max: 9999999999 } }}
                       onChange={this.handleValueChange}
                       value={this.state.assignval.phoneNumber}
                       fullWidth
                     />
                   </GridItem>
-
                   <GridItem
                     xs={12}
                     sm={4}
@@ -394,7 +351,6 @@ class FormAddStudent extends Component {
                   >
                     <TextField
                       autoFocus
-                      margin="dense"
                       id="username"
                       label="Username"
                       required
@@ -467,13 +423,13 @@ class FormAddStudent extends Component {
                   >
                     <TextField
                       autoFocus
-                      margin="dense"
                       id="phone"
                       label="Batch"
                       required
                       placeholder="20XX"
                       type="number"
                       name="batch"
+                      InputProps={{ inputProps: { min: 2000, max: 2040 } }}
                       onChange={this.handleValueChange}
                       value={this.state.assignval.batch}
                       fullWidth
@@ -536,4 +492,4 @@ FormAddStudent.propTypes = {
   classes: PropTypes.object.isRequired,
   reloadStudentsList: PropTypes.func.isRequired
 };
-export default withStyles(styles)(FormAddStudent);
+export default withStyles(formControlStyle)(FormAddStudent);

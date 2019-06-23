@@ -25,45 +25,7 @@ import Spacing from "../Spacing/Spacing";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    // marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  // formControl: {
-  //   margin: theme.spacing.unit * 3,
-  //   minWidth: 120
-  // },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
+import formControlStyle from "../../assets/jss/form-control";
 
 // edit student query
 const EDIT_STUDENT = gql`
@@ -463,4 +425,4 @@ StudentDialog.propTypes = {
   onRef: PropTypes.object
 };
 
-export default withStyles(styles)(StudentDialog);
+export default withStyles(formControlStyle)(StudentDialog);
