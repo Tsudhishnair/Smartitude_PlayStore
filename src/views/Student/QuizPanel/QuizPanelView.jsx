@@ -123,6 +123,10 @@ class QuizPanelView extends React.Component {
     //maintain timer field
     this.timer;
 
+    //used to check for pc sleep condn
+    this.sleepDetectionTimer;
+    this.lastTime = new Date().getTime();
+
     this.startTime = {
       startTime: new Date()
     };
@@ -217,6 +221,14 @@ class QuizPanelView extends React.Component {
       this.props.location.state.sections[this.currentSection]
     );
 
+    this.sleepDetectionTimer = setInterval(() => {
+      let currentTime = new Date().getTime();
+      if (currentTime > this.lastTime + 8000 * 2) {
+        this.handleSectionSubmit(this.sections, this.mutation);
+      }
+      this.lastTime = currentTime;
+    }, 8000);
+
     //listener for tab change
     document.addEventListener(
       this.visibilityStatus,
@@ -233,6 +245,8 @@ class QuizPanelView extends React.Component {
   //remove event listener for tab close/refresh
   componentWillUnmount = () => {
     window.onbeforeunload = undefined;
+
+    clearInterval(this.sleepDetectionTimer);
 
     //remove tab change listener
     document.removeEventListener(

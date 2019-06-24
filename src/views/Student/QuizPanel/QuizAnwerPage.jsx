@@ -541,8 +541,6 @@ class QuizAnswer extends React.Component {
   calculateTimeTaken = () => {
     const timeTakenInMillis =
       this.data.submittedAt - new Date(this.data.startTime);
-    console.log(this.data.submittedAt);
-    console.log(this.data.startTime);
     return Math.floor(timeTakenInMillis / 60000);
   };
 
