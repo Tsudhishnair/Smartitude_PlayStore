@@ -9,42 +9,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import formControlStyle from "../../assets/jss/form-control";
 
-import Spacing from "../Spacing/Spacing";
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -75,6 +41,7 @@ class DialogDelete extends React.Component {
           open={this.state.open}
           onClose={this.handleDeleteClose}
           aria-labelledby="alert-dialog-title"
+          TransitionComponent={Transition}
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
@@ -104,4 +71,4 @@ DialogDelete.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DialogDelete);
+export default withStyles(formControlStyle)(DialogDelete);

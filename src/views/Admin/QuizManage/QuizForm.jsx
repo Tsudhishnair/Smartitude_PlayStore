@@ -25,7 +25,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-import { Delete } from "@material-ui/icons";
+import { Delete, Add } from "@material-ui/icons";
 import { Redirect } from "react-router-dom";
 import moment from "moment";
 import gql from "graphql-tag";
@@ -566,7 +566,7 @@ class QuizForm extends React.Component {
           <Spacing />
           <GridContainer>
             <GridItem xs={12} sm={4} md={4}>
-              <FormControl required fullWidth className={classes.formControl}>
+              <FormControl required fullWidth>
                 <InputLabel htmlFor="category">Category</InputLabel>
                 <Select
                   onChange={e => this.handleCategorySelect(e, index)}
@@ -586,7 +586,7 @@ class QuizForm extends React.Component {
               </FormControl>
             </GridItem>
             <GridItem xs={12} sm={8} md={8}>
-              <FormControl required fullWidth className={classes.formControl}>
+              <FormControl required fullWidth>
                 <ReactChipInput
                   style={{ zIndex: 0 }}
                   data={this.state.quizSectionWise[index].subcategoryList}
@@ -610,78 +610,68 @@ class QuizForm extends React.Component {
             ) : (
               <Fragment>
                 <GridItem xs={12} sm={2} md={2} className={classes.container}>
-                  <FormControl
+                  <TextField
+                    id="standard-marks"
+                    label="+ Marks per Quest."
+                    margin="normal"
+                    type="number"
                     required
+                    name="marksPerQn"
+                    value={this.state.quizSectionWise[index].marksPerQn}
+                    onChange={e => this.handleSectionWiseFields(e, index)}
                     fullWidth
-                    className={classes.formControl}
-                  >
-                    <TextField
-                      id="standard-marks"
-                      label="+ Marks per Quest."
-                      margin="normal"
-                      type="number"
-                      name="marksPerQn"
-                      value={this.state.quizSectionWise[index].marksPerQn}
-                      onChange={e => this.handleSectionWiseFields(e, index)}
-                      fullWidth
-                    />
-                  </FormControl>
+                  />
                 </GridItem>
                 <GridItem xs={12} sm={2} md={2} className={classes.container}>
-                  <FormControl
+                  <TextField
+                    id="standard-negative-marks"
+                    label="- Marks per Quest."
+                    margin="normal"
+                    type="number"
                     required
+                    name="negativeMarksPerQn"
+                    value={this.state.quizSectionWise[index].negativeMarksPerQn}
+                    onChange={e => this.handleSectionWiseFields(e, index)}
                     fullWidth
-                    className={classes.formControl}
-                  >
-                    <TextField
-                      id="standard-negative-marks"
-                      label="- Marks per Quest."
-                      margin="normal"
-                      type="number"
-                      name="negativeMarksPerQn"
-                      value={
-                        this.state.quizSectionWise[index].negativeMarksPerQn
-                      }
-                      onChange={e => this.handleSectionWiseFields(e, index)}
-                      fullWidth
-                    />
-                  </FormControl>
+                  />
                 </GridItem>
               </Fragment>
             )}
             <GridItem xs={12} sm={2} md={3}>
-              <FormControl required fullWidth className={classes.formControl}>
-                <TextField
-                  id="standard-number"
-                  label="No. Of Quest."
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  name="numberOfQuestions"
-                  value={this.state.quizSectionWise[index].numberOfQuestions}
-                  onChange={e => this.handleSectionWiseFields(e, index)}
-                />
-              </FormControl>
+              <TextField
+                id="standard-number"
+                label="No. Of Quest."
+                type="number"
+                required
+                fullWidth
+                margin="normal"
+                name="numberOfQuestions"
+                value={this.state.quizSectionWise[index].numberOfQuestions}
+                onChange={e => this.handleSectionWiseFields(e, index)}
+              />
             </GridItem>
             <GridItem xs={10} sm={2} md={3}>
-              <FormControl required fullWidth className={classes.formControl}>
-                <TextField
-                  id="standard-number"
-                  label="Time Limit (min)"
-                  type="number"
-                  margin="normal"
-                  name="timeLimit"
-                  value={this.state.quizSectionWise[index].timeLimit}
-                  onChange={e => this.handleSectionWiseFields(e, index)}
-                />
-              </FormControl>
+              <TextField
+                id="standard-number"
+                label="Time Limit (min)"
+                type="number"
+                margin="normal"
+                required
+                name="timeLimit"
+                value={this.state.quizSectionWise[index].timeLimit}
+                onChange={e => this.handleSectionWiseFields(e, index)}
+              />
             </GridItem>
             <GridItem xs={2} sm={1} md={1}>
               <div className={classes.delete}>
                 <Tooltip title={"Delete Category Section"}>
-                  <IconButton onClick={() => this.handleDeleteClick(index)}>
+                  <Button
+                    variant={"outlined"}
+                    fullWidth
+                    onClick={() => this.handleDeleteClick(index)}
+                  >
                     <Delete />
-                  </IconButton>
+                  </Button>
                 </Tooltip>
               </div>
             </GridItem>
@@ -861,18 +851,15 @@ class QuizForm extends React.Component {
                               </GridItem>
                             </GridContainer>
                             {this.renderSectionDetails(classes, quizType)}
-                            <ExpansionPanelActions>
-                              <Button
-                                color="primary"
-                                fullWidth
-                                variant={"outlined"}
-                                size={"small"}
-                                className={classes.button}
-                                onClick={this.handleClick}
-                              >
-                                Add More
-                              </Button>
-                            </ExpansionPanelActions>
+                            <Button
+                              color="primary"
+                              fullWidth
+                              variant={"outlined"}
+                              size={"small"}
+                              onClick={this.handleClick}
+                            >
+                              <Add /> Add More
+                            </Button>
                             <Divider />
                             <ExpansionPanelActions>
                               <Link to="/student/start_quiz">
@@ -916,16 +903,11 @@ class QuizForm extends React.Component {
                         <strong>Quiz Info</strong>
                       </Typography>
                       <GridContainer>
-                        <GridItem
-                          xs={12}
-                          sm={3}
-                          md={3}
-                        >
+                        <GridItem xs={12} sm={3} md={3}>
                           <TextField
                             id="standard-search"
                             label="Quiz Name"
                             type="text"
-                            margin={"dense"}
                             name="quizName"
                             required
                             value={this.state.quizCommon.quizName}
@@ -972,11 +954,7 @@ class QuizForm extends React.Component {
                           </MuiPickersUtilsProvider>
                         </GridItem>
                         <GridItem xs={12} sm={3} md={3}>
-                          <FormControl
-                            required
-                            fullWidth
-                            className={classes.formControl}
-                          >
+                          <FormControl required fullWidth>
                             <InputLabel htmlFor="batch">Batch</InputLabel>
                             <Select
                               onChange={e => this.handleCommonFieldChanges(e)}
@@ -994,6 +972,9 @@ class QuizForm extends React.Component {
                             </Select>
                           </FormControl>
                         </GridItem>
+                      </GridContainer>
+                      <Spacing />
+                      <GridContainer>
                         <GridItem
                           xs={12}
                           sm={3}
@@ -1012,11 +993,7 @@ class QuizForm extends React.Component {
                           />
                         </GridItem>
                         <GridItem xs={12} sm={12} md={12}>
-                          <FormControl
-                            required
-                            fullWidth
-                            className={classes.formControl}
-                          >
+                          <FormControl required fullWidth>
                             <TextField
                               id="standard-instructions"
                               label="Instructions for students"
@@ -1031,11 +1008,7 @@ class QuizForm extends React.Component {
                           </FormControl>
                         </GridItem>
                         <GridItem xs={12} sm={12} md={12}>
-                          <FormControl
-                            required
-                            fullWidth
-                            className={classes.formControl}
-                          >
+                          <FormControl required fullWidth>
                             <TextField
                               id="description"
                               label="Quiz Description"
@@ -1054,18 +1027,15 @@ class QuizForm extends React.Component {
                         <strong>Category Info</strong>
                       </Typography>
                       {this.renderSectionDetails(classes)}
-                      <ExpansionPanelActions>
-                        <Button
-                          color="primary"
-                          fullWidth
-                          variant={"outlined"}
-                          size={"small"}
-                          className={classes.button}
-                          onClick={this.handleClick}
-                        >
-                          Add More
-                        </Button>
-                      </ExpansionPanelActions>
+                      <Button
+                        color="secondary"
+                        fullWidth
+                        variant={"outlined"}
+                        size={"small"}
+                        onClick={this.handleClick}
+                      >
+                        <Add/> Add More
+                      </Button>
                       <Divider />
                       <ExpansionPanelActions>
                         <Mutation mutation={ADD_QUIZ}>
@@ -1094,7 +1064,6 @@ class QuizForm extends React.Component {
             horizontal: "right"
           }}
           open={this.state.snackbar.open}
-          autoHideDuration={6000}
         >
           <CustomSnackbar
             onClose={this.closeSnackbar}

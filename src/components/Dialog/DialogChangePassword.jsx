@@ -14,42 +14,7 @@ import {
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    // marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
+import formControlStyle from "../../assets/jss/form-control";
 
 class DialogChangePassword extends React.Component {
   constructor(props) {
@@ -169,4 +134,4 @@ DialogChangePassword.propTypes = {
   onRef: PropTypes.object
 };
 
-export default withStyles(styles)(DialogChangePassword);
+export default withStyles(formControlStyle)(DialogChangePassword);

@@ -14,25 +14,8 @@ import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
 import PropTypes from "prop-types";
+import formControlStyle from "../../../assets/jss/form-control";
 
-const styles = theme => ({
-  root: {
-    dispaly: "felx",
-    flexGrow: 1
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
 class FormAddCategory extends Component {
   constructor(props) {
     super(props);
@@ -261,4 +244,4 @@ FormAddCategory.propTypes = {
   classes: PropTypes.object.isRequired,
   reloadList: PropTypes.func.isRequired
 };
-export default withStyles(styles)(FormAddCategory);
+export default withStyles(formControlStyle)(FormAddCategory);

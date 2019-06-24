@@ -10,37 +10,13 @@ import {
   Snackbar
 } from "@material-ui/core";
 import { Mutation } from "react-apollo";
-import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
-import green from "@material-ui/core/colors/green";
-
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-
-const styles = theme => ({
-  root: {
-    // display: "flex",
-    flexGrow: 1
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
+import formControlStyle from "../../../assets/jss/form-control";
 
 // mutation command
 const ADD_SUBCATEGORY = gql`
@@ -231,7 +207,6 @@ class FormAddSubcategory extends Component {
                   >
                     <TextField
                       autoFocus
-                      margin="normal"
                       id="name"
                       name="name"
                       label="Subcategory Name"
@@ -248,7 +223,6 @@ class FormAddSubcategory extends Component {
                   <GridItem xs={12} sm={12} md={12}>
                     <TextField
                       autoFocus
-                      margin="dense"
                       id="description"
                       name="description"
                       label="Subcategory Description"
@@ -314,4 +288,4 @@ FormAddSubcategory.propTypes = {
   categories: PropTypes.object.isRequired,
   reloadList: PropTypes.func.isRequired
 };
-export default withStyles(styles)(FormAddSubcategory);
+export default withStyles(formControlStyle)(FormAddSubcategory);

@@ -26,46 +26,7 @@ import Spacing from "../../components/Spacing/Spacing.jsx";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { transformDateString } from "../../Utils";
-
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    minWidth: theme.spacing.unit * 5,
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  },
-  progress: {
-    margin: theme.spacing.unit * 10,
-    marginTop: "10%",
-    marginLeft: "45%"
-  }
-});
+import formControlStyle from "../../assets/jss/form-control";
 
 const columns = [
   {
@@ -273,4 +234,4 @@ QuizzesDialog.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(QuizzesDialog);
+export default withStyles(formControlStyle)(QuizzesDialog);

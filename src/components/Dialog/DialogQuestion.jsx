@@ -16,41 +16,7 @@ import Slide from "@material-ui/core/Slide";
 
 import Spacing from "../Spacing/Spacing";
 import AddQuestion from "../../views/Faculty/AddQuestion/AddQuestion";
-
-const styles = theme => ({
-  appBar: {
-    position: "fixed"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
+import formControlStyle from "../../assets/jss/form-control";
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -188,4 +154,4 @@ DialogQuestion.propTypes = {
   question: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(DialogQuestion);
+export default withStyles(formControlStyle)(DialogQuestion);

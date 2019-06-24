@@ -43,7 +43,6 @@ const formControlStyle = theme => ({
     position: "relative"
   },
   date_root: {
-    marginTop: theme.spacing.unit * 2,
     display: "flex",
     flexWrap: "nowrap",
     autoWidth: true

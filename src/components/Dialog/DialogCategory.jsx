@@ -18,41 +18,7 @@ import GridContainer from "../../components/Grid/GridContainer.jsx";
 
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
-
-const styles = theme => ({
-  appBar: {
-    position: "relative"
-  },
-  flex: {
-    flex: 1
-  },
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
-    minWidth: theme.spacing.unit * 5,
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  }
-});
+import formControlStyle from "../../assets/jss/form-control";
 
 // edit category mutation query
 const EDIT_CATEGORY = gql`
@@ -288,4 +254,4 @@ DialogCategory.propTypes = {
   reloadList: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(DialogCategory);
+export default withStyles(formControlStyle)(DialogCategory);

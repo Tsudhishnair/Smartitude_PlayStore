@@ -14,7 +14,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select, Slide,
+  Select,
+  Slide,
   TextField,
   Typography
 } from "@material-ui/core";

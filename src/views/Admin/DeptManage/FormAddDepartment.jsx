@@ -11,47 +11,7 @@ import { Mutation } from "../../../../node_modules/react-apollo";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 import gql from "graphql-tag";
-
-const styles = theme => ({
-  formControl: {
-    margin: 0,
-    padding: theme.spacing.unit * 10,
-    fullWidth: true,
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    backgroundColor: "#9ee",
-    wrap: "nowrap"
-  },
-  elementPadding: {
-    padding: "15px",
-    marginBottom: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 10
-  },
-  container: {
-    display: "flex",
-
-    flexGrow: 1
-  },
-  root: {
-    flexGrow: 1,
-    marginLeft: 10
-  },
-  button: {
-    margin: theme.spacing.unit * 4
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
+import formControlStyle from "../../../assets/jss/form-control";
 
 // mutation command
 const ADD_DEPARTMENT = gql`
@@ -318,4 +278,4 @@ FormAddDepartment.propTypes = {
   reloadDepartmentsList: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(FormAddDepartment);
+export default withStyles(formControlStyle)(FormAddDepartment);
