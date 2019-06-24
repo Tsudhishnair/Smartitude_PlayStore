@@ -107,6 +107,8 @@ const CUSTOM_QUIZ = gql`
   }
 `;
 
+const TIMEOUT_INTERVAL = 8000;
+
 class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
@@ -221,13 +223,15 @@ class QuizPanelView extends React.Component {
       this.props.location.state.sections[this.currentSection]
     );
 
+    //start interval for detecting sleep
     this.sleepDetectionTimer = setInterval(() => {
+      //compare the current time with the last recorded time. if it is greater than the interval, then submit the quiz
       let currentTime = new Date().getTime();
-      if (currentTime > this.lastTime + 8000 * 2) {
+      if (currentTime > this.lastTime + TIMEOUT_INTERVAL * 2) {
         this.handleSectionSubmit(this.sections, this.mutation);
       }
       this.lastTime = currentTime;
-    }, 8000);
+    }, TIMEOUT_INTERVAL);
 
     //listener for tab change
     document.addEventListener(
@@ -246,6 +250,7 @@ class QuizPanelView extends React.Component {
   componentWillUnmount = () => {
     window.onbeforeunload = undefined;
 
+    //remove interval for sleep detection
     clearInterval(this.sleepDetectionTimer);
 
     //remove tab change listener
