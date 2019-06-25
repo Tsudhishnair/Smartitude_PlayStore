@@ -1,7 +1,8 @@
 // used to handle client side session management
 export const loginHandler = {
   isLoggedIn: localStorage.getItem("token") ? true : false,
-  authenticated: userType => {
+  //don't change this to arrow form
+  authenticated(userType) {
     if (localStorage.getItem("token") !== null) {
       this.isLoggedIn = true;
     } else {
