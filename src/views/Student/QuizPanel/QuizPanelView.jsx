@@ -72,7 +72,7 @@ const styles = theme => ({
     margin: `${theme.spacing.unit}px 0`
   },
   fab: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit * 1.5,
     elevation: 0,
     boxShadow: "none"
   },
@@ -101,7 +101,6 @@ const styles = theme => ({
   },
   rightPanel: {
     height: "68vh",
-    display: "block",
     position: "relative",
     color: "green",
     [theme.breakpoints.down("sm")]: {
@@ -110,8 +109,7 @@ const styles = theme => ({
   },
   leftPanel: {
     height: "68vh",
-    display: "block",
-    position: "relative",
+    position: "relative"
   },
   progress: {
     margin: theme.spacing.unit * 10,
@@ -128,11 +126,11 @@ const styles = theme => ({
     align: "end"
   },
   cardContent: {
-    overflowY: "scroll",
+    overflowY: "auto",
     width: "100%",
     position: "absolute",
     top: 0,
-    height: "auto"
+    height: "100%"
   }
 });
 
