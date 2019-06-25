@@ -16,7 +16,13 @@ import { getUserType } from "../../Utils";
 class ErrorPage extends React.Component {
   render() {
     const { classes } = this.props;
-    const path = `${getUserType()}/dashboard`;
+
+    let path = "";
+    if (getUserType()) {
+      path = `${getUserType()}/dashboard`;
+    } else {
+      path = "/";
+    }
 
     return (
       <div>
