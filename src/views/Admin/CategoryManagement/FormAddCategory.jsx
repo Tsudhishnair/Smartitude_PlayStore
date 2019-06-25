@@ -12,7 +12,6 @@ import {
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import green from "@material-ui/core/colors/green";
 import PropTypes from "prop-types";
 import formControlStyle from "../../../assets/jss/form-control";
 

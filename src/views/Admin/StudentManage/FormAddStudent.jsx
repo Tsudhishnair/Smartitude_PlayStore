@@ -17,10 +17,12 @@ import {
   CircularProgress,
   ExpansionPanelActions,
   Snackbar,
+  Divider,
   Tooltip
 } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import formControlStyle from "../../../assets/jss/form-control";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 class FormAddStudent extends Component {
   state = {
@@ -287,7 +289,9 @@ class FormAddStudent extends Component {
                       type="number"
                       name="phoneNumber"
                       required
-                      InputProps={{ inputProps: { min: 6000000000, max: 9999999999 } }}
+                      InputProps={{
+                        inputProps: { min: 6000000000, max: 9999999999 }
+                      }}
                       onChange={this.handleValueChange}
                       value={this.state.assignval.phoneNumber}
                       fullWidth
@@ -436,6 +440,7 @@ class FormAddStudent extends Component {
                     />
                   </GridItem>
                 </GridContainer>
+                <Divider />
                 <ExpansionPanelActions>
                   <Button
                     size="small"

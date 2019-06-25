@@ -22,8 +22,10 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel
+  FormLabel,
+  CardActions
 } from "@material-ui/core";
+import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
@@ -44,9 +46,13 @@ import {
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
 import Latex from "../../General/Latex";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
   root: {
+    height: "100%",
+    display: "flex",
+    flexFlow: "column",
     margin: theme.spacing.unit * 1,
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
@@ -77,16 +83,55 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit
   },
+  topPanel: {
+    flexGrow: "0",
+    flexShrink: "1",
+    flexBasis: "10vh"
+  },
+  centerPanel: {
+    flexGrow: "1",
+    flexShrink: "1",
+    flexBasis: "70vh"
+  },
+  bottomPanel: {
+    marginTop: theme.spacing.unit * 1,
+    flexGrow: "0",
+    flexShrink: "1",
+    flexBasis: "15vh"
+  },
   rightPanel: {
+    height: "68vh",
+    overflow: "auto",
+    display: "block",
+    position: "relative",
     color: "green",
     [theme.breakpoints.down("sm")]: {
       marginTop: theme.spacing.unit * 2
     }
   },
+  leftPanel: {
+    height: "68vh",
+    display: "block",
+    position: "relative",
+    overflow: "auto"
+  },
   progress: {
     margin: theme.spacing.unit * 10,
     marginTop: "10%",
     marginLeft: "45%"
+  },
+  cardActions: {
+    position: "absolute",
+    width: "100%",
+    bottom: 0,
+    flex: "1 1 auto",
+    align: "end"
+  },
+  cardContent: {
+    overflowY: "scroll",
+    position: "absolute",
+    top: 0,
+    height: "auto"
   }
 });
 
@@ -776,245 +821,287 @@ class QuizPanelView extends React.Component {
     } else {
       return (
         <FullScreen enabled={this.state.isFullScreen}>
-          <div className={classes.root}>
+          <React.Fragment>
             <Mutation
               mutation={this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ}
             >
               {finishQuiz => (
-                <React.Fragment>
+                <div className={classes.root}>
                   {(this.mutation = finishQuiz)}
-                  <GridContainer>
-                    <GridItem xs={12} md={9}>
-                      <Typography>
-                        <h4>{quiz.name}</h4>
-                      </Typography>
-                    </GridItem>
-                    <GridItem xs={12} md={3}>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        className={classes.button}
-                        onClick={() => this.toggleFullScreen()}
-                      >
-                        Toggle Fullscreen
-                      </Button>
-                    </GridItem>
-                  </GridContainer>
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={8}>
-                      <Card>
-                        <form>
-                          <CardContent>
-                            <Hidden mdUp implementation="css">
-                              {this.state.submitLoading ? (
-                                <CircularProgress
-                                  className={classes.progress}
-                                />
+                  <div className={classes.topPanel}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={11}>
+                        <Typography>
+                          <h4>
+                            {quiz.name == null ? "Random Quiz" : quiz.name}
+                          </h4>
+                        </Typography>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={1}>
+                        <Hidden smDown style={{ float: "right" }}>
+                          <Tooltip title={"Toggle FullScreen"}>
+                            <Button
+                              variant="outlined"
+                              size={"small"}
+                              className={classes.button}
+                              onClick={() => this.toggleFullScreen()}
+                            >
+                              {this.state.isFullScreen ? (
+                                <FullscreenExit />
                               ) : (
-                                <p>
-                                  <Typography variant={"overline"}>
-                                    {this.getTimeLimit(selectedSection)
-                                      ? "Time Remaining:"
-                                      : "Time Taken:"}
-                                  </Typography>
-                                  <Typography
-                                    variant={"h5"}
-                                    className={classes.timer}
-                                  >
-                                    <b>
-                                      <div>
-                                        <span>
-                                          {padDigit(this.state.timer.minutes)}
-                                        </span>
-                                        <span> : </span>
-                                        <span>
-                                          {padDigit(this.state.timer.seconds)}
-                                        </span>
-                                      </div>
-                                    </b>
-                                  </Typography>
-                                </p>
+                                <Fullscreen />
                               )}
-                              <Spacing />
-                            </Hidden>
-                            <Typography>
-                              Question Number: <b>{this.getQuestionNumber()}</b>
-                            </Typography>
-                            <Latex text={this.state.fields.question} />
-                            <Divider />
-                          </CardContent>
-                          <CardBody>
-                            <FormControl
-                              component="fieldset"
-                              className={classes.formControl}
-                            >
-                              <FormLabel component="legend">
-                                Select your correct choice below
-                              </FormLabel>
-                              <RadioGroup
-                                aria-label="options"
-                                name="option"
-                                className={classes.group}
-                                value={this.state.markedOption}
-                                onChange={event => this.handleChange(event)}
-                              >
-                                <FormControlLabel
-                                  value={1}
-                                  control={<Radio />}
-                                  label={
-                                    <Latex
-                                      text={this.state.fields.options["1"]}
-                                    />
-                                  }
-                                />
-                                <FormControlLabel
-                                  value={2}
-                                  label={
-                                    <Latex
-                                      text={this.state.fields.options["2"]}
-                                    />
-                                  }
-                                  control={<Radio />}
-                                />
-                                <FormControlLabel
-                                  value={3}
-                                  control={<Radio />}
-                                  label={
-                                    <Latex
-                                      text={this.state.fields.options["3"]}
-                                    />
-                                  }
-                                />
-                                <FormControlLabel
-                                  value={4}
-                                  control={<Radio />}
-                                  label={
-                                    <Latex
-                                      text={this.state.fields.options["4"]}
-                                    />
-                                  }
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                          </CardBody>
-                          <Divider />
-                          <CardFooter>
-                            <Button
-                              color={"secondary"}
-                              size={"small"}
-                              variant="outlined"
-                              disabled={this.state.prevButton}
-                              className={classes.button}
-                              onClick={event =>
-                                this.handlePreviousClick(event, selectedSection)
-                              }
-                            >
-                              Previous
                             </Button>
-                            <Button
-                              variant="outlined"
-                              size={"small"}
-                              type={"reset"}
-                              className={classes.button}
-                              onClick={this.handleClearClick}
-                            >
-                              Clear Selection
-                            </Button>
-                            <Button
-                              color="primary"
-                              variant="outlined"
-                              size={"small"}
-                              disabled={this.state.nextButton}
-                              className={classes.button}
-                              onClick={event =>
-                                this.handleNextClick(event, selectedSection)
-                              }
-                            >
-                              Next
-                            </Button>
-                          </CardFooter>
-                        </form>
-                      </Card>
-                    </GridItem>
-                    <GridItem xs={12} sm={12} md={4}>
-                      <Card className={classes.rightPanel}>
-                        {this.state.submitLoading ? (
-                          <CircularProgress className={classes.progress} />
-                        ) : (
-                          <React.Fragment>
-                            <CardContent>
-                              <Hidden smDown implementation="css">
-                                <p>
-                                  <Typography variant={"overline"}>
-                                    {this.getTimeLimit(selectedSection)
-                                      ? "Time Remaining:"
-                                      : "Time Taken:"}
-                                  </Typography>
-                                  <Typography
-                                    variant={"h5"}
-                                    className={classes.timer}
+                          </Tooltip>
+                        </Hidden>
+                      </GridItem>
+                    </GridContainer>
+                  </div>
+                  <div className={classes.centerPanel}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={8}>
+                        <Card className={classes.leftPanel}>
+                          <form>
+                            <div className={classes.cardContent}>
+                              <CardContent>
+                                <Hidden mdUp implementation="css">
+                                  {this.state.submitLoading ? (
+                                    <CircularProgress
+                                      className={classes.progress}
+                                    />
+                                  ) : (
+                                    <p>
+                                      <Typography variant={"overline"}>
+                                        {this.getTimeLimit(selectedSection)
+                                          ? "Time Remaining:"
+                                          : "Time Taken:"}
+                                      </Typography>
+                                      <Typography
+                                        variant={"h5"}
+                                        className={classes.timer}
+                                      >
+                                        <b>
+                                          <div>
+                                            <span>
+                                              {padDigit(
+                                                this.state.timer.minutes
+                                              )}
+                                            </span>
+                                            <span> : </span>
+                                            <span>
+                                              {padDigit(
+                                                this.state.timer.seconds
+                                              )}
+                                            </span>
+                                          </div>
+                                        </b>
+                                      </Typography>
+                                    </p>
+                                  )}
+                                  <Spacing />
+                                </Hidden>
+                                <Typography>
+                                  Question Number:{" "}
+                                  <b>{this.getQuestionNumber()}</b>
+                                </Typography>
+                                <Latex text={this.state.fields.question} />
+                              </CardContent>
+                              <Divider />
+                              <CardContent>
+                                <CardBody>
+                                  <FormControl
+                                    component="fieldset"
+                                    className={classes.formControl}
                                   >
-                                    <b>
-                                      <div>
-                                        <span>
-                                          {padDigit(this.state.timer.minutes)}
-                                        </span>
-                                        <span> : </span>
-                                        <span>
-                                          {padDigit(this.state.timer.seconds)}
-                                        </span>
-                                      </div>
-                                    </b>
-                                  </Typography>
-                                </p>
-                                <Spacing />
-                              </Hidden>
-                              <Typography variant={"overline"}>
-                                Questions:
-                              </Typography>
-                              {this.generateQuestionJumpers(
-                                selectedSection,
-                                classes.fab
-                              )}
-                            </CardContent>
-                            <CardFooter>
-                              <Button
-                                variant="outlined"
-                                color="primary"
-                                type={"submit"}
-                                size={"small"}
-                                fullWidth
-                                className={classes.button}
-                                onClick={this.toggleDialogVisibility}
-                              >
-                                {activeStep === steps.length - 1
-                                  ? "Finish Quiz"
-                                  : "Submit Section"}
-                              </Button>
-                            </CardFooter>
-                          </React.Fragment>
-                        )}
-                      </Card>
-                    </GridItem>
-                  </GridContainer>
-                  <Spacing />
-                  <GridContainer>
-                    <GridItem xs={12} sm={12} md={12}>
-                      <Card>
-                        <Stepper activeStep={activeStep} alternativeLabel>
-                          {steps.map(label => {
-                            const props = {};
-                            const labelProps = {};
-                            return (
-                              <Step key={label} {...props}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                              </Step>
-                            );
-                          })}
-                        </Stepper>
-                      </Card>
-                    </GridItem>
-                  </GridContainer>
+                                    <FormLabel component="legend">
+                                      Select your correct choice below
+                                    </FormLabel>
+                                    <RadioGroup
+                                      aria-label="options"
+                                      name="option"
+                                      className={classes.group}
+                                      value={this.state.markedOption}
+                                      onChange={event =>
+                                        this.handleChange(event)
+                                      }
+                                    >
+                                      <FormControlLabel
+                                        value={1}
+                                        control={<Radio />}
+                                        label={
+                                          <Latex
+                                            text={
+                                              this.state.fields.options["1"]
+                                            }
+                                          />
+                                        }
+                                      />
+                                      <FormControlLabel
+                                        value={2}
+                                        label={
+                                          <Latex
+                                            text={
+                                              this.state.fields.options["2"]
+                                            }
+                                          />
+                                        }
+                                        control={<Radio />}
+                                      />
+                                      <FormControlLabel
+                                        value={3}
+                                        control={<Radio />}
+                                        label={
+                                          <Latex
+                                            text={
+                                              this.state.fields.options["3"]
+                                            }
+                                          />
+                                        }
+                                      />
+                                      <FormControlLabel
+                                        value={4}
+                                        control={<Radio />}
+                                        label={
+                                          <Latex
+                                            text={
+                                              this.state.fields.options["4"]
+                                            }
+                                          />
+                                        }
+                                      />
+                                    </RadioGroup>
+                                  </FormControl>
+                                </CardBody>
+                              </CardContent>
+                            </div>
+                            <div className={classes.cardActions}>
+                              <Divider />
+                              <CardActions>
+                                <Button
+                                  color={"secondary"}
+                                  size={"small"}
+                                  variant="outlined"
+                                  disabled={this.state.prevButton}
+                                  className={classes.button}
+                                  onClick={event =>
+                                    this.handlePreviousClick(
+                                      event,
+                                      selectedSection
+                                    )
+                                  }
+                                >
+                                  Previous
+                                </Button>
+                                <Button
+                                  variant="outlined"
+                                  size={"small"}
+                                  type={"reset"}
+                                  className={classes.button}
+                                  onClick={this.handleClearClick}
+                                >
+                                  Clear Selection
+                                </Button>
+                                <Button
+                                  color="primary"
+                                  variant="outlined"
+                                  size={"small"}
+                                  disabled={this.state.nextButton}
+                                  className={classes.button}
+                                  onClick={event =>
+                                    this.handleNextClick(event, selectedSection)
+                                  }
+                                >
+                                  Next
+                                </Button>
+                              </CardActions>
+                            </div>
+                          </form>
+                        </Card>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={4}>
+                        <Card className={classes.rightPanel}>
+                          {this.state.submitLoading ? (
+                            <CircularProgress className={classes.progress} />
+                          ) : (
+                            <React.Fragment>
+                              <CardContent className={classes.cardContent}>
+                                <Hidden smDown implementation="css">
+                                  <p>
+                                    <Typography variant={"overline"}>
+                                      {this.getTimeLimit(selectedSection)
+                                        ? "Time Remaining:"
+                                        : "Time Taken:"}
+                                    </Typography>
+                                    <Typography
+                                      variant={"h5"}
+                                      className={classes.timer}
+                                    >
+                                      <b>
+                                        <div>
+                                          <span>
+                                            {padDigit(this.state.timer.minutes)}
+                                          </span>
+                                          <span> : </span>
+                                          <span>
+                                            {padDigit(this.state.timer.seconds)}
+                                          </span>
+                                        </div>
+                                      </b>
+                                    </Typography>
+                                  </p>
+                                  <Spacing />
+                                </Hidden>
+                                <Typography variant={"overline"}>
+                                  Questions:
+                                </Typography>
+                                {this.generateQuestionJumpers(
+                                  selectedSection,
+                                  classes.fab
+                                )}
+                              </CardContent>
+                              <div className={classes.cardActions}>
+                                <Divider />
+                                <CardActions>
+                                  <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    type={"submit"}
+                                    size={"small"}
+                                    fullWidth
+                                    className={classes.button}
+                                    onClick={this.toggleDialogVisibility}
+                                  >
+                                    {activeStep === steps.length - 1
+                                      ? "Finish Quiz"
+                                      : "Submit Section"}
+                                  </Button>
+                                </CardActions>
+                              </div>
+                            </React.Fragment>
+                          )}
+                        </Card>
+                      </GridItem>
+                    </GridContainer>
+                  </div>
+                  <div className={classes.bottomPanel}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <Card>
+                          <Stepper activeStep={activeStep} alternativeLabel>
+                            {steps.map(label => {
+                              const props = {};
+                              const labelProps = {};
+                              return (
+                                <Step key={label} {...props}>
+                                  <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                              );
+                            })}
+                          </Stepper>
+                        </Card>
+                      </GridItem>
+                    </GridContainer>
+                  </div>
                   {isVisible ? (
                     <MessageDialog
                       title={
@@ -1037,10 +1124,10 @@ class QuizPanelView extends React.Component {
                       onClose={this.toggleDialogVisibility}
                     />
                   ) : null}
-                </React.Fragment>
+                </div>
               )}
             </Mutation>
-          </div>
+          </React.Fragment>
         </FullScreen>
       );
     }

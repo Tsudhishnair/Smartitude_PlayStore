@@ -54,7 +54,9 @@ const styles = theme => ({
     alignItems: "center"
   },
   formSpacing: {
-    flexGrow: 1
+    flexGrow: 1,
+    marginBottom: 0,
+    paddingBottom: 0
   }
 });
 
@@ -100,7 +102,7 @@ class Expansionpanel extends Component {
     return (
       <div className={classes.root}>
         <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMore/>}>
+          <ExpansionPanelSummary expandIcon={<ExpandMore />}>
             <div className={classes.column}>
               <Typography className={classes.heading}>{headers}</Typography>
             </div>
