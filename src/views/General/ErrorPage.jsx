@@ -11,10 +11,12 @@ import { Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import GridItem from "../../components/Grid/GridItem";
 import componentsStyle from "../../assets/jss/material-dashboard-react/views/landingPage.jsx";
+import { getUserType } from "../../Utils";
 
 class ErrorPage extends React.Component {
   render() {
     const { classes } = this.props;
+    const path = `${getUserType()}/dashboard`;
 
     return (
       <div>
@@ -37,7 +39,7 @@ class ErrorPage extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer justify="center">
-          <Link to="/">
+          <Link to={path}>
             <Button round color="warning">
               Go Home
             </Button>

@@ -1,7 +1,7 @@
 // used to handle client side session management
 export const loginHandler = {
   isLoggedIn: localStorage.getItem("token") ? true : false,
-  authenticated(userType) {
+  authenticated: userType => {
     if (localStorage.getItem("token") !== null) {
       this.isLoggedIn = true;
     } else {
@@ -21,6 +21,10 @@ export const loginHandler = {
     localStorage.removeItem("student");
   },
   userType: localStorage.getItem("userType")
+};
+
+export const getUserType = () => {
+  return localStorage.getItem("userType");
 };
 
 export const transformDateString = dateString => {
