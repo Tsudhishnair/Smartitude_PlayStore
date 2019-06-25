@@ -101,7 +101,6 @@ const styles = theme => ({
   },
   rightPanel: {
     height: "68vh",
-    overflow: "auto",
     display: "block",
     position: "relative",
     color: "green",
@@ -113,7 +112,6 @@ const styles = theme => ({
     height: "68vh",
     display: "block",
     position: "relative",
-    overflow: "auto"
   },
   progress: {
     margin: theme.spacing.unit * 10,
@@ -121,6 +119,8 @@ const styles = theme => ({
     marginLeft: "45%"
   },
   cardActions: {
+    backgroundColor: "white",
+    zIndex: 999,
     position: "absolute",
     width: "100%",
     bottom: 0,
@@ -129,6 +129,7 @@ const styles = theme => ({
   },
   cardContent: {
     overflowY: "scroll",
+    width: "100%",
     position: "absolute",
     top: 0,
     height: "auto"
