@@ -819,11 +819,12 @@ class QuizPanelView extends React.Component {
   };
 // Trigger Dialog Handling
   toggleTriggerDialogVisibility = () => {
-    this.setState(prevState => ({
-      triggers: {
-        showTabSwitchDialog: false
-      }
-    }));
+    this.incrementCounter();
+    // this.setState(prevState => ({
+    //   triggers: {
+    //     showTabSwitchDialog: false
+    //   }
+    // }));
   };
   toggleFullScreen = () => {
     console.log("called");
@@ -843,11 +844,11 @@ class QuizPanelView extends React.Component {
             title="ALERT ::: Quiz Submission:::"
             content="Since you have tried to switch tab even after warning  your quiz is going to be submitted"
             positiveAction="Ok"
-            // negativeAction=""
+            negativeAction=" "
             action={this.tabSwitchSubmission}
             // onClose={this.toggleDeleteDialogVisibility}
             //   this.handleSectionSubmit(this.sections, this.mutation)
-            onClose={this.toggleTriggerDialogVisibility}
+            onClose={this.tabSwitchSubmission}
           />
         );
       } else {
@@ -856,7 +857,7 @@ class QuizPanelView extends React.Component {
             title="WARNING :::Tab Switch Warning:::"
             content="It has been noted that you have tried to switch tabs. "
             positiveAction="ok"
-            // negativeAction=""
+            negativeAction=" "
             action={this.incrementCounter}
             onClose={this.toggleTriggerDialogVisibility}
             // onClose={this.handleSectionSubmit(this.sections, this.mutation)}
