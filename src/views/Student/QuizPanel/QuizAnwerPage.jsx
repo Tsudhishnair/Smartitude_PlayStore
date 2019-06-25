@@ -31,6 +31,8 @@ import CardBody from "../../../components/Card/CardBody";
 
 import { blue, green, red } from "@material-ui/core/colors";
 
+import { Redirect } from "react-router-dom"
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Latex from "../../General/Latex";
 
@@ -127,11 +129,14 @@ class QuizAnswer extends React.Component {
 
     //save data received in props
     this.data = this.props.location.state;
-    console.log(this.data);
 
-    this.quizScore = this.getQuizScore();
-    this.totalQuizScore = this.getTotalQuizScore();
-    this.percentage = this.calculatePercentage();
+    if (!this.data) {
+      this.hasError = true;
+    } else {
+      this.quizScore = this.getQuizScore();
+      this.totalQuizScore = this.getTotalQuizScore();
+      this.percentage = this.calculatePercentage();
+    }
   }
 
   //jsx for header
@@ -321,7 +326,7 @@ class QuizAnswer extends React.Component {
             <Typography>
               Question Number: <b>{questionIndex + 1}</b>
             </Typography>
-            <Latex text={question.question}/>
+            <Latex text={question.question} />
           </CardContent>
           <Divider />
           <CardBody>
@@ -339,7 +344,7 @@ class QuizAnswer extends React.Component {
                     1,
                     classes
                   )}
-                  label={<Latex text={question.options[0]}/>}
+                  label={<Latex text={question.options[0]} />}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -348,7 +353,7 @@ class QuizAnswer extends React.Component {
                     2,
                     classes
                   )}
-                  label={<Latex text={question.options[1]}/>}
+                  label={<Latex text={question.options[1]} />}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -357,7 +362,7 @@ class QuizAnswer extends React.Component {
                     3,
                     classes
                   )}
-                  label={<Latex text={question.options[2]}/>}
+                  label={<Latex text={question.options[2]} />}
                 />
                 <FormControlLabel
                   control={this.renderCheckbox(
@@ -366,7 +371,7 @@ class QuizAnswer extends React.Component {
                     4,
                     classes
                   )}
-                  label={<Latex text={question.options[3]}/>}
+                  label={<Latex text={question.options[3]} />}
                 />
               </FormGroup>
             </FormControl>
@@ -380,7 +385,7 @@ class QuizAnswer extends React.Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div>
-              <Latex text={question.solution}/>
+              <Latex text={question.solution} />
               <p>
                 Correct Option: <b>{question.correctOption}</b>
               </p>
@@ -590,6 +595,10 @@ class QuizAnswer extends React.Component {
 
   render() {
     const { classes } = this.props;
+
+    if (this.hasError) {
+      return <Redirect to="/error" />;
+    }
 
     return (
       <div className={classes.root}>
