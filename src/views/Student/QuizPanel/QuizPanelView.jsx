@@ -429,8 +429,8 @@ class QuizPanelView extends React.Component {
 
   //start running timer in forward dirn
   startForwardTimer = () => {
-    this.timer = setInterval(this.incrementTime, 1000);
-  };
+      this.timer = setInterval(this.incrementTime, 1000);
+    };
 
   //start running timer in backward dirn
   startBackwardTimer = () => {
@@ -444,7 +444,19 @@ class QuizPanelView extends React.Component {
 
   //executed every second for the timer interval fn
   incrementTime = () => {
+  // Pauses the time if Dialog appears
+    if(this.state.triggers.showTabSwitchDialog===true)
+    { console.log("Timer Pauses");
+      this.setState(prevState => ({
+        timer: {
+          minutes: prevState.timer.minutes,
+          seconds: prevState.timer.seconds
+        }
+      }));
+    }
     //move to the next minute
+    if(this.state.triggers.showTabSwitchDialog===false)
+    { console.log("Timer continuewsss");
     if (this.state.timer.seconds === 59) {
       this.setState(prevState => ({
         timer: {
@@ -462,32 +474,46 @@ class QuizPanelView extends React.Component {
         }
       }));
     }
+    }
   };
 
   //executed every second during backward dirn interval
   decrementTime = () => {
-    //stopping condition, stop timer & submit
-    if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
-      this.stopTimer();
-      this.handleSectionSubmit(this.sections, this.mutation);
-    }
-    //handle minute decrement condn
-    else if (this.state.timer.seconds === 0) {
+    // Pauses the time if Dialog appears
+    if(this.state.triggers.showTabSwitchDialog===true)
+    { console.log("Timer Pauses");
       this.setState(prevState => ({
         timer: {
-          minutes: prevState.timer.minutes - 1,
-          seconds: 59
+          minutes: prevState.timer.minutes,
+          seconds: prevState.timer.seconds
         }
       }));
     }
-    //handle normal cases
-    else {
-      this.setState(prevState => ({
-        timer: {
-          ...prevState.timer,
-          seconds: prevState.timer.seconds - 1
-        }
-      }));
+    if(this.state.triggers.showTabSwitchDialog===false) {
+      console.log("Timer continuewsss");
+      //stopping condition, stop timer & submit
+      if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
+        this.stopTimer();
+        this.handleSectionSubmit(this.sections, this.mutation);
+      }
+      //handle minute decrement condn
+      else if (this.state.timer.seconds === 0) {
+        this.setState(prevState => ({
+          timer: {
+            minutes: prevState.timer.minutes - 1,
+            seconds: 59
+          }
+        }));
+      }
+      //handle normal cases
+      else {
+        this.setState(prevState => ({
+          timer: {
+            ...prevState.timer,
+            seconds: prevState.timer.seconds - 1
+          }
+        }));
+      }
     }
   };
 
@@ -834,11 +860,11 @@ class QuizPanelView extends React.Component {
   // Trigger Dialog Handling
   toggleTriggerDialogVisibility = () => {
     this.incrementCounter();
-    // this.setState(prevState => ({
-    //   triggers: {
-    //     showTabSwitchDialog: false
-    //   }
-    // }));
+    this.setState(prevState => ({
+      triggers: {
+        showTabSwitchDialog: false
+      }
+    }));
   };
   toggleFullScreen = () => {
     console.log("called");
@@ -853,6 +879,7 @@ class QuizPanelView extends React.Component {
   renderTabSwitchDialog = () => {
     if (this.state.triggers.showTabSwitchDialog) {
       if (this.quizTabSwitchCounter === 1) {
+        console.log("Counter Reacched 1");
         return (
           <MessageDialog
             title="ALERT ::: Quiz Submission:::"
@@ -866,6 +893,7 @@ class QuizPanelView extends React.Component {
           />
         );
       } else {
+        console.log("Counter Value is "+this.quizTabSwitchCounter);
         return (
           <MessageDialog
             title="WARNING :::Tab Switch Warning:::"
