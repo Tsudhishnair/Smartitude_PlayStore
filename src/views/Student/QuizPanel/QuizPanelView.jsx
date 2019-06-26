@@ -302,8 +302,6 @@ class QuizPanelView extends React.Component {
     }, TIMEOUT_INTERVAL);
 
     //listener for tab change
-    console.log("Visibility stats");
-    console.log(this.visibilityStatus);
     document.addEventListener(
       this.visibilityStatus,
       this.handleVisibilityChange,
@@ -328,7 +326,6 @@ class QuizPanelView extends React.Component {
         showTabSwitchDialog: false
       }
     });
-    console.log("Reached intermediate last level ");
     this.currentSection = this.sections.length;
     this.handleSectionSubmit(this.sections, this.mutation);
   };
@@ -353,10 +350,8 @@ class QuizPanelView extends React.Component {
 
   //called when tab visibility status changes
   handleVisibilityChange = () => {
-    console.log("handleVisibilityChange called");
     //change currentSection integer to make it as if the quiz is abput to be submitted finally and then complete submission
     if (document[this.browserStatus]) {
-      console.log("handlevisibilityChange if statement executed");
       this.setState({
         triggers: {
           showTabSwitchDialog: true
@@ -429,8 +424,8 @@ class QuizPanelView extends React.Component {
 
   //start running timer in forward dirn
   startForwardTimer = () => {
-      this.timer = setInterval(this.incrementTime, 1000);
-    };
+    this.timer = setInterval(this.incrementTime, 1000);
+  };
 
   //start running timer in backward dirn
   startBackwardTimer = () => {
@@ -444,9 +439,8 @@ class QuizPanelView extends React.Component {
 
   //executed every second for the timer interval fn
   incrementTime = () => {
-  // Pauses the time if Dialog appears
-    if(this.state.triggers.showTabSwitchDialog===true)
-    { console.log("Timer Pauses");
+    // Pauses the time if Dialog appears
+    if (this.state.triggers.showTabSwitchDialog === true) {
       this.setState(prevState => ({
         timer: {
           minutes: prevState.timer.minutes,
@@ -455,33 +449,31 @@ class QuizPanelView extends React.Component {
       }));
     }
     //move to the next minute
-    if(this.state.triggers.showTabSwitchDialog===false)
-    { console.log("Timer continuewsss");
-    if (this.state.timer.seconds === 59) {
-      this.setState(prevState => ({
-        timer: {
-          minutes: prevState.timer.minutes + 1,
-          seconds: 0
-        }
-      }));
-    }
-    //handle normal cases
-    else {
-      this.setState(prevState => ({
-        timer: {
-          ...prevState.timer,
-          seconds: prevState.timer.seconds + 1
-        }
-      }));
-    }
+    if (this.state.triggers.showTabSwitchDialog === false) {
+      if (this.state.timer.seconds === 59) {
+        this.setState(prevState => ({
+          timer: {
+            minutes: prevState.timer.minutes + 1,
+            seconds: 0
+          }
+        }));
+      }
+      //handle normal cases
+      else {
+        this.setState(prevState => ({
+          timer: {
+            ...prevState.timer,
+            seconds: prevState.timer.seconds + 1
+          }
+        }));
+      }
     }
   };
 
   //executed every second during backward dirn interval
   decrementTime = () => {
     // Pauses the time if Dialog appears
-    if(this.state.triggers.showTabSwitchDialog===true)
-    { console.log("Timer Pauses");
+    if (this.state.triggers.showTabSwitchDialog === true) {
       this.setState(prevState => ({
         timer: {
           minutes: prevState.timer.minutes,
@@ -489,8 +481,7 @@ class QuizPanelView extends React.Component {
         }
       }));
     }
-    if(this.state.triggers.showTabSwitchDialog===false) {
-      console.log("Timer continuewsss");
+    if (this.state.triggers.showTabSwitchDialog === false) {
       //stopping condition, stop timer & submit
       if (this.state.timer.minutes === 0 && this.state.timer.seconds === 0) {
         this.stopTimer();
@@ -658,7 +649,7 @@ class QuizPanelView extends React.Component {
   //clear markedOption field
   handleClearClick = () => {
     this.setState(() => ({
-      markedOption: this.setMarkedOption("")
+      markedOption: this.setMarkedOption(-1)
     }));
   };
 
@@ -768,6 +759,7 @@ class QuizPanelView extends React.Component {
     this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
       this.currentQnNum
     ].markedOption = Number(value);
+    return Number(value);
   };
 
   //return options that were marked
@@ -867,19 +859,14 @@ class QuizPanelView extends React.Component {
     }));
   };
   toggleFullScreen = () => {
-    console.log("called");
-    this.setState(
-      prevState => ({
-        ...prevState,
-        isFullScreen: !prevState.isFullScreen
-      }),
-      () => console.log(this.state.isFullScreen)
-    );
+    this.setState(prevState => ({
+      ...prevState,
+      isFullScreen: !prevState.isFullScreen
+    }));
   };
   renderTabSwitchDialog = () => {
     if (this.state.triggers.showTabSwitchDialog) {
       if (this.quizTabSwitchCounter === 1) {
-        console.log("Counter Reacched 1");
         return (
           <MessageDialog
             title="ALERT ::: Quiz Submission:::"
@@ -893,7 +880,6 @@ class QuizPanelView extends React.Component {
           />
         );
       } else {
-        console.log("Counter Value is "+this.quizTabSwitchCounter);
         return (
           <MessageDialog
             title="WARNING :::Tab Switch Warning:::"
