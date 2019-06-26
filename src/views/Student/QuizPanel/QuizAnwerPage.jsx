@@ -31,10 +31,11 @@ import CardBody from "../../../components/Card/CardBody";
 
 import {blue, green, red} from "@material-ui/core/colors";
 
-import {Redirect} from "react-router-dom"
+import {Redirect} from "react-router-dom";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Latex from "../../General/Latex";
+import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 
 const styles = theme => ({
   root: {
@@ -91,6 +92,9 @@ const styles = theme => ({
     height: 55,
     float: "left"
   },
+	// barChartContainer: {
+	//   height: 400
+	// },
   descText: {
     color: red[500]
   },
@@ -126,9 +130,13 @@ const styles = theme => ({
 class QuizAnswer extends React.Component {
   constructor(props) {
     super(props);
-
+	  this.state = {
+		  showGraph: false
+	  };
     //save data received in props
     this.data = this.props.location.state;
+
+	  this.graphData = [];
 
     if (!this.data) {
       this.hasError = true;
@@ -139,6 +147,28 @@ class QuizAnswer extends React.Component {
     }
   }
 
+	renderBarChart = () => {
+		if (this.state.showGraph) {
+			return (
+				<React.Fragment>
+					<Typography>
+						Scores scored in each section. (Marks shown in percentage)
+					</Typography>
+					<BarChart width={730} height={250} data={this.graphData}>
+						<CartesianGrid strokeDasharray="3 3"/>
+						<XAxis dataKey="category"/>
+						<YAxis/>
+						<Tooltip/>
+						<Legend/>
+						<Bar dataKey="Percentage" fill="#8884d8" unit={"%"} maxBarSize={20}/>
+					</BarChart>
+				</React.Fragment>
+			);
+		} else {
+			return <React.Fragment/>;
+		}
+	};
+
   //jsx for header
   renderHeader = () => {
     const { classes } = this.props;
@@ -146,7 +176,6 @@ class QuizAnswer extends React.Component {
     return (
       <fragment>
         <Card>
-
           <CardContent>
             <Typography variant={"h4"} className={classes.title}>
               Quiz Completed!
@@ -154,6 +183,7 @@ class QuizAnswer extends React.Component {
             <Typography variant={"h6"} className={classes.subtitle}>
               Score Card
             </Typography>
+	          {this.renderBarChart(this.state.showGraph)}
           </CardContent>
           <CardBody>
             <GridContainer justify="center">
@@ -469,7 +499,18 @@ class QuizAnswer extends React.Component {
     }
 
     totalSectionScore = this.getNumberOfQns(sectionNumber) * marksPerQn;
-
+	  const sectionGraphRepresentation = {
+		  Percentage: ((sectionScore / totalSectionScore) * 100.0).toFixed(2),
+		  category: this.data.sections[sectionNumber].category.name
+	  };
+	  this.graphData[sectionNumber] = sectionGraphRepresentation;
+	  const sectionsLength = this.data.sections.length - 1;
+	  if (sectionNumber === sectionsLength && !this.state.showGraph) {
+		  console.log("showGraph updated. section number:" + sectionNumber + " and sections length:" + sectionsLength);
+		  this.setState({
+			  showGraph: true
+		  });
+	  }
     return `Score: ${sectionScore}/${totalSectionScore}`;
   };
 
@@ -573,6 +614,7 @@ class QuizAnswer extends React.Component {
 
   //getting section title
   createSectionHeader = (value, sectionLength, sectionNumber) => {
+
     const { classes } = this.props;
 	  const sectionIdx = sectionNumber;
 	  console.log("createSectionHeader section details");
@@ -604,7 +646,6 @@ class QuizAnswer extends React.Component {
     if (this.hasError) {
       return <Redirect to="/error" />;
     }
-
     return (
       <div className={classes.root}>
         <GridContainer>
