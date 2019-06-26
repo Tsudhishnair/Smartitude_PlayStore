@@ -120,7 +120,7 @@ class QuestionDetails extends Component {
           <h4>
             <p>Question</p>
             <b>Q: </b>
-            <Latex text={question.question}/>
+            <Latex text={question.question} />
             {/*<div>{question.question}</div>*/}
           </h4>
           {this.approveQuestionOptions(

@@ -13,9 +13,7 @@ import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
 import Fuse from "fuse.js";
-import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
-import SearchIcon from "@material-ui/icons/Search";
+import SearchInput, { createFilter } from "react-search-input";
 // core components
 
 const styles = theme => ({
@@ -26,9 +24,28 @@ const styles = theme => ({
     float: "right",
     background: "transparent"
   },
-  input: {
-    marginLeft: 8,
-    flex: 1
+  searchInput: {
+    flex: 1,
+    textSize: "20sp",
+    marginLeft: "10%",
+    alignItems: "center",
+    float: "right",
+    before: {
+      width: "45px",
+      height: "25px"
+    },
+    ".search-input::before ": {
+      fontsize: "22px",
+      lineHeight: "32px",
+      padding: "5px 10px 5px 25px",
+      height: "42px"
+    },
+    ".search-input > input": {
+      fontsize: "22px",
+      lineHeight: "32px",
+      padding: "5px 10px 5px 25px",
+      height: "42px"
+    }
   },
   iconButton: {
     padding: 10
@@ -40,13 +57,17 @@ const styles = theme => ({
   }
 });
 
+const KEYS_TO_FILTERS = ["question", "correctOption"];
+
 class MyQuestionsManage extends React.Component {
   constructor(props) {
     super(props);
     this.reloadList = undefined;
     this.state = {
-      open: false
+      open: false,
+      searchTerm: ""
     };
+    this.searchUpdated = this.searchUpdated.bind(this);
   }
 
   showQuestionManageDialog = isOpen => {
@@ -150,32 +171,49 @@ class MyQuestionsManage extends React.Component {
                       </CardHeader>
                       <Spacing />
                       <div className={classes.searchRoot} elevation={1}>
-                        <InputBase
-                          className={classes.input}
+                        <SearchInput
+                          className={classes.searchInput}
+                          sortResults={"true"}
+                          onChange={this.searchUpdated}
                           placeholder="Search Questions"
                         />
-                        <IconButton
-                          className={classes.iconButton}
-                          aria-label="Search"
-                        >
-                          <SearchIcon />
-                        </IconButton>
                       </div>
                       <GridContainer style={{ padding: "2%" }}>
-                        {data.myQuestions.map(question => {
-                          return (
-                            <QuestionDetails
-                              key={question._id}
-                              question={question}
-                              showActions={question.approvalStatus !== 2}
-                              actionButtonText={"Manage Question"}
-                              actionFunction={this.triggerQuestionManageDialog}
-                              showDeleteIcon={true}
-                              // deleteFunction={this.deleteQuestion}
-                            />
-                          );
-                        })}
+                        {data.myQuestions
+                          .filter(
+                            createFilter(this.state.searchTerm, KEYS_TO_FILTERS)
+                          )
+                          .map(question => {
+                            return (
+                              <QuestionDetails
+                                key={question._id}
+                                question={question}
+                                showActions={question.approvalStatus !== 2}
+                                actionButtonText={"Manage Question"}
+                                actionFunction={
+                                  this.triggerQuestionManageDialog
+                                }
+                                showDeleteIcon={true}
+                                // deleteFunction={this.deleteQuestion}
+                              />
+                            );
+                          })}
                       </GridContainer>
+                      {/*<GridContainer style={{ padding: "2%" }}>*/}
+                      {/*  {data.myQuestions.map(question => {*/}
+                      {/*    return (*/}
+                      {/*      <QuestionDetails*/}
+                      {/*        key={question._id}*/}
+                      {/*        question={question}*/}
+                      {/*        showActions={question.approvalStatus !== 2}*/}
+                      {/*        actionButtonText={"Manage Question"}*/}
+                      {/*        actionFunction={this.triggerQuestionManageDialog}*/}
+                      {/*        showDeleteIcon={true}*/}
+                      {/*        // deleteFunction={this.deleteQuestion}*/}
+                      {/*      />*/}
+                      {/*    );*/}
+                      {/*  })}*/}
+                      {/*</GridContainer>*/}
                     </Card>
                   </GridItem>
                 </GridContainer>
@@ -185,6 +223,9 @@ class MyQuestionsManage extends React.Component {
         }}
       </Query>
     );
+  }
+  searchUpdated(term) {
+    this.setState({ searchTerm: term });
   }
 }
 
