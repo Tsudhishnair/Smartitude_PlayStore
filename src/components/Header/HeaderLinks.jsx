@@ -22,6 +22,33 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Poppers from "@material-ui/core/Popper";
 import DialogChangePassword from "../Dialog/DialogChangePassword";
 
+const adminInfo = gql`
+  {
+    meAdmin {
+      _id
+      name
+    }
+  }
+`;
+
+const facultyInfo = gql`
+  {
+    meFaculty {
+      _id
+      name
+    }
+  }
+`;
+
+const studentInfo = gql`
+  {
+    meStudent {
+      _id
+      name
+    }
+  }
+`;
+
 class HeaderLinks extends React.Component {
   state = {
     openMenu: false
@@ -42,32 +69,6 @@ class HeaderLinks extends React.Component {
     const { classes } = this.props;
     const { openMenu } = this.state;
 
-    const adminInfo = gql`
-      {
-        meAdmin {
-          _id
-          name
-        }
-      }
-    `;
-
-    const facultyInfo = gql`
-      {
-        meFaculty {
-          _id
-          name
-        }
-      }
-    `;
-
-    const studentInfo = gql`
-      {
-        meStudent {
-          _id
-          name
-        }
-      }
-    `;
     return (
       <div>
         <DialogChangePassword onRef={ref => (this.child = ref)} />
@@ -86,7 +87,7 @@ class HeaderLinks extends React.Component {
             <Person className={classes.icons} />
             <p onClick={this.handleToggleMenu} className={classes.linkText}>
               {loginHandler.userType === "admin" ? (
-                <Query query={adminInfo}>
+                <Query query={adminInfo} fetchPolicy="network-only">
                   {({ data, loading, error }) => {
                     if (loading) {
                       return <Typography>Loading...</Typography>;
@@ -102,7 +103,7 @@ class HeaderLinks extends React.Component {
                 ""
               )}
               {loginHandler.userType === "faculty" ? (
-                <Query query={facultyInfo}>
+                <Query query={facultyInfo} fetchPolicy="network-only">
                   {({ data, loading, error }) => {
                     if (loading) {
                       return <Typography>Loading...</Typography>;
@@ -118,7 +119,7 @@ class HeaderLinks extends React.Component {
                 ""
               )}
               {loginHandler.userType === "student" ? (
-                <Query query={studentInfo}>
+                <Query query={studentInfo} fetchPolicy="network-only">
                   {({ data, loading, error }) => {
                     if (loading) {
                       return <Typography>Loading...</Typography>;

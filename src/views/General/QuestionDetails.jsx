@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { Button, Divider, IconButton } from "@material-ui/core";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import Delete from "@material-ui/icons/Delete";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import GridItem from "../../components/Grid/GridItem";
@@ -73,7 +73,7 @@ class QuestionDetails extends Component {
             {data.map((opt, index) => {
               return (
                 <GridItem>
-                  <strong>Option {index + 1}:</strong> <Latex text={opt}/>
+                  <strong>Option {index + 1}:</strong> <Latex text={opt} />
                 </GridItem>
               );
             })}
@@ -113,79 +113,80 @@ class QuestionDetails extends Component {
       showAllDetails
     } = this.props;
     return (
-      <GridItem xs={12} sm={12} md={12} ref={this.node}>
-        {this.renderDeleteDialog(this.state.dialogDelete)}
-        {console.log(question)}
-        <CardBody>
-          <h4>
-            <p>Question</p>
-            <b>Q: </b>
-            <Latex text={question.question}/>
-            {/*<div>{question.question}</div>*/}
-          </h4>
-          {this.approveQuestionOptions(
-            showAllDetails,
-            question.options,
-            question.correctOption
-          )}
-          <p>
-            <b>Created By: </b>
-            {question.createdBy.name}
-            <br />
-            <b>Category/Subcategory: </b>
-            {question.category.name} - {question.subcategory.name}
-            <br />
-          </p>
-        </CardBody>
-        {showActions ? (
-          <CardFooter>
-            {showDeleteIcon ? (
-              <Mutation mutation={DELETE_QUESTION}>
-                {deleteQuestion => {
-                  return (
-                    <IconButton
-                      onClick={() => {
-                        this.handleDelete(deleteQuestion, question._id);
-                      }}
-                    >
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  );
-                }}
-              </Mutation>
-            ) : (
-              ""
+      <React.Fragment>
+        <GridItem xs={12} sm={12} md={12} ref={this.node}>
+          {this.renderDeleteDialog(this.state.dialogDelete)}
+          {console.log(question)}
+          <CardBody>
+            <h4>
+              <b>Q: </b>
+              <Latex text={question.question} />
+              {/*<div>{question.question}</div>*/}
+            </h4>
+            {this.approveQuestionOptions(
+              showAllDetails,
+              question.options,
+              question.correctOption
             )}
-            <Button
-              round
-              variant={"outlined"}
-              color="primary"
-              onClick={() => {
-                actionFunction(question);
-              }}
-            >
-              {actionButtonText}
-            </Button>
-            {showSecondaryAction ? (
+            <p>
+              <b>Created By: </b>
+              {question.createdBy.name}
+              <br />
+              <b>Category/Subcategory: </b>
+              {question.category.name} - {question.subcategory.name}
+              <br />
+            </p>
+          </CardBody>
+          {showActions ? (
+            <CardFooter>
+              {showDeleteIcon ? (
+                <Mutation mutation={DELETE_QUESTION}>
+                  {deleteQuestion => {
+                    return (
+                      <IconButton
+                        onClick={() => {
+                          this.handleDelete(deleteQuestion, question._id);
+                        }}
+                      >
+                        <Delete />
+                      </IconButton>
+                    );
+                  }}
+                </Mutation>
+              ) : (
+                ""
+              )}
               <Button
                 round
                 variant={"outlined"}
-                color="default"
+                color="primary"
                 onClick={() => {
-                  actionSecondaryFunction(question);
+                  actionFunction(question);
                 }}
               >
-                {secondaryActionButtonText}
+                {actionButtonText}
               </Button>
-            ) : (
-              ""
-            )}
-          </CardFooter>
-        ) : (
-          ""
-        )}
-        <Divider />
-      </GridItem>
+              {showSecondaryAction ? (
+                <Button
+                  round
+                  variant={"outlined"}
+                  color="default"
+                  onClick={() => {
+                    actionSecondaryFunction(question);
+                  }}
+                >
+                  {secondaryActionButtonText}
+                </Button>
+              ) : (
+                ""
+              )}
+            </CardFooter>
+          ) : (
+            ""
+          )}
+          <Divider />
+        </GridItem>
+      </React.Fragment>
     );
   }
 }
