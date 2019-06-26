@@ -26,26 +26,8 @@ const styles = theme => ({
   },
   searchInput: {
     flex: 1,
-    textSize: "20sp",
-    marginLeft: "10%",
-    alignItems: "center",
-    float: "right",
-    before: {
-      width: "45px",
-      height: "25px"
-    },
-    ".search-input::before ": {
-      fontsize: "22px",
-      lineHeight: "32px",
-      padding: "5px 10px 5px 25px",
-      height: "42px"
-    },
-    ".search-input > input": {
-      fontsize: "22px",
-      lineHeight: "32px",
-      padding: "5px 10px 5px 25px",
-      height: "42px"
-    }
+    marginLeft: theme.spacing.units * 2,
+    alignItems: "center"
   },
   iconButton: {
     padding: 10
@@ -138,18 +120,6 @@ class MyQuestionsManage extends React.Component {
     `;
     //------------------------------------------------------------------------
 
-    var options = {
-      shouldSort: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: ["question", "myQuestions.firstName"]
-    };
-
-    var fuse = new Fuse(RETRIVE_QUESTIONS, options);
-
     return (
       <Query query={RETRIVE_QUESTIONS}>
         {({ data, loading, error, refetch }) => {
@@ -174,6 +144,7 @@ class MyQuestionsManage extends React.Component {
                         <SearchInput
                           className={classes.searchInput}
                           sortResults={"true"}
+                          fuzzy={"true"}
                           onChange={this.searchUpdated}
                           placeholder="Search Questions"
                         />
