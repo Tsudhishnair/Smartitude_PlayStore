@@ -8,17 +8,17 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import Danger from "components/Typography/Danger.jsx";
 import Warning from "@material-ui/icons/Warning";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Icon from "@material-ui/core/Icon";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import MUIDataTable from "mui-datatables";
-import { CircularProgress } from "@material-ui/core";
+import {CircularProgress} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import {Query} from "react-apollo";
 import CardBody from "../../../components/Card/CardBody";
 // RealScore is used for calculating the average score and displaying them
 let realscore = 0;
@@ -42,6 +42,7 @@ const MY_ATTEMPTED_QUIZ = gql`
         sections {
           category {
             _id
+            name
           }
           markPerQuestion
           negativeMarkPerQuestion

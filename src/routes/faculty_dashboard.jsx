@@ -1,8 +1,9 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
-import AddComment from "@material-ui/icons/AddComment";
-import PlaylistAdd from "@material-ui/icons/PlaylistAddCheck";
-import NotificationIcon from "@material-ui/icons/QuestionAnswer";
+import PlaylistAdd from "@material-ui/icons/PlaylistAdd";
+import FeaturedPlayList from "@material-ui/icons/FeaturedPlayList";
+import PlaylistAddCheck from "@material-ui/icons/PlaylistAddCheck";
+import PlaylistPlay from "@material-ui/icons/PlaylistPlay";
 // core components/views
 import DashboardPage from "../views/Faculty/Dashboard/Dashboard.jsx";
 
@@ -23,28 +24,28 @@ const dashboardRoutes = [
     path: "/faculty/my_questions",
     sidebarName: "My Questions",
     navbarName: "My Questions",
-    icon: PlaylistAdd,
+    icon: FeaturedPlayList,
     component: MyQuestionsManage
   },
   {
     path: "/faculty/approved_questions",
     sidebarName: "Approved Questions",
     navbarName: "Approved Questions",
-    icon: NotificationIcon,
+    icon: PlaylistPlay,
     component: QuestionManage
   },
   {
     path: "/faculty/awaiting_questions",
     sidebarName: "Awaiting Approval",
     navbarName: "Awaiting Approval",
-    icon: PlaylistAdd,
+    icon: PlaylistAddCheck,
     component: ApproveQuestion
   },
   {
     path: "/faculty/add_new_question",
     sidebarName: "Add Question",
     navbarName: "Add Question",
-    icon: AddComment,
+    icon: PlaylistAdd,
     component: AddQues
   },
   {

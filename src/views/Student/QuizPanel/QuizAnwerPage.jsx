@@ -31,7 +31,7 @@ import CardBody from "../../../components/Card/CardBody";
 
 import { blue, green, red } from "@material-ui/core/colors";
 
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Latex from "../../General/Latex";
@@ -142,6 +142,7 @@ class QuizAnswer extends React.Component {
   //jsx for header
   renderHeader = () => {
     const { classes } = this.props;
+    console.log(this.data);
     return (
       <fragment>
         <Card>
@@ -572,7 +573,10 @@ class QuizAnswer extends React.Component {
   //getting section title
   createSectionHeader = (value, sectionLength, sectionNumber) => {
     const { classes } = this.props;
-
+    const sectionIdx = sectionNumber;
+    console.log("createSectionHeader section details");
+    console.log(this.data.sections[sectionIdx]);
+    console.log("section idx = " + sectionIdx);
     return (
       <Card className={classes.sectionCard}>
         <CardHeader
@@ -586,7 +590,7 @@ class QuizAnswer extends React.Component {
               {this.getSectionScore(sectionNumber)}
             </Typography>
           }
-          title="Section"
+          title={this.data.sections[sectionIdx].category.name}
           subheader={this.getSectionSubtitle(sectionLength)}
         />
       </Card>

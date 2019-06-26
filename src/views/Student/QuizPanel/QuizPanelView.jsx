@@ -25,13 +25,13 @@ import {
   Stepper,
   Typography
 } from "@material-ui/core";
-import {Fullscreen, FullscreenExit} from "@material-ui/icons";
+import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardBody from "../../../components/Card/CardBody";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
-import {Mutation} from "react-apollo";
+import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import FullScreen from "react-full-screen";
 
@@ -51,6 +51,7 @@ const styles = theme => ({
   root: {
     height: "100%",
     display: "flex",
+    backgroundColor: "#eeeee",
     flexFlow: "column",
     margin: theme.spacing.unit * 1,
     marginLeft: theme.spacing.unit * 2,
@@ -83,32 +84,42 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit
   },
   topPanel: {
-    flexGrow: "0",
-    flexShrink: "1",
-    flexBasis: "10vh"
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: "0",
+      flexShrink: "1",
+      flexBasis: "10vh"
+    }
   },
   centerPanel: {
-    flexGrow: "1",
-    flexShrink: "1",
-    flexBasis: "70vh"
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: "1",
+      flexShrink: "1",
+      flexBasis: "70vh"
+    }
   },
   bottomPanel: {
     marginTop: theme.spacing.unit * 1,
-    flexGrow: "0",
-    flexShrink: "1",
-    flexBasis: "15vh"
+    [theme.breakpoints.up("sm")]: {
+      flexGrow: "0",
+      flexShrink: "1",
+      flexBasis: "15vh"
+    }
   },
   rightPanel: {
-    height: "68vh",
-    position: "relative",
+    [theme.breakpoints.up("sm")]: {
+      height: "68vh",
+      position: "relative"
+    },
     color: "green",
     [theme.breakpoints.down("sm")]: {
       marginTop: theme.spacing.unit * 2
     }
   },
   leftPanel: {
-    height: "68vh",
-    position: "relative"
+    [theme.breakpoints.up("sm")]: {
+      height: "68vh",
+      position: "relative"
+    }
   },
   progress: {
     margin: theme.spacing.unit * 10,
@@ -117,19 +128,23 @@ const styles = theme => ({
   },
   cardActions: {
     backgroundColor: "white",
-    zIndex: 999,
-    position: "absolute",
-    width: "100%",
-    bottom: 0,
-    flex: "1 1 auto",
-    align: "end"
+    [theme.breakpoints.up("sm")]: {
+      zIndex: 999,
+      position: "absolute",
+      width: "100%",
+      bottom: 0,
+      flex: "1 1 auto",
+      align: "end"
+    }
   },
   cardContent: {
-    overflowY: "auto",
-    width: "100%",
-    position: "absolute",
-    top: 0,
-    height: "100%"
+    [theme.breakpoints.up("sm")]: {
+      overflowY: "auto",
+      width: "100%",
+      position: "absolute",
+      top: 0,
+      height: "100%"
+    }
   }
 });
 
@@ -221,7 +236,7 @@ class QuizPanelView extends React.Component {
     //get object of current question being answered
     const currentQn = this.quiz.sections[this.currentSection].questions[
       this.currentQnNum
-      ];
+    ];
 
     //the following variables are used exclusively used by timer functions to prevent the passing around of excessive number of params
     this.sections = this.quiz.sections;
@@ -305,8 +320,7 @@ class QuizPanelView extends React.Component {
     this.quizTabSwitchCounter += 1;
   };
   //Method that checks the quizTabSwitchCounter and performs either submission or shows warning
-  handleTabSwitchSubmission = () => {
-  };
+  handleTabSwitchSubmission = () => {};
   // Submits the quiz if tab switch occurs
   tabSwitchSubmission = () => {
     this.setState({
@@ -727,7 +741,7 @@ class QuizPanelView extends React.Component {
   setMarkedOption = value => {
     this.dataToSubmit.attemptedSections[this.currentSection].attemptedQuestions[
       this.currentQnNum
-      ].markedOption = Number(value);
+    ].markedOption = Number(value);
   };
 
   //return options that were marked
@@ -740,7 +754,7 @@ class QuizPanelView extends React.Component {
   setMarkedOptionAtPosn = (i, j, value) => {
     this.dataToSubmit.attemptedSections[i].attemptedQuestions[
       j
-      ].markedOption = Number(value);
+    ].markedOption = Number(value);
   };
 
   //return marked option at index value
@@ -814,10 +828,10 @@ class QuizPanelView extends React.Component {
 
   toggleDialogVisibility = () => {
     this.setState(prevState => ({
-      isVisible: !prevState.isVisible,
+      isVisible: !prevState.isVisible
     }));
   };
-// Trigger Dialog Handling
+  // Trigger Dialog Handling
   toggleTriggerDialogVisibility = () => {
     this.incrementCounter();
     // this.setState(prevState => ({
@@ -865,15 +879,15 @@ class QuizPanelView extends React.Component {
         );
       }
     } else {
-      return <React.Fragment/>;
+      return <React.Fragment />;
     }
   };
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     const quiz = this.quiz;
     const selectedSection = quiz.sections[this.currentSection];
-    const {activeStep, isVisible} = this.state;
+    const { activeStep, isVisible } = this.state;
 
     const steps = this.getSteps(quiz.sections);
 
@@ -915,7 +929,7 @@ class QuizPanelView extends React.Component {
                         </Typography>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={1}>
-                        <Hidden smDown style={{float: "right"}}>
+                        <Hidden smDown style={{ float: "right" }}>
                           <Tooltip title={"Toggle FullScreen"}>
                             <Button
                               variant="outlined"
@@ -924,9 +938,9 @@ class QuizPanelView extends React.Component {
                               onClick={() => this.toggleFullScreen()}
                             >
                               {this.state.isFullScreen ? (
-                                <FullscreenExit/>
+                                <FullscreenExit />
                               ) : (
-                                <Fullscreen/>
+                                <Fullscreen />
                               )}
                             </Button>
                           </Tooltip>
@@ -975,15 +989,15 @@ class QuizPanelView extends React.Component {
                                       </Typography>
                                     </p>
                                   )}
-                                  <Spacing/>
+                                  <Spacing />
                                 </Hidden>
                                 <Typography>
                                   Question Number:{" "}
                                   <b>{this.getQuestionNumber()}</b>
                                 </Typography>
-                                <Latex text={this.state.fields.question}/>
+                                <Latex text={this.state.fields.question} />
                               </CardContent>
-                              <Divider/>
+                              <Divider />
                               <CardContent>
                                 <CardBody>
                                   <FormControl
@@ -1004,7 +1018,7 @@ class QuizPanelView extends React.Component {
                                     >
                                       <FormControlLabel
                                         value={1}
-                                        control={<Radio/>}
+                                        control={<Radio />}
                                         label={
                                           <Latex
                                             text={
@@ -1022,11 +1036,11 @@ class QuizPanelView extends React.Component {
                                             }
                                           />
                                         }
-                                        control={<Radio/>}
+                                        control={<Radio />}
                                       />
                                       <FormControlLabel
                                         value={3}
-                                        control={<Radio/>}
+                                        control={<Radio />}
                                         label={
                                           <Latex
                                             text={
@@ -1037,7 +1051,7 @@ class QuizPanelView extends React.Component {
                                       />
                                       <FormControlLabel
                                         value={4}
-                                        control={<Radio/>}
+                                        control={<Radio />}
                                         label={
                                           <Latex
                                             text={
@@ -1052,7 +1066,7 @@ class QuizPanelView extends React.Component {
                               </CardContent>
                             </div>
                             <div className={classes.cardActions}>
-                              <Divider/>
+                              <Divider />
                               <CardActions>
                                 <Button
                                   color={"secondary"}
@@ -1060,6 +1074,7 @@ class QuizPanelView extends React.Component {
                                   variant="outlined"
                                   disabled={this.state.prevButton}
                                   className={classes.button}
+                                  fullWidth
                                   onClick={event =>
                                     this.handlePreviousClick(
                                       event,
@@ -1073,6 +1088,7 @@ class QuizPanelView extends React.Component {
                                   variant="outlined"
                                   size={"small"}
                                   type={"reset"}
+                                  fullWidth
                                   className={classes.button}
                                   onClick={this.handleClearClick}
                                 >
@@ -1082,6 +1098,7 @@ class QuizPanelView extends React.Component {
                                   color="primary"
                                   variant="outlined"
                                   size={"small"}
+                                  fullWidth
                                   disabled={this.state.nextButton}
                                   className={classes.button}
                                   onClick={event =>
@@ -1098,7 +1115,7 @@ class QuizPanelView extends React.Component {
                       <GridItem xs={12} sm={12} md={4}>
                         <Card className={classes.rightPanel}>
                           {this.state.submitLoading ? (
-                            <CircularProgress className={classes.progress}/>
+                            <CircularProgress className={classes.progress} />
                           ) : (
                             <React.Fragment>
                               <CardContent className={classes.cardContent}>
@@ -1126,7 +1143,7 @@ class QuizPanelView extends React.Component {
                                       </b>
                                     </Typography>
                                   </p>
-                                  <Spacing/>
+                                  <Spacing />
                                 </Hidden>
                                 <Typography variant={"overline"}>
                                   Questions:
@@ -1137,7 +1154,7 @@ class QuizPanelView extends React.Component {
                                 )}
                               </CardContent>
                               <div className={classes.cardActions}>
-                                <Divider/>
+                                <Divider />
                                 <CardActions>
                                   <Button
                                     variant="outlined"
