@@ -878,8 +878,6 @@ class QuizPanelView extends React.Component {
     const steps = this.getSteps(quiz.sections);
 
     if (this.state.redirector === true) {
-      console.log("redirecting");
-
       return (
         <Redirect
           to={{
@@ -897,7 +895,9 @@ class QuizPanelView extends React.Component {
       return (
         <FullScreen enabled={this.state.isFullScreen}>
           <React.Fragment>
-            {this.renderTabSwitchDialog(this.state.showTabSwitchDialog)}
+            {this.renderTabSwitchDialog(
+              this.state.triggers.showTabSwitchDialog
+            )}
             <Mutation
               mutation={this.quizType === 1 ? FINISH_QUIZ : CUSTOM_QUIZ}
             >
