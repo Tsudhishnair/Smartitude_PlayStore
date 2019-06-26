@@ -7,31 +7,31 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import {
-	Avatar,
-	Card,
-	CardContent,
-	CardHeader,
-	Checkbox,
-	Divider,
-	ExpansionPanel,
-	ExpansionPanelDetails,
-	ExpansionPanelSummary,
-	FormControl,
-	FormControlLabel,
-	FormGroup,
-	FormLabel,
-	Typography
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  Checkbox,
+  Divider,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
+  Typography
 } from "@material-ui/core";
 
-import {Timeline, Timer, TrendingDown, TrendingUp} from "@material-ui/icons";
+import { Timeline, Timer, TrendingDown, TrendingUp } from "@material-ui/icons";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 
-import {blue, green, red} from "@material-ui/core/colors";
+import { blue, green, red } from "@material-ui/core/colors";
 
-import {Redirect} from "react-router-dom"
+import { Redirect } from "react-router-dom";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Latex from "../../General/Latex";
@@ -142,11 +142,10 @@ class QuizAnswer extends React.Component {
   //jsx for header
   renderHeader = () => {
     const { classes } = this.props;
-	  console.log(this.data);
+    console.log(this.data);
     return (
       <fragment>
         <Card>
-
           <CardContent>
             <Typography variant={"h4"} className={classes.title}>
               Quiz Completed!
@@ -574,25 +573,25 @@ class QuizAnswer extends React.Component {
   //getting section title
   createSectionHeader = (value, sectionLength, sectionNumber) => {
     const { classes } = this.props;
-	  const sectionIdx = sectionNumber;
-	  console.log("createSectionHeader section details");
-	  console.log(this.data.sections[sectionIdx]);
-	  console.log("section idx = " + sectionIdx);
+    const sectionIdx = sectionNumber;
+    console.log("createSectionHeader section details");
+    console.log(this.data.sections[sectionIdx]);
+    console.log("section idx = " + sectionIdx);
     return (
       <Card className={classes.sectionCard}>
         <CardHeader
-	        avatar={
+          avatar={
             <Avatar aria-label="Section" className={classes.avatar}>
               {value}
             </Avatar>
           }
-	        action={
+          action={
             <Typography variant={"overline"}>
               {this.getSectionScore(sectionNumber)}
             </Typography>
           }
-	        title={this.data.sections[sectionIdx].category.name}
-	        subheader={this.getSectionSubtitle(sectionLength)}
+          title={this.data.sections[sectionIdx].category.name}
+          subheader={this.getSectionSubtitle(sectionLength)}
         />
       </Card>
     );

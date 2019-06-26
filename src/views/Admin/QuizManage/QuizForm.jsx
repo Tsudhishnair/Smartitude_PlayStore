@@ -839,6 +839,8 @@ class QuizForm extends React.Component {
                             <GridContainer className={classes.container}>
                               <GridItem xs={12} sm={12} md={12}>
                                 <FormControlLabel
+                                  label="Do you want to enable negative marking?"
+                                  labelPlacement={"start"}
                                   control={
                                     <Switch
                                       name="needNegative"
@@ -846,7 +848,6 @@ class QuizForm extends React.Component {
                                       onChange={this.handleNeedNegative}
                                     />
                                   }
-                                  label="Negative Marking"
                                 />
                               </GridItem>
                             </GridContainer>
@@ -1034,7 +1035,7 @@ class QuizForm extends React.Component {
                         size={"small"}
                         onClick={this.handleClick}
                       >
-                        <Add/> Add More
+                        <Add /> Add More
                       </Button>
                       <Divider />
                       <ExpansionPanelActions>
