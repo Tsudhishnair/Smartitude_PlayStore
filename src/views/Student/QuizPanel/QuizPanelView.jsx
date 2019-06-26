@@ -310,12 +310,13 @@ class QuizPanelView extends React.Component {
   };
   //Method to increment the tabSwitchCounter
   incrementCounter = () => {
+    this.quizTabSwitchCounter += 1;
     this.setState({
       triggers: {
         showTabSwitchDialog: false
       }
     });
-    this.quizTabSwitchCounter += 1;
+
   };
   //Method that checks the quizTabSwitchCounter and performs either submission or shows warning
   handleTabSwitchSubmission = () => {};
@@ -866,7 +867,7 @@ class QuizPanelView extends React.Component {
   };
   renderTabSwitchDialog = () => {
     if (this.state.triggers.showTabSwitchDialog) {
-      if (this.quizTabSwitchCounter === 1) {
+      if (this.quizTabSwitchCounter >= 1) {
         return (
           <MessageDialog
             title="ALERT ::: Quiz Submission:::"
