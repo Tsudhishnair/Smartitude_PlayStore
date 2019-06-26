@@ -23,8 +23,10 @@ import GridItem from "../../components/Grid/GridItem.jsx";
 import GridContainer from "../../components/Grid/GridContainer.jsx";
 import Spacing from "../../components/Spacing/Spacing.jsx";
 
+import MessageDialog from "./MessageDialog";
+
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { transformDateString } from "../../Utils";
 import formControlStyle from "../../assets/jss/form-control";
 
@@ -66,6 +68,7 @@ const columns = [
 const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   query getAdminQuizAttempts($quizId: ID!) {
     getAdminQuizAttempts(quizId: $quizId) {
+      _id
       totalScore
       totalMaximumScore
       submittedAt
@@ -79,14 +82,11 @@ const GET_ADMIN_QUIZ_ATTEMPTS = gql`
   }
 `;
 
-//mui datatable options
-const options = {
-  selectableRows: false,
-  elevation: 0,
-  responsive: "scroll",
-  rowsPerPage: 100,
-  rowsPerPageOptions: [20, 30, 100, 200, 1000]
-};
+const RESET_QUIZ_PROGRESS = gql`
+  mutation reactivateAdminQuizForStudent($attemptedAdminQuizId: ID!) {
+    reactivateAdminQuizForStudent(attemptedAdminQuizId: $attemptedAdminQuizId)
+  }
+`;
 
 //transition component for the dialog box
 function Transition(props) {
@@ -99,9 +99,26 @@ class QuizzesDialog extends React.Component {
     this.props = props;
 
     this.state = {
-      open: true
+      open: true,
+      resetOpen: false
     };
+
+    this.attemptList;
   }
+
+  //mui datatable options
+  options = {
+    selectableRows: false,
+    elevation: 0,
+    responsive: "scroll",
+    rowsPerPage: 100,
+    rowsPerPageOptions: [20, 30, 100, 200, 1000],
+    onRowClick: (rowData, rowState) => {
+      this.toggleResetDialog();
+
+      this.selectedAttempt = this.attemptList[rowState.dataIndex];
+    }
+  };
 
   // opens dialog box
   handleDialogOpen = () => {
@@ -114,6 +131,41 @@ class QuizzesDialog extends React.Component {
     this.props.onClose();
   };
 
+  resetProgress = resetAttempt => {
+    resetAttempt({
+      variables: {
+        attemptedAdminQuizId: this.selectedAttempt._id
+      }
+    })
+      .then(res => console.log("success"))
+      .catch(err => console.log(err));
+  };
+
+  toggleResetDialog = () => {
+    this.setState(prevState => ({
+      resetOpen: !prevState.resetOpen
+    }));
+  };
+
+  renderResetDialog = () => {
+    if (this.state.resetOpen) {
+      return (
+        <Mutation mutation={RESET_QUIZ_PROGRESS}>
+          {resetAttempt => (
+            <MessageDialog
+              title="Progress Reset"
+              content="Are you sure you want to reset the progress of the student in this quiz"
+              positiveAction="Yes"
+              negativeAction="No"
+              action={() => this.resetProgress(resetAttempt)}
+              onClose={this.toggleResetDialog}
+            />
+          )}
+        </Mutation>
+      );
+    }
+  };
+
   render() {
     const { classes, object } = this.props;
 
@@ -124,6 +176,7 @@ class QuizzesDialog extends React.Component {
 
     return (
       <div>
+        {this.renderResetDialog()}
         <Dialog
           fullScreen
           TransitionComponent={Transition}
@@ -138,15 +191,15 @@ class QuizzesDialog extends React.Component {
           <AppBar className={classes.appBar}>
             <Toolbar>
               <IconButton
-                  style={{color: "white"}}
+                style={{ color: "white" }}
                 onClick={this.handleDialogClose}
                 aria-label="Close"
               >
-                <Close />
+                <Close/>
               </IconButton>
               <Typography
                 variant="h6"
-                style={{ color: "white", textTransform: "capitalize"}}
+                style={{ color: "white", textTransform: "capitalize" }}
                 className={classes.flex}
               >
                 {object.name}
@@ -154,7 +207,7 @@ class QuizzesDialog extends React.Component {
             </Toolbar>
           </AppBar>
           {/* empty dialog title used to introduce spacing */}
-          <DialogTitle id="form-dialog-title" />
+          <DialogTitle id="form-dialog-title"/>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <GridContainer>
@@ -163,7 +216,7 @@ class QuizzesDialog extends React.Component {
                     {({ loading, error, data }) => {
                       if (loading) {
                         return (
-                          <CircularProgress className={classes.progress} />
+                          <CircularProgress className={classes.progress}/>
                         );
                       } else if (error) {
                         return (
@@ -172,8 +225,10 @@ class QuizzesDialog extends React.Component {
                           </Typography>
                         );
                       } else {
-                        //transform data for datatable
+                        this.attemptList = data.getAdminQuizAttempts;
+
                         let quizList;
+                        //transform data for datatable
                         quizList = data.getAdminQuizAttempts.map(quiz => {
                           let quizData = [];
                           quizData.push(quiz.attemptedBy.name);
@@ -201,17 +256,17 @@ class QuizzesDialog extends React.Component {
                                   {"   "}
                                   {data.getAdminQuizAttempts[0]
                                     ? data.getAdminQuizAttempts[0]
-                                        .totalMaximumScore
+                                      .totalMaximumScore
                                     : "No Submissions"}
                                 </Typography>
                               </GridItem>
                             </GridContainer>
-                            <Spacing />
+                            <Spacing/>
                             <MUIDataTable
                               title={data.name}
                               data={quizList}
                               columns={columns}
-                              options={options}
+                              options={this.options}
                             />
                           </React.Fragment>
                         );

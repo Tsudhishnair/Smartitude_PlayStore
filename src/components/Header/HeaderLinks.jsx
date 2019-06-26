@@ -69,7 +69,6 @@ class HeaderLinks extends React.Component {
     const { classes } = this.props;
     const { openMenu } = this.state;
 
-    console.log(loginHandler.userType);
     return (
       <div>
         <DialogChangePassword onRef={ref => (this.child = ref)} />
