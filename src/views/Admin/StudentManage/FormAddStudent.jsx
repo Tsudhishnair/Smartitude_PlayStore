@@ -51,6 +51,7 @@ class FormAddStudent extends Component {
       }
     };
   }
+
   // handle changes in form fields
   handleDateChange = date => {
     this.setState({ selectedDate: date });
@@ -262,18 +263,26 @@ class FormAddStudent extends Component {
                     md={3}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Name"
-                      required
-                      type="text"
-                      name="mname"
-                      onChange={this.handleValueChange}
-                      value={this.state.assignval.mname}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="Special characters or numbers are not allowed"
+                    >
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        required
+                        type="text"
+                        InputProps={{
+                          inputProps: { pattern: "^[a-zA-Z ]*$" }
+                        }}
+                        name="mname"
+                        onChange={this.handleValueChange}
+                        value={this.state.assignval.mname}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
                   <GridItem
                     xs={12}
@@ -316,7 +325,6 @@ class FormAddStudent extends Component {
                       fullWidth
                     />
                   </GridItem>
-
                   <GridItem
                     xs={12}
                     sm={2}
@@ -325,7 +333,7 @@ class FormAddStudent extends Component {
                   >
                     <Tooltip
                       disableFocusListener
-                      title="At least 8 characters & a mixture of letters and numbers recommended"
+                      title="At least 6 characters necessary & a mixture of letters and numbers recommended"
                     >
                       <TextField
                         autoFocus
@@ -334,6 +342,9 @@ class FormAddStudent extends Component {
                         label="Password"
                         type="password"
                         name="password"
+                        InputProps={{
+                          inputProps: { pattern: ".{6,}" }
+                        }}
                         required
                         onChange={this.handleValueChange}
                         value={this.state.assignval.password}
@@ -353,17 +364,25 @@ class FormAddStudent extends Component {
                     md={4}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      id="username"
-                      label="Username"
-                      required
-                      type="text"
-                      name="username"
-                      onChange={this.handleValueChange}
-                      value={this.state.assignval.username}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="Special characters or numbers are not allowed"
+                    >
+                      <TextField
+                        autoFocus
+                        id="username"
+                        label="Username"
+                        required
+                        type="text"
+                        InputProps={{
+                          inputProps: { pattern: "^[a-zA-Z ]*$" }
+                        }}
+                        name="username"
+                        onChange={this.handleValueChange}
+                        value={this.state.assignval.username}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
 
                   <GridItem
@@ -440,7 +459,7 @@ class FormAddStudent extends Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Divider />
+                <Divider/>
                 <ExpansionPanelActions>
                   <Button
                     size="small"
