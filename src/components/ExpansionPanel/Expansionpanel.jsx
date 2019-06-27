@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import QuizForm from "../../views/Admin/QuizManage/QuizForm";
-import CreateNewFacultyForm from "../../views/Admin/FacultyManage/CreateNewFacultyForm";
+import CreateNewFacultyForm from "../../views/Admin/FacultyManage/FormAddFaculty";
 import FormAddStudent from "../../views/Admin/StudentManage/FormAddStudent.jsx";
 import FormAddDepartment from "../../views/Admin/DeptManage/FormAddDepartment.jsx";
 import FormAddStudentBatch from "../../views/Admin/StudentManage/FormAddStudentBatch";

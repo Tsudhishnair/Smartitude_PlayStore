@@ -384,7 +384,6 @@ class FormAddStudent extends Component {
                       />
                     </Tooltip>
                   </GridItem>
-
                   <GridItem
                     xs={12}
                     sm={4}

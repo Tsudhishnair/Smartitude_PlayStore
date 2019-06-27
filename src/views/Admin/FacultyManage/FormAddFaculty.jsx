@@ -27,7 +27,7 @@ import {
 } from "@material-ui/core";
 import formControlStyle from "../../../assets/jss/form-control";
 
-class CreateNewFacultyForm extends Component {
+class FormAddFaculty extends Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -330,18 +330,26 @@ class CreateNewFacultyForm extends Component {
                     md={4}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="name"
-                      label="Name"
-                      type="name"
-                      name="name"
-                      onChange={this.handleValueChange}
-                      value={this.state.name}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="Special characters or numbers are not allowed"
+                    >
+                      <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        type="name"
+                        name="name"
+                        InputProps={{
+                          inputProps: { pattern: "^[a-zA-Z ]*$" }
+                        }}
+                        onChange={this.handleValueChange}
+                        value={this.state.name}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
                   <GridItem
                     xs={12}
@@ -368,18 +376,26 @@ class CreateNewFacultyForm extends Component {
                     md={4}
                     className={classes.elementPadding}
                   >
-                    <TextField
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="username"
-                      label="Username"
-                      type="text"
-                      name="username"
-                      onChange={this.handleValueChange}
-                      value={this.state.username}
-                      fullWidth
-                    />
+                    <Tooltip
+                      disableFocusListener
+                      title="Special characters or numbers are not allowed"
+                    >
+                      <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="username"
+                        label="Username"
+                        type="text"
+                        name="username"
+                        InputProps={{
+                          inputProps: { pattern: "^[a-zA-Z ]*$" }
+                        }}
+                        onChange={this.handleValueChange}
+                        value={this.state.username}
+                        fullWidth
+                      />
+                    </Tooltip>
                   </GridItem>
                   <GridItem
                     xs={12}
@@ -392,8 +408,11 @@ class CreateNewFacultyForm extends Component {
                       id="phone"
                       required
                       label="Phone Number"
-                      type="phone"
+                      type="number"
                       name="phoneNumber"
+                      InputProps={{
+                        inputProps: { min: 6000000000, max: 9999999999 }
+                      }}
                       onChange={this.handleValueChange}
                       value={this.state.phoneNumber}
                       fullWidth
@@ -407,7 +426,7 @@ class CreateNewFacultyForm extends Component {
                   >
                     <Tooltip
                       disableFocusListener
-                      title="At least 8 characters & a mixture of letters and numbers recommended"
+                      title="At least 6 characters necessary & a mixture of letters and numbers recommended"
                     >
                       <TextField
                         autoFocus
@@ -416,6 +435,9 @@ class CreateNewFacultyForm extends Component {
                         label="Password"
                         type="password"
                         name="password"
+                        InputProps={{
+                          inputProps: { pattern: ".{6,}" }
+                        }}
                         onChange={this.handleValueChange}
                         value={this.state.password}
                         fullWidth
@@ -592,10 +614,10 @@ class CreateNewFacultyForm extends Component {
   }
 }
 
-CreateNewFacultyForm.propTypes = {
+FormAddFaculty.propTypes = {
   classes: PropTypes.object.isRequired,
   categoryDetails: PropTypes.object.isRequired,
   departments: PropTypes.object.isRequired,
   reloadFacultiesList: PropTypes.func.isRequired
 };
-export default withStyles(formControlStyle)(CreateNewFacultyForm);
+export default withStyles(formControlStyle)(FormAddFaculty);
