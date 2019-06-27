@@ -17,7 +17,7 @@ import {
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { Mutation, Query } from "react-apollo";
+import {Mutation, Query} from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
@@ -96,7 +96,7 @@ const EDIT_QUESTION = gql`
 //Query To Fetch Category and its Coresponsding Sub-Categories
 const FETCH_FORM_FIELDS = gql`
   {
-    categoryDetailsList {
+    myCategoriesAndSubcategories {
       category {
         _id
         name
@@ -735,21 +735,10 @@ class AddQuestion extends React.Component {
                                   }}
                                   fullWidth
                                 >
-                                  {data.categoryDetailsList.map(
-                                    categoryDetail => {
-                                      if (this.firstRender) {
-                                        this.categoryAndSubCategoryList.push(
-                                          categoryDetail
-                                        );
-                                      }
-
-                                      return (
-                                        <MenuItem value={categoryDetail}>
-                                          {categoryDetail.category.name}
-                                        </MenuItem>
-                                      );
-                                    }
+                                  {this.renderCategoryMenu(
+                                      data.myCategoriesAndSubcategories
                                   )}
+
                                   {(this.firstRender = false)}
                                 </Select>
                               </GridItem>
@@ -854,6 +843,15 @@ class AddQuestion extends React.Component {
           />
         </Snackbar>
       </React.Fragment>
+    );
+  }
+
+  renderCategoryMenu(categoryDetail) {
+    if (this.firstRender) {
+      this.categoryAndSubCategoryList.push(categoryDetail);
+    }
+    return (
+        <MenuItem value={categoryDetail}>{categoryDetail.category.name}</MenuItem>
     );
   }
 }
