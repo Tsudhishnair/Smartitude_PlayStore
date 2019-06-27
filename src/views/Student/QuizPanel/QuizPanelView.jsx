@@ -936,7 +936,7 @@ class QuizPanelView extends React.Component {
         return (
           <MessageDialog
             title="ALERT ::: Quiz Submission:::"
-            content="Since you have tried to switch tab even after warning. `Your quiz is going to be submitted`"
+            content="Your quiz will be submitted if you try to switch the tab  next time"
             positiveAction="Ok"
             negativeAction=" "
             action={this.tabSwitchSubmission}
