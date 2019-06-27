@@ -133,8 +133,8 @@ class ApproveQuestion extends React.Component {
       {
         snackbar: {
           ...this.state.snackbar,
-          message: "Question is rejected!",
-          variant: "error"
+          message: "Question is being rejected!",
+          variant: "danger"
         }
       },
       () => this.openSnackbar()
@@ -184,7 +184,7 @@ class ApproveQuestion extends React.Component {
       {
         snackbar: {
           ...this.state.snackbar,
-          message: "Question is Proved!",
+          message: "Question is being approved!",
           variant: "success"
         }
       },
