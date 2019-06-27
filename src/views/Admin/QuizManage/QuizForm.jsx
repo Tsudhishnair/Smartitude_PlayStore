@@ -122,6 +122,7 @@ class QuizForm extends React.Component {
     this.flag = true;
 
     this.state = {
+      AdminLoading: false,
       //maintain fields which are common to all sections
       loadingProgress: false,
       quizCommon: {
@@ -351,6 +352,10 @@ class QuizForm extends React.Component {
   //called on submit button click
   handleSubmit = mutation => {
     //get data from the states and assign it to new objects to prevent disbehaviour
+    this.setState({
+      AdminLoading: true
+    });
+
     const quizCommon = this.state.quizCommon;
     const dateError = this.state.error.dates.status;
     const quizSectionWise = this.state.quizSectionWise;
@@ -385,6 +390,7 @@ class QuizForm extends React.Component {
         .then(res => {
           // on successful completion of the mutation
           this.setState(prevState => ({
+            AdminLoading: false,
             snackbar: {
               ...prevState.snackbar,
               open: true,
@@ -399,6 +405,7 @@ class QuizForm extends React.Component {
         .catch(err => {
           //if error was returned
           this.setState(prevState => ({
+            AdminLoading: false,
             snackbar: {
               ...prevState.snackbar,
               open: true,
@@ -413,6 +420,7 @@ class QuizForm extends React.Component {
     } else {
       //if there are errors in the form
       this.setState(prevState => ({
+        AdminLoading: false,
         snackbar: {
           ...prevState.snackbar,
           open: true,
@@ -769,6 +777,7 @@ class QuizForm extends React.Component {
       })
       .catch(err => {
         //if error was returned
+        console.log(err);
         this.setState(prevState => ({
           loadingProgress: false,
           snackbar: {
@@ -776,7 +785,7 @@ class QuizForm extends React.Component {
             open: true,
             variant: "error",
             duration: 10000,
-            message: "Error: " + "Invalid Field Entered"
+            message: "Invalid Inputs"
             // ? err.graphQLErrors[0].message
             // : err.networkError[0].message
           }
@@ -853,7 +862,7 @@ class QuizForm extends React.Component {
                             </GridContainer>
                             {this.renderSectionDetails(classes, quizType)}
                             <Button
-                              color="primary"
+                              color="secondary"
                               fullWidth
                               variant={"outlined"}
                               size={"small"}
@@ -1041,14 +1050,23 @@ class QuizForm extends React.Component {
                       <ExpansionPanelActions>
                         <Mutation mutation={ADD_QUIZ}>
                           {addQuiz => (
-                            <Button
-                              color="primary"
-                              variant={"outlined"}
-                              className={classes.button}
-                              onClick={() => this.handleSubmit(addQuiz)}
-                            >
-                              Create Admin Quiz
-                            </Button>
+                            <div className={classes.wrapper}>
+                              <Button
+                                color="primary"
+                                variant={"outlined"}
+                                disabled={this.state.AdminLoading}
+                                className={classes.button}
+                                onClick={() => this.handleSubmit(addQuiz)}
+                              >
+                                Create Admin Quiz
+                              </Button>
+                              {this.state.AdminLoading && (
+                                <CircularProgress
+                                  size={24}
+                                  className={classes.buttonProgress}
+                                />
+                              )}
+                            </div>
                           )}
                         </Mutation>
                       </ExpansionPanelActions>
