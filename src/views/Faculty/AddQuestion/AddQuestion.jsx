@@ -235,7 +235,7 @@ class AddQuestion extends React.Component {
       );
     } else if (
       !this.state.difficulty ||
-      !this.state.difficulty ||
+      !this.state.subcategory ||
       !this.state.solution ||
       !this.state.category
     ) {
@@ -244,7 +244,7 @@ class AddQuestion extends React.Component {
           snackbar: {
             ...this.state.snackbar,
             variant: "error",
-            message: "Fields and options are empty!"
+            message: "Some of the Fields are empty!"
           }
         },
         () => this.openSnackbar()
