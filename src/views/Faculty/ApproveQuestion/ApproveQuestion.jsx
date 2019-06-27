@@ -9,6 +9,8 @@ import approveQuestionStyle from "assets/jss/material-dashboard-react/views/dash
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
+import Snackbar from "@material-ui/core/Snackbar";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import CardBody from "../../../components/Card/CardBody";
 import QuestionDetails from "../../General/QuestionDetails";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
@@ -39,7 +41,12 @@ class ApproveQuestion extends React.Component {
     this.state = {
       open: false,
       approve: false,
-      reject: false
+      reject: false,
+      snackbar: {
+        open: false,
+        variant: "",
+        message: ""
+      }
     };
   }
 
@@ -121,6 +128,17 @@ class ApproveQuestion extends React.Component {
 
   performRejection = rejectQuestion => {
     console.log("performRejection called");
+    // show the reject snack in the case of performing a rejection
+    this.setState(
+      {
+        snackbar: {
+          ...this.state.snackbar,
+          message: "Question is rejected!",
+          variant: "error"
+        }
+      },
+      () => this.openSnackbar()
+    );
     rejectQuestion({
       variables: {
         _id: this.state.question._id
@@ -129,9 +147,49 @@ class ApproveQuestion extends React.Component {
     this.reloadList();
     this.closeDialog();
   };
+  // snack bar for approval and rejection
+  // open snackbar
+  openSnackbar = () => {
+    console.log("snackbar is open");
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
+  };
+
+  closeSnackbar = () => {
+    console.log("snackbar is closed");
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
 
   performApproval = approveQuestion => {
     console.log("performApproval called");
+    //shows a snack in the case of a question approval
+    this.setState(
+      {
+        snackbar: {
+          ...this.state.snackbar,
+          message: "Question is Proved!",
+          variant: "success"
+        }
+      },
+      () => this.openSnackbar()
+    );
     approveQuestion({
       variables: {
         _id: this.state.question._id
@@ -223,6 +281,20 @@ class ApproveQuestion extends React.Component {
                       </GridContainer>
                     </Card>
                   </GridItem>
+                  <Snackbar
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    open={this.state.snackbar.open}
+                    autoHideDuration={6000}
+                  >
+                    <CustomSnackbar
+                      onClose={this.closeSnackbar}
+                      variant={this.state.snackbar.variant}
+                      message={this.state.snackbar.message}
+                    />
+                  </Snackbar>
                 </GridContainer>
               </div>
             );
