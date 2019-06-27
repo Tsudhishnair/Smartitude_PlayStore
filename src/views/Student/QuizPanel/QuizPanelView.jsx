@@ -174,7 +174,8 @@ class QuizPanelView extends React.Component {
 
     //The counter is to check whether to submit the quiz or show warning message on tab change while attempting quiz.
     this.quizTabSwitchCounter = 0;
-
+    //The Counter is to check whether to submit the quiz or show warning message on sleep detection while attempting quiz.
+    this.quizSleepDetectionCounter = 0;
     //currentSecion is an index value of the section that is being attempted currently
     this.currentSection = 0;
 
@@ -262,6 +263,10 @@ class QuizPanelView extends React.Component {
         //trigger for dialog that appears when user tries to change the tab during quiz.
         showTabSwitchDialog: false
       },
+      sleepTriggers: {
+        //trigger for dialog that appers when the system goes to sleep during quiz
+        showSleepDialog: false
+      },
       //integer value of option marked by user
       markedOption: "",
       //maintain state of prev and next buttons
@@ -316,7 +321,6 @@ class QuizPanelView extends React.Component {
         showTabSwitchDialog: false
       }
     });
-
   };
   //Method that checks the quizTabSwitchCounter and performs either submission or shows warning
   handleTabSwitchSubmission = () => {};
@@ -844,7 +848,68 @@ class QuizPanelView extends React.Component {
       </Fab>
     );
   };
-
+  // Sleep Detection Dialog
+  //--------------------------
+  renderSleepDetection = () => {
+    if (this.state.sleepTriggers.showSleepDialog) {
+      if (this.quizSleepDetectionCounter >= 1) {
+        return (
+          <MessageDialog
+            title="ALERT ::: Quiz Submission:::"
+            content="Your Quiz is going to be submitted since your went to sleep even after warning"
+            positiveAction="Ok"
+            negativeAction=" "
+            action={this.quizSubmissionSleep}
+            // onClose={this.toggleDeleteDialogVisibility}
+            //   this.handleSectionSubmit(this.sections, this.mutation)
+            onClose={this.quizSubmissionSleep}
+          />
+        );
+      } else {
+        return (
+          <MessageDialog
+            title="Warinng ::: Sleep Alert:::"
+            content="Your quiz will be submitted if your system goes into sleep the next time"
+            positiveAction="Ok"
+            negativeAction=" "
+            action={this.incrementSleepDectionCounter}
+            // onClose={this.toggleDeleteDialogVisibility}
+            //   this.handleSectionSubmit(this.sections, this.mutation)
+            onClose={this.toggleSleepDialogVisibility}
+          />
+        );
+      }
+    }
+  };
+  // Submission of quiz on sleep detection
+  quizSubmissionSleep = () => {
+    this.setState({
+      sleepTriggers: {
+        showSleepDialog: false
+      }
+    });
+    this.currentSection = this.sections.length;
+    this.handleSectionSubmit(this.sections, this.mutation);
+  };
+  //Method increments the sleepDetectionCounter
+  incrementSleepDectionCounter = () => {
+    this.quizSleepDetectionCounter += 1;
+    this.setState({
+      sleepTriggers: {
+        showSleepDialog: false
+      }
+    });
+  };
+  // Trigger Dialog Handling
+  toggleSleepDialogVisibility = () => {
+    this.incrementSleepDectionCounter();
+    this.setState(prevState => ({
+      sleepTriggers: {
+        showSleepDialog: false
+      }
+    }));
+  };
+  //--------------------------
   toggleDialogVisibility = () => {
     this.setState(prevState => ({
       isVisible: !prevState.isVisible
@@ -924,6 +989,9 @@ class QuizPanelView extends React.Component {
       return (
         <FullScreen enabled={this.state.isFullScreen}>
           <React.Fragment>
+            {this.renderSleepDetection(
+              this.state.sleepTriggers.showSleepDialog
+            )}
             {this.renderTabSwitchDialog(
               this.state.triggers.showTabSwitchDialog
             )}
