@@ -189,9 +189,12 @@ class ApproveQuestion extends React.Component {
 
                 <Card className={classes.card}>
                   <CardBody>
-                    <p>
-                      <b>Questions yet to approve:</b> {data.questionsForIncharge.length}
-                    </p>
+                    <div style={{ position: "relative" }}>
+                      <h6>
+                        Questions yet to approve:{" "}
+                        {data.questionsForIncharge.length}
+                      </h6>
+                    </div>
                   </CardBody>
                 </Card>
                 <Spacing />

@@ -20,13 +20,13 @@ const styles = theme => ({
   searchRoot: {
     padding: "2px 4px",
     display: "flex",
+    marginLeft: theme.spacing.units * 2,
     alignItems: "center",
     float: "right",
     background: "transparent"
   },
   searchInput: {
     flex: 1,
-    marginLeft: theme.spacing.units * 2,
     alignItems: "center"
   },
   iconButton: {
@@ -144,9 +144,10 @@ class MyQuestionsManage extends React.Component {
                         <SearchInput
                           className={classes.searchInput}
                           sortResults={"true"}
+                          style={{marginLeft: "10px"}}
                           fuzzy={"true"}
                           onChange={this.searchUpdated}
-                          placeholder="Search Questions"
+                          placeholder="Search Questions..."
                         />
                       </div>
                       <GridContainer style={{ padding: "2%" }}>

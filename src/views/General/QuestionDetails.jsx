@@ -170,7 +170,7 @@ class QuestionDetails extends Component {
                 <Button
                   round
                   variant={"outlined"}
-                  color="default"
+                  color="secondary"
                   onClick={() => {
                     actionSecondaryFunction(question);
                   }}
