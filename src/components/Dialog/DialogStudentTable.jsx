@@ -264,6 +264,10 @@ class StudentDialog extends React.Component {
                           md={4}
                           className={classes.elementPadding}
                         >
+                          <Tooltip
+                            disableFocusListener
+                            title="Special characters or numbers are not allowed"
+                          >
                           <TextField
                             margin="dense"
                             id="name"
@@ -272,10 +276,14 @@ class StudentDialog extends React.Component {
                             name="name"
                             disabled={loading}
                             required
+                            InputProps={{
+                              inputProps: { pattern: "^[a-zA-Z ]*$" }
+                            }}
                             onChange={this.handleValueChange}
                             value={this.state.name}
                             fullWidth
                           />
+                          </Tooltip>
                         </GridItem>
                         <GridItem
                           xs={12}
@@ -283,6 +291,10 @@ class StudentDialog extends React.Component {
                           md={4}
                           className={classes.elementPadding}
                         >
+                          <Tooltip
+                            disableFocusListener
+                            title="Special characters or numbers are not allowed"
+                          >
                           <TextField
                             margin="dense"
                             id="username"
@@ -291,10 +303,14 @@ class StudentDialog extends React.Component {
                             name="username"
                             disabled={loading}
                             required
+                            InputProps={{
+                              inputProps: { pattern: "^[a-zA-Z ]*$" }
+                            }}
                             onChange={this.handleValueChange}
                             value={this.state.username}
                             fullWidth
                           />
+                          </Tooltip>
                         </GridItem>
                         <GridItem
                           xs={12}
@@ -336,6 +352,9 @@ class StudentDialog extends React.Component {
                             value={this.state.phoneNumber}
                             onChange={this.handleValueChange}
                             type="number"
+                            InputProps={{
+                              inputProps: { min: 6000000000, max: 9999999999 }
+                            }}
                             fullWidth
                           />
                         </GridItem>

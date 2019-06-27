@@ -20,7 +20,8 @@ import {
   Switch,
   FormControlLabel,
   Slide,
-  Typography
+  Typography,
+  Tooltip
 } from "@material-ui/core";
 
 import ReactChipInput from "../AutoChip/ReactChipSelect";
@@ -404,17 +405,25 @@ class DialogFacultyTable extends React.Component {
                           md={4}
                           className={classes.elementPadding}
                         >
-                          <TextField
-                            id="name"
-                            label="Name"
-                            name="name"
-                            type="name"
-                            required
-                            disabled={loading}
-                            onChange={this.handleValueChange}
-                            value={this.state.name}
-                            fullWidth
-                          />
+                          <Tooltip
+                            disableFocusListener
+                            title="Special characters or numbers are not allowed"
+                          >
+                            <TextField
+                              id="name"
+                              label="Name"
+                              name="name"
+                              type="name"
+                              required
+                              disabled={loading}
+                              InputProps={{
+                                inputProps: { pattern: "^[a-zA-Z ]*$" }
+                              }}
+                              onChange={this.handleValueChange}
+                              value={this.state.name}
+                              fullWidth
+                            />
+                          </Tooltip>
                         </GridItem>
                         <GridItem
                           xs={12}
@@ -422,17 +431,25 @@ class DialogFacultyTable extends React.Component {
                           md={4}
                           className={classes.elementPadding}
                         >
-                          <TextField
-                            id="username"
-                            name="username"
-                            required
-                            disabled={loading}
-                            onChange={this.handleValueChange}
-                            label="Username"
-                            type="name"
-                            value={this.state.username}
-                            fullWidth
-                          />
+                          <Tooltip
+                            disableFocusListener
+                            title="Special characters or numbers are not allowed"
+                          >
+                            <TextField
+                              id="username"
+                              name="username"
+                              required
+                              disabled={loading}
+                              onChange={this.handleValueChange}
+                              label="Username"
+                              type="name"
+                              InputProps={{
+                                inputProps: { pattern: "^[a-zA-Z ]*$" }
+                              }}
+                              value={this.state.username}
+                              fullWidth
+                            />
+                          </Tooltip>
                         </GridItem>
                         <GridItem
                           xs={12}
@@ -506,6 +523,9 @@ class DialogFacultyTable extends React.Component {
                             type="number"
                             name="phoneNumber"
                             fullWidth
+                            InputProps={{
+                              inputProps: { min: 6000000000, max: 9999999999 }
+                            }}
                             value={this.state.phoneNumber}
                           />
                         </GridItem>
