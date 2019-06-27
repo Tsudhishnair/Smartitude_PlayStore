@@ -5,7 +5,7 @@ import classNames from "classnames";
 // @material-ui/icons
 import Person from "@material-ui/icons/Person";
 // core components
-import { Button } from "@material-ui/core";
+import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "../../assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
 
@@ -58,9 +58,9 @@ class HeaderLinks extends React.Component {
   };
 
   handleCloseMenu = event => {
-    // if (this.anchorMenu.contains(event.target)) {
-    //   return;
-    // }
+    if (this.anchorMenu.contains(event.target)) {
+      return;
+    }
 
     this.setState({ openMenu: false });
   };
@@ -76,6 +76,9 @@ class HeaderLinks extends React.Component {
           <Button
             color={window.innerWidth > 959 ? "transparent" : "white"}
             aria-label="Person"
+            buttonRef={node => {
+              this.anchorMenu = node;
+            }}
             className={classes.buttonLink}
             onClick={this.handleToggleMenu}
             aria-haspopup="true"

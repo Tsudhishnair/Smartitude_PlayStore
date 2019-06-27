@@ -16,9 +16,9 @@ import {
   MenuItem,
   Select,
   Slide,
+  Tooltip,
   TextField,
-  Typography,
-  Tooltip
+  Typography
 } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";

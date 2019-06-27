@@ -252,6 +252,7 @@ class ReactChipSelect extends React.Component {
             onChange={this.handleChange("multi")}
             placeholder={this.props.hintText}
             isMulti
+            required
             isDisabled={isDisabled}
             zIndex="9999"
             fullWidth
