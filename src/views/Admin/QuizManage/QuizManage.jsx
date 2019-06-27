@@ -118,6 +118,7 @@ class QuizManage extends React.Component {
     rowsPerPageOptions: [20, 30, 100, 200, 700],
     onRowClick: (rowData, rowState) => {
       this.selectedQuiz = this.quizzes[rowState.dataIndex];
+      console.log(this.selectedQuiz)
       this.toggleQuizzesDialog();
     }
   };
@@ -160,7 +161,6 @@ class QuizManage extends React.Component {
             } else if (error) {
               return (
                 <Typography>Error occured while fetching data!</Typography>
-
               );
             } else {
               quizList = data.adminQuizzes.map(data => {

@@ -115,7 +115,6 @@ class QuizzesDialog extends React.Component {
     rowsPerPageOptions: [20, 30, 100, 200, 1000],
     onRowClick: (rowData, rowState) => {
       this.toggleResetDialog();
-
       this.selectedAttempt = this.attemptList[rowState.dataIndex];
     }
   };
@@ -216,13 +215,11 @@ class QuizzesDialog extends React.Component {
                     {({ loading, error, data }) => {
                       if (loading) {
                         return (
-                          <CircularProgress className={classes.progress}/>
+                          <CircularProgress className={classes.progress} />
                         );
                       } else if (error) {
                         return (
-                          <Typography>
-                            No students has attempted this quiz yet!
-                          </Typography>
+                          <Typography>An unknown error has occured</Typography>
                         );
                       } else {
                         this.attemptList = data.getAdminQuizAttempts;
