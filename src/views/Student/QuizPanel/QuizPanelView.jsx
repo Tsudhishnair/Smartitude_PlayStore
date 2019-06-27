@@ -301,7 +301,8 @@ class QuizPanelView extends React.Component {
       //compare the current time with the last recorded time. if it is greater than the interval, then submit the quiz
       let currentTime = new Date().getTime();
       if (currentTime > this.lastTime + TIMEOUT_INTERVAL * 2) {
-        this.handleSectionSubmit(this.sections, this.mutation);
+        // this.handleSectionSubmit(this.sections, this.mutation);
+        this.toggleSleepDialogVisibility();
       }
       this.lastTime = currentTime;
     }, TIMEOUT_INTERVAL);
@@ -848,68 +849,42 @@ class QuizPanelView extends React.Component {
       </Fab>
     );
   };
+
   // Sleep Detection Dialog
-  //--------------------------
   renderSleepDetection = () => {
     if (this.state.sleepTriggers.showSleepDialog) {
-      if (this.quizSleepDetectionCounter >= 1) {
-        return (
-          <MessageDialog
-            title="ALERT ::: Quiz Submission:::"
-            content="Your Quiz is going to be submitted since your went to sleep even after warning"
-            positiveAction="Ok"
-            negativeAction=" "
-            action={this.quizSubmissionSleep}
-            // onClose={this.toggleDeleteDialogVisibility}
-            //   this.handleSectionSubmit(this.sections, this.mutation)
-            onClose={this.quizSubmissionSleep}
-          />
-        );
-      } else {
-        return (
-          <MessageDialog
-            title="Warinng ::: Sleep Alert:::"
-            content="Your quiz will be submitted if your system goes into sleep the next time"
-            positiveAction="Ok"
-            negativeAction=" "
-            action={this.incrementSleepDectionCounter}
-            // onClose={this.toggleDeleteDialogVisibility}
-            //   this.handleSectionSubmit(this.sections, this.mutation)
-            onClose={this.toggleSleepDialogVisibility}
-          />
-        );
-      }
+      return (
+        <MessageDialog
+          title="ALERT ::: Quiz Submission:::"
+          content="Your Quiz is going to be submitted as you were inactive"
+          positiveAction="Ok"
+          action={this.quizSubmissionSleep}
+          onClose={this.quizSubmissionSleep}
+        />
+      );
     }
   };
+
   // Submission of quiz on sleep detection
   quizSubmissionSleep = () => {
-    this.setState({
-      sleepTriggers: {
-        showSleepDialog: false
-      }
-    });
-    this.currentSection = this.sections.length;
-    this.handleSectionSubmit(this.sections, this.mutation);
-  };
-  //Method increments the sleepDetectionCounter
-  incrementSleepDectionCounter = () => {
-    this.quizSleepDetectionCounter += 1;
-    this.setState({
-      sleepTriggers: {
-        showSleepDialog: false
-      }
-    });
-  };
-  // Trigger Dialog Handling
-  toggleSleepDialogVisibility = () => {
-    this.incrementSleepDectionCounter();
-    this.setState(prevState => ({
+    this.setState(() => ({
       sleepTriggers: {
         showSleepDialog: false
       }
     }));
+    this.currentSection = this.sections.length;
+    this.handleSectionSubmit(this.sections, this.mutation);
   };
-  //--------------------------
+
+  // Trigger Dialog Handling
+  toggleSleepDialogVisibility = () => {
+    this.setState(prevState => ({
+      sleepTriggers: {
+        showSleepDialog: !prevState.sleepTriggers.showSleepDialog
+      }
+    }));
+  };
+
   toggleDialogVisibility = () => {
     this.setState(prevState => ({
       isVisible: !prevState.isVisible
@@ -935,8 +910,8 @@ class QuizPanelView extends React.Component {
       if (this.quizTabSwitchCounter >= 1) {
         return (
           <MessageDialog
-            title="ALERT ::: Quiz Submission:::"
-            content="Your quiz will be submitted if you try to switch the tab  next time"
+            title="ALERT :: Quiz Submission"
+            content="Your quiz will now be submitted as you have tried to switch tabs or minimize, even after warning"
             positiveAction="Ok"
             negativeAction=" "
             action={this.tabSwitchSubmission}
@@ -948,8 +923,8 @@ class QuizPanelView extends React.Component {
       } else {
         return (
           <MessageDialog
-            title="WARNING :::Tab Switch Warning:::"
-            content="It has been noted that you have tried to switch tabs. "
+            title="WARNING :: Tab Switch"
+            content="It has been noted that you have tried to switch tabs/minimized the window. Your quiz will be submitted if you attempt this activity again"
             positiveAction="ok"
             negativeAction=" "
             action={this.incrementCounter}
