@@ -8,11 +8,15 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import CardHeader from "../../../components/Card/CardHeader";
 import Card from "../../../components/Card/Card";
+import Snackbar from "@material-ui/core/Snackbar";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
 import Fuse from "fuse.js";
+
+
 import SearchInput, { createFilter } from "react-search-input";
 // core components
 
@@ -47,7 +51,12 @@ class MyQuestionsManage extends React.Component {
     this.reloadList = undefined;
     this.state = {
       open: false,
-      searchTerm: ""
+      searchTerm: "",
+      snackbar:{
+        open:false,
+        message:"Question Deleted Successfully",
+        variant:"success"
+      }
     };
     this.searchUpdated = this.searchUpdated.bind(this);
   }
@@ -64,6 +73,34 @@ class MyQuestionsManage extends React.Component {
       );
     }
   };
+  //snackbar for deletion
+  openSnackbar = () => {
+    console.log("snackbar is open");
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
+  };
+  closeSnackbar = () => {
+    console.log("snackbar is closed");
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
   hideQuestionManageDialog = isOpen => {
     console.log("close dialog called");
     this.setState({
@@ -144,7 +181,7 @@ class MyQuestionsManage extends React.Component {
                         <SearchInput
                           className={classes.searchInput}
                           sortResults={"true"}
-                          style={{marginLeft: "10px"}}
+                          style={{ marginLeft: "10px" }}
                           fuzzy={"true"}
                           onChange={this.searchUpdated}
                           placeholder="Search Questions..."
@@ -166,7 +203,8 @@ class MyQuestionsManage extends React.Component {
                                   this.triggerQuestionManageDialog
                                 }
                                 showDeleteIcon={true}
-                                // deleteFunction={this.deleteQuestion}
+                                snackFunction={this.openSnackbar}
+                                reloadData={this.reloadList}
                               />
                             );
                           })}
@@ -188,6 +226,20 @@ class MyQuestionsManage extends React.Component {
                       {/*</GridContainer>*/}
                     </Card>
                   </GridItem>
+                  <Snackbar
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right"
+                    }}
+                    open={this.state.snackbar.open}
+                    autoHideDuration={6000}
+                  >
+                    <CustomSnackbar
+                      onClose={this.closeSnackbar}
+                      variant={this.state.snackbar.variant}
+                      message={this.state.snackbar.message}
+                    />
+                  </Snackbar>
                 </GridContainer>
               </div>
             );

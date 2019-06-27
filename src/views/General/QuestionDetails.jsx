@@ -9,6 +9,7 @@ import CardFooter from "../../components/Card/CardFooter";
 import Delete from "@material-ui/icons/Delete";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Snackbar from "@material-ui/core/Snackbar";
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
 import MessageDialog from "../../components/Dialog/MessageDialog";
@@ -18,11 +19,10 @@ class QuestionDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dialogDelete: false
+      dialogDelete: false,
     };
     // stores question which is to be deleted
     this.questionToBeDeleted;
-
     // stores mutation call of question
     this.questionDeleteMutation;
 
@@ -31,12 +31,12 @@ class QuestionDetails extends Component {
 
   handleDelete = (func, data) => {
     this.toggleDeleteDialogVisibility();
-
     this.questionToBeDeleted = data;
     this.questionDeleteMutation = func;
+
   };
   //Dialog for Question Delete
-  renderDeleteDialog = dialogDelete => {
+  renderDeleteDialog = (dialogDelete) => {
     if (dialogDelete) {
       return (
         <MessageDialog
@@ -50,6 +50,7 @@ class QuestionDetails extends Component {
       );
     }
   };
+  
   //used to toggle the visibility of delete dialog
   toggleDeleteDialogVisibility = () => {
     this.setState(prevState => ({
@@ -63,6 +64,9 @@ class QuestionDetails extends Component {
         _id: this.questionToBeDeleted
       }
     });
+    this.props.reloadData();
+    this.props.snackFunction();
+   
   };
 
   approveQuestionOptions(showAllDetails, data, answer) {
@@ -110,7 +114,9 @@ class QuestionDetails extends Component {
       actionSecondaryFunction,
       secondaryActionButtonText,
       showDeleteIcon,
-      showAllDetails
+      showAllDetails,
+      snackFunction,
+      reloadData
     } = this.props;
     return (
       <React.Fragment>
