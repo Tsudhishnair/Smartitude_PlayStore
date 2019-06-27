@@ -132,17 +132,16 @@ class StudentLogin extends Component {
       })
       .catch(err => {
         // set error message for snackbar
-        this.setState({
-          error: {
-            message: err.graphQLErrors[0]
-              ? err.graphQLErrors[0].message
-              : err.networkError
-          }
-        });
-
-        this.openSnackbar();
-        console.log(err.graphQLErrors);
-        console.log(err.networkError);
+        this.setState(
+          () => ({
+            error: {
+              message: err.graphQLErrors[0]
+                ? err.graphQLErrors[0].message
+                : err.networkError.message
+            }
+          }),
+          this.openSnackbar
+        );
       })
       .finally(() => {
         this.setState({ ...this.state, loading: false });
@@ -233,8 +232,17 @@ class StudentLogin extends Component {
                           <img width="150dp" src={lock} alt="..." />
                         </p>
                         <CardBody>
-                          <FormControl required fullWidth className={classes.formControl}>
-                            <InputLabel htmlFor="email"className={classes.labelRoot} >Username</InputLabel>
+                          <FormControl
+                            required
+                            fullWidth
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              htmlFor="email"
+                              className={classes.labelRoot}
+                            >
+                              Username
+                            </InputLabel>
                             <Input
                               id="email"
                               name="email"
@@ -243,8 +251,15 @@ class StudentLogin extends Component {
                               value={this.state.form.username}
                             />
                           </FormControl>
-                          <FormControl required fullWidth className={classes.formControl}>
-                            <InputLabel htmlFor="adornment-password" className={classes.labelRoot}>
+                          <FormControl
+                            required
+                            fullWidth
+                            className={classes.formControl}
+                          >
+                            <InputLabel
+                              htmlFor="adornment-password"
+                              className={classes.labelRoot}
+                            >
                               Password
                             </InputLabel>
                             <Input
