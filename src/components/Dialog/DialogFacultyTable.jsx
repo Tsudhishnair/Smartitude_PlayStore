@@ -433,7 +433,7 @@ class DialogFacultyTable extends React.Component {
                         >
                           <Tooltip
                             disableFocusListener
-                            title="Special characters or numbers are not allowed"
+                            title="Only alphanumeric characters and underscore allowed"
                           >
                             <TextField
                               id="username"
@@ -444,7 +444,7 @@ class DialogFacultyTable extends React.Component {
                               label="Username"
                               type="name"
                               InputProps={{
-                                inputProps: { pattern: "^[a-zA-Z ]*$" }
+                                inputProps: { pattern: "^[a-zA-Z0-9_]*$" }
                               }}
                               value={this.state.username}
                               fullWidth

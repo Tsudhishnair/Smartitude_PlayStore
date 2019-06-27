@@ -268,21 +268,21 @@ class StudentDialog extends React.Component {
                             disableFocusListener
                             title="Special characters or numbers are not allowed"
                           >
-                          <TextField
-                            margin="dense"
-                            id="name"
-                            label="Name"
-                            type="name"
-                            name="name"
-                            disabled={loading}
-                            required
-                            InputProps={{
-                              inputProps: { pattern: "^[a-zA-Z ]*$" }
-                            }}
-                            onChange={this.handleValueChange}
-                            value={this.state.name}
-                            fullWidth
-                          />
+                            <TextField
+                              margin="dense"
+                              id="name"
+                              label="Name"
+                              type="name"
+                              name="name"
+                              disabled={loading}
+                              required
+                              InputProps={{
+                                inputProps: { pattern: "^[a-zA-Z ]*$" }
+                              }}
+                              onChange={this.handleValueChange}
+                              value={this.state.name}
+                              fullWidth
+                            />
                           </Tooltip>
                         </GridItem>
                         <GridItem
@@ -293,23 +293,23 @@ class StudentDialog extends React.Component {
                         >
                           <Tooltip
                             disableFocusListener
-                            title="Special characters or numbers are not allowed"
+                            title="Only alphanumeric characters and underscore allowed"
                           >
-                          <TextField
-                            margin="dense"
-                            id="username"
-                            label="Username"
-                            type="name"
-                            name="username"
-                            disabled={loading}
-                            required
-                            InputProps={{
-                              inputProps: { pattern: "^[a-zA-Z ]*$" }
-                            }}
-                            onChange={this.handleValueChange}
-                            value={this.state.username}
-                            fullWidth
-                          />
+                            <TextField
+                              margin="dense"
+                              id="username"
+                              label="Username"
+                              type="name"
+                              name="username"
+                              disabled={loading}
+                              required
+                              InputProps={{
+                                inputProps: { pattern: "^[a-zA-Z0-9_]*$" }
+                              }}
+                              onChange={this.handleValueChange}
+                              value={this.state.username}
+                              fullWidth
+                            />
                           </Tooltip>
                         </GridItem>
                         <GridItem

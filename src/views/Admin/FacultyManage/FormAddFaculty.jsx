@@ -378,7 +378,7 @@ class FormAddFaculty extends Component {
                   >
                     <Tooltip
                       disableFocusListener
-                      title="Special characters or numbers are not allowed"
+                      title="Only alphanumeric characters and underscore allowed"
                     >
                       <TextField
                         autoFocus
@@ -389,7 +389,7 @@ class FormAddFaculty extends Component {
                         type="text"
                         name="username"
                         InputProps={{
-                          inputProps: { pattern: "^[a-zA-Z ]*$" }
+                          inputProps: { pattern: "^[a-zA-Z0-9_]*$" }
                         }}
                         onChange={this.handleValueChange}
                         value={this.state.username}
