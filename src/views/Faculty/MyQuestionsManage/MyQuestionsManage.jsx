@@ -158,7 +158,7 @@ class MyQuestionsManage extends React.Component {
     //------------------------------------------------------------------------
 
     return (
-      <Query query={RETRIVE_QUESTIONS}>
+      <Query query={RETRIVE_QUESTIONS} fetchPolicy="network-only">
         {({ data, loading, error, refetch }) => {
           this.reloadList = refetch;
           if (loading) {

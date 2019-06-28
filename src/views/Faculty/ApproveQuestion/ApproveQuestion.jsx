@@ -234,7 +234,7 @@ class ApproveQuestion extends React.Component {
     `;
     //------------------------------------------------------------------------
     return (
-      <Query query={RETRIVE_QUESTIONS} variables={{ approvalStatus: 0 }}>
+      <Query query={RETRIVE_QUESTIONS} fetchPolicy="network-only" variables={{ approvalStatus: 0 }} >
         {({ data, loading, error, refetch }) => {
           this.reloadList = refetch;
           if (loading) {
