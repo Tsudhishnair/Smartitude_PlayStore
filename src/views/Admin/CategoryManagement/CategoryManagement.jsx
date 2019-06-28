@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -550,21 +550,12 @@ class CategoryManagement extends React.Component {
                       })}
                     </List>
                   </Card>
-                  <Snackbar
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right"
-                    }}
+                  <CustomSnackbar
+                    onClose={this.closeSnackbar}
+                    variant={snackbar.variant}
                     open={snackbar.open}
-                    autoHideDuration={5000}
-                  >
-                    <CustomSnackbar
-                      onClose={this.closeSnackbar}
-                      variant={snackbar.variant}
-                      message={snackbar.message}
-                      autoHideDuration={5000}
-                    />
-                  </Snackbar>
+                    message={snackbar.message}
+                  />
                 </React.Fragment>
               );
             }

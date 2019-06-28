@@ -1077,19 +1077,12 @@ class QuizForm extends React.Component {
             }
           }}
         </Query>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          open={this.state.snackbar.open}
-        >
-          <CustomSnackbar
+        <CustomSnackbar
             onClose={this.closeSnackbar}
             variant={this.state.snackbar.variant}
+            open={this.state.snackbar.open}
             message={this.state.snackbar.message}
-          />
-        </Snackbar>
+        />
       </Fragment>
     );
   }

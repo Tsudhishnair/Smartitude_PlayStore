@@ -316,20 +316,12 @@ class AdminLogin extends Component {
               </div>
               <Footer whiteFont />
             </div>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right"
-              }}
+            <CustomSnackbar
+              onClose={this.closeSnackbar}
+              variant="error"
               open={snackbar.open}
-              autoHideDuration={6000}
-            >
-              <CustomSnackbar
-                onClose={this.closeSnackbar}
-                variant="error"
-                message={error.message}
-              />
-            </Snackbar>
+              message={error.message}
+            />
           </div>
         )}
       </Mutation>

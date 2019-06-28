@@ -336,21 +336,12 @@ class StudentManage extends React.Component {
                   </Card>
                 </GridItem>
               </GridContainer>
-              <Snackbar
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
+              <CustomSnackbar
+                onClose={this.closeSnackbar}
+                variant={snackbar.variant}
                 open={snackbar.open}
-                auto
-                autoHideDuration={6000}
-              >
-                <CustomSnackbar
-                  onClose={this.closeSnackbar}
-                  variant={snackbar.variant}
-                  message={snackbar.message}
-                />
-              </Snackbar>
+                message={snackbar.message}
+              />
             </Fragment>
           );
         }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -339,20 +339,12 @@ class DeptManage extends React.Component {
             );
           }}
         </Query>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
+        <CustomSnackbar
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
           open={snackbar.open}
-          autoHideDuration={6000}
-        >
-          <CustomSnackbar
-            onClose={this.closeSnackbar}
-            variant={snackbar.variant}
-            message={snackbar.message}
-          />
-        </Snackbar>
+          message={snackbar.message}
+        />
       </div>
     );
   }

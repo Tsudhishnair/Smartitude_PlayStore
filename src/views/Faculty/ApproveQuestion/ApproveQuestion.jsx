@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -201,6 +201,7 @@ class ApproveQuestion extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { snackbar } = this.state;
     //----------------------------------------------------------------
     //Query to fetch question from database
     const RETRIVE_QUESTIONS = gql`
@@ -281,20 +282,12 @@ class ApproveQuestion extends React.Component {
                       </GridContainer>
                     </Card>
                   </GridItem>
-                  <Snackbar
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right"
-                    }}
-                    open={this.state.snackbar.open}
-                    autoHideDuration={6000}
-                  >
-                    <CustomSnackbar
-                      onClose={this.closeSnackbar}
-                      variant={this.state.snackbar.variant}
-                      message={this.state.snackbar.message}
-                    />
-                  </Snackbar>
+                  <CustomSnackbar
+                    onClose={this.closeSnackbar}
+                    variant={snackbar.variant}
+                    open={snackbar.open}
+                    message={snackbar.message}
+                  />
                 </GridContainer>
               </div>
             );

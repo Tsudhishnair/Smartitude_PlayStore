@@ -487,21 +487,12 @@ class FormAddStudent extends Component {
                     )}
                   </div>
                 </ExpansionPanelActions>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  open={snackbar.open}
-                  auto
-                  autoHideDuration={6000}
-                >
-                  <CustomSnackbar
+                <CustomSnackbar
                     onClose={this.closeSnackbar}
                     variant={snackbar.variant}
+                    open={snackbar.open}
                     message={snackbar.message}
-                  />
-                </Snackbar>
+                />
               </form>
             </div>
           );

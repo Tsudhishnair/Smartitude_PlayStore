@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import green from "@material-ui/core/colors/green";
@@ -251,20 +251,12 @@ class FormAddDepartment extends React.Component {
                   )}
                 </div>
               </ExpansionPanelActions>
-              <Snackbar
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
-                }}
-                open={snackbar.open}
-                autoHideDuration={6000}
-              >
-                <CustomSnackbar
+              <CustomSnackbar
                   onClose={this.closeSnackbar}
                   variant={snackbar.variant}
+                  open={snackbar.open}
                   message={snackbar.message}
-                />
-              </Snackbar>
+              />
             </form>
           </div>
         )}

@@ -226,20 +226,12 @@ class MyQuestionsManage extends React.Component {
                       {/*</GridContainer>*/}
                     </Card>
                   </GridItem>
-                  <Snackbar
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right"
-                    }}
-                    open={this.state.snackbar.open}
-                    autoHideDuration={6000}
-                  >
-                    <CustomSnackbar
+                  <CustomSnackbar
                       onClose={this.closeSnackbar}
                       variant={this.state.snackbar.variant}
+                      open={this.state.snackbar.open}
                       message={this.state.snackbar.message}
-                    />
-                  </Snackbar>
+                  />
                 </GridContainer>
               </div>
             );

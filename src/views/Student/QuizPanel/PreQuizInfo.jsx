@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -69,11 +69,10 @@ class PreQuizInfo extends React.Component {
       redirecter: false,
       loading: false,
       snackbar: {
-        open: false
-      },
-      error: {
+        open: false,
+        variant: "error",
         message: ""
-      }
+      },
     };
 
     this.quiz = this.props.location.state;
@@ -163,7 +162,7 @@ class PreQuizInfo extends React.Component {
       .catch(err => {
         console.log(err);
         this.setState({
-          error: {
+          snackbar: {
             message: err.graphQLErrors[0]
               ? err.graphQLErrors[0].message
               : err.networkError
@@ -179,7 +178,7 @@ class PreQuizInfo extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { loading, snackbar, error } = this.state;
+    const { loading, snackbar } = this.state;
 
     if (!this.quiz) {
       return <Redirect to="/student/dashboard" />;
@@ -287,20 +286,12 @@ class PreQuizInfo extends React.Component {
             </Card>
           </GridItem>
         </GridContainer>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          open={snackbar.open}
-          autoHideDuration={6000}
-        >
-          <CustomSnackbar
+        <CustomSnackbar
             onClose={this.closeSnackbar}
-            variant="error"
-            message={error.message}
-          />
-        </Snackbar>
+            variant={snackbar.variant}
+            open={snackbar.open}
+            message={snackbar.message}
+        />
       </div>
     );
   }

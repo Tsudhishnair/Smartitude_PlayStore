@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component, Fragment} from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -216,20 +216,12 @@ class FormAddCategory extends Component {
                     )}
                   </div>
                 </ExpansionPanelActions>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                  }}
-                  open={snackbar.open}
-                  autoHideDuration={6000}
-                >
-                  <CustomSnackbar
+                <CustomSnackbar
                     onClose={this.closeSnackbar}
                     variant={snackbar.variant}
+                    open={snackbar.open}
                     message={snackbar.message}
-                  />
-                </Snackbar>
+                />
               </form>
             </div>
           );
