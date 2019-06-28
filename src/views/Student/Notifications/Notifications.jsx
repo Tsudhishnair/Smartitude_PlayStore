@@ -140,12 +140,6 @@ class Notifications extends React.Component {
                 return (
                   <GridContainer>
                       {snackbars}
-                      {/*<MUIDataTable*/}
-                      {/*  title={""}*/}
-                      {/*  data={this.messageList}*/}
-                      {/*  columns={columns}*/}
-                      {/*  options={this.options}*/}
-                      {/*/>*/}
                   </GridContainer>
                 );
               }

@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 // react plugin for creating charts
 // @material-ui/core
+import { CircularProgress, Typography, Grow, Icon } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Icon from "@material-ui/core/Icon";
-// @material-ui/icons
 import Button from "components/CustomButtons/Button.jsx";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
@@ -14,12 +13,9 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import Grow from "@material-ui/core/Grow";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import { Link, Redirect } from "react-router-dom";
 import gql from "graphql-tag";
-import { CircularProgress } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import { Mutation, Query } from "react-apollo";
 import { RANDOM_QUIZ_CONSTANT } from "../../../Utils";
 

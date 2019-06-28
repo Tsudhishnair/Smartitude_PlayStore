@@ -1,11 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
-import withStyles from "@material-ui/core/styles/withStyles";
-// @material-ui/icons
-// core components
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
 import {
   Avatar,
   Card,
@@ -22,8 +17,12 @@ import {
   FormLabel,
   Typography
 } from "@material-ui/core";
-
+import withStyles from "@material-ui/core/styles/withStyles";
+// @material-ui/icons
 import { Timeline, Timer, TrendingDown, TrendingUp } from "@material-ui/icons";
+// core components
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 
 import Spacing from "../../../components/Spacing/Spacing";
 import CardFooter from "../../../components/Card/CardFooter";

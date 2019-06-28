@@ -1,11 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
-import withStyles from "@material-ui/core/styles/withStyles";
-// @material-ui/icons
-// core components
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
 import {
   Button,
   Card,
@@ -25,16 +20,20 @@ import {
   Stepper,
   Typography
 } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+// @material-ui/icons
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
-
+// core components
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import Spacing from "../../../components/Spacing/Spacing";
 import CardBody from "../../../components/Card/CardBody";
-import { Redirect } from "react-router-dom";
 
+import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import FullScreen from "react-full-screen";
 
+import FullScreen from "react-full-screen";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import {

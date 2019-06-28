@@ -1,20 +1,19 @@
-import React, {Fragment} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
-import withStyles from "@material-ui/core/styles/withStyles";
-// @material-ui/icons
-// core components
-import GridContainer from "../../../components/Grid/GridContainer";
-import GridItem from "../../../components/Grid/GridItem";
 import {
   Card,
   Button,
   CardContent,
   Typography,
   Divider,
-  CircularProgress,
-  Snackbar
+  CircularProgress
 } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+// @material-ui/icons
+// core components
+import GridContainer from "../../../components/Grid/GridContainer";
+import GridItem from "../../../components/Grid/GridItem";
 import CardFooter from "../../../components/Card/CardFooter";
 import CardBody from "../../../components/Card/CardBody";
 import Spacing from "../../../components/Spacing/Spacing";
@@ -72,7 +71,7 @@ class PreQuizInfo extends React.Component {
         open: false,
         variant: "error",
         message: ""
-      },
+      }
     };
 
     this.quiz = this.props.location.state;
@@ -287,10 +286,10 @@ class PreQuizInfo extends React.Component {
           </GridItem>
         </GridContainer>
         <CustomSnackbar
-            onClose={this.closeSnackbar}
-            variant={snackbar.variant}
-            open={snackbar.open}
-            message={snackbar.message}
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
+          open={snackbar.open}
+          message={snackbar.message}
         />
       </div>
     );

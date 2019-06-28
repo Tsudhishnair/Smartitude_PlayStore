@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
+import { CircularProgress } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
@@ -17,7 +18,6 @@ import gql from "graphql-tag";
 
 import { ASSIGNED_QUIZ_CONSTANT, transformDateString } from "../../../Utils";
 import { Redirect } from "react-router-dom";
-import { CircularProgress } from "@material-ui/core";
 
 const styles = theme => ({
   root: {

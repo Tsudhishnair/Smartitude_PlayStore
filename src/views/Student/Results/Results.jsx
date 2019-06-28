@@ -1,6 +1,8 @@
 import React from "react";
 // @material-ui/core components
+import { CircularProgress, Icon, Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Warning, LocalOffer } from "@material-ui/icons";
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -8,18 +10,14 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Danger from "components/Typography/Danger.jsx";
-import Warning from "@material-ui/icons/Warning";
-import LocalOffer from "@material-ui/icons/LocalOffer";
-import Icon from "@material-ui/core/Icon";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import MUIDataTable from "mui-datatables";
-import {CircularProgress} from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import gql from "graphql-tag";
-import {Query} from "react-apollo";
+import { Query } from "react-apollo";
 import CardBody from "../../../components/Card/CardBody";
+
 // RealScore is used for calculating the average score and displaying them
 let realscore = 0;
 //RealAttemptedQuizNo is used for calculating and displaying the number of admin assigned quizzes
@@ -101,8 +99,7 @@ class Results extends React.Component {
   }
   // This function handles the row click and passes the index of the data to be retrieved
   handleRowClick = dataitem => {
-    this.handleQuizStructure(EntireQueryData.item.data,(dataitem[0] - 1));
-  
+    this.handleQuizStructure(EntireQueryData.item.data, dataitem[0] - 1);
   };
   // Function to structure the data in the format which is required by the QuizAnswerPage
   handleQuizStructure = (data, index) => {
@@ -113,17 +110,21 @@ class Results extends React.Component {
       submittedAt: data.myAttemptedAdminQuizzes[index].attemptedAt
     };
     quiz = {
-      sections: data.myAttemptedAdminQuizzes[index].quiz.sections.map((section,pos) => {
-        let sectionData = {
-          category: section.category,
-          questions: section.questions,
-          markPerQuestion: section.markPerQuestion,
-          negativeMarkPerQuestion: section.negativeMarkPerQuestion,
-          timeLimit: data.myAttemptedAdminQuizzes[index].attemptedSections[pos].timeLimit
-        };
-        return sectionData;
-      })
-   };
+      sections: data.myAttemptedAdminQuizzes[index].quiz.sections.map(
+        (section, pos) => {
+          let sectionData = {
+            category: section.category,
+            questions: section.questions,
+            markPerQuestion: section.markPerQuestion,
+            negativeMarkPerQuestion: section.negativeMarkPerQuestion,
+            timeLimit:
+              data.myAttemptedAdminQuizzes[index].attemptedSections[pos]
+                .timeLimit
+          };
+          return sectionData;
+        }
+      )
+    };
     this.setState(prevState => ({
       ...prevState,
       redirector: true

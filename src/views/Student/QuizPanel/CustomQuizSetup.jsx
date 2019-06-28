@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
+import { CardContent, Divider, Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 // @material-ui/icons
 // core components
-import { CardContent, Divider, Typography } from "@material-ui/core";
 import Card from "components/Card/Card.jsx";
 import QuizForm from "../../Admin/QuizManage/QuizForm";
 import CardHeader from "../../../components/Card/CardHeader";
