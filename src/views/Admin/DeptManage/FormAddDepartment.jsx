@@ -1,11 +1,14 @@
-import React, {Fragment} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import green from "@material-ui/core/colors/green";
 import TextField from "@material-ui/core/TextField";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import { Button, CircularProgress, ExpansionPanelActions, Snackbar } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  ExpansionPanelActions
+} from "@material-ui/core";
 import { Mutation } from "../../../../node_modules/react-apollo";
 
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -244,11 +247,11 @@ class FormAddDepartment extends React.Component {
                 </div>
               </ExpansionPanelActions>
               <CustomSnackbar
-                  onClose={this.closeSnackbar}
-                  variant={snackbar.variant}
-                  autoHideDuration={snackbar.duration}
-                  open={snackbar.open}
-                  message={snackbar.message}
+                onClose={this.closeSnackbar}
+                variant={snackbar.variant}
+                autoHideDuration={snackbar.duration}
+                open={snackbar.open}
+                message={snackbar.message}
               />
             </form>
           </div>

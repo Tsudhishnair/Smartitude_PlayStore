@@ -8,7 +8,7 @@ import GridContainer from "../../../components/Grid/GridContainer.jsx";
 import MUIDataTable from "mui-datatables";
 import Card from "../../../components/Card/Card.jsx";
 import CardHeader from "../../../components/Card/CardHeader.jsx";
-import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 import TableDialog from "../../../components/Dialog/DialogStudentTable";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -17,7 +17,7 @@ import {
   EXPANSION_STUDENT_BATCH,
   EXPANSION_STUDENT_FORM
 } from "../../../Utils";
-import { CircularProgress, Snackbar } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
@@ -267,13 +267,13 @@ class StudentManage extends React.Component {
               />
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                  <ExpansionPanel
+                  <CustomExpansionPanel
                     headers={header1}
                     header={header2}
                     reloadList={this.reloadStudentsList}
                     directingValue={EXPANSION_STUDENT_FORM}
                   />
-                  <ExpansionPanel
+                  <CustomExpansionPanel
                     reloadList={this.reloadStudentsList}
                     headers={"Multiple Student"}
                     header={"Add groups of students"}

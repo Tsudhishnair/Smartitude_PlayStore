@@ -14,11 +14,9 @@ import {
   ExpansionPanelActions,
   FormControl,
   FormControlLabel,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
-  Snackbar,
   Switch,
   TextField,
   Tooltip,
@@ -1073,7 +1071,7 @@ class QuizForm extends React.Component {
         <CustomSnackbar
             onClose={this.closeSnackbar}
             variant={snackbar.variant}
-            open={snackbar.open}
+          open={snackbar.open}
             autoHideDuration={snackbar.duration}
             message={snackbar.message}
         />

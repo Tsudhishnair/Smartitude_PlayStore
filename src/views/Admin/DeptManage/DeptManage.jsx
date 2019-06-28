@@ -1,15 +1,9 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
 
-import {
-  Button,
-  IconButton,
-  ListItemSecondaryAction,
-  Snackbar,
-  Tooltip
-} from "@material-ui/core";
+import { Button, IconButton, Tooltip } from "@material-ui/core";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -17,7 +11,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 import DeleteForeverIcon from "@material-ui/icons/Delete";
 // apollo client
 import { Mutation, Query } from "react-apollo";
@@ -265,7 +259,7 @@ class DeptManage extends React.Component {
       <div>
         {this.renderUpdateDialog(this.state.updateDialogOpen)}
         {this.renderDeleteDialog(this.state.deleteDialogOpen)}
-        <ExpansionPanel
+        <CustomExpansionPanel
           headers={header1}
           header={header2}
           directingValue={EXPANSION_DEPARTMENT_FORM}

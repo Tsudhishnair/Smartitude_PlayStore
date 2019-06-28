@@ -9,7 +9,7 @@ import { CircularProgress, Typography } from "@material-ui/core";
 import MUIDataTable from "mui-datatables";
 import GridItem from "../../../components/Grid/GridItem.jsx";
 import GridContainer from "../../../components/Grid/GridContainer.jsx";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 import Card from "../../../components/Card/Card.jsx";
 import CardHeader from "../../../components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
@@ -179,7 +179,7 @@ class QuizManage extends React.Component {
                 <Fragment>
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
-                      <Expansionpanel
+                      <CustomExpansionPanel
                         headers={header1}
                         header={header2}
                         reloadList={this.reloadQuizList}

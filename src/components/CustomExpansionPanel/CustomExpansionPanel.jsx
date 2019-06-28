@@ -62,7 +62,7 @@ const styles = theme => ({
 
 // TODO: REFACTOR THIS WHOLE THING
 
-class Expansionpanel extends Component {
+class CustomExpansionPanel extends Component {
   render() {
     const { classes, directingValue, header, headers } = this.props;
     let layout;
@@ -121,7 +121,7 @@ class Expansionpanel extends Component {
   }
 }
 
-Expansionpanel.propTypes = {
+CustomExpansionPanel.propTypes = {
   classes: PropTypes.object.isRequired,
   directingValue: PropTypes.object.isRequired,
   header: PropTypes.object.isRequired,
@@ -134,4 +134,4 @@ Expansionpanel.propTypes = {
   reloadList: PropTypes.func
 };
 
-export default withStyles(styles)(Expansionpanel);
+export default withStyles(styles)(CustomExpansionPanel);

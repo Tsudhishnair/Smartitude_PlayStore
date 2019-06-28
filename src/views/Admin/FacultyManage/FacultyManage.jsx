@@ -9,8 +9,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import MUIDataTable from "mui-datatables";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import { CircularProgress, Snackbar } from "@material-ui/core";
-import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
+import { CircularProgress } from "@material-ui/core";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 import TableDialog from "../../../components/Dialog/DialogFacultyTable";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
 import { Mutation, Query } from "react-apollo";
@@ -21,7 +21,6 @@ import {
 } from "../../../Utils";
 import CardBody from "../../../components/Card/CardBody";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
@@ -317,7 +316,7 @@ class Dashboard extends React.Component {
                         <Fragment>
                           <GridContainer>
                             <GridItem xs={12} sm={12} md={12}>
-                              <ExpansionPanel
+                              <CustomExpansionPanel
                                 headers={header1}
                                 header={header2}
                                 departments={this.departments}
@@ -325,7 +324,7 @@ class Dashboard extends React.Component {
                                 directingValue={EXPANSION_FACULTY_FORM}
                                 reloadList={this.reloadFacultiesList}
                               />
-                              <ExpansionPanel
+                              <CustomExpansionPanel
                                 reloadList={this.reloadFacultiesList}
                                 headers={"Multiple Faculty"}
                                 header={"Add groups of faculty"}
@@ -408,11 +407,11 @@ class Dashboard extends React.Component {
                             </GridItem>
                           </GridContainer>
                           <CustomSnackbar
-                              onClose={this.closeSnackbar}
-                              variant={snackbar.variant}
-                              open={snackbar.open}
-                              autoHideDuration={8000}
-                              message={snackbar.message}
+                            onClose={this.closeSnackbar}
+                            variant={snackbar.variant}
+                            open={snackbar.open}
+                            autoHideDuration={8000}
+                            message={snackbar.message}
                           />
                         </Fragment>
                       );

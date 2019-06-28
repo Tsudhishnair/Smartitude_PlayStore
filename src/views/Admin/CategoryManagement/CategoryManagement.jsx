@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -9,7 +9,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Snackbar,
   Typography,
   Tooltip
 } from "@material-ui/core";
@@ -18,7 +17,7 @@ import Card from "components/Card/Card.jsx";
 import CategoryDialog from "../../../components/Dialog/DialogCategory";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import ExpansionPanel from "../../../components/ExpansionPanel/Expansionpanel";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 
 import {
   EXPANSION_CATEGORY_FORM,
@@ -365,13 +364,13 @@ class CategoryManagement extends React.Component {
                 <React.Fragment>
                   {this.renderEditDialog(this.state.editDialog)}
                   {this.renderDeleteDialog(this.state.deleteDialog)}
-                  <ExpansionPanel
+                  <CustomExpansionPanel
                     headers="Category"
                     header="Add new category"
                     reloadList={this.reloadCategoryDetailsList}
                     directingValue={EXPANSION_CATEGORY_FORM}
                   />
-                  <ExpansionPanel
+                  <CustomExpansionPanel
                     reloadList={this.reloadCategoryDetailsList}
                     categories={categoriesList}
                     headers="Sub-Category"

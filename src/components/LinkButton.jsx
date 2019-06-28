@@ -3,12 +3,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 
-const LinkButton = (props) => {
+const LinkButton = props => {
   const {
     history,
-    location,
-    match,
-    staticContext,
+    // location,
+    // match,
+    // staticContext,
     to,
     onClick,
     // ⬆ filtering out props that `button` doesn’t know what to do with.
@@ -17,12 +17,12 @@ const LinkButton = (props) => {
   return (
     <button
       {...rest} // `children` is just another prop!
-      onClick={(event) => {
+      onClick={event => {
         onClick && onClick(event);
-        history.push(to)
+        history.push(to);
       }}
     />
-  )
+  );
 };
 
 LinkButton.propTypes = {
@@ -30,4 +30,4 @@ LinkButton.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default withRouter(LinkButton)
+export default withRouter(LinkButton);

@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -17,7 +17,7 @@ import {
 import Spacing from "components/Spacing/Spacing";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import {Mutation, Query} from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import green from "@material-ui/core/colors/green";
@@ -736,7 +736,7 @@ class AddQuestion extends React.Component {
                                   fullWidth
                                 >
                                   {this.renderCategoryMenu(
-                                      data.myCategoriesAndSubcategories
+                                    data.myCategoriesAndSubcategories
                                   )}
 
                                   {(this.firstRender = false)}
@@ -829,10 +829,10 @@ class AddQuestion extends React.Component {
           </GridItem>
         </GridContainer>
         <CustomSnackbar
-            onClose={this.closeSnackbar}
-            variant={snackbar.variant}
-            open={snackbar.open}
-            message={snackbar.message}
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
+          open={snackbar.open}
+          message={snackbar.message}
         />
       </React.Fragment>
     );
@@ -843,7 +843,7 @@ class AddQuestion extends React.Component {
       this.categoryAndSubCategoryList.push(categoryDetail);
     }
     return (
-        <MenuItem value={categoryDetail}>{categoryDetail.category.name}</MenuItem>
+      <MenuItem value={categoryDetail}>{categoryDetail.category.name}</MenuItem>
     );
   }
 }

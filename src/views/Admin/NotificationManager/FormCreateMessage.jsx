@@ -2,42 +2,22 @@ import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import TextField from "@material-ui/core/TextField";
 import {
   Button,
   CircularProgress,
   ExpansionPanelActions,
   FormControl,
   InputLabel,
+  TextField,
   MenuItem,
   Select,
-  Snackbar,
   Typography
 } from "@material-ui/core";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
-import green from "@material-ui/core/colors/green";
 import PropTypes from "prop-types";
-
-const styles = theme => ({
-  root: {
-    dispaly: "felx",
-    flexGrow: 1
-  },
-  buttonProgress: {
-    color: green[500],
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    marginTop: -12,
-    marginLeft: -12
-  },
-  wrapper: {
-    margin: theme.spacing.unit,
-    position: "relative"
-  }
-});
+import formControlStyle from "../../../assets/jss/form-control";
 
 const FETCH_BATCHES_QUERY = gql`
   {
@@ -317,4 +297,4 @@ FormCreateMessage.propTypes = {
   classes: PropTypes.object.isRequired,
   reloadList: PropTypes.func.isRequired
 };
-export default withStyles(styles)(FormCreateMessage);
+export default withStyles(formControlStyle)(FormCreateMessage);
