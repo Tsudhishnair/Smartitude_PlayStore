@@ -1,6 +1,12 @@
 import React from "react";
 // @material-ui/core components
-import { CircularProgress, Icon, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  createMuiTheme,
+  Icon,
+  MuiThemeProvider,
+  Typography
+} from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Warning, LocalOffer } from "@material-ui/icons";
 // core components
@@ -17,6 +23,16 @@ import MUIDataTable from "mui-datatables";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import CardBody from "../../../components/Card/CardBody";
+
+const myTheme = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        maxHeight: "none"
+      }
+    }
+  }
+});
 
 // RealScore is used for calculating the average score and displaying them
 let realscore = 0;
@@ -82,16 +98,16 @@ class Results extends React.Component {
     // Properties of the miui data table used for displaying the attempted quizes
     this.options = {
       filterType: "checkbox",
-      rowsPerPage: 20,
+      rowsPerPage: 30,
       elevation: 0,
       print: false,
       download: false,
       responsive: "scroll",
-      pagination: false,
+      pagination: true,
       filter: false,
       viewColumns: false,
       selectableRows: false,
-      rowsPerPageOptions: [20, 30, 100, 200],
+      rowsPerPageOptions: [30, 100, 200],
       onRowClick: (rowData, rowState) => {
         this.handleRowClick(rowData);
       }
@@ -278,18 +294,20 @@ class Results extends React.Component {
                     }
                     return (
                       <CardBody>
-                        <MUIDataTable
-                          title={""}
-                          data={AttemptedQuizData}
-                          columns={[
-                            "NO",
-                            "Quiz Name",
-                            "Description",
-                            "Score Obtained",
-                            "Max Score"
-                          ]}
-                          options={this.options}
-                        />
+                        <MuiThemeProvider theme={myTheme}>
+                          <MUIDataTable
+                            title={""}
+                            data={AttemptedQuizData}
+                            columns={[
+                              "NO",
+                              "Quiz Name",
+                              "Description",
+                              "Score Obtained",
+                              "Max Score"
+                            ]}
+                            options={this.options}
+                          />
+                        </MuiThemeProvider>
                       </CardBody>
                     );
                   }

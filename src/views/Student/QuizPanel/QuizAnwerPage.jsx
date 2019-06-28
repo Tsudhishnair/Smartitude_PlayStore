@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
+  createMuiTheme,
   Divider,
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -34,7 +35,16 @@ import { Redirect } from "react-router-dom";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Latex from "../../General/Latex";
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from "recharts";
 
 const styles = theme => ({
   root: {
@@ -91,9 +101,12 @@ const styles = theme => ({
     height: 55,
     float: "left"
   },
-	// barChartContainer: {
-	//   height: 400
-	// },
+  barChartContainer: {
+    height: 400,
+    [theme.breakpoints.down("sm")]: {
+      width: "90vw"
+    }
+  },
   descText: {
     color: red[500]
   },
@@ -129,13 +142,13 @@ const styles = theme => ({
 class QuizAnswer extends React.Component {
   constructor(props) {
     super(props);
-	  this.state = {
-		  showGraph: false
-	  };
+    this.state = {
+      showGraph: false
+    };
     //save data received in props
     this.data = this.props.location.state;
 
-	  this.graphData = [];
+    this.graphData = [];
 
     if (!this.data) {
       this.hasError = true;
@@ -146,27 +159,49 @@ class QuizAnswer extends React.Component {
     }
   }
 
-	renderBarChart = () => {
-		if (this.state.showGraph) {
-			return (
-				<React.Fragment>
-					<Typography>
-						Scores scored in each section. (Marks shown in percentage)
-					</Typography>
-					<BarChart width={730} height={250} data={this.graphData}>
-						<CartesianGrid strokeDasharray="3 3"/>
-						<XAxis dataKey="category"/>
-						<YAxis/>
-						<Tooltip/>
-						<Legend/>
-						<Bar dataKey="Percentage" fill="#8884d8" unit={"%"} maxBarSize={20}/>
-					</BarChart>
-				</React.Fragment>
-			);
-		} else {
-			return <React.Fragment/>;
-		}
-	};
+  renderBarChart = () => {
+    const { classes } = this.props;
+    if (this.state.showGraph) {
+      return (
+        <React.Fragment>
+          <Typography>
+            Scores scored in each section. (Marks shown in percentage)
+          </Typography>
+          <ResponsiveContainer
+            height={"50%"}
+            maxHeight={400}
+            width={"90%"}
+            aspect={1}
+          >
+            <BarChart
+              className={classes.barChartContainer}
+              margin={{
+                top: 10,
+                right: 20,
+                bottom: 5,
+                left: 0
+              }}
+              data={this.graphData}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="category" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="Percentage"
+                fill="#8884d8"
+                unit={"%"}
+                maxBarSize={20}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </React.Fragment>
+      );
+    } else {
+      return <React.Fragment />;
+    }
+  };
 
   //jsx for header
   renderHeader = () => {
@@ -175,7 +210,6 @@ class QuizAnswer extends React.Component {
     return (
       <fragment>
         <Card>
-
           <CardContent>
             <Typography variant={"h4"} className={classes.title}>
               Quiz Completed!
@@ -183,7 +217,7 @@ class QuizAnswer extends React.Component {
             <Typography variant={"h6"} className={classes.subtitle}>
               Score Card
             </Typography>
-	          {this.renderBarChart(this.state.showGraph)}
+            {this.renderBarChart(this.state.showGraph)}
           </CardContent>
           <CardBody>
             <GridContainer justify="center">
@@ -499,18 +533,23 @@ class QuizAnswer extends React.Component {
     }
 
     totalSectionScore = this.getNumberOfQns(sectionNumber) * marksPerQn;
-	  const sectionGraphRepresentation = {
-		  Percentage: ((sectionScore / totalSectionScore) * 100.0).toFixed(2),
-		  category: this.data.sections[sectionNumber].category.name
-	  };
-	  this.graphData[sectionNumber] = sectionGraphRepresentation;
-	  const sectionsLength = this.data.sections.length - 1;
-	  if (sectionNumber === sectionsLength && !this.state.showGraph) {
-		  console.log("showGraph updated. section number:" + sectionNumber + " and sections length:" + sectionsLength);
-		  this.setState({
-			  showGraph: true
-		  });
-	  }
+    const sectionGraphRepresentation = {
+      Percentage: ((sectionScore / totalSectionScore) * 100.0).toFixed(2),
+      category: this.data.sections[sectionNumber].category.name
+    };
+    this.graphData[sectionNumber] = sectionGraphRepresentation;
+    const sectionsLength = this.data.sections.length - 1;
+    if (sectionNumber === sectionsLength && !this.state.showGraph) {
+      console.log(
+        "showGraph updated. section number:" +
+          sectionNumber +
+          " and sections length:" +
+          sectionsLength
+      );
+      this.setState({
+        showGraph: true
+      });
+    }
     return `Score: ${sectionScore}/${totalSectionScore}`;
   };
 
