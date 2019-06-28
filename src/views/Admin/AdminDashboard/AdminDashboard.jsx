@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Button from "components/CustomButtons/Button.jsx";
 // core components
+import { CircularProgress, Typography, Grow, Icon } from "@material-ui/core";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import Table from "components/Table/Table.jsx";
@@ -14,10 +14,7 @@ import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
-import Grow from "@material-ui/core/Grow";
 import gql from "graphql-tag";
-import { CircularProgress } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 

@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import FormControl from "@material-ui/core/FormControl";
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  Typography,
+  TextField
+} from "@material-ui/core";
 import Spacing from "../../../components/Spacing/Spacing";
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
@@ -16,13 +18,11 @@ import {
   Button,
   CircularProgress,
   ExpansionPanelActions,
-  Snackbar,
   Divider,
   Tooltip
 } from "@material-ui/core";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import formControlStyle from "../../../assets/jss/form-control";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 class FormAddStudent extends Component {
   state = {
@@ -458,7 +458,7 @@ class FormAddStudent extends Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Divider/>
+                <Divider />
                 <ExpansionPanelActions>
                   <Button
                     size="small"
@@ -488,10 +488,10 @@ class FormAddStudent extends Component {
                   </div>
                 </ExpansionPanelActions>
                 <CustomSnackbar
-                    onClose={this.closeSnackbar}
-                    variant={snackbar.variant}
-                    open={snackbar.open}
-                    message={snackbar.message}
+                  onClose={this.closeSnackbar}
+                  variant={snackbar.variant}
+                  open={snackbar.open}
+                  message={snackbar.message}
                 />
               </form>
             </div>

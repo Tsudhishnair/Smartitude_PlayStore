@@ -9,7 +9,7 @@ import { CircularProgress, Typography } from "@material-ui/core";
 import { EXPANSION_MESSAGE_FORM } from "../../../Utils";
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
-import Expansionpanel from "../../../components/ExpansionPanel/Expansionpanel";
+import CustomExpansionPanel from "../../../components/CustomExpansionPanel/CustomExpansionPanel";
 import Spacing from "../../../components/Spacing/Spacing";
 import Card from "../../../components/Card/Card";
 import CardHeader from "../../../components/Card/CardHeader";
@@ -152,7 +152,7 @@ class MessageManager extends React.Component {
                 {/* <TableDialog onRef={ref => (this.child = ref)} />   */}
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <Expansionpanel
+                    <CustomExpansionPanel
                       headers={header1}
                       header={header2}
                       reloadList={this.reloadMessagesList}

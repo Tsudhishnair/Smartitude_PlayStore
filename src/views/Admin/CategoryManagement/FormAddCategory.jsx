@@ -1,13 +1,12 @@
-import React, {Component, Fragment} from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import TextField from "@material-ui/core/TextField";
 import {
   Button,
   CircularProgress,
   ExpansionPanelActions,
-  Snackbar
+  TextField
 } from "@material-ui/core";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
@@ -217,10 +216,10 @@ class FormAddCategory extends Component {
                   </div>
                 </ExpansionPanelActions>
                 <CustomSnackbar
-                    onClose={this.closeSnackbar}
-                    variant={snackbar.variant}
-                    open={snackbar.open}
-                    message={snackbar.message}
+                  onClose={this.closeSnackbar}
+                  variant={snackbar.variant}
+                  open={snackbar.open}
+                  message={snackbar.message}
                 />
               </form>
             </div>

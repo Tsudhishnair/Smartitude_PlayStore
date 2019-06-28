@@ -2,17 +2,16 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
-import TextField from "@material-ui/core/TextField";
 import {
   Button,
   CircularProgress,
   ExpansionPanelActions,
-  Snackbar
+  MenuItem,
+  InputLabel,
+  Select,
+  TextField
 } from "@material-ui/core";
 import { Mutation } from "react-apollo";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
