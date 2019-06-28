@@ -239,7 +239,7 @@ class Results extends React.Component {
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Attempted Quizzes</h4>
               </CardHeader>
-              <Query query={MY_ATTEMPTED_QUIZ}>
+              <Query query={MY_ATTEMPTED_QUIZ} fetchPolicy="network-only">
                 {({ data, loading, error }) => {
                   if (loading) {
                     return <CircularProgress className={classes.progress} />;
