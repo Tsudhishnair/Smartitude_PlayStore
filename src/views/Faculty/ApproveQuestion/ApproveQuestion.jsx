@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -9,7 +9,6 @@ import approveQuestionStyle from "assets/jss/material-dashboard-react/views/dash
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Spacing from "../../../components/Spacing/Spacing.jsx";
-import Snackbar from "@material-ui/core/Snackbar";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import CardBody from "../../../components/Card/CardBody";
 import QuestionDetails from "../../General/QuestionDetails";
