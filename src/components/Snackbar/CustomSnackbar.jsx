@@ -50,6 +50,7 @@ function MySnackbarContent(props) {
     message,
     onClose,
     variant,
+    autoHideDuration,
     ...other
   } = props;
   const Icon = variantIcon[variant];
@@ -57,6 +58,8 @@ function MySnackbarContent(props) {
   return (
     <Snackbar
       open={open}
+      autoHideDuration={autoHideDuration}
+      onClose={onClose}
       anchorOrigin={{
         vertical: "top",
         horizontal: "right"
@@ -87,10 +90,14 @@ function MySnackbarContent(props) {
     </Snackbar>
   );
 }
+MySnackbarContent.defaultProps = {
+  autoHideDuration: 6000
+}
 
 MySnackbarContent.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool,
+  autoHideDuration: PropTypes.number,
   className: PropTypes.string,
   message: PropTypes.node,
   onClose: PropTypes.func,

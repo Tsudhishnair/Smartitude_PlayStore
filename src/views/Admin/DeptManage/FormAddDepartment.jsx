@@ -51,14 +51,6 @@ class FormAddDepartment extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, this.state.snackbar.duration);
   };
 
   // close snackbar by changing open state
@@ -254,6 +246,7 @@ class FormAddDepartment extends React.Component {
               <CustomSnackbar
                   onClose={this.closeSnackbar}
                   variant={snackbar.variant}
+                  autoHideDuration={snackbar.duration}
                   open={snackbar.open}
                   message={snackbar.message}
               />

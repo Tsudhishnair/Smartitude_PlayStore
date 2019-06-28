@@ -155,14 +155,6 @@ class CategoryManagement extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, 8000);
   };
 
   closeSnackbar = () => {
@@ -554,6 +546,7 @@ class CategoryManagement extends React.Component {
                     onClose={this.closeSnackbar}
                     variant={snackbar.variant}
                     open={snackbar.open}
+                    autoHideDuration={8000}
                     message={snackbar.message}
                   />
                 </React.Fragment>

@@ -197,14 +197,6 @@ class QuizForm extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, this.state.snackbar.duration);
   };
 
   //close the snackbar
@@ -804,6 +796,7 @@ class QuizForm extends React.Component {
   render() {
     // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
     const { classes, quizType } = this.props;
+    const { snackbar } = this.state;
     //to redirect after mutaion on custom quiz is called which is being manged using state
     if (this.state.redirecter === true) {
       console.log(this.state.customQuizData);
@@ -1079,9 +1072,10 @@ class QuizForm extends React.Component {
         </Query>
         <CustomSnackbar
             onClose={this.closeSnackbar}
-            variant={this.state.snackbar.variant}
-            open={this.state.snackbar.open}
-            message={this.state.snackbar.message}
+            variant={snackbar.variant}
+            open={snackbar.open}
+            autoHideDuration={snackbar.duration}
+            message={snackbar.message}
         />
       </Fragment>
     );

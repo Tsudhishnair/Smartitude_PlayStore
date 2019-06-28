@@ -101,14 +101,6 @@ class DeptManage extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, this.state.snackbar.duration);
   };
 
   closeSnackbar = () => {
@@ -343,6 +335,7 @@ class DeptManage extends React.Component {
           onClose={this.closeSnackbar}
           variant={snackbar.variant}
           open={snackbar.open}
+          autoHideDuration={snackbar.duration}
           message={snackbar.message}
         />
       </div>
