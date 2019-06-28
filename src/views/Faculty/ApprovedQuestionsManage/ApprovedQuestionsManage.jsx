@@ -11,7 +11,7 @@ import Card from "../../../components/Card/Card";
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
-import Typography from "@material-ui/core/Typography";
+import { Typography } from "@material-ui/core";
 import { Query } from "react-apollo";
 
 // core components
@@ -102,7 +102,7 @@ class ApprovedQuestionsManage extends React.Component {
             return (
               <div>
                 {this.showQuestionManageDialog(this.state.open)}
-                <Spacing/>
+                <Spacing />
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <Card className={classes.root}>

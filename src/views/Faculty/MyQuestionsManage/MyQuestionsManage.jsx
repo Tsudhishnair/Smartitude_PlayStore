@@ -8,14 +8,11 @@ import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
 import CardHeader from "../../../components/Card/CardHeader";
 import Card from "../../../components/Card/Card";
-import Snackbar from "@material-ui/core/Snackbar";
 import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 import DialogQuestion from "../../../components/Dialog/DialogQuestion";
 import gql from "graphql-tag";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
-import Fuse from "fuse.js";
-
 
 import SearchInput, { createFilter } from "react-search-input";
 // core components
@@ -52,10 +49,10 @@ class MyQuestionsManage extends React.Component {
     this.state = {
       open: false,
       searchTerm: "",
-      snackbar:{
-        open:false,
-        message:"Question Deleted Successfully",
-        variant:"success"
+      snackbar: {
+        open: false,
+        message: "Question Deleted Successfully",
+        variant: "success"
       }
     };
     this.searchUpdated = this.searchUpdated.bind(this);
@@ -209,28 +206,13 @@ class MyQuestionsManage extends React.Component {
                             );
                           })}
                       </GridContainer>
-                      {/*<GridContainer style={{ padding: "2%" }}>*/}
-                      {/*  {data.myQuestions.map(question => {*/}
-                      {/*    return (*/}
-                      {/*      <QuestionDetails*/}
-                      {/*        key={question._id}*/}
-                      {/*        question={question}*/}
-                      {/*        showActions={question.approvalStatus !== 2}*/}
-                      {/*        actionButtonText={"Manage Question"}*/}
-                      {/*        actionFunction={this.triggerQuestionManageDialog}*/}
-                      {/*        showDeleteIcon={true}*/}
-                      {/*        // deleteFunction={this.deleteQuestion}*/}
-                      {/*      />*/}
-                      {/*    );*/}
-                      {/*  })}*/}
-                      {/*</GridContainer>*/}
                     </Card>
                   </GridItem>
                   <CustomSnackbar
-                      onClose={this.closeSnackbar}
-                      variant={this.state.snackbar.variant}
-                      open={this.state.snackbar.open}
-                      message={this.state.snackbar.message}
+                    onClose={this.closeSnackbar}
+                    variant={this.state.snackbar.variant}
+                    open={this.state.snackbar.open}
+                    message={this.state.snackbar.message}
                   />
                 </GridContainer>
               </div>
