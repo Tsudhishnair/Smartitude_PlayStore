@@ -3,9 +3,9 @@ import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import classNames from "classnames";
 // @material-ui/icons
-import { Person, VpnKey, Help, AccountCircle } from "@material-ui/icons";
+import { Person, VpnKey, Help, AccountCircle, ExitToApp } from "@material-ui/icons";
 // core components
-import { ListItem, List, Typography } from "@material-ui/core";
+import { ListItem, List, Typography, Divider } from "@material-ui/core";
 
 import { Query } from "../../../node_modules/react-apollo";
 import gql from "graphql-tag";
@@ -13,6 +13,7 @@ import gql from "graphql-tag";
 import { loginHandler } from "../../Utils";
 import PropTypes from "prop-types";
 import DialogChangePassword from "../Dialog/DialogChangePassword";
+import DialogProfile from "../Dialog/DialogProfile";
 
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
 import headerLinksStyle from "../../assets/jss/material-dashboard-react/views/headerLinksStyle.jsx";
@@ -129,6 +130,10 @@ class HeaderLinks extends React.Component {
           open={this.state.passwordOpen}
           onClose={this.closePassword}
         />
+        <DialogProfile
+          open={this.state.profileOpen}
+          onClose={this.closeProfile}
+        />
         <List className={classes.list}>
           <ListItem className={classes.listItem}>
             <CustomDropdown
@@ -140,7 +145,11 @@ class HeaderLinks extends React.Component {
               }}
               buttonIcon={Person}
               dropdownList={[
-                <div key={1} className={classes.dropdownLink}>
+                <div
+                  key={1}
+                  className={classes.dropdownLink}
+                  onClick={this.handleProfileClickOpen}
+                >
                   <AccountCircle className={classes.iconButton} /> View Profile
                 </div>,
                 <div
@@ -152,6 +161,10 @@ class HeaderLinks extends React.Component {
                 </div>,
                 <div key={3} className={classes.dropdownLink}>
                   <Help className={classes.iconButton} /> Help & Support
+                </div>,
+                <Divider />,
+                <div key={4} className={classes.dropdownLink}>
+                  <ExitToApp className={classes.iconButton} /> Log Out
                 </div>
               ]}
             />

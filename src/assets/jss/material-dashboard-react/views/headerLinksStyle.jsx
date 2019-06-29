@@ -37,8 +37,8 @@ const headerLinksStyle = theme => ({
     padding: "0 !important"
   },
   iconButton: {
-    width: "24px",
-    height: "24px",
+    width: "22px",
+    height: "22px",
     marginBottom: "-6px",
     marginRight: "5px",
     padding: "0px"

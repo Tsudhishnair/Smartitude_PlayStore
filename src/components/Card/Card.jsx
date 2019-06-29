@@ -46,7 +46,8 @@ Card.propTypes = {
     "danger",
     "info",
     "primary",
-    "rose"
+    "rose",
+    "transparent"
   ]),
   profile: PropTypes.bool,
   chart: PropTypes.bool
