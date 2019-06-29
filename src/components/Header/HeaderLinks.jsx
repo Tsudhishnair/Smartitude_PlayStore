@@ -3,24 +3,20 @@ import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import classNames from "classnames";
 // @material-ui/icons
-import Person from "@material-ui/icons/Person";
+import { Person, VpnKey, Help, AccountCircle, ExitToApp } from "@material-ui/icons";
 // core components
-import { Button } from "@material-ui/core";
-
-import headerLinksStyle from "../../assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
+import { ListItem, List, Typography, Divider } from "@material-ui/core";
 
 import { Query } from "../../../node_modules/react-apollo";
 import gql from "graphql-tag";
+
 import { loginHandler } from "../../Utils";
-import { Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Poppers from "@material-ui/core/Popper";
 import DialogChangePassword from "../Dialog/DialogChangePassword";
+import DialogProfile from "../Dialog/DialogProfile";
+
+import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
+import headerLinksStyle from "../../assets/jss/material-dashboard-react/views/headerLinksStyle.jsx";
 
 const adminInfo = gql`
   {
@@ -50,137 +46,130 @@ const studentInfo = gql`
 `;
 
 class HeaderLinks extends React.Component {
-  state = {
-    openMenu: false
-  };
-  handleToggleMenu = () => {
-    this.setState(state => ({ openMenu: !state.openMenu }));
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      passwordOpen: false,
+      profileOpen: false
+    };
+  }
+  getUserName = () => {
+    const { classes } = this.props;
+    return (
+      <p className={classes.linkText}>
+        {loginHandler.userType === "admin" && (
+          <Query query={adminInfo} fetchPolicy="network-only">
+            {({ data, loading, error }) => {
+              if (loading) {
+                return <Typography>Loading...</Typography>;
+              } else if (error) {
+                return <Typography>Error Occurred!</Typography>;
+              } else {
+                localStorage.setItem("admin", data.meAdmin._id);
+                return !loading ? `${data.meAdmin.name}` : "";
+              }
+            }}
+          </Query>
+        )}
+        {loginHandler.userType === "faculty" && (
+          <Query query={facultyInfo} fetchPolicy="network-only">
+            {({ data, loading, error }) => {
+              if (loading) {
+                return <Typography>Loading...</Typography>;
+              } else if (error) {
+                return <Typography>Error Occurred!</Typography>;
+              } else {
+                localStorage.setItem("faculty", data.meFaculty._id);
+                return !loading ? `${data.meFaculty.name}` : "";
+              }
+            }}
+          </Query>
+        )}
+        {loginHandler.userType === "student" && (
+          <Query query={studentInfo} fetchPolicy="network-only">
+            {({ data, loading, error }) => {
+              if (loading) {
+                return <Typography>Loading...</Typography>;
+              } else if (error) {
+                return <Typography>Error Occurred!</Typography>;
+              } else {
+                localStorage.setItem("student", data.meStudent._id);
+                return !loading ? `${data.meStudent.name}` : "";
+              }
+            }}
+          </Query>
+        )}
+      </p>
+    );
   };
 
-  handleCloseMenu = event => {
-    // if (this.anchorMenu.contains(event.target)) {
-    //   return;
-    // }
+  // manage state for opening dialog
+  handleProfileClickOpen = () => {
+    this.setState({ profileOpen: true });
+  };
 
-    this.setState({ openMenu: false });
+  handlePasswordClickOpen = () => {
+    this.setState({ passwordOpen: true });
+  };
+
+  closeProfile = () => {
+    this.setState({ profileOpen: false });
+  };
+
+  closePassword = () => {
+    this.setState({ passwordOpen: false });
   };
 
   render() {
     const { classes } = this.props;
-    const { openMenu } = this.state;
 
     return (
       <div>
-        <DialogChangePassword onRef={ref => (this.child = ref)} />
-        <div className={classes.manager}>
-          <Button
-            color={window.innerWidth > 959 ? "transparent" : "white"}
-            aria-label="Person"
-            className={classes.buttonLink}
-            onClick={this.handleToggleMenu}
-            aria-haspopup="true"
-            aria-owns={openMenu ? "notification-menu-list-grow" : null}
-          >
-            <Person className={classes.icons} />
-            <p onClick={this.handleToggleMenu} className={classes.linkText}>
-              {loginHandler.userType === "admin" ? (
-                <Query query={adminInfo} fetchPolicy="network-only">
-                  {({ data, loading, error }) => {
-                    if (loading) {
-                      return <Typography>Loading...</Typography>;
-                    } else if (error) {
-                      return <Typography>Error Occurred!</Typography>;
-                    } else {
-                      localStorage.setItem("admin", data.meAdmin._id);
-                      return !loading ? `${data.meAdmin.name}` : "";
-                    }
-                  }}
-                </Query>
-              ) : (
-                ""
-              )}
-              {loginHandler.userType === "faculty" ? (
-                <Query query={facultyInfo} fetchPolicy="network-only">
-                  {({ data, loading, error }) => {
-                    if (loading) {
-                      return <Typography>Loading...</Typography>;
-                    } else if (error) {
-                      return <Typography>Error Occurred!</Typography>;
-                    } else {
-                      localStorage.setItem("faculty", data.meFaculty._id);
-                      return !loading ? `${data.meFaculty.name}` : "";
-                    }
-                  }}
-                </Query>
-              ) : (
-                ""
-              )}
-              {loginHandler.userType === "student" ? (
-                <Query query={studentInfo} fetchPolicy="network-only">
-                  {({ data, loading, error }) => {
-                    if (loading) {
-                      return <Typography>Loading...</Typography>;
-                    } else if (error) {
-                      return <Typography>Error Occurred!</Typography>;
-                    } else {
-                      localStorage.setItem("student", data.meStudent._id);
-                      return !loading ? `${data.meStudent.name}` : "";
-                    }
-                  }}
-                </Query>
-              ) : (
-                ""
-              )}
-            </p>
-          </Button>
-          <Poppers
-            open={openMenu}
-            transition
-            disablePortal
-            anchorEl={this.anchorMenu}
-            className={
-              classNames({ [classes.popperClose]: !openMenu }) +
-              " " +
-              classes.pooperNav
-            }
-          >
-            {({ TransitionProps, placement }) => (
-              <Grow
-                {...TransitionProps}
-                id="menu-list-grow"
-                style={{
-                  transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
-                }}
-              >
-                <Paper>
-                  <ClickAwayListener onClickAway={this.handleCloseMenu}>
-                    <MenuList role="menu">
-                      <MenuItem
-                        onClick={this.child.handleClickOpen()}
-                        className={classes.dropdownItem}
-                      >
-                        Change Password
-                      </MenuItem>
-                      <MenuItem
-                        onClick={this.handleCloseMenu}
-                        className={classes.dropdownItem}
-                      >
-                        Help & Support
-                      </MenuItem>
-                      {/*<MenuItem*/}
-                      {/*  onClick={this.handleClose}*/}
-                      {/*  className={classes.dropdownItem}*/}
-                      {/*>*/}
-                      {/*  Log Out*/}
-                      {/*</MenuItem>*/}
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Grow>
-            )}
-          </Poppers>
-        </div>
+        <DialogChangePassword
+          open={this.state.passwordOpen}
+          onClose={this.closePassword}
+        />
+        <DialogProfile
+          open={this.state.profileOpen}
+          onClose={this.closeProfile}
+        />
+        <List className={classes.list}>
+          <ListItem className={classes.listItem}>
+            <CustomDropdown
+              noLiPadding
+              buttonText={this.getUserName()}
+              buttonProps={{
+                className: classes.navLink,
+                color: "transparent"
+              }}
+              buttonIcon={Person}
+              dropdownList={[
+                <div
+                  key={1}
+                  className={classes.dropdownLink}
+                  onClick={this.handleProfileClickOpen}
+                >
+                  <AccountCircle className={classes.iconButton} /> View Profile
+                </div>,
+                <div
+                  key={2}
+                  className={classes.dropdownLink}
+                  onClick={this.handlePasswordClickOpen}
+                >
+                  <VpnKey className={classes.iconButton} /> Change Password
+                </div>,
+                <div key={3} className={classes.dropdownLink}>
+                  <Help className={classes.iconButton} /> Help & Support
+                </div>,
+                <Divider />,
+                <div key={4} className={classes.dropdownLink}>
+                  <ExitToApp className={classes.iconButton} /> Log Out
+                </div>
+              ]}
+            />
+          </ListItem>
+        </List>
       </div>
     );
   }
