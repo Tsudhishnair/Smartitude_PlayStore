@@ -36,6 +36,13 @@ const headerLinksStyle = theme => ({
   listItemText: {
     padding: "0 !important"
   },
+  iconButton: {
+    width: "24px",
+    height: "24px",
+    marginBottom: "-6px",
+    marginRight: "5px",
+    padding: "0px"
+  },
   navLink: {
     color: "inherit",
     position: "relative",

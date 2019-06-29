@@ -20,38 +20,16 @@ class DialogChangePassword extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.state = {
-      open: false
-    };
   }
-
-  componentDidMount() {
-    this.props.onRef(this);
-  }
-
-  componentWillUnmount() {
-    this.props.onRef(undefined);
-  }
-
-  // manage state for opening dialog
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  // close dialog
-  handleClose = () => {
-    this.setState({ open: false });
-    // this.props.onClose();
-  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, open, onClose } = this.props;
 
     return (
       <div>
         <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={open}
+          onClose={onClose}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
@@ -114,7 +92,7 @@ class DialogChangePassword extends React.Component {
               </GridContainer>
             </DialogContent>
             <DialogActions>
-              <Button size={"small"} onClick={this.handleClose} color="primary">
+              <Button size={"small"} onClick={onClose} color="primary">
                 Cancel
               </Button>
               <Button size="small" color="primary" type={"submit"}>
@@ -130,6 +108,7 @@ class DialogChangePassword extends React.Component {
 
 DialogChangePassword.propTypes = {
   classes: PropTypes.object.isRequired,
+  open: PropTypes.bool,
   onClose: PropTypes.func,
   onRef: PropTypes.object
 };
