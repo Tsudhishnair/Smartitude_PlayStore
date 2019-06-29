@@ -4,8 +4,9 @@ import { withStyles } from "@material-ui/core/styles";
 
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
+import DialogAlert from "../../../components/Dialog/DialogAlert";
 
-import { Button, Typography } from "@material-ui/core";
+import { Button, ExpansionPanelDetails, Typography } from "@material-ui/core";
 
 import CSVReader from "react-csv-reader";
 
@@ -72,6 +73,14 @@ class StudentBatchAddition extends React.Component {
     this.uploadData = [];
   }
 
+  state = {
+    alertOpen: false,
+    alertDialog: {
+      title: "",
+      content: ""
+    }
+  };
+
   // called on click of valiate & upload button
   handleBatchUpload = (result, addStudents) => {
     // temporarily store datasheet values
@@ -96,34 +105,53 @@ class StudentBatchAddition extends React.Component {
           // check if any of the values are null
           if (!row[0] || !row[1] || !row[2] || !row[3] || !row[4]) {
             // stop the loop if there is an error in input
-            alert(
+            this.alertDialog(
+              "Empty Field",
               `An empty input field has been entered at row number: ${i +
                 1}. Please check your input!`
             );
             disablePush = true;
             break;
           } else if (!validators.isUsername(row[0])) {
-            alert(`Invalid username entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Username",
+              `Invalid username entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isEmail(row[1])) {
-            alert(`Invalid email entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Email",
+              `Invalid email entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isName(row[2])) {
-            alert(`Invalid name entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Name",
+              `Invalid name entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isPassword(row[3])) {
-            alert(`Invalid password entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Password",
+              `Invalid password entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isPhoneNumber(row[4])) {
-            alert(`Invalid phone number entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Phone Number",
+              `Invalid phone number entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isBatch(row[6])) {
-            alert(`Invalid batch entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Batch",
+              `Invalid batch entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else {
@@ -141,7 +169,8 @@ class StudentBatchAddition extends React.Component {
         } else if (found === -1) {
           disablePush = true;
           //if department was not found while there was a valid entry, notify user
-          alert(
+          this.alertDialog(
+            "Invalid Department",
             `You have entered an invalid department in row number: ${i + 1}. 
             Please check the department that you have entered.`
           );
@@ -170,68 +199,94 @@ class StudentBatchAddition extends React.Component {
     }
   };
 
+  alertDialog = (input_title, input_content) => {
+    this.setState({
+      alertDialog: {
+        title: input_title,
+        content: input_content
+      },
+      alertOpen: true
+    });
+  };
+
+  alertDialogClose = () => {
+    this.setState(() => ({ alertOpen: false }));
+  };
+
   render() {
     const { classes } = this.props;
 
+    const { alertOpen, alertDialog } = this.state;
+
     return (
       <div className={classes.root}>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Typography variant="subtitles" gutterBottom>
-              List of valid departments:
-            </Typography>
-            <Query query={GET_DEPARTMENTS}>
-              {({ data, loading, error }) => {
-                return (
-                  <Typography variant="body1">
-                    {!loading
-                      ? data.departments.map((department, i, array) => {
-                          // add department to list of departments
-                          this.departments.push(department);
+        <DialogAlert
+          title={alertDialog.title}
+          open={alertOpen}
+          content={alertDialog.content}
+          onClose={this.alertDialogClose}
+        />
+        <ExpansionPanelDetails>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
+              <Typography variant="subtitles" gutterBottom>
+                List of valid departments:
+              </Typography>
+              <Query query={GET_DEPARTMENTS}>
+                {({ data, loading, error }) => {
+                  return (
+                    <Typography variant="body1">
+                      {!loading
+                        ? data.departments.map((department, i, array) => {
+                            // add department to list of departments
+                            this.departments.push(department);
 
-                          // display the list of valid departments to admin
-                          if (array.length - 1 == i) {
-                            return department.name;
-                          } else {
-                            return department.name + ", ";
-                          }
-                        })
-                      : ""}
-                  </Typography>
-                );
-              }}
-            </Query>
-          </GridItem>
-          <GridItem xs={12} sm={9} md={9} className={classes.elementPadding}>
-            <Typography variant="subtitles">Format:</Typography>
-            <Typography>
-              username, email, name, password, phoneNumber, department, batch
-            </Typography>
-            <Typography variant="subtitles">Constraints:</Typography>
-            <Typography>
-              username: alphanumerics + underscore <br />
-              name: alphabets + space <br />
-              password: min 6 characters <br />
-              phoneNumber: valid mobile phone number <br />
-              batch: year should be below 2040 <br />
-              Please ensure that there are no duplicate entries
-            </Typography>
-          </GridItem>
-          <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
-            <Mutation mutation={BATCH_ADD_STUDENTS}>
-              {addStudents => (
-                <CSVReader
-                  label="Add students by CSV"
-                  onFileLoaded={result =>
-                    this.handleBatchUpload(result, addStudents)
-                  }
-                  inputId="csvUpload"
-                  inputStyle={{ color: "red" }}
-                />
-              )}
-            </Mutation>
-          </GridItem>
-        </GridContainer>
+                            // display the list of valid departments to admin
+                            if (array.length - 1 == i) {
+                              return department.name;
+                            } else {
+                              return department.name + ", ";
+                            }
+                          })
+                        : ""}
+                    </Typography>
+                  );
+                }}
+              </Query>
+            </GridItem>
+            <GridItem xs={12} sm={9} md={9} className={classes.elementPadding}>
+              <br />
+              <Typography variant="subtitles">Format:</Typography>
+              <Typography>
+                username, email, name, password, phoneNumber, department, batch
+              </Typography>
+              <br />
+              <Typography variant="subtitles">Constraints:</Typography>
+              <Typography>
+                <b>username:</b> alphanumerics + underscore <br />
+                <b>name:</b> alphabets + space <br />
+                <b>password:</b> min 6 characters <br />
+                <b>phoneNumber:</b> Valid mobile phone number <br />
+                <b>batch:</b> Year should be below 2040 <br />
+                <b>Please ensure that there are no duplicate entries</b>
+              </Typography>
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
+              <Mutation mutation={BATCH_ADD_STUDENTS}>
+                {addStudents => (
+                  <CSVReader
+                    label="Add students by CSV"
+                    onFileLoaded={result =>
+                      this.handleBatchUpload(result, addStudents)
+                    }
+                    inputId="csvUpload"
+                    inputStyle={{ color: "red" }}
+                  />
+                )}
+              </Mutation>
+            </GridItem>
+          </GridContainer>
+        </ExpansionPanelDetails>
       </div>
     );
   }
