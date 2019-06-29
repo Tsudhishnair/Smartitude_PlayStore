@@ -62,6 +62,41 @@ export const getTabStatus = () => {
   return [hidden, visibilityChange];
 };
 
+export const validators = {
+  isPhoneNumber: number => {
+    if (number >= 6000000000 && number <= 9999999999) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isName: name => {
+    const nameRegex = RegExp("^[a-zA-Z ]*$");
+    return nameRegex.test(name);
+  },
+  isUsername: username => {
+    const usernameRegex = RegExp("^[a-zA-Z0-9_]*$");
+    return usernameRegex.test(username);
+  },
+  isPassword: password => {
+    const passwordRegex = RegExp(".{6,}");
+    return passwordRegex.test(password);
+  },
+  isBatch: batch => {
+    if (batch >= 2000 && batch <= 2040) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isEmail: email => {
+    const emailRegex = RegExp(
+      "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+    );
+    return emailRegex.test(email);
+  }
+};
+
 export const EXPANSION_QUIZ_FORM = 1;
 export const EXPANSION_FACULTY_FORM = 2;
 export const EXPANSION_STUDENT_BATCH = 3;
