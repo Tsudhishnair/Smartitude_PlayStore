@@ -41,7 +41,6 @@ import {
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
 import Latex from "../../General/Latex";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
   root: {
@@ -195,7 +194,7 @@ class QuizPanelView extends React.Component {
     };
 
     if (!this.props.location.state) {
-      this.hasError = true;
+      this.setState(() => ({ hasError: true }));
     } else {
       this.quizType = this.props.location.state.quizType;
 
@@ -281,7 +280,8 @@ class QuizPanelView extends React.Component {
         timer: {
           minutes: 0,
           seconds: 0
-        }
+        },
+        hasError: false
       };
 
       this.browserStatus = getTabStatus()[0];
@@ -292,7 +292,7 @@ class QuizPanelView extends React.Component {
   }
 
   componentDidMount = () => {
-    if (!this.hasError) {
+    if (!this.state.hasError) {
       //initialise the timer component and interval function
       this.manageTimerComponent(
         this.props.location.state.sections[this.currentSection]
@@ -643,6 +643,7 @@ class QuizPanelView extends React.Component {
           })
           .catch(err => {
             console.log(err);
+            this.setState(() => ({ hasError: true }));
           });
       }
       //for random quizzes
@@ -937,7 +938,7 @@ class QuizPanelView extends React.Component {
   };
 
   render() {
-    if (this.hasError) {
+    if (this.state.hasError) {
       return <Redirect to="/error" />;
     } else {
       const { classes } = this.props;
