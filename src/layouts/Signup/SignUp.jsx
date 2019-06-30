@@ -40,7 +40,7 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import image from "assets/img/bg.jpg";
 import GridItem from "../../components/Grid/GridItem";
 
-import loginPageStyle from "assets/jss/material-dashboard-react/views/loginPage.jsx";
+import loginPageStyle from "../../assets/jss/material-dashboard-react/views/loginPage.jsx";
 
 const styles = theme => ({
   wrapper: {
@@ -123,7 +123,7 @@ class SignUp extends Component {
             backgroundPosition: "top center"
           }}
         >
-          <div className={classes.container}>
+          <div className={classes.container} style={{ overflow: "auto" }}>
             <GridContainer justify="center">
               <GridItem xs={11} sm={9} md={4}>
                 <Card className={classes[this.state.cardAnimaton]}>
@@ -141,7 +141,6 @@ class SignUp extends Component {
                       <FormControl
                         required
                         className={classes.formControl}
-                        required
                         fullWidth
                       >
                         <TextField
@@ -163,13 +162,10 @@ class SignUp extends Component {
                       <FormControl
                         required
                         className={classes.formControl}
-                        required
                         fullWidth
                       >
                         <TextField
-                          autoFocus
                           required
-                          // margin="dense"
                           id="email"
                           label="Email Address"
                           type="email"
@@ -205,7 +201,6 @@ class SignUp extends Component {
                               title="Make sure your name and username are not similar"
                             >
                               <TextField
-                                autoFocus
                                 required
                                 // margin="l"
                                 id="usrname"
@@ -266,8 +261,6 @@ class SignUp extends Component {
                               title="At least 6 characters necessary & a mixture of letters and numbers recommended"
                             >
                               <TextField
-                                autoFocus
-                                margin="dense"
                                 id="password"
                                 label="Password"
                                 type="password"
