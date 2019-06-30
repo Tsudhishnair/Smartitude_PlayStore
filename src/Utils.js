@@ -94,7 +94,16 @@ export const validators = {
       "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
     );
     return emailRegex.test(email);
+  },
+  isYesOrNo: input => {
+    return input === "yes" || input === "no";
   }
+};
+
+export const transformYesOrNo = input => {
+  if (input === "yes") return true;
+  else if (input === "no") return false;
+  else return;
 };
 
 export const EXPANSION_QUIZ_FORM = 1;

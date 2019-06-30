@@ -13,7 +13,7 @@ import CSVReader from "react-csv-reader";
 
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { validators } from "../../../Utils";
+import { transformYesOrNo, validators } from "../../../Utils";
 
 const styles = theme => ({
   formControl: {
@@ -59,6 +59,9 @@ class FacultyBatchAddition extends React.Component {
     // store list of departments
     this.departments = [];
 
+    //store list of categories
+    this.categories = [];
+
     // store list of data that is going to be uplaoded
     this.uploadData = [];
   }
@@ -77,13 +80,42 @@ class FacultyBatchAddition extends React.Component {
       let row = rows[i];
 
       if (row[0]) {
-        // found contains the index of the dept that was found from the search
-        let found = this.departments.findIndex(element => {
-          return row[5].toLowerCase() === element.name.toLowerCase();
+        // deptIndex contains the index of the dept that was found from the search
+        let deptIndex = this.departments.findIndex(department => {
+          return row[5].toLowerCase() === department.name.toLowerCase();
         });
 
+        //find index position of category
+        let categoryIndex = this.categories.findIndex(category => {
+          return row[6].toLowerCase() === category.category.name.toLowerCase();
+        });
+
+        //find index position of subcategory
+        let subcategoryList = row[7].split(",");
+        let subcategoryIdList = [];
+        let i = 0;
+        while (i < subcategoryList.length) {
+          let indexPosn = this.categories[categoryIndex].subcategory.findIndex(
+            item => {
+              return (
+                subcategoryList[i].trim().toLowerCase() ===
+                item.name.trim().toLowerCase()
+              );
+            }
+          );
+          if (indexPosn !== -1) {
+            subcategoryIdList.push(
+              this.categories[categoryIndex].subcategory[indexPosn]._id
+            );
+          } else {
+            disablePush = true;
+            break;
+          }
+          i++;
+        }
+
         // if department is found
-        if (found !== -1) {
+        if (deptIndex !== -1) {
           // check if any of the values are null
           if (!row[0] || !row[1] || !row[2] || !row[3] || !row[4]) {
             // stop the loop if there is an error in input
@@ -113,22 +145,28 @@ class FacultyBatchAddition extends React.Component {
             alert(`Invalid phone number entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isBatch(row[6])) {
-            alert(`Invalid batch entered at row number: ${i + 1}`);
+          } else if (!validators.isYesOrNo(row[8])) {
+            alert(
+              `Enter yes/no at row number: ${i +
+                1} to indicate if user is in charge or not`
+            );
             disablePush = true;
             break;
           } else {
             // gather data to be uploaded
             this.uploadData.push({
-              username: rows[i][0].value,
-              email: rows[i][1].value,
-              name: rows[i][2].value,
-              password: rows[i][3].value,
-              phoneNumber: rows[i][4].value,
-              department: this.departments[found]._id
+              username: row[0],
+              email: row[1],
+              name: rows[2],
+              password: row[3],
+              phoneNumber: row[4],
+              department: this.departments[deptIndex]._id,
+              category: this.categories[categoryIndex].category._id,
+              subcategory: subcategoryIdList,
+              isInCharge: transformYesOrNo(row[8])
             });
           }
-        } else if (found === -1) {
+        } else if (deptIndex === -1) {
           //if department was not found while there was a valid entry, notify user
           alert(
             `You have entered an invalid department in row number: ${i + 1}. 
@@ -141,23 +179,25 @@ class FacultyBatchAddition extends React.Component {
 
     // set variables of the mutation and call mutation
     if (!disablePush) {
-      addFaculties({
-        variables: {
-          facultyInputs: this.uploadData
-        }
-      })
-        .then(response => {
-          console.log(response);
-          if (this.props.reloadFacultiesList !== null) {
-            this.props.reloadFacultiesList();
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          if (this.props.reloadFacultiesList !== null) {
-            this.props.reloadFacultiesList();
-          }
-        });
+      console.log("success");
+      console.log(this.uploadData);
+      // addFaculties({
+      //   variables: {
+      //     facultyInputs: this.uploadData
+      //   }
+      // })
+      //   .then(response => {
+      //     console.log(response);
+      //     if (this.props.reloadFacultiesList !== null) {
+      //       this.props.reloadFacultiesList();
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     if (this.props.reloadFacultiesList !== null) {
+      //       this.props.reloadFacultiesList();
+      //     }
+      //   });
     }
   };
 
@@ -187,6 +227,8 @@ class FacultyBatchAddition extends React.Component {
             <Typography variant="subtitles">Valid categories:</Typography>
             <Typography variant="body1">
               {this.props.categoryDetails.map((categoryDetail, i, array) => {
+                this.categories.push(categoryDetail);
+
                 this.subcategories = this.props.categoryDetails[
                   i
                 ].subcategory.map(subcategory => {
@@ -213,6 +255,7 @@ class FacultyBatchAddition extends React.Component {
               name: alphabets + space <br />
               password: min 6 characters <br />
               phoneNumber: valid mobile phone number <br />
+              incharge: yes or no <br />
               Please ensure that there are no duplicate entries
             </Typography>
           </GridItem>
