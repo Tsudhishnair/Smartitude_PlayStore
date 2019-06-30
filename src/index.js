@@ -10,7 +10,7 @@ import { ApolloProvider } from "react-apollo";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { createHttpLink } from "apollo-link-http";
-
+import SignUp from "./layouts/Signup/SignUp";
 import AdminLogin from "./layouts/Login/AdminLogin";
 import FacultyLogin from "./layouts/Login/FacultyLogin";
 import StudentLogin from "./layouts/Login/StudentLogin";
@@ -60,6 +60,7 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme}>
       <HashRouter>
         <Switch>
+          <Route path="/SignUp" component={SignUp}/>
           <Route path="/admin/login" component={AdminLogin} />
           <Route path="/faculty/login" component={FacultyLogin} />
           <Route path="/student/login" component={StudentLogin} />
