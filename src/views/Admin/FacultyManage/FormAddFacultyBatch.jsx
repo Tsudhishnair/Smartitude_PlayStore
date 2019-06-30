@@ -92,91 +92,138 @@ class FacultyBatchAddition extends React.Component {
     for (let i = 0; i < rows.length; i++) {
       let row = rows[i];
 
-      if (row[INDEX_USERNAME]) {
-        // deptIndex contains the index of the dept that was found from the search
-        let deptIndex = this.departments.findIndex(department => {
-          return (
-            row[INDEX_DEPARTMENT].toLowerCase() ===
-            department.name.toLowerCase()
+      //check if there is actually any input in a row before giving error messages or proceeding with calculation. This helps remove unnecessary errors as CSVReader sometimes returns empty rows
+      if (
+        row[INDEX_USERNAME] ||
+        row[INDEX_EMAIL] ||
+        row[INDEX_NAME] ||
+        row[INDEX_PASSWORD] ||
+        row[INDEX_PHONE] ||
+        row[INDEX_DEPARTMENT] ||
+        row[INDEX_CATEGORY] ||
+        row[INDEX_SUBCATEGORY] ||
+        row[INDEX_INCHARGE]
+      ) {
+        // check if any of the values are null
+        if (
+          !row[INDEX_USERNAME] ||
+          !row[INDEX_EMAIL] ||
+          !row[INDEX_NAME] ||
+          !row[INDEX_PASSWORD] ||
+          !row[INDEX_PHONE] ||
+          !row[INDEX_DEPARTMENT] ||
+          !row[INDEX_CATEGORY] ||
+          !row[INDEX_SUBCATEGORY] ||
+          !row[INDEX_INCHARGE]
+        ) {
+          // stop the loop if there is an error in input
+          alert(
+            `A mandatory input field has been left empty at row number: ${i +
+              1}. Please check your input!`
           );
-        });
-
-        //find index position of category
-        let categoryIndex = this.categories.findIndex(category => {
-          return (
-            row[INDEX_CATEGORY].toLowerCase() ===
-            category.category.name.toLowerCase()
-          );
-        });
-
-        //find index position of subcategory and create id list
-        let subcategoryList = row[INDEX_SUBCATEGORY].split(",");
-        let subcategoryIdList = [];
-        let i = 0;
-        while (i < subcategoryList.length) {
-          let indexPosn = this.categories[categoryIndex].subcategory.findIndex(
-            item => {
-              return (
-                subcategoryList[i].trim().toLowerCase() ===
-                item.name.trim().toLowerCase()
-              );
-            }
-          );
-          if (indexPosn !== -1) {
-            subcategoryIdList.push(
-              this.categories[categoryIndex].subcategory[indexPosn]._id
+          disablePush = true;
+          break;
+        } else {
+          // deptIndex contains the index of the dept that was found from the search
+          let deptIndex = this.departments.findIndex(department => {
+            return (
+              row[INDEX_DEPARTMENT].trim().toLowerCase() ===
+              department.name.trim().toLowerCase()
             );
-          } else {
+          });
+
+          //initialise lists to store ids of subcategory & inChargeSubcategories
+          let subcategoryIdList = [];
+          let inChargeIdList = [];
+
+          //if dept was not found, disable mutation and stop loop
+          if (deptIndex === -1) {
+            alert(`Invalid department entered at row number: ${i + 1}`);
             disablePush = true;
             break;
           }
-          i++;
-        }
 
-        //find index position and create id list of incharge
-        let inChargeIdList = [];
-        if (transformYesOrNo(row[INDEX_INCHARGE])) {
-          let inChargeList = row[INDEX_INCHARGE_LIST].split(",");
-          let i = 0;
-          while (i < inChargeList.length) {
-            let indexPosn = this.categories[
-              categoryIndex
-            ].subcategory.findIndex(item => {
-              return (
-                inChargeList[i].trim().toLowerCase() ===
-                item.name.trim().toLowerCase()
-              );
-            });
-            if (indexPosn !== -1) {
-              inChargeIdList.push(
-                this.categories[categoryIndex].subcategory[indexPosn]._id
-              );
-            } else {
-              disablePush = true;
+          //find index position of category
+          let categoryIndex = this.categories.findIndex(category => {
+            return (
+              row[INDEX_CATEGORY].toLowerCase() ===
+              category.category.name.toLowerCase()
+            );
+          });
+
+          //if category not found
+          if (categoryIndex === -1) {
+            alert(`Invalid category entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else {
+            //find index position of subcategory and create id list
+            let subcategoryList = row[INDEX_SUBCATEGORY].split(",");
+            let j = 0;
+            while (j < subcategoryList.length) {
+              let indexPosn = this.categories[
+                categoryIndex
+              ].subcategory.findIndex(item => {
+                return (
+                  subcategoryList[j].trim().toLowerCase() ===
+                  item.name.trim().toLowerCase()
+                );
+              });
+              //if subcategory was found, push its id onto the list
+              if (indexPosn !== -1) {
+                subcategoryIdList.push(
+                  this.categories[categoryIndex].subcategory[indexPosn]._id
+                );
+              } else {
+                alert(`Invalid subcategory entered at row number: ${i + 1}`);
+                disablePush = true;
+                break;
+              }
+              j++;
+            }
+
+            //if disablePush is true, it is evident that an invalid subcategory was entered, break is used here as the previous break statement can only break its respective while loop. This break is used to stop execution of for loop
+            if (disablePush) {
               break;
             }
-            i++;
-          }
-        }
 
-        // if department is found
-        if (deptIndex !== -1) {
-          // check if any of the values are null
-          if (
-            !row[INDEX_USERNAME] ||
-            !row[INDEX_EMAIL] ||
-            !row[INDEX_NAME] ||
-            !row[INDEX_PASSWORD] ||
-            !row[INDEX_PHONE]
-          ) {
-            // stop the loop if there is an error in input
-            alert(
-              `An empty input field has been entered at row number: ${i +
-                1}. Please check your input!`
-            );
-            disablePush = true;
-            break;
-          } else if (!validators.isUsername(row[INDEX_USERNAME])) {
+            //find index position and create id list of incharge
+            if (transformYesOrNo(row[INDEX_INCHARGE])) {
+              let inChargeList = row[INDEX_INCHARGE_LIST].split(",");
+              let j = 0;
+              while (j < inChargeList.length) {
+                let indexPosn = this.categories[
+                  categoryIndex
+                ].subcategory.findIndex(item => {
+                  return (
+                    inChargeList[j].trim().toLowerCase() ===
+                    item.name.trim().toLowerCase()
+                  );
+                });
+                //if incharge category was found, push it onto the list
+                if (indexPosn !== -1) {
+                  inChargeIdList.push(
+                    this.categories[categoryIndex].subcategory[indexPosn]._id
+                  );
+                } else {
+                  alert(
+                    `Invalid incharge subcategory entered at row number: ${i +
+                      1}`
+                  );
+                  disablePush = true;
+                  break;
+                }
+                j++;
+              }
+              //if disablePush is true, it is evident that an invalid subcategory was entered for incharge, break is used here as the previous break statement can only break its respective while loop. This break is used to stop execution of for loop
+              if (disablePush) {
+                break;
+              }
+            }
+          }
+
+          //validate all entries
+          if (!validators.isUsername(row[INDEX_USERNAME])) {
             alert(`Invalid username entered at row number: ${i + 1}`);
             disablePush = true;
             break;
@@ -204,7 +251,7 @@ class FacultyBatchAddition extends React.Component {
             disablePush = true;
             break;
           } else {
-            // gather data to be uploaded
+            // gather data to be uploaded and push onto list if all conditions satisfy
             this.uploadData.push({
               username: row[INDEX_USERNAME],
               email: row[INDEX_EMAIL],
@@ -218,38 +265,29 @@ class FacultyBatchAddition extends React.Component {
               inChargeSubcategories: inChargeIdList
             });
           }
-        } else if (deptIndex === -1) {
-          //if department was not found while there was a valid entry, notify user
-          alert(
-            `You have entered an invalid department in row number: ${i + 1}. 
-            Please check the department that you have entered.`
-          );
-          break;
         }
       }
     }
 
     // set variables of the mutation and call mutation
     if (!disablePush) {
-      console.log("success");
-      console.log(this.uploadData);
-      // addFaculties({
-      //   variables: {
-      //     facultyInputs: this.uploadData
-      //   }
-      // })
-      //   .then(response => {
-      //     console.log(response);
-      //     if (this.props.reloadFacultiesList !== null) {
-      //       this.props.reloadFacultiesList();
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //     if (this.props.reloadFacultiesList !== null) {
-      //       this.props.reloadFacultiesList();
-      //     }
-      //   });
+      addFaculties({
+        variables: {
+          facultyInputs: this.uploadData
+        }
+      })
+        .then(response => {
+          console.log(response);
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          if (this.props.reloadFacultiesList !== null) {
+            this.props.reloadFacultiesList();
+          }
+        });
     }
   };
 
@@ -308,7 +346,8 @@ class FacultyBatchAddition extends React.Component {
               password: min 6 characters <br />
               phoneNumber: valid mobile phone number <br />
               incharge: yes or no <br />
-              Please ensure that there are no duplicate entries
+              All fields are mandatory except incharge subcategories. Please
+              ensure that there are no duplicate entries
             </Typography>
           </GridItem>
           <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
