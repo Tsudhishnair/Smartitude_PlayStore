@@ -7,7 +7,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 
 import "react-datasheet/lib/react-datasheet.css";
 
-import { Button, Typography } from "../../../../node_modules/@material-ui/core";
+import { Button, Typography, ExpansionPanelDetails } from "@material-ui/core";
 
 import CSVReader from "react-csv-reader";
 
@@ -27,6 +27,8 @@ import {
   transformYesOrNo,
   validators
 } from "../../../Utils";
+import DialogAlert from "../../../components/Dialog/DialogAlert";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 const styles = theme => ({
   formControl: {
@@ -79,6 +81,19 @@ class FacultyBatchAddition extends React.Component {
     this.uploadData = [];
   }
 
+  state = {
+    alertOpen: false,
+    alertDialog: {
+      title: "",
+      content: ""
+    },
+    snackbar: {
+      open: false,
+      variant: "error",
+      message: ""
+    }
+  };
+
   // called on click of valiate & upload button
   handleBatchUpload = (result, addFaculties) => {
     // temporarily store datasheet values
@@ -117,7 +132,8 @@ class FacultyBatchAddition extends React.Component {
           !row[INDEX_INCHARGE]
         ) {
           // stop the loop if there is an error in input
-          alert(
+          this.alertDialog(
+            "Invalid Input Field",
             `A mandatory input field has been left empty at row number: ${i +
               1}. Please check your input!`
           );
@@ -138,7 +154,10 @@ class FacultyBatchAddition extends React.Component {
 
           //if dept was not found, disable mutation and stop loop
           if (deptIndex === -1) {
-            alert(`Invalid department entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Department",
+              `Invalid department entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           }
@@ -153,7 +172,10 @@ class FacultyBatchAddition extends React.Component {
 
           //if category not found
           if (categoryIndex === -1) {
-            alert(`Invalid category entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Category",
+              `Invalid category entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else {
@@ -175,7 +197,10 @@ class FacultyBatchAddition extends React.Component {
                   this.categories[categoryIndex].subcategory[indexPosn]._id
                 );
               } else {
-                alert(`Invalid subcategory entered at row number: ${i + 1}`);
+                this.alertDialog(
+                  "Invalid Subcategory",
+                  `Invalid subcategory entered at row number: ${i + 1}`
+                );
                 disablePush = true;
                 break;
               }
@@ -206,7 +231,8 @@ class FacultyBatchAddition extends React.Component {
                     this.categories[categoryIndex].subcategory[indexPosn]._id
                   );
                 } else {
-                  alert(
+                  this.alertDialog(
+                    "Invalid Incharge Subcategory",
                     `Invalid incharge subcategory entered at row number: ${i +
                       1}`
                   );
@@ -224,27 +250,43 @@ class FacultyBatchAddition extends React.Component {
 
           //validate all entries
           if (!validators.isUsername(row[INDEX_USERNAME])) {
-            alert(`Invalid username entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Username",
+              `Invalid username entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isEmail(row[INDEX_EMAIL])) {
-            alert(`Invalid email entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Email",
+              `Invalid email entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isName(row[INDEX_NAME])) {
-            alert(`Invalid name entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Name",
+              `Invalid name entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isPassword(row[INDEX_PASSWORD])) {
-            alert(`Invalid password entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Password",
+              `Invalid password entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isPhoneNumber(row[INDEX_PHONE])) {
-            alert(`Invalid phone number entered at row number: ${i + 1}`);
+            this.alertDialog(
+              "Invalid Phone Number",
+              `Invalid phone number entered at row number: ${i + 1}`
+            );
             disablePush = true;
             break;
           } else if (!validators.isYesOrNo(row[INDEX_INCHARGE])) {
-            alert(
+            this.alertDialog(
+              "In-charge Invalid",
               `Enter yes/no at row number: ${i +
                 1} to indicate if user is in charge or not`
             );
@@ -277,96 +319,174 @@ class FacultyBatchAddition extends React.Component {
         }
       })
         .then(response => {
-          //TODO success alert
           console.log(response);
           if (this.props.reloadFacultiesList !== null) {
             this.props.reloadFacultiesList();
           }
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "Faculties Added Successfully!"
+              }
+            },
+            () => {
+              this.openSnackbar();
+            }
+          );
         })
         .catch(err => {
-          //TODO error snack
           console.log(err);
           if (this.props.reloadFacultiesList !== null) {
             this.props.reloadFacultiesList();
           }
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "error",
+                message: "Student Batch Additions Failed!" + err.message
+              }
+            },
+            () => {
+              this.openSnackbar();
+            }
+          );
         });
     }
+  };
+  // handle alert dialog
+  alertDialog = (input_title, input_content) => {
+    this.setState({
+      alertDialog: {
+        title: input_title,
+        content: input_content
+      },
+      alertOpen: true
+    });
+  };
+
+  alertDialogClose = () => {
+    this.setState(() => ({ alertOpen: false }));
+  };
+
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
   };
 
   render() {
     const { classes } = this.props;
+    const { alertOpen, alertDialog, snackbar } = this.state;
 
     return (
       <div className={classes.root}>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={9}>
-            <Typography variant="subtitles" gutterBottom>
-              List of valid departments:
-            </Typography>
-            <Typography variant="body1">
-              {this.props.departments.map((department, i, array) => {
-                // add department to list of departments
-                this.departments.push(department);
+        <DialogAlert
+          title={alertDialog.title}
+          open={alertOpen}
+          content={alertDialog.content}
+          onClose={this.alertDialogClose}
+        />
+        <ExpansionPanelDetails>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={9}>
+              <Typography variant="subtitles" gutterBottom>
+                List of valid departments:
+              </Typography>
+              <Typography variant="body1">
+                {this.props.departments.map((department, i, array) => {
+                  // add department to list of departments
+                  this.departments.push(department);
 
-                // display the list of valid departments to admin
-                if (array.length - 1 == i) {
-                  return department.name;
-                } else {
-                  return department.name + ", ";
-                }
-              })}
-            </Typography>
-            <Typography variant="subtitles">Valid categories:</Typography>
-            <Typography variant="body1">
-              {this.props.categoryDetails.map((categoryDetail, i, array) => {
-                this.categories.push(categoryDetail);
-
-                this.subcategories = this.props.categoryDetails[
-                  i
-                ].subcategory.map(subcategory => {
-                  return subcategory.name;
-                });
-
-                return (
-                  <div>
-                    {categoryDetail.category.name +
-                      ": " +
-                      this.subcategories.toString()}
-                  </div>
-                );
-              })}
-            </Typography>
-            <Typography variant="subtitles">Format:</Typography>
-            <Typography>
-              username, email, name, password, phoneNumber, department,
-              category, subcategories, incharge, incharge subcategories
-            </Typography>
-            <Typography variant="subtitles">Constraints:</Typography>
-            <Typography variant="body1">
-              username: alphanumerics + underscore <br />
-              name: alphabets + space <br />
-              password: min 6 characters <br />
-              phoneNumber: valid mobile phone number <br />
-              incharge: yes or no <br />
-              All fields are mandatory except incharge subcategories. Please
-              ensure that there are no duplicate entries
-            </Typography>
-          </GridItem>
-          <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
-            <Mutation mutation={BATCH_ADD_FACULTIES}>
-              {addFaculties => (
-                <CSVReader
-                  label="Add faculties by CSV"
-                  onFileLoaded={result =>
-                    this.handleBatchUpload(result, addFaculties)
+                  // display the list of valid departments to admin
+                  if (array.length - 1 == i) {
+                    return department.name;
+                  } else {
+                    return department.name + ", ";
                   }
-                  inputId="csvUpload"
-                  inputStyle={{ color: "red" }}
-                />
-              )}
-            </Mutation>
-          </GridItem>
-        </GridContainer>
+                })}
+              </Typography>
+              <br />
+              <Typography variant="subtitles">Valid Categories:</Typography>
+              <Typography variant="body1">
+                {this.props.categoryDetails.map((categoryDetail, i, array) => {
+                  this.categories.push(categoryDetail);
+
+                  this.subcategories = this.props.categoryDetails[
+                    i
+                  ].subcategory.map(subcategory => {
+                    return subcategory.name;
+                  });
+
+                  return (
+                    <div>
+                      {categoryDetail.category.name +
+                        ": " +
+                        this.subcategories.toString()}
+                    </div>
+                  );
+                })}
+              </Typography>
+              <br />
+              <Typography variant="subtitles">Format:</Typography>
+              <Typography variant="body1">
+                username, email, name, password, phoneNumber, department,
+                category, subcategories, incharge, incharge subcategories
+              </Typography>
+            <br/>
+              <Typography variant="subtitles">Constraints:</Typography>
+              <Typography variant="body1">
+                <b>username:</b> alphanumerics + underscore <br />
+                <b>name:</b> alphabets + space <br />
+                <b>password:</b> min 6 characters <br />
+                <b>phoneNumber:</b> valid mobile phone number <br />
+                <b>incharge:</b> yes or no <br />
+                <b>
+                  All fields are mandatory except incharge subcategories. Please
+                  ensure that there are no duplicate entries
+                </b>
+              </Typography>
+            </GridItem>
+            <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
+              <Mutation mutation={BATCH_ADD_FACULTIES}>
+                {addFaculties => (
+                  <CSVReader
+                    label="Add faculties by CSV"
+                    onFileLoaded={result =>
+                      this.handleBatchUpload(result, addFaculties)
+                    }
+                    inputId="csvUpload"
+                    inputStyle={{ color: "red" }}
+                  />
+                )}
+              </Mutation>
+            </GridItem>
+          </GridContainer>
+        </ExpansionPanelDetails>
+        <CustomSnackbar
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
+          open={snackbar.open}
+          message={snackbar.message}
+        />
       </div>
     );
   }

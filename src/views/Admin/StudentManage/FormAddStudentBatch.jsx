@@ -6,7 +6,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import DialogAlert from "../../../components/Dialog/DialogAlert";
 
-import { Button, ExpansionPanelDetails, Typography } from "@material-ui/core";
+import { ExpansionPanelDetails, Typography } from "@material-ui/core";
 
 import CSVReader from "react-csv-reader";
 
@@ -22,6 +22,7 @@ import {
   INDEX_USERNAME,
   validators
 } from "../../../Utils";
+import CustomSnackbar from "../../../components/Snackbar/CustomSnackbar";
 
 const styles = theme => ({
   formControl: {
@@ -87,6 +88,11 @@ class StudentBatchAddition extends React.Component {
     alertDialog: {
       title: "",
       content: ""
+    },
+    snackbar: {
+      open: false,
+      variant: "error",
+      message: ""
     }
   };
 
@@ -213,18 +219,42 @@ class StudentBatchAddition extends React.Component {
         }
       })
         .then(response => {
-          //TODO success snack
           if (this.props.reloadStudentsList !== null) {
             this.props.reloadStudentsList();
           }
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "success",
+                message: "Students Added Successfully!"
+              }
+            },
+            () => {
+              this.openSnackbar();
+            }
+          );
         })
         .catch(err => {
-          //TODO error snack
-          console.log(err);
+          this.setState(
+            {
+              loading: false,
+              snackbar: {
+                ...this.state.snackbar,
+                variant: "error",
+                message: "Student Batch Additions Failed!" + err.message
+              }
+            },
+            () => {
+              this.openSnackbar();
+            }
+          );
         });
     }
   };
 
+  // handle alert dialog
   alertDialog = (input_title, input_content) => {
     this.setState({
       alertDialog: {
@@ -239,10 +269,30 @@ class StudentBatchAddition extends React.Component {
     this.setState(() => ({ alertOpen: false }));
   };
 
+  // open snackbar
+  openSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+  };
+
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
+      }
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
-    const { alertOpen, alertDialog } = this.state;
+    const { alertOpen, alertDialog, snackbar } = this.state;
 
     return (
       <div className={classes.root}>
@@ -313,6 +363,12 @@ class StudentBatchAddition extends React.Component {
             </GridItem>
           </GridContainer>
         </ExpansionPanelDetails>
+        <CustomSnackbar
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
+          open={snackbar.open}
+          message={snackbar.message}
+        />
       </div>
     );
   }

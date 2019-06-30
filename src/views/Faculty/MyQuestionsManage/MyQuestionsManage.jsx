@@ -79,14 +79,6 @@ class MyQuestionsManage extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, 4000);
   };
   closeSnackbar = () => {
     console.log("snackbar is closed");

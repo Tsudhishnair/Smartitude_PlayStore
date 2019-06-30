@@ -243,6 +243,7 @@ class StudentDialog extends React.Component {
                               <Button
                                 onClick={e => this.handleDelete(deleteStudent)}
                                 fullWidth
+                                size={"small"}
                                 disabled={loading}
                                 color="primary"
                               >
