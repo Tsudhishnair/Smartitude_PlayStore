@@ -251,7 +251,6 @@ class FormAddStudent extends Component {
         {(addStudent, { data }) => {
           return (
             <div className={classes.root}>
-              {console.log(data)}
               <form onSubmit={e => this.handleClick(addStudent, e)}>
                 <Typography>
                   <strong>Basic Info</strong>

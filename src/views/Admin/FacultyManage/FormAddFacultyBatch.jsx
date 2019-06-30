@@ -5,13 +5,28 @@ import { withStyles } from "@material-ui/core/styles";
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 
-import ReactDataSheet from "react-datasheet";
 import "react-datasheet/lib/react-datasheet.css";
 
 import { Button, Typography } from "../../../../node_modules/@material-ui/core";
 
+import CSVReader from "react-csv-reader";
+
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
+import {
+  INDEX_CATEGORY,
+  INDEX_DEPARTMENT,
+  INDEX_EMAIL,
+  INDEX_INCHARGE,
+  INDEX_INCHARGE_LIST,
+  INDEX_NAME,
+  INDEX_PASSWORD,
+  INDEX_PHONE,
+  INDEX_SUBCATEGORY,
+  INDEX_USERNAME,
+  transformYesOrNo,
+  validators
+} from "../../../Utils";
 
 const styles = theme => ({
   formControl: {
@@ -41,7 +56,7 @@ const styles = theme => ({
 
 //add students mutation query
 const BATCH_ADD_FACULTIES = gql`
-  mutation addStudents($facultyInputs: [FacultyInput!]) {
+  mutation addFaculties($facultyInputs: [FacultyInput!]) {
     addFaculties(facultyInputs: $facultyInputs) {
       _id
     }
@@ -54,568 +69,259 @@ class FacultyBatchAddition extends React.Component {
 
     this.props = props;
 
-    // store data from datasheet
-    this.state = {
-      grid: [
-        [
-          { value: "username", readOnly: true },
-          { value: "email", readOnly: true },
-          { value: "name", readOnly: true },
-          { value: "password", readOnly: true },
-          { value: "phoneNumber", readOnly: true },
-          { value: "department", readOnly: true }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ],
-        [
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" },
-          { value: "" }
-        ]
-      ]
-    };
-
     // store list of departments
     this.departments = [];
+
+    //store list of categories
+    this.categories = [];
 
     // store list of data that is going to be uplaoded
     this.uploadData = [];
   }
 
   // called on click of valiate & upload button
-  handleClick = (addFaculties, e) => {
+  handleBatchUpload = (result, addFaculties) => {
     // temporarily store datasheet values
-    let rows = this.state.grid;
-    const rowsLength = rows.length;
+    let rows = result;
     let disablePush = false;
+
     // clear upload data
     this.uploadData = [];
 
     // run loop for each row in the datasheet
-    for (let i = 1; i < rowsLength; i++) {
-      // found contains the index of the dept that was found from the search
-      let found = this.departments.findIndex(element => {
-        return rows[i][5].value === element.name;
-      });
+    for (let i = 0; i < rows.length; i++) {
+      let row = rows[i];
 
-      // if department is found
-      if (found !== -1) {
-        // check if any of the values are null
-        if (
-          !rows[i][0].value ||
-          !rows[i][1].value ||
-          !rows[i][2].value ||
-          !rows[i][3].value ||
-          !rows[i][4].value
-        ) {
-          // stop the loop if there is an error in input
-          alert(
-            `Faculty could not be validated at row number: ${i}. Please check your input!`
+      if (row[INDEX_USERNAME]) {
+        // deptIndex contains the index of the dept that was found from the search
+        let deptIndex = this.departments.findIndex(department => {
+          return (
+            row[INDEX_DEPARTMENT].toLowerCase() ===
+            department.name.toLowerCase()
           );
-          disablePush = true;
+        });
+
+        //find index position of category
+        let categoryIndex = this.categories.findIndex(category => {
+          return (
+            row[INDEX_CATEGORY].toLowerCase() ===
+            category.category.name.toLowerCase()
+          );
+        });
+
+        //find index position of subcategory and create id list
+        let subcategoryList = row[INDEX_SUBCATEGORY].split(",");
+        let subcategoryIdList = [];
+        let i = 0;
+        while (i < subcategoryList.length) {
+          let indexPosn = this.categories[categoryIndex].subcategory.findIndex(
+            item => {
+              return (
+                subcategoryList[i].trim().toLowerCase() ===
+                item.name.trim().toLowerCase()
+              );
+            }
+          );
+          if (indexPosn !== -1) {
+            subcategoryIdList.push(
+              this.categories[categoryIndex].subcategory[indexPosn]._id
+            );
+          } else {
+            disablePush = true;
+            break;
+          }
+          i++;
         }
 
-        // gather data to be uploaded
-        this.uploadData.push({
-          username: rows[i][0].value,
-          email: rows[i][1].value,
-          name: rows[i][2].value,
-          password: rows[i][3].value,
-          phoneNumber: rows[i][4].value,
-          department: this.departments[found]._id
-        });
-      } else if (found === -1 && !!rows[i][0].value) {
-        //if department was not found while there was a valid entry, notify user
-        alert(
-          `You have entered an invalid department in row number ${i}. Please check the departments that you have entered and make that entry separately`
-        );
+        //find index position and create id list of incharge
+        let inChargeIdList = [];
+        if (transformYesOrNo(row[INDEX_INCHARGE])) {
+          let inChargeList = row[INDEX_INCHARGE_LIST].split(",");
+          let i = 0;
+          while (i < inChargeList.length) {
+            let indexPosn = this.categories[
+              categoryIndex
+            ].subcategory.findIndex(item => {
+              return (
+                inChargeList[i].trim().toLowerCase() ===
+                item.name.trim().toLowerCase()
+              );
+            });
+            if (indexPosn !== -1) {
+              inChargeIdList.push(
+                this.categories[categoryIndex].subcategory[indexPosn]._id
+              );
+            } else {
+              disablePush = true;
+              break;
+            }
+            i++;
+          }
+        }
+
+        // if department is found
+        if (deptIndex !== -1) {
+          // check if any of the values are null
+          if (
+            !row[INDEX_USERNAME] ||
+            !row[INDEX_EMAIL] ||
+            !row[INDEX_NAME] ||
+            !row[INDEX_PASSWORD] ||
+            !row[INDEX_PHONE]
+          ) {
+            // stop the loop if there is an error in input
+            alert(
+              `An empty input field has been entered at row number: ${i +
+                1}. Please check your input!`
+            );
+            disablePush = true;
+            break;
+          } else if (!validators.isUsername(row[INDEX_USERNAME])) {
+            alert(`Invalid username entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else if (!validators.isEmail(row[INDEX_EMAIL])) {
+            alert(`Invalid email entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else if (!validators.isName(row[INDEX_NAME])) {
+            alert(`Invalid name entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else if (!validators.isPassword(row[INDEX_PASSWORD])) {
+            alert(`Invalid password entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else if (!validators.isPhoneNumber(row[INDEX_PHONE])) {
+            alert(`Invalid phone number entered at row number: ${i + 1}`);
+            disablePush = true;
+            break;
+          } else if (!validators.isYesOrNo(row[INDEX_INCHARGE])) {
+            alert(
+              `Enter yes/no at row number: ${i +
+                1} to indicate if user is in charge or not`
+            );
+            disablePush = true;
+            break;
+          } else {
+            // gather data to be uploaded
+            this.uploadData.push({
+              username: row[INDEX_USERNAME],
+              email: row[INDEX_EMAIL],
+              name: row[INDEX_NAME],
+              password: row[INDEX_PASSWORD],
+              phoneNumber: row[INDEX_PHONE],
+              department: this.departments[deptIndex]._id,
+              category: this.categories[categoryIndex].category._id,
+              subcategory: subcategoryIdList,
+              isInCharge: transformYesOrNo(row[INDEX_INCHARGE]),
+              inChargeSubcategories: inChargeIdList
+            });
+          }
+        } else if (deptIndex === -1) {
+          //if department was not found while there was a valid entry, notify user
+          alert(
+            `You have entered an invalid department in row number: ${i + 1}. 
+            Please check the department that you have entered.`
+          );
+          break;
+        }
       }
     }
 
     // set variables of the mutation and call mutation
     if (!disablePush) {
-      addFaculties({
-        variables: {
-          facultyInputs: this.uploadData
-        }
-      })
-        .then(response => {
-          console.log(response);
-          if (this.props.reloadFacultiesList !== null) {
-            this.props.reloadFacultiesList();
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          if (this.props.reloadFacultiesList !== null) {
-            this.props.reloadFacultiesList();
-          }
-        });
+      console.log("success");
+      console.log(this.uploadData);
+      // addFaculties({
+      //   variables: {
+      //     facultyInputs: this.uploadData
+      //   }
+      // })
+      //   .then(response => {
+      //     console.log(response);
+      //     if (this.props.reloadFacultiesList !== null) {
+      //       this.props.reloadFacultiesList();
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     if (this.props.reloadFacultiesList !== null) {
+      //       this.props.reloadFacultiesList();
+      //     }
+      //   });
     }
   };
 
   render() {
     const { classes } = this.props;
 
-    // initialise query to get list of all departments
-    const deptList = gql`
-      {
-        departments {
-          _id
-          name
-          description
-        }
-      }
-    `;
-
     return (
       <div className={classes.root}>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
+          <GridItem xs={12} sm={12} md={9}>
             <Typography variant="subtitles" gutterBottom>
               List of valid departments:
             </Typography>
-            <Query query={deptList}>
-              {({ data, loading, error }) => {
-                return (
-                  <Typography variant="body1">
-                    {!loading
-                      ? data.departments.map((department, i, array) => {
-                          // add department to list of departments
-                          this.departments.push(department);
+            <Typography variant="body1">
+              {this.props.departments.map((department, i, array) => {
+                // add department to list of departments
+                this.departments.push(department);
 
-                          // display the list of valid departments to admin
-                          if (array.length - 1 == i) {
-                            return department.name;
-                          } else {
-                            return department.name + ", ";
-                          }
-                        })
-                      : ""}
-                  </Typography>
-                );
-              }}
-            </Query>
-          </GridItem>
-          <GridItem xs={12} sm={9} md={9} className={classes.elementPadding}>
-            <ReactDataSheet
-              data={this.state.grid}
-              valueRenderer={cell => cell.value}
-              overflow="wrap"
-              fullwidth
-              onCellsChanged={changes => {
-                const grid = this.state.grid.map(row => [...row]);
-                changes.forEach(({ cell, row, col, value }) => {
-                  grid[row][col] = { ...grid[row][col], value };
+                // display the list of valid departments to admin
+                if (array.length - 1 == i) {
+                  return department.name;
+                } else {
+                  return department.name + ", ";
+                }
+              })}
+            </Typography>
+            <Typography variant="subtitles">Valid categories:</Typography>
+            <Typography variant="body1">
+              {this.props.categoryDetails.map((categoryDetail, i, array) => {
+                this.categories.push(categoryDetail);
+
+                this.subcategories = this.props.categoryDetails[
+                  i
+                ].subcategory.map(subcategory => {
+                  return subcategory.name;
                 });
-                this.setState({ grid });
-              }}
-            />
+
+                return (
+                  <div>
+                    {categoryDetail.category.name +
+                      ": " +
+                      this.subcategories.toString()}
+                  </div>
+                );
+              })}
+            </Typography>
+            <Typography variant="subtitles">Format:</Typography>
+            <Typography>
+              username, email, name, password, phoneNumber, department,
+              category, subcategories, incharge, incharge subcategories
+            </Typography>
+            <Typography variant="subtitles">Constraints:</Typography>
+            <Typography variant="body1">
+              username: alphanumerics + underscore <br />
+              name: alphabets + space <br />
+              password: min 6 characters <br />
+              phoneNumber: valid mobile phone number <br />
+              incharge: yes or no <br />
+              Please ensure that there are no duplicate entries
+            </Typography>
           </GridItem>
           <GridItem xs={12} sm={3} md={3} className={classes.elementPadding}>
             <Mutation mutation={BATCH_ADD_FACULTIES}>
               {addFaculties => (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  className={classes.button}
-                  onClick={e => this.handleClick(addFaculties, e)}
-                >
-                  Validate & Upload
-                </Button>
+                <CSVReader
+                  label="Add faculties by CSV"
+                  onFileLoaded={result =>
+                    this.handleBatchUpload(result, addFaculties)
+                  }
+                  inputId="csvUpload"
+                  inputStyle={{ color: "red" }}
+                />
               )}
             </Mutation>
           </GridItem>
@@ -627,7 +333,9 @@ class FacultyBatchAddition extends React.Component {
 
 FacultyBatchAddition.propTypes = {
   classes: PropTypes.object.isRequired,
-  reloadFacultiesList: PropTypes.func.isRequired
+  reloadFacultiesList: PropTypes.func.isRequired,
+  departments: PropTypes.object,
+  categoryDetails: PropTypes.object
 };
 
 export default withStyles(styles)(FacultyBatchAddition);

@@ -68,7 +68,7 @@ class CustomExpansionPanel extends Component {
     let layout;
 
     if (directingValue === EXPANSION_QUIZ_FORM) {
-      layout = <QuizForm quizType={false} reloadList={this.props.reloadList}/>;
+      layout = <QuizForm quizType={false} reloadList={this.props.reloadList} />;
     } else if (directingValue === EXPANSION_FACULTY_FORM) {
       layout = (
         <CreateNewFacultyForm
@@ -79,24 +79,33 @@ class CustomExpansionPanel extends Component {
       );
     } else if (directingValue === EXPANSION_STUDENT_BATCH) {
       layout = (
-        <FormAddStudentBatch
-          reloadStudentsList={this.props.reloadList}
-        />
+        <FormAddStudentBatch reloadStudentsList={this.props.reloadList} />
       );
     } else if (directingValue === EXPANSION_STUDENT_FORM) {
-      layout = (
-        <FormAddStudent reloadStudentsList={this.props.reloadList}/>
-      );
+      layout = <FormAddStudent reloadStudentsList={this.props.reloadList} />;
     } else if (directingValue === EXPANSION_DEPARTMENT_FORM) {
-      layout = <FormAddDepartment reloadDepartmentsList={this.props.reloadList}/>;
+      layout = (
+        <FormAddDepartment reloadDepartmentsList={this.props.reloadList} />
+      );
     } else if (directingValue === EXPANSION_FACULTY_BATCH) {
-      layout = <FormAddFacultyBatch reloadFacultiesList={this.props.reloadList}/>;
+      layout = (
+        <FormAddFacultyBatch
+          reloadFacultiesList={this.props.reloadList}
+          departments={this.props.departments}
+          categoryDetails={this.props.categoryDetails}
+        />
+      );
     } else if (directingValue === EXPANSION_CATEGORY_FORM) {
-      layout = <FormAddCategory reloadList={this.props.reloadList}/>;
+      layout = <FormAddCategory reloadList={this.props.reloadList} />;
     } else if (directingValue === EXPANSION_SUBCATEGORY_FORM) {
-      layout = <FormAddSubcategory categories={this.props.categories} reloadList={this.props.reloadList}/>;
+      layout = (
+        <FormAddSubcategory
+          categories={this.props.categories}
+          reloadList={this.props.reloadList}
+        />
+      );
     } else if (directingValue === EXPANSION_MESSAGE_FORM) {
-      layout = <FormCreateMessage reloadList={this.props.reloadList}/>;
+      layout = <FormCreateMessage reloadList={this.props.reloadList} />;
     }
 
     return (

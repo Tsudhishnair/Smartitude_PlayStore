@@ -326,6 +326,8 @@ class Dashboard extends React.Component {
                               />
                               <CustomExpansionPanel
                                 reloadList={this.reloadFacultiesList}
+                                departments={this.departments}
+                                categoryDetails={this.categoryDetails}
                                 headers={"Multiple Faculty"}
                                 header={"Add groups of faculty"}
                                 directingValue={EXPANSION_FACULTY_BATCH}
