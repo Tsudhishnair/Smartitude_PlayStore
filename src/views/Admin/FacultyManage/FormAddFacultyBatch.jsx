@@ -277,12 +277,14 @@ class FacultyBatchAddition extends React.Component {
         }
       })
         .then(response => {
+          //TODO success alert
           console.log(response);
           if (this.props.reloadFacultiesList !== null) {
             this.props.reloadFacultiesList();
           }
         })
         .catch(err => {
+          //TODO error snack
           console.log(err);
           if (this.props.reloadFacultiesList !== null) {
             this.props.reloadFacultiesList();

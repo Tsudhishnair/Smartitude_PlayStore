@@ -103,33 +103,51 @@ class StudentBatchAddition extends React.Component {
     for (let i = 0; i < rows.length; i++) {
       let row = rows[i];
 
-      if (row[INDEX_USERNAME]) {
-        // found contains the index of the dept that was found from the search
-        let found = this.departments.findIndex(element => {
-          return (
-            row[INDEX_DEPARTMENT].toLowerCase() === element.name.toLowerCase()
+      //check if there is actually any input in a row before giving error messages or proceeding with calculation. This helps remove unnecessary errors as CSVReader sometimes returns empty rows
+      if (
+        row[INDEX_USERNAME] ||
+        row[INDEX_EMAIL] ||
+        row[INDEX_NAME] ||
+        row[INDEX_PASSWORD] ||
+        row[INDEX_PHONE] ||
+        row[INDEX_BATCH]
+      ) {
+        // check if any of the values are null
+        if (
+          !row[INDEX_USERNAME] ||
+          !row[INDEX_EMAIL] ||
+          !row[INDEX_NAME] ||
+          !row[INDEX_PASSWORD] ||
+          !row[INDEX_PHONE] ||
+          !row[INDEX_BATCH]
+        ) {
+          // stop the loop if there is an error in input
+          this.alertDialog(
+            "Empty Field",
+            `An empty input field has been entered at row number: ${i +
+              1}. Please check your input!`
           );
-        });
-        //TODO error snack in each case
-        // if department is found
-        if (found !== -1) {
-          // check if any of the values are null
-          if (
-            !row[INDEX_USERNAME] ||
-            !row[INDEX_EMAIL] ||
-            !row[INDEX_NAME] ||
-            !row[INDEX_PASSWORD] ||
-            !row[INDEX_PHONE]
-          ) {
-            // stop the loop if there is an error in input
+          disablePush = true;
+          break;
+        } else {
+          // deptIndex contains the index of the dept that was found from the search
+          let deptIndex = this.departments.findIndex(element => {
+            return (
+              row[INDEX_DEPARTMENT].toLowerCase() === element.name.toLowerCase()
+            );
+          });
+
+          //if dept was not found, disable mutation and stop loop
+          if (deptIndex === -1) {
             this.alertDialog(
-              "Empty Field",
-              `An empty input field has been entered at row number: ${i +
-                1}. Please check your input!`
+              "Invalid Department",
+              `Invalid department entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isUsername(row[INDEX_USERNAME])) {
+          }
+
+          if (!validators.isUsername(row[INDEX_USERNAME])) {
             this.alertDialog(
               "Invalid Username",
               `Invalid username entered at row number: ${i + 1}`
@@ -179,19 +197,10 @@ class StudentBatchAddition extends React.Component {
               name: row[INDEX_NAME],
               password: row[INDEX_PASSWORD],
               phoneNumber: row[INDEX_PHONE],
-              department: this.departments[found]._id,
+              department: this.departments[deptIndex]._id,
               batch: Number(row[INDEX_BATCH])
             });
           }
-        } else if (found === -1) {
-          disablePush = true;
-          //if department was not found while there was a valid entry, notify user
-          this.alertDialog(
-            "Invalid Department",
-            `You have entered an invalid department in row number: ${i + 1}. 
-            Please check the department that you have entered.`
-          );
-          break;
         }
       }
     }
