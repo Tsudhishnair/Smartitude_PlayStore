@@ -464,7 +464,7 @@ class QuizForm extends React.Component {
       }
       //negativeMarksPerQn field value check
       else if (!item.negativeMarksPerQn || item.negativeMarksPerQn < 0) {
-        this.makeFlagFalse();
+        if (item.negativeMarksPerQn !== 0) this.makeFlagFalse();
       }
     }
   };
@@ -791,6 +791,41 @@ class QuizForm extends React.Component {
     });
   };
 
+  resetAdminFields = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      quizCommon: {
+        quizName: "",
+        batch: "",
+        activeFrom: new Date(),
+        activeTo: new Date(),
+        active: false,
+        instructions: "",
+        description: ""
+      },
+      quizSectionWise: [
+        {
+          //selected category
+          category: {
+            name: ""
+          },
+          //subcategories selected
+          subcategories: [],
+          //list of possible subcategories for the category selected
+          subcategoryList: [],
+          //if true, this clears the chips for subcategory
+          clearSubcategoryChips: false,
+          //number of questions in the section
+          numberOfQuestions: 0,
+          //time limit in mins
+          timeLimit: 0,
+          marksPerQn: 0,
+          negativeMarksPerQn: 0
+        }
+      ]
+    }));
+  };
+
   render() {
     // quizType is a boolean value which decides which quiz form do render ie. For custom quiz by student --OR-- admin quiz form in admin login
     const { classes, quizType } = this.props;
@@ -1039,7 +1074,10 @@ class QuizForm extends React.Component {
                       </Button>
                       <Divider />
                       <ExpansionPanelActions>
-                        <Mutation mutation={ADD_QUIZ}>
+                        <Mutation
+                          mutation={ADD_QUIZ}
+                          onCompleted={this.resetAdminFields}
+                        >
                           {addQuiz => (
                             <div className={classes.wrapper}>
                               <Button
@@ -1069,11 +1107,11 @@ class QuizForm extends React.Component {
           }}
         </Query>
         <CustomSnackbar
-            onClose={this.closeSnackbar}
-            variant={snackbar.variant}
+          onClose={this.closeSnackbar}
+          variant={snackbar.variant}
           open={snackbar.open}
-            autoHideDuration={snackbar.duration}
-            message={snackbar.message}
+          autoHideDuration={snackbar.duration}
+          message={snackbar.message}
         />
       </Fragment>
     );
