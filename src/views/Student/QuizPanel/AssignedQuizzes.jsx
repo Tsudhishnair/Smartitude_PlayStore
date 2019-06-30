@@ -160,7 +160,7 @@ class AssignedQuizzes extends React.Component {
                   <h4 className={classes.cardTitleWhite}>Assigned Quizzes</h4>
                 </CardHeader>
                 <CardBody>
-                  <Query query={ADMIN_QUIZZES_BATCH}>
+                  <Query query={ADMIN_QUIZZES_BATCH} fetchPolicy="network-only">
                     {({ data, loading, error }) => {
                       if (loading) {
                         return (
