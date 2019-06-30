@@ -118,3 +118,16 @@ export const EXPANSION_MESSAGE_FORM = 9;
 export const ASSIGNED_QUIZ_CONSTANT = 1;
 export const CUSTOM_QUIZ_CONSTANT = 2;
 export const RANDOM_QUIZ_CONSTANT = 3;
+
+//used for student & faculty batch addition
+export const INDEX_USERNAME = 0;
+export const INDEX_EMAIL = 1;
+export const INDEX_NAME = 2;
+export const INDEX_PASSWORD = 3;
+export const INDEX_PHONE = 4;
+export const INDEX_DEPARTMENT = 5;
+export const INDEX_CATEGORY = 6;
+export const INDEX_BATCH = 6;
+export const INDEX_SUBCATEGORY = 7;
+export const INDEX_INCHARGE = 8;
+export const INDEX_INCHARGE_LIST = 9;

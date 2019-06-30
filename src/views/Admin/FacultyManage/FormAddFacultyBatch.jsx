@@ -13,7 +13,20 @@ import CSVReader from "react-csv-reader";
 
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { transformYesOrNo, validators } from "../../../Utils";
+import {
+  INDEX_CATEGORY,
+  INDEX_DEPARTMENT,
+  INDEX_EMAIL,
+  INDEX_INCHARGE,
+  INDEX_INCHARGE_LIST,
+  INDEX_NAME,
+  INDEX_PASSWORD,
+  INDEX_PHONE,
+  INDEX_SUBCATEGORY,
+  INDEX_USERNAME,
+  transformYesOrNo,
+  validators
+} from "../../../Utils";
 
 const styles = theme => ({
   formControl: {
@@ -79,19 +92,25 @@ class FacultyBatchAddition extends React.Component {
     for (let i = 0; i < rows.length; i++) {
       let row = rows[i];
 
-      if (row[0]) {
+      if (row[INDEX_USERNAME]) {
         // deptIndex contains the index of the dept that was found from the search
         let deptIndex = this.departments.findIndex(department => {
-          return row[5].toLowerCase() === department.name.toLowerCase();
+          return (
+            row[INDEX_DEPARTMENT].toLowerCase() ===
+            department.name.toLowerCase()
+          );
         });
 
         //find index position of category
         let categoryIndex = this.categories.findIndex(category => {
-          return row[6].toLowerCase() === category.category.name.toLowerCase();
+          return (
+            row[INDEX_CATEGORY].toLowerCase() ===
+            category.category.name.toLowerCase()
+          );
         });
 
         //find index position of subcategory and create id list
-        let subcategoryList = row[7].split(",");
+        let subcategoryList = row[INDEX_SUBCATEGORY].split(",");
         let subcategoryIdList = [];
         let i = 0;
         while (i < subcategoryList.length) {
@@ -116,8 +135,8 @@ class FacultyBatchAddition extends React.Component {
 
         //find index position and create id list of incharge
         let inChargeIdList = [];
-        if (transformYesOrNo(row[8])) {
-          let inChargeList = row[9].split(",");
+        if (transformYesOrNo(row[INDEX_INCHARGE])) {
+          let inChargeList = row[INDEX_INCHARGE_LIST].split(",");
           let i = 0;
           while (i < inChargeList.length) {
             let indexPosn = this.categories[
@@ -143,7 +162,13 @@ class FacultyBatchAddition extends React.Component {
         // if department is found
         if (deptIndex !== -1) {
           // check if any of the values are null
-          if (!row[0] || !row[1] || !row[2] || !row[3] || !row[4]) {
+          if (
+            !row[INDEX_USERNAME] ||
+            !row[INDEX_EMAIL] ||
+            !row[INDEX_NAME] ||
+            !row[INDEX_PASSWORD] ||
+            !row[INDEX_PHONE]
+          ) {
             // stop the loop if there is an error in input
             alert(
               `An empty input field has been entered at row number: ${i +
@@ -151,27 +176,27 @@ class FacultyBatchAddition extends React.Component {
             );
             disablePush = true;
             break;
-          } else if (!validators.isUsername(row[0])) {
+          } else if (!validators.isUsername(row[INDEX_USERNAME])) {
             alert(`Invalid username entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isEmail(row[1])) {
+          } else if (!validators.isEmail(row[INDEX_EMAIL])) {
             alert(`Invalid email entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isName(row[2])) {
+          } else if (!validators.isName(row[INDEX_NAME])) {
             alert(`Invalid name entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isPassword(row[3])) {
+          } else if (!validators.isPassword(row[INDEX_PASSWORD])) {
             alert(`Invalid password entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isPhoneNumber(row[4])) {
+          } else if (!validators.isPhoneNumber(row[INDEX_PHONE])) {
             alert(`Invalid phone number entered at row number: ${i + 1}`);
             disablePush = true;
             break;
-          } else if (!validators.isYesOrNo(row[8])) {
+          } else if (!validators.isYesOrNo(row[INDEX_INCHARGE])) {
             alert(
               `Enter yes/no at row number: ${i +
                 1} to indicate if user is in charge or not`
@@ -181,15 +206,15 @@ class FacultyBatchAddition extends React.Component {
           } else {
             // gather data to be uploaded
             this.uploadData.push({
-              username: row[0],
-              email: row[1],
-              name: row[2],
-              password: row[3],
-              phoneNumber: row[4],
+              username: row[INDEX_USERNAME],
+              email: row[INDEX_EMAIL],
+              name: row[INDEX_NAME],
+              password: row[INDEX_PASSWORD],
+              phoneNumber: row[INDEX_PHONE],
               department: this.departments[deptIndex]._id,
               category: this.categories[categoryIndex].category._id,
               subcategory: subcategoryIdList,
-              isInCharge: transformYesOrNo(row[8]),
+              isInCharge: transformYesOrNo(row[INDEX_INCHARGE]),
               inChargeSubcategories: inChargeIdList
             });
           }

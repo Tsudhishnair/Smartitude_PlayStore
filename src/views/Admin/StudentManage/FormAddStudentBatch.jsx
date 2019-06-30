@@ -12,7 +12,16 @@ import CSVReader from "react-csv-reader";
 
 import { Mutation, Query } from "react-apollo";
 import gql from "graphql-tag";
-import { validators } from "../../../Utils";
+import {
+  INDEX_BATCH,
+  INDEX_DEPARTMENT,
+  INDEX_EMAIL,
+  INDEX_NAME,
+  INDEX_PASSWORD,
+  INDEX_PHONE,
+  INDEX_USERNAME,
+  validators
+} from "../../../Utils";
 
 const styles = theme => ({
   formControl: {
@@ -94,16 +103,24 @@ class StudentBatchAddition extends React.Component {
     for (let i = 0; i < rows.length; i++) {
       let row = rows[i];
 
-      if (row[0]) {
+      if (row[INDEX_USERNAME]) {
         // found contains the index of the dept that was found from the search
         let found = this.departments.findIndex(element => {
-          return row[5].toLowerCase() === element.name.toLowerCase();
+          return (
+            row[INDEX_DEPARTMENT].toLowerCase() === element.name.toLowerCase()
+          );
         });
         //TODO error snack in each case
         // if department is found
         if (found !== -1) {
           // check if any of the values are null
-          if (!row[0] || !row[1] || !row[2] || !row[3] || !row[4]) {
+          if (
+            !row[INDEX_USERNAME] ||
+            !row[INDEX_EMAIL] ||
+            !row[INDEX_NAME] ||
+            !row[INDEX_PASSWORD] ||
+            !row[INDEX_PHONE]
+          ) {
             // stop the loop if there is an error in input
             this.alertDialog(
               "Empty Field",
@@ -112,42 +129,42 @@ class StudentBatchAddition extends React.Component {
             );
             disablePush = true;
             break;
-          } else if (!validators.isUsername(row[0])) {
+          } else if (!validators.isUsername(row[INDEX_USERNAME])) {
             this.alertDialog(
               "Invalid Username",
               `Invalid username entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isEmail(row[1])) {
+          } else if (!validators.isEmail(row[INDEX_EMAIL])) {
             this.alertDialog(
               "Invalid Email",
               `Invalid email entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isName(row[2])) {
+          } else if (!validators.isName(row[INDEX_NAME])) {
             this.alertDialog(
               "Invalid Name",
               `Invalid name entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isPassword(row[3])) {
+          } else if (!validators.isPassword(row[INDEX_PASSWORD])) {
             this.alertDialog(
               "Invalid Password",
               `Invalid password entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isPhoneNumber(row[4])) {
+          } else if (!validators.isPhoneNumber(row[INDEX_PHONE])) {
             this.alertDialog(
               "Invalid Phone Number",
               `Invalid phone number entered at row number: ${i + 1}`
             );
             disablePush = true;
             break;
-          } else if (!validators.isBatch(row[6])) {
+          } else if (!validators.isBatch(row[INDEX_BATCH])) {
             this.alertDialog(
               "Invalid Batch",
               `Invalid batch entered at row number: ${i + 1}`
@@ -157,13 +174,13 @@ class StudentBatchAddition extends React.Component {
           } else {
             // gather data to be uploaded
             this.uploadData.push({
-              username: rows[i][0],
-              email: rows[i][1],
-              name: rows[i][2],
-              password: rows[i][3],
-              phoneNumber: rows[i][4],
+              username: row[INDEX_USERNAME],
+              email: row[INDEX_EMAIL],
+              name: row[INDEX_NAME],
+              password: row[INDEX_PASSWORD],
+              phoneNumber: row[INDEX_PHONE],
               department: this.departments[found]._id,
-              batch: Number(rows[i][6])
+              batch: Number(row[INDEX_BATCH])
             });
           }
         } else if (found === -1) {
