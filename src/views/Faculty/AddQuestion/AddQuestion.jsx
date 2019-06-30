@@ -172,14 +172,6 @@ class AddQuestion extends React.Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, 4000);
   };
 
   closeSnackbar = () => {

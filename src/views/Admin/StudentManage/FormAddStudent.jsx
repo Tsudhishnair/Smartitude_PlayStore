@@ -114,14 +114,6 @@ class FormAddStudent extends Component {
         open: true
       }
     });
-    setTimeout(() => {
-      this.setState({
-        snackbar: {
-          ...this.state.snackbar,
-          open: false
-        }
-      });
-    }, 4000);
   };
 
   // close snackbar by changing open state
@@ -223,7 +215,6 @@ class FormAddStudent extends Component {
               this.openSnackbar();
             }
           );
-          // this.closeSnackbar();
         });
     }
   };
