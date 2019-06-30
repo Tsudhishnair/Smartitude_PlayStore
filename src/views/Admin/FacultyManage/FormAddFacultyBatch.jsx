@@ -90,7 +90,7 @@ class FacultyBatchAddition extends React.Component {
           return row[6].toLowerCase() === category.category.name.toLowerCase();
         });
 
-        //find index position of subcategory
+        //find index position of subcategory and create id list
         let subcategoryList = row[7].split(",");
         let subcategoryIdList = [];
         let i = 0;
@@ -112,6 +112,32 @@ class FacultyBatchAddition extends React.Component {
             break;
           }
           i++;
+        }
+
+        //find index position and create id list of incharge
+        let inChargeIdList = [];
+        if (transformYesOrNo(row[8])) {
+          let inChargeList = row[9].split(",");
+          let i = 0;
+          while (i < inChargeList.length) {
+            let indexPosn = this.categories[
+              categoryIndex
+            ].subcategory.findIndex(item => {
+              return (
+                inChargeList[i].trim().toLowerCase() ===
+                item.name.trim().toLowerCase()
+              );
+            });
+            if (indexPosn !== -1) {
+              inChargeIdList.push(
+                this.categories[categoryIndex].subcategory[indexPosn]._id
+              );
+            } else {
+              disablePush = true;
+              break;
+            }
+            i++;
+          }
         }
 
         // if department is found
@@ -157,13 +183,14 @@ class FacultyBatchAddition extends React.Component {
             this.uploadData.push({
               username: row[0],
               email: row[1],
-              name: rows[2],
+              name: row[2],
               password: row[3],
               phoneNumber: row[4],
               department: this.departments[deptIndex]._id,
               category: this.categories[categoryIndex].category._id,
               subcategory: subcategoryIdList,
-              isInCharge: transformYesOrNo(row[8])
+              isInCharge: transformYesOrNo(row[8]),
+              inChargeSubcategories: inChargeIdList
             });
           }
         } else if (deptIndex === -1) {

@@ -96,14 +96,13 @@ export const validators = {
     return emailRegex.test(email);
   },
   isYesOrNo: input => {
+    input = input.trim().toLowerCase();
     return input === "yes" || input === "no";
   }
 };
 
 export const transformYesOrNo = input => {
-  if (input === "yes") return true;
-  else if (input === "no") return false;
-  else return;
+  return input.trim().toLowerCase() === "yes";
 };
 
 export const EXPANSION_QUIZ_FORM = 1;
