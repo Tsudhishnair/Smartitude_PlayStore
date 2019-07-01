@@ -102,7 +102,12 @@ class QuizManage extends React.Component {
     super(props);
     this.props = props;
     this.state = {
-      open: false
+      open: false,
+      snack:{
+        open:false,
+        message:"",
+        variant:""
+      }
     };
 
     this.quizzes;

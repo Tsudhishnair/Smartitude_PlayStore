@@ -9,40 +9,35 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
 // @material-ui/icons
-import { Person, CloudDownload, Home } from "@material-ui/icons";
-
+import Person from "@material-ui/icons/Person";
+import Button from "@material-ui/core/Button";
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
 import headerLinksStyle from "assets/jss/material-dashboard-react/views/headerLinksStyle.jsx";
+import { Icon } from "@material-ui/core";
 
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    color: "white",
+    borderRadius: 3
+  },
+  input: {
+    color: "white"
+  }
+});
 function HeaderLinks({ ...props }) {
-    const { classes } = props;
-    return (
-        <List className={classes.list}>
-            <ListItem className={classes.listItem}>
-                <CustomDropdown
-                    noLiPadding
-                    buttonText="Login"
-                    buttonProps={{
-                        className: classes.navLink,
-                        color: "transparent"
-                    }}
-                    buttonIcon={Person}
-                    dropdownList={[
-                        <Link to="/student/login" className={classes.dropdownLink}>
-                            Student
-                        </Link>,
-                        <Link to="/faculty/login" className={classes.dropdownLink}>
-                            Faculty
-                        </Link>,
-                        <Link to="/admin/login" className={classes.dropdownLink}>
-                            Admin
-                        </Link>,
-                    ]}
-                />
-            </ListItem>
-        </List>
-    );
-}
+  const { classes } = props;
 
-export default withStyles(headerLinksStyle)(HeaderLinks);
+  return (
+    <div>
+      <Link to="/student/login" className={classes.input}>
+        <Button className={classes.button}>Login</Button>
+      </Link>
+      <Link to="/SignUp" className={classes.input}>
+        <Button className={classes.button}>SignUp</Button>
+      </Link>
+    </div>
+  );
+}
+export default withStyles(styles)(HeaderLinks);

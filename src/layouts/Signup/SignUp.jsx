@@ -159,7 +159,7 @@ class SignUp extends Component {
             snackbar: {
               ...this.state.snackbar,
               variant: "error",
-              message: "Student Adding Failed!" + err.message
+              message: "SignUp Failed!" + err.message
             }
           },
           () => {
@@ -390,12 +390,12 @@ class SignUp extends Component {
                 </div>
                 <Footer whiteFont />
               </div>
-              {/* <CustomSnackbar
+              <CustomSnackbar
                   onClose={this.closeSnackbar}
-                  variant="error"
+                  variant={snackbar.variant}
                   open={snackbar.open}
-                  message={error.message}
-                /> */}
+                  message={snackbar.message}
+                />
             </div>
           );
         }}
