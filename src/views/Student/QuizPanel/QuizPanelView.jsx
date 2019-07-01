@@ -21,8 +21,6 @@ import {
   Typography
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-// @material-ui/icons
-import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 // core components
 import GridContainer from "../../../components/Grid/GridContainer";
 import GridItem from "../../../components/Grid/GridItem";
@@ -33,7 +31,6 @@ import { Redirect } from "react-router-dom";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-import FullScreen from "react-full-screen";
 import MessageDialog from "../../../components/Dialog/MessageDialog";
 
 import {
@@ -44,7 +41,6 @@ import {
   RANDOM_QUIZ_CONSTANT
 } from "../../../Utils";
 import Latex from "../../General/Latex";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
   root: {
@@ -167,6 +163,8 @@ const CUSTOM_QUIZ = gql`
 
 const TIMEOUT_INTERVAL = 8000;
 
+const ESCAPE_KEY = 27;
+
 class QuizPanelView extends React.Component {
   constructor(props) {
     super(props);
@@ -195,123 +193,129 @@ class QuizPanelView extends React.Component {
       startTime: new Date()
     };
 
-    this.quizType = this.props.location.state.quizType;
+    if (!this.props.location.state) {
+      this.setState(() => ({ hasError: true }));
+    } else {
+      this.quizType = this.props.location.state.quizType;
 
-    this.quizTypeObject = {
-      quizType: this.quizType
-    };
+      this.quizTypeObject = {
+        quizType: this.quizType
+      };
 
-    this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
+      this.quiz = JSON.parse(JSON.stringify(this.props.location.state));
 
-    this.key;
+      this.key;
 
-    //contains data to be submitted on submission of sections and quiz
-    this.dataToSubmit = {
-      attemptedAdminQuizId: this.props.location.state._id,
-      submittedAt: new Date(),
-      attemptedSections: []
-    };
-    //contains data to be submitted for custom quiz
-    this.customDataToSubmit = {
-      customQuizId: this.props.location.state._id,
-      submittedAt: this.dataToSubmit.submittedAt,
-      attemptedSections: this.dataToSubmit.attemptedSections
-    };
+      //contains data to be submitted on submission of sections and quiz
+      this.dataToSubmit = {
+        attemptedAdminQuizId: this.props.location.state._id,
+        submittedAt: new Date(),
+        attemptedSections: []
+      };
+      //contains data to be submitted for custom quiz
+      this.customDataToSubmit = {
+        customQuizId: this.props.location.state._id,
+        submittedAt: this.dataToSubmit.submittedAt,
+        attemptedSections: this.dataToSubmit.attemptedSections
+      };
 
-    this.initialiseDataArray();
+      this.initialiseDataArray();
 
-    let i = 0;
-    while (i < this.props.location.state.sections.length) {
-      let j = 0;
-      while (j < this.props.location.state.sections[i].questions.length) {
-        this.quiz.sections[i].questions[j].options = this.shuffle(
-          this.key,
-          this.quiz.sections[i].questions[j].options
-        );
-        j++;
-      }
-      i++;
-    }
-
-    //get object of current question being answered
-    const currentQn = this.quiz.sections[this.currentSection].questions[
-      this.currentQnNum
-    ];
-
-    //the following variables are used exclusively used by timer functions to prevent the passing around of excessive number of params
-    this.sections = this.quiz.sections;
-    this.mutation;
-
-    this.state = {
-      //handle visibility of dialog
-      isVisible: false,
-      //index value of step that is active
-      activeStep: 0,
-      //maintain value of fields of question
-      fields: {
-        question: currentQn.question,
-        options: {
-          1: currentQn.options[0],
-          2: currentQn.options[1],
-          3: currentQn.options[2],
-          4: currentQn.options[3]
+      let i = 0;
+      while (i < this.props.location.state.sections.length) {
+        let j = 0;
+        while (j < this.props.location.state.sections[i].questions.length) {
+          this.quiz.sections[i].questions[j].options = this.shuffle(
+            this.key,
+            this.quiz.sections[i].questions[j].options
+          );
+          j++;
         }
-      },
-      //triggers for dialogs and other views
-      triggers: {
-        //trigger for dialog that appears when user tries to change the tab during quiz.
-        showTabSwitchDialog: false
-      },
-      sleepTriggers: {
-        //trigger for dialog that appers when the system goes to sleep during quiz
-        showSleepDialog: false
-      },
-      //integer value of option marked by user
-      markedOption: "",
-      //maintain state of prev and next buttons
-      prevButton: !this.isNotFirstQn(),
-      nextButton: !this.isNotLastQn(
-        this.props.location.state.sections[this.currentSection]
-      ),
-      //used to redirect from quizPanel to answers view
-      redirector: false,
-      submitLoading: false,
-      timer: {
-        minutes: 0,
-        seconds: 0
-      },
-      isFullScreen: false
-    };
+        i++;
+      }
 
-    this.browserStatus = getTabStatus()[0];
-    this.visibilityStatus = getTabStatus()[1];
-    //start time counter
-    this.manageTimeTakenCounter();
+      //get object of current question being answered
+      const currentQn = this.quiz.sections[this.currentSection].questions[
+        this.currentQnNum
+      ];
+
+      //the following variables are used exclusively used by timer functions to prevent the passing around of excessive number of params
+      this.sections = this.quiz.sections;
+      this.mutation;
+
+      this.state = {
+        //handle visibility of dialog
+        isVisible: false,
+        //index value of step that is active
+        activeStep: 0,
+        //maintain value of fields of question
+        fields: {
+          question: currentQn.question,
+          options: {
+            1: currentQn.options[0],
+            2: currentQn.options[1],
+            3: currentQn.options[2],
+            4: currentQn.options[3]
+          }
+        },
+        //triggers for dialogs and other views
+        triggers: {
+          //trigger for dialog that appears when user tries to change the tab during quiz.
+          showTabSwitchDialog: false
+        },
+        sleepTriggers: {
+          //trigger for dialog that appers when the system goes to sleep during quiz
+          showSleepDialog: false
+        },
+        //integer value of option marked by user
+        markedOption: "",
+        //maintain state of prev and next buttons
+        prevButton: !this.isNotFirstQn(),
+        nextButton: !this.isNotLastQn(
+          this.props.location.state.sections[this.currentSection]
+        ),
+        //used to redirect from quizPanel to answers view
+        redirector: false,
+        submitLoading: false,
+        timer: {
+          minutes: 0,
+          seconds: 0
+        },
+        hasError: false
+      };
+
+      this.browserStatus = getTabStatus()[0];
+      this.visibilityStatus = getTabStatus()[1];
+      //start time counter
+      this.manageTimeTakenCounter();
+    }
   }
 
   componentDidMount = () => {
-    //initialise the timer component and interval function
-    this.manageTimerComponent(
-      this.props.location.state.sections[this.currentSection]
-    );
+    if (!this.state.hasError) {
+      //initialise the timer component and interval function
+      this.manageTimerComponent(
+        this.props.location.state.sections[this.currentSection]
+      );
 
-    //start interval for detecting sleep
-    this.sleepDetectionTimer = setInterval(() => {
-      //compare the current time with the last recorded time. if it is greater than the interval, then submit the quiz
-      let currentTime = new Date().getTime();
-      if (currentTime > this.lastTime + TIMEOUT_INTERVAL * 2) {
-        // this.handleSectionSubmit(this.sections, this.mutation);
-        this.toggleSleepDialogVisibility();
-      }
-      this.lastTime = currentTime;
-    }, TIMEOUT_INTERVAL);
+      //start interval for detecting sleep
+      this.sleepDetectionTimer = setInterval(() => {
+        //compare the current time with the last recorded time. if it is greater than the interval, then submit the quiz
+        let currentTime = new Date().getTime();
+        if (currentTime > this.lastTime + TIMEOUT_INTERVAL * 2) {
+          // this.handleSectionSubmit(this.sections, this.mutation);
+          this.toggleSleepDialogVisibility();
+        }
+        this.lastTime = currentTime;
+      }, TIMEOUT_INTERVAL);
 
-    //listener for tab change
-    document.addEventListener(
-      this.visibilityStatus,
-      this.handleVisibilityChange,
-      false
-    );
+      //listener for tab change
+      document.addEventListener(
+        this.visibilityStatus,
+        this.handleVisibilityChange,
+        false
+      );
+    }
   };
   //Method to increment the tabSwitchCounter
   incrementCounter = () => {
@@ -639,6 +643,7 @@ class QuizPanelView extends React.Component {
           })
           .catch(err => {
             console.log(err);
+            this.setState(() => ({ hasError: true }));
           });
       }
       //for random quizzes
@@ -898,12 +903,7 @@ class QuizPanelView extends React.Component {
       }
     }));
   };
-  toggleFullScreen = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isFullScreen: !prevState.isFullScreen
-    }));
-  };
+
   renderTabSwitchDialog = () => {
     if (this.state.triggers.showTabSwitchDialog) {
       if (this.quizTabSwitchCounter >= 1) {
@@ -938,30 +938,32 @@ class QuizPanelView extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const quiz = this.quiz;
-    const selectedSection = quiz.sections[this.currentSection];
-    const { activeStep, isVisible } = this.state;
-
-    const steps = this.getSteps(quiz.sections);
-
-    if (this.state.redirector === true) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/student/quiz_answer",
-            state: {
-              ...this.quizTypeObject,
-              ...this.dataToSubmit,
-              ...quiz,
-              ...this.startTime
-            }
-          }}
-        />
-      );
+    if (this.state.hasError) {
+      return <Redirect to="/error" />;
     } else {
-      return (
-        <FullScreen enabled={this.state.isFullScreen}>
+      const { classes } = this.props;
+      const quiz = this.quiz;
+      const selectedSection = quiz.sections[this.currentSection];
+      const { activeStep, isVisible } = this.state;
+
+      const steps = this.getSteps(quiz.sections);
+
+      if (this.state.redirector === true) {
+        return (
+          <Redirect
+            to={{
+              pathname: "/student/quiz_answer",
+              state: {
+                ...this.quizTypeObject,
+                ...this.dataToSubmit,
+                ...quiz,
+                ...this.startTime
+              }
+            }}
+          />
+        );
+      } else {
+        return (
           <React.Fragment>
             {this.renderSleepDetection(
               this.state.sleepTriggers.showSleepDialog
@@ -984,24 +986,6 @@ class QuizPanelView extends React.Component {
                             {quiz.name == null ? "Random Quiz" : quiz.name}
                           </h4>
                         </Typography>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={1}>
-                        <Hidden smDown style={{ float: "right" }}>
-                          <Tooltip title={"Toggle FullScreen"}>
-                            <Button
-                              variant="outlined"
-                              size={"small"}
-                              className={classes.button}
-                              onClick={() => this.toggleFullScreen()}
-                            >
-                              {this.state.isFullScreen ? (
-                                <FullscreenExit />
-                              ) : (
-                                <Fullscreen />
-                              )}
-                            </Button>
-                          </Tooltip>
-                        </Hidden>
                       </GridItem>
                     </GridContainer>
                   </div>
@@ -1279,8 +1263,8 @@ class QuizPanelView extends React.Component {
               )}
             </Mutation>
           </React.Fragment>
-        </FullScreen>
-      );
+        );
+      }
     }
   }
 }

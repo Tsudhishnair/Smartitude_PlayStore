@@ -307,7 +307,7 @@ class StudentManage extends React.Component {
                               studentData.push(student.department.name);
                               studentData.push(student.batch.toString());
                               studentData.push(student.phoneNumber);
-                              studentData.push(student.score);
+                              studentData.push(student.score.toFixed(3));
                               return studentData;
                             });
                             this.students = data.students;

@@ -7,9 +7,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-  TextField
+  DialogTitle
 } from "@material-ui/core";
 
 import { AccountCircle } from "@material-ui/icons";
@@ -19,10 +17,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import formControlStyle from "../../assets/jss/form-control";
 
 import Card from "components/Card/Card.jsx";
-import CardHeader from "components/Card/CardHeader.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
 import CardBody from "components/Card/CardBody.jsx";
-import CardFooter from "components/Card/CardFooter.jsx";
 
 class DialogChangePassword extends React.Component {
   constructor(props) {
