@@ -68,7 +68,14 @@ const styles = theme => ({
     flexBasis: 200
   }
 });
-
+// Mutaion for signup
+const Student_Sign_Up = gql`
+  mutation studentSignUp($studentInput: StudentSignUpInput!) {
+    studentSignUp(studentInput: $studentInput) {
+      _id
+    }
+  }
+`;
 class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -81,19 +88,111 @@ class SignUp extends Component {
         username: "",
         password: ""
       },
-      redirecter: false
+      redirecter: false,
+      snackbar: {
+        open: false,
+        variant: "",
+        message: ""
+      }
     };
   }
 
   handleClickShowPassword = () => {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
-
+  // Method to set the state
   handleFormFields = event => {
     this.setState({
       form: {
         ...this.state.form,
         [event.target.name]: event.target.value
+      }
+    });
+  };
+  // Method to clear the state and form on submission
+  handleResetForm = e => {
+    this.setState(prevState => ({
+      ...prevState,
+      form: {
+        mname: "",
+        email: "",
+        phonenumber: "",
+        username: "",
+        password: ""
+      }
+    }));
+  };
+  //Submission mutation method
+  handleClick = (studentSignUp, e) => {
+    e.preventDefault();
+    console.log("Entered Mutaion call");
+    studentSignUp({
+      variables: {
+        studentInput: {
+          name: this.state.form.mname,
+          email: this.state.form.email,
+          username: this.state.form.username,
+          password: this.state.form.password,
+          phoneNumber: this.state.form.phonenumber
+        }
+      }
+    })
+      .then(response => {
+        this.handleResetForm(e);
+        this.setState(
+          {
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "success",
+              message:
+                "Successfully Signed Up. Login with your username & password"
+            }
+          },
+          () => {
+            this.openSnackbar();
+          }
+        );
+      })
+      .catch(err => {
+        this.setState(
+          {
+            snackbar: {
+              ...this.state.snackbar,
+              variant: "error",
+              message: "Student Adding Failed!" + err.message
+            }
+          },
+          () => {
+            this.openSnackbar();
+          }
+        );
+      });
+  };
+  // open snackbar
+  openSnackbar = () => {
+    console.log("SNAckeee");
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        snackbar: {
+          ...this.state.snackbar,
+          open: false
+        }
+      });
+    }, 4000);
+  };
+
+  // close snackbar by changing open state
+  closeSnackbar = () => {
+    this.setState({
+      snackbar: {
+        ...this.state.snackbar,
+        open: false
       }
     });
   };
@@ -104,254 +203,203 @@ class SignUp extends Component {
 
     // if auth token is present in storage, redirect to dashboard
     if (redirecter === true) {
-      return <Redirect to="/student/dashboard" />;
+      return <Redirect to="/student/login" />;
     }
     return (
-      <div>
-        <Header
-          absolute
-          color="transparent"
-          brand="Smartitude"
-          rightLinks={<HeaderLinks />}
-          {...rest}
-        />
-        <div
-          className={classes.pageHeader}
-          style={{
-            backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "top center"
-          }}
-        >
-          <div className={classes.container} style={{ overflow: "auto" }}>
-            <GridContainer justify="center">
-              <GridItem xs={11} sm={9} md={4}>
-                <Card className={classes[this.state.cardAnimaton]}>
-                  <form
-                    className={classes.form}
-                    // onSubmit={e => this.handleClick(studentLogin, e)}
-                  >
-                    <CardHeader color="primary" className={classes.cardHeader}>
-                      <h4>Student Registration</h4>
-                    </CardHeader>
-                    <CardBody>
-                      <p className={classes.divider}>
-                        <img width="150dp" src={lock} alt="..." />
-                      </p>
-                      <FormControl
-                        required
-                        className={classes.formControl}
-                        fullWidth
-                      >
-                        <TextField
-                          autoFocus
-                          // margin="dense"
-                          id="name"
-                          label="Name"
-                          required
-                          type="text"
-                          InputProps={{
-                            inputProps: { pattern: "^[a-zA-Z ]*$" }
-                          }}
-                          name="mname"
-                          onChange={this.handleFormFields}
-                          value={this.state.form.mname}
-                          fullWidth
-                        />
-                      </FormControl>
-                      <FormControl
-                        required
-                        className={classes.formControl}
-                        fullWidth
-                      >
-                        <TextField
-                          required
-                          id="email"
-                          label="Email Address"
-                          type="email"
-                          name="email"
-                          onChange={this.handleFormFields}
-                          value={this.state.form.email}
-                          fullWidth
-                        />
-                      </FormControl>
-                      <GridContainer>
-                        <GridItem xs={12} sm={6}>
-                          <FormControl required className={classes.formControl}>
-                            {/* <InputLabel
-                              htmlFor="username"
-                              className={classes.labelRoot}
-                            >
-                              Username
-                            </InputLabel>
-                            <Input
-                              id="username"
-                              name="username"
-                              type="text"
-                              InputProps={{
-                                inputProps: { pattern: "^[a-zA-Z0-9_]*$" }
-                              }}
-                              autoComplete="username"
-                              onChange={this.handleFormFields}
-                              value={this.state.form.username}
-                            />
-                             */}
-                            <Tooltip
-                              disableFocusListener
-                              title="Make sure your name and username are not similar"
-                            >
-                              <TextField
-                                required
-                                // margin="l"
-                                id="usrname"
-                                label="User Name"
-                                type="text"
-                                name="username"
-                                InputProps={{
-                                  inputProps: { pattern: "^[a-zA-Z0-9_]*$" }
-                                }}
-                                onChange={this.handleFormFields}
-                                value={this.state.form.username}
-                                fullWidth
-                              />
-                            </Tooltip>
-                          </FormControl>
-                        </GridItem>
-                        <GridItem xs={12} sm={6}>
-                          <FormControl
-                            required
-                            fullWidth
-                            className={classes.formControl}
+      <Mutation mutation={Student_Sign_Up} onCompleted={this.handleResetForm}>
+        {(studentSignUp, { data }) => {
+          return (
+            <div>
+              <Header
+                absolute
+                color="transparent"
+                brand="Smartitude"
+                rightLinks={<HeaderLinks />}
+                {...rest}
+              />
+              <div
+                className={classes.pageHeader}
+                style={{
+                  backgroundImage: "url(" + image + ")",
+                  backgroundSize: "cover",
+                  backgroundPosition: "top center"
+                }}
+              >
+                <div className={classes.container} style={{ overflow: "auto" }}>
+                  <GridContainer justify="center">
+                    <GridItem xs={11} sm={9} md={4}>
+                      <Card className={classes[this.state.cardAnimaton]}>
+                        <form
+                          className={classes.form}
+                          onSubmit={e => this.handleClick(studentSignUp, e)}
+                        >
+                          <CardHeader
+                            color="primary"
+                            className={classes.cardHeader}
                           >
-                            {/* <InputLabel
-                              htmlFor="adornment-password"
-                              className={classes.labelRoot}
-                            >
-                              Password
-                            </InputLabel>
-                            <Input
-                              id="password"
-                              name="password"
-                              type={
-                                this.state.showPassword ? "text" : "password"
-                              }
-                              onChange={this.handleFormFields}
+                            <h4>Student Registration</h4>
+                          </CardHeader>
+                          <CardBody>
+                            <p className={classes.divider}>
+                              <img width="150dp" src={lock} alt="..." />
+                            </p>
+                            <FormControl
+                              required
+                              className={classes.formControl}
                               fullWidth
-                              inputProps={{
-                                inputProps: { pattern: ".{6,}" }
-                              }}
-                              value={this.state.form.password}
-                              endAdornment={
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    aria-label="Toggle password visibility"
-                                    onClick={this.handleClickShowPassword}
-                                  >
-                                    {this.state.showPassword ? (
-                                      <Visibility />
-                                    ) : (
-                                      <VisibilityOff />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              }
-                            /> */}
-                            <Tooltip
-                              disableFocusListener
-                              title="At least 6 characters necessary & a mixture of letters and numbers recommended"
                             >
                               <TextField
-                                id="password"
-                                label="Password"
-                                type="password"
-                                name="password"
-                                InputProps={{
-                                  inputProps: { pattern: ".{6,}" }
-                                }}
+                                autoFocus
+                                // margin="dense"
+                                id="name"
+                                label="Name"
                                 required
+                                type="text"
+                                InputProps={{
+                                  inputProps: { pattern: "^[a-zA-Z ]*$" }
+                                }}
+                                name="mname"
                                 onChange={this.handleFormFields}
-                                value={this.state.form.password}
+                                value={this.state.form.mname}
                                 fullWidth
                               />
-                            </Tooltip>
-                          </FormControl>
-                        </GridItem>
-                      </GridContainer>
-                      <FormControl
-                        required
-                        className={classes.formControl}
-                        fullWidth
-                      >
-                        {/* <InputLabel
-                          htmlFor="phonenumber"
-                          className={classes.labelRoot}
-                        >
-                          Phone Number
-                        </InputLabel>
-                        <Input
-                          id="phonenumber"
-                          name="phonenumber"
-                          type="number"
-                          autoComplete="phonenumber"
-                          InputProps={{
-                            inputProps: { min: 6000000000, max: 9999999999 }
-                          }}
-                          onChange={this.handleFormFields}
-                          value={this.state.form.phonenumber}
-                        /> */}
-                        <TextField
-                          autoFocus
-                          id="phone"
-                          label="Phone Number"
-                          // margin={"dense"}
-                          type="number"
-                          name="phoneNumber"
-                          required
-                          InputProps={{
-                            inputProps: { min: 6000000000, max: 9999999999 }
-                          }}
-                          onChange={this.handleFormFields}
-                          value={this.state.form.phoneNumber}
-                          fullWidth
-                        />
-                      </FormControl>
-                    </CardBody>
-                    <CardFooter className={classes.cardFooter}>
-                      <div className={classes.wrapper}>
-                        <Button
-                          type="submit"
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          size={"lg"}
-                          simple
-                          disabled={loading}
-                          className={classes.submit}
-                        >
-                          Sign Up
-                        </Button>
-                        {loading && (
-                          <CircularProgress
-                            size={26}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
-                    </CardFooter>
-                  </form>
-                </Card>
-              </GridItem>
-            </GridContainer>
-          </div>
-          <Footer whiteFont />
-        </div>
-        {/* <CustomSnackbar
-              onClose={this.closeSnackbar}
-              variant="error"
-              open={snackbar.open}
-              message={error.message}
-            /> */}
-      </div>
+                            </FormControl>
+                            <FormControl
+                              required
+                              className={classes.formControl}
+                              fullWidth
+                            >
+                              <TextField
+                                required
+                                id="email"
+                                label="Email Address"
+                                type="email"
+                                name="email"
+                                onChange={this.handleFormFields}
+                                value={this.state.form.email}
+                                fullWidth
+                              />
+                            </FormControl>
+                            <GridContainer>
+                              <GridItem xs={12} sm={6}>
+                                <FormControl
+                                  required
+                                  className={classes.formControl}
+                                >
+                                  <Tooltip
+                                    disableFocusListener
+                                    title="Make sure your name and username are not similar"
+                                  >
+                                    <TextField
+                                      required
+                                      // margin="l"
+                                      id="usrname"
+                                      label="User Name"
+                                      type="text"
+                                      name="username"
+                                      InputProps={{
+                                        inputProps: {
+                                          pattern: "^[a-zA-Z0-9_]*$"
+                                        }
+                                      }}
+                                      onChange={this.handleFormFields}
+                                      value={this.state.form.username}
+                                      fullWidth
+                                    />
+                                  </Tooltip>
+                                </FormControl>
+                              </GridItem>
+                              <GridItem xs={12} sm={6}>
+                                <FormControl
+                                  required
+                                  fullWidth
+                                  className={classes.formControl}
+                                >
+                                  <Tooltip
+                                    // disableFocusListener
+                                    title="At least 6 characters necessary & a mixture of letters and numbers recommended"
+                                  >
+                                    <TextField
+                                      id="password"
+                                      label="Password"
+                                      type="password"
+                                      name="password"
+                                      InputProps={{
+                                        inputProps: { pattern: ".{6,}" }
+                                      }}
+                                      required
+                                      onChange={this.handleFormFields}
+                                      value={this.state.form.password}
+                                      fullWidth
+                                    />
+                                  </Tooltip>
+                                </FormControl>
+                              </GridItem>
+                            </GridContainer>
+                            <FormControl
+                              required
+                              className={classes.formControl}
+                              fullWidth
+                            >
+                              <TextField
+                                autoFocus
+                                id="phone"
+                                label="Phone Number"
+                                // margin={"dense"}
+                                type="number"
+                                name="phonenumber"
+                                required
+                                InputProps={{
+                                  inputProps: {
+                                    min: 6000000000,
+                                    max: 9999999999
+                                  }
+                                }}
+                                onChange={this.handleFormFields}
+                                value={this.state.form.phoneNumber}
+                                fullWidth
+                              />
+                            </FormControl>
+                          </CardBody>
+                          <CardFooter className={classes.cardFooter}>
+                            <div className={classes.wrapper}>
+                              <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                size={"lg"}
+                                simple
+                                disabled={loading}
+                                className={classes.submit}
+                              >
+                                Sign Up
+                              </Button>
+                              {loading && (
+                                <CircularProgress
+                                  size={26}
+                                  className={classes.buttonProgress}
+                                />
+                              )}
+                            </div>
+                          </CardFooter>
+                        </form>
+                      </Card>
+                    </GridItem>
+                  </GridContainer>
+                </div>
+                <Footer whiteFont />
+              </div>
+              {/* <CustomSnackbar
+                  onClose={this.closeSnackbar}
+                  variant="error"
+                  open={snackbar.open}
+                  message={error.message}
+                /> */}
+            </div>
+          );
+        }}
+      </Mutation>
     );
   }
 }
