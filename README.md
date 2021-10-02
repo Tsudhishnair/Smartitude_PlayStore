@@ -52,5 +52,4 @@ This application will be made for both web and mobile platforms. The solution fo
 
 ## Licensing
 
-- Copyright 2019 Smartiude (https://www.smartitude.com)
 - Licensed under MIT (https://github.com/Kuttipishaash/smartitude-app-main/blob/master/LICENSE.md)
